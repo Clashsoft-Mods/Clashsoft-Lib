@@ -20,15 +20,15 @@ public class ClashsoftCrafting
 	
 	/**
 	 * Adds an Armor-shaped recipe. (Parts: 0 = Helmet, 1 = Chestplate, 2 = Leggings, 3 = Boots.)
-	 * @param out
-	 * @param in
-	 * @param part
+	 * @param out Output ItemStack
+	 * @param input Main Crafting Material
+	 * @param part Armor Type
 	 */
-	public static void addArmorRecipe(Item out, ItemStack input, int part)
+	public static void addArmorRecipe(ItemStack out, ItemStack input, int part)
 	{
 		if (part == 0)
 		{
-			ModLoader.addRecipe(new ItemStack(out, 1), new Object[]{
+			ModLoader.addRecipe(out, new Object[]{
 				"XXX",
 				"X X",
 				Character.valueOf('X'), input
@@ -36,7 +36,7 @@ public class ClashsoftCrafting
 		}
 		else if (part == 1)
 		{
-			ModLoader.addRecipe(new ItemStack(out, 1), new Object[]{
+			ModLoader.addRecipe(out, new Object[]{
 				"X X",
 				"XXX",
 				"XXX",
@@ -45,7 +45,7 @@ public class ClashsoftCrafting
 		}
 		else if (part == 2)
 		{
-			ModLoader.addRecipe(new ItemStack(out, 1), new Object[]{
+			ModLoader.addRecipe(out, 1, new Object[]{
 				"XXX",
 				"X X",
 				"X X",
@@ -54,7 +54,7 @@ public class ClashsoftCrafting
 		}
 		else if (part == 3)
 		{
-			ModLoader.addRecipe(new ItemStack(out, 1), new Object[]{
+			ModLoader.addRecipe(out, new Object[]{
 				"X X",
 				"X X",
 				Character.valueOf('X'), input
@@ -64,15 +64,15 @@ public class ClashsoftCrafting
 
 	/**
 	 * Adds a Tool-shaped recipe. (Parts: 0 = Sword, 1 = Spade, 2 = Pickaxe, 3 = Axe, 4 = Hoe)
-	 * @param out
-	 * @param input
-	 * @param part
+	 * @param out Output ItemStack
+	 * @param input Main crafting Material
+	 * @param part Tool Type
 	 */
-	public static void addToolRecipe(Item out, ItemStack input, int part)
+	public static void addToolRecipe(ItemStack out, ItemStack input, int part)
 	{
 		if (part == 0)
 		{
-			ModLoader.addRecipe(new ItemStack(out), new Object[]{
+			ModLoader.addRecipe(out, new Object[]{
 				"X",
 				"X",
 				"|",
@@ -82,7 +82,7 @@ public class ClashsoftCrafting
 		}
 		if (part == 1)
 		{
-			ModLoader.addRecipe(new ItemStack(out), new Object[]{
+			ModLoader.addRecipe(out, new Object[]{
 				"X",
 				"|",
 				"|",
@@ -92,7 +92,7 @@ public class ClashsoftCrafting
 		}
 		if (part == 2)
 		{
-			ModLoader.addRecipe(new ItemStack(out), new Object[]{
+			ModLoader.addRecipe(out, new Object[]{
 				"XXX",
 				" | ",
 				" | ",
@@ -102,7 +102,7 @@ public class ClashsoftCrafting
 		}
 		if (part == 3)
 		{
-			ModLoader.addRecipe(new ItemStack(out), new Object[]{
+			ModLoader.addRecipe(out, new Object[]{
 				"XX ",
 				"X| ",
 				" | ",
@@ -112,7 +112,7 @@ public class ClashsoftCrafting
 		}
 		if (part == 4)
 		{
-			ModLoader.addRecipe(new ItemStack(out), new Object[]{
+			ModLoader.addRecipe(out, new Object[]{
 				"XX",
 				" |",
 				" |",
@@ -120,5 +120,14 @@ public class ClashsoftCrafting
 				'|', Item.stick
 			});
 		}
+	}
+	
+	/**
+	 * Removes a recipe from the game
+	 * @param recipe Recipe to remove
+	 */
+	public static void removeRecipe(Object[] recipe)
+	{
+		ModLoader.addRecipe(new ItemStack(0, 0, 0), recipe);
 	}
 }

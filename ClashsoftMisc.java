@@ -17,12 +17,12 @@ import net.minecraft.util.Icon;
  *
  */
 public class ClashsoftMisc
-{
-	public static void test()
-	{
-		System.out.println(combineColors(0x000001, 0x000003));
-	}
-	
+{	
+	/**
+	 * First algorythm to sort a List by using HashSets
+	 * @param list List to sort
+	 * @return Sorted List
+	 */
 	public static List removeDuplicates(List list)
 	{
 		if (list != null && list.size() > 0)
@@ -35,6 +35,11 @@ public class ClashsoftMisc
 		return list;
 	}
 	
+	/**
+	 * Second algorythm to sort a list by searching for duplicates
+	 * @param list List to sort
+	 * @return Sorted List
+	 */
 	public static List removeDuplicates2(List list)
 	{
 		if (list != null && list.size() > 0)
@@ -61,6 +66,13 @@ public class ClashsoftMisc
 		return list;
 	}
 	
+	
+	/**
+	 * Get the combined color from two colors
+	 * @param color1
+	 * @param color2
+	 * @return Color stored in an Integer
+	 */
 	public static int combineColors(int color1, int color2)
 	{
 		Color c1 = new Color(color1);
@@ -73,11 +85,12 @@ public class ClashsoftMisc
 		return (b + (g * 256) + (r * 65536));
 	}
 	
-	public static boolean checkBit(int n, int pos)
-	{
-        return (n & 1 << pos) != 0;
-    }
-	
+	/**
+	 * Get the combined color from an array of colors
+	 * @param color1
+	 * @param color2
+	 * @return Color stored in an Integer
+	 */
 	public static int combineColors(int[] par1)
 	{
 		int r = 0;
@@ -97,11 +110,25 @@ public class ClashsoftMisc
 		return (b + (g * 256) + (r * 65536));
 	}
 	
-	public static Icon registerIcon(IconRegister par1IconRegister, String par2)
+	/**
+	 * Checks if bit 'pos' in 'n' is 1
+	 * @param n
+	 * @param pos
+	 * @return
+	 */
+	public static boolean checkBit(int n, int pos)
 	{
-		return par1IconRegister.registerIcon(par2);
-	}
+        return (n & 1 << pos) != 0;
+    }
 
+	/**
+	 * Creates the colorcode for a color
+	 * @param light
+	 * @param r
+	 * @param g
+	 * @param b
+	 * @return Colorcode
+	 */
 	public static String fontColor(int light, int r, int g, int b)
 	{
 		int i = b > 0 ? 1 : 0;
@@ -120,6 +147,11 @@ public class ClashsoftMisc
 		return "\u00a7" + Integer.toHexString(i);
 	}
 	
+	/**
+	 * Converts a color name to a color code
+	 * @param name
+	 * @return
+	 */
 	public static String fontColor(String name)
 	{
 		if (name == "black")
@@ -186,10 +218,5 @@ public class ClashsoftMisc
 		{
 			return fontColor(1, 1, 1, 1);
 		}
-	}
-	
-	public static void bindTexture(RenderEngine par1RenderEngine, String par2)
-	{
-		par1RenderEngine.bindTexture(par2);
 	}
 }

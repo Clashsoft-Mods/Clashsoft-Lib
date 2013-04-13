@@ -10,13 +10,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 
 public class CustomBlock extends Block
 {
 	private String[] names;
-	private int[][] textures;
+	private String[][] textures;
+	private Icon[][] icons;
 	private boolean opaque;
 	private int renderType;
 	private String textureFile;
@@ -33,7 +36,7 @@ public class CustomBlock extends Block
 	 * @param par8 ItemStack dropped
 	 * @param par9 CreativeTab
 	 */
-	public CustomBlock(int par1, Material par2Material, String[] par3, int[][] par4, boolean par5, int par6, String par7, ItemStack[] par8, CreativeTabs par9)
+	public CustomBlock(int par1, Material par2Material, String[] par3, String[][] par4, boolean par5, int par6, String par7, ItemStack[] par8, CreativeTabs par9)
 	{
 		super(par1, par2Material);
 		names = par3;
@@ -48,38 +51,54 @@ public class CustomBlock extends Block
 		GameRegistry.registerBlock(this);
 	}
 	
-	public CustomBlock(int par1, Material par2Material, String par3, int par4, boolean par5, int par6, String par7, ItemStack par8, CreativeTabs par9)
+	public CustomBlock(int par1, Material par2Material, String par3, String par4, boolean par5, int par6, String par7, ItemStack par8, CreativeTabs par9)
 	{
-		this(par1, par2Material, new String[] {par3}, new int[][]{{par4, par4, par4, par4, par4, par4}}, par5, par6, par7, new ItemStack[]{par8}, par9);
+		this(par1, par2Material, new String[] {par3}, new String[][]{{par4, par4, par4, par4, par4, par4}}, par5, par6, par7, new ItemStack[]{par8}, par9);
 	}
 	
+	@Override
 	public boolean isOpaqueCube()
 	{
 		return opaque;
 	}
 	
+	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return renderType == 0;
 	}
 	
+	@Override
 	public int getRenderType()
 	{
 		return renderType;
 	}
 	
-	public String getTextureFile()
+	@Override
+	/**
+     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+     */
+    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    {
+        return icons[par2][par1];
+    }
+	
+	@Override
+	public void registerIcons(IconRegister par1IconRegister)
 	{
-		return textureFile;
+		for (int i = 0; i < textures.length; i++)
+		{
+			for (int j = 0; j < textures[i].length; j++)
+			{
+				icons[i][j] = par1IconRegister.registerIcon(textures[i][j]);
+			}
+		}
 	}
 	
-	public int getBlockTextureFromSideAndMetaData(int par1, int par2)
-	{
-		return textures[par2][par1];
-	}
-	
+	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs tab, List subItems) {
+	public void getSubBlocks(int par1, CreativeTabs tab, List subItems)
+	{
 		for (int ix = 0; ix < names.length; ix++)
 		{
 			subItems.add(new ItemStack(this, 1, ix));
@@ -95,7 +114,8 @@ public class CustomBlock extends Block
      * @param random Random number generator
      * @return The number of items to drop
      */
-    public int quantityDropped(int meta, int fortune, Random random)
+    @Override
+	public int quantityDropped(int meta, int fortune, Random random)
     {
         return drops[meta].stackSize;
     }
@@ -103,11 +123,13 @@ public class CustomBlock extends Block
     /**
      * Returns the ID of the items to drop on destruction.
      */
-    public int idDropped(int par1, Random par2Random, int par3)
+    @Override
+	public int idDropped(int par1, Random par2Random, int par3)
     {
         return drops[par1].itemID;
     }
     
+    @Override
     /**
      * Determines the damage on the item the block drops. Used in cloth and wood.
      */

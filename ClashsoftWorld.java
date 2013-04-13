@@ -52,7 +52,6 @@ public class ClashsoftWorld
 	
 	/**
 	 * Generates a Block/Line/Cube
-	 * WARNING: x1 < x2 !!!
 	 * @param world
 	 * @param x1
 	 * @param y1
@@ -77,6 +76,18 @@ public class ClashsoftWorld
 		}
 	}
 	
+	/**
+	 * Generates the Wireframe of a Cube
+	 * @param world
+	 * @param x1
+	 * @param y1
+	 * @param z1
+	 * @param x2
+	 * @param y2
+	 * @param z2
+	 * @param block
+	 * @param meta
+	 */
 	public static void setFrame(World world, int x1, int y1, int z1, int x2, int y2, int z2, int block, int meta)
 	{
 		//Lower 2D-Frame
