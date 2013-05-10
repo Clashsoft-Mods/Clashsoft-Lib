@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.src.ModLoader;
 
-public class ClashsoftCrafting
+public class CSCrafting
 {
 	/**
 	 * Adds a Furnace recipe.
@@ -45,7 +45,7 @@ public class ClashsoftCrafting
 		}
 		else if (part == 2)
 		{
-			ModLoader.addRecipe(out, 1, new Object[]{
+			ModLoader.addRecipe(out, new Object[]{
 				"XXX",
 				"X X",
 				"X X",

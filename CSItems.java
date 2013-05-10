@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.src.*;
 import net.minecraftforge.common.EnumHelper;
 
-public class ClashsoftItems
+public class CSItems
 {
 	/**
 	 * Adds an Item without recipe.
@@ -46,6 +46,12 @@ public class ClashsoftItems
 	{
 		addItem(par1Item, par3);
 		ModLoader.addShapelessRecipe(new ItemStack(par1Item, par4), par5ArrayOfObj);
+	}
+	
+	public static void addTool(Item par1Item, String par2, ItemStack par3ItemStack, int par4)
+	{
+		addItem(par1Item, par2);
+		CSCrafting.addToolRecipe(new ItemStack(par1Item), par3ItemStack, par4);
 	}
 	
 	public static EnumToolMaterial addToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, int damage, int enchantability, int color, ItemStack recipe)

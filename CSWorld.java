@@ -2,7 +2,7 @@ package clashsoft.clashsoftapi;
 
 import net.minecraft.world.*;
 
-public class ClashsoftWorld
+public class CSWorld
 {
 	/**
 	 * Generates a Block with meta

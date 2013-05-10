@@ -16,8 +16,11 @@ import net.minecraft.util.Icon;
  * @author Clashsoft
  *
  */
-public class ClashsoftMisc
+public class CSUtil
 {	
+	private static final String[] ROMANCODE = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+	private static final int[]    BINEQUAL  = {1000, 900, 500, 400,  100, 90,  	50,	 40,   10,  9,    5,   4,    1};
+	
 	/**
 	 * First algorythm to sort a List by using HashSets
 	 * @param list List to sort
@@ -120,6 +123,18 @@ public class ClashsoftMisc
 	{
         return (n & 1 << pos) != 0;
     }
+	
+	/**
+	 * Sets bit 'pos' in Integer 'n' to 'value'
+	 * @param n
+	 * @param pos
+	 * @param value
+	 */
+	public static int setBit(int n, int pos, boolean value)
+	{
+		int bitToSet = 1 << pos;
+		return  value ? (n | bitToSet) : ((n | bitToSet) ^ bitToSet);
+	}
 
 	/**
 	 * Creates the colorcode for a color
@@ -218,5 +233,24 @@ public class ClashsoftMisc
 		{
 			return fontColor(1, 1, 1, 1);
 		}
+	}
+	
+	public String convertToRoman(int number)
+	{
+		if (number <= 0 || number >= 4000)
+		{
+            System.out.println("Exception while converting to Roman: Value outside roman numeral range.");
+        }
+        String roman = "";
+        
+        for (int i = 0; i < ROMANCODE.length; i++)
+        {
+            while (number >= BINEQUAL[i])
+            {
+                number -= BINEQUAL[i];
+                roman  += ROMANCODE[i];
+            }
+        }
+        return roman;
 	}
 }

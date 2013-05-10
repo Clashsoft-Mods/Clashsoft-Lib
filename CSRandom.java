@@ -2,7 +2,7 @@ package clashsoft.clashsoftapi;
 
 import java.util.Random;
 
-public class ClashsoftRandom extends Random
+public class CSRandom extends Random
 {
 	public static int nextInt(Random par1Random, int par2, int par3)
 	{

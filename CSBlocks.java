@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.*;
 
-public class ClashsoftBlocks
+public class CSBlocks
 {	
 	/**
 	 * Registers a Block and its name
