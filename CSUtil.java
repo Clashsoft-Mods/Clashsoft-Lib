@@ -11,6 +11,7 @@ import java.util.Set;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MathHelper;
 
 /**
  * @author Clashsoft
@@ -240,6 +241,7 @@ public class CSUtil
 		if (number <= 0 || number >= 4000)
 		{
             System.out.println("Exception while converting to Roman: Value outside roman numeral range.");
+            return "\u007ak";
         }
         String roman = "";
         
