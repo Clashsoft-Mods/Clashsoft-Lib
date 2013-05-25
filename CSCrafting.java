@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.src.ModLoader;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class CSCrafting
 {
@@ -129,5 +130,11 @@ public class CSCrafting
 	public static void removeRecipe(Object[] recipe)
 	{
 		ModLoader.addRecipe(new ItemStack(0, 0, 0), recipe);
+	}
+	
+	public static ItemStack registerOre(String name, ItemStack ore)
+	{
+		OreDictionary.registerOre(name, ore);
+		return ore;
 	}
 }
