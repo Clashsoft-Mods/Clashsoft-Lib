@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * @author Clashsoft
@@ -21,6 +22,8 @@ public class CSUtil
 {	
 	private static final String[] ROMANCODE = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 	private static final int[]    BINEQUAL  = {1000, 900, 500, 400,  100, 90,  	50,	 40,   10,  9,    5,   4,    1};
+	
+	public static final String CURRENT_VERION = "1.5.2";
 	
 	/**
 	 * First algorythm to sort a List by using HashSets
@@ -236,12 +239,12 @@ public class CSUtil
 		}
 	}
 	
-	public String convertToRoman(int number)
+	public static String convertToRoman(int number)
 	{
 		if (number <= 0 || number >= 4000)
 		{
             System.out.println("Exception while converting to Roman: Value outside roman numeral range.");
-            return "\u007ak";
+            return "\u007akROMAN";
         }
         String roman = "";
         
@@ -254,5 +257,30 @@ public class CSUtil
             }
         }
         return roman;
+	}
+	
+	public static int convertVersion(String versionString)
+	{
+		String version = versionString.replace('.', '|');
+		System.out.println(version);
+		String[] s = version.split("|");
+		int[] ints = new int[s.length];
+		for (int i = 0; i < s.length; i++)
+		{
+			try
+			{
+				ints[i] = Integer.parseInt(s[i]);
+			}
+			catch (Exception ex)
+			{
+				//System.out.println("Exception while converting Version String: non-numerals contained.");
+			}
+		}
+		int ret = 0;
+		for (int i = 0; i < ints.length; i++)
+		{
+			ret += (ints[i] << (i * 4));
+		}
+		return ret;
 	}
 }

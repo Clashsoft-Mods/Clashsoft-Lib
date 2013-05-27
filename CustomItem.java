@@ -65,7 +65,7 @@ public class CustomItem extends Item
 	{
 		if (par1ItemStack != null && par1ItemStack.getItemDamage() < descriptions.length)
 		{
-			if (descriptions[par1ItemStack.getItemDamage()] != null)
+			if (descriptions[par1ItemStack.getItemDamage()] != null && descriptions[par1ItemStack.getItemDamage()] != "")
 			{
 				String[] lines = descriptions[par1ItemStack.getItemDamage()].split("\n");
 				for (String s : lines)
