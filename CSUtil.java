@@ -150,6 +150,11 @@ public class CSUtil
 	 */
 	public static String fontColor(int light, int r, int g, int b)
 	{
+		return "\u00a7" + Integer.toHexString(fontColorInt(light, r, g, b));
+	}
+	
+	public static int fontColorInt(int light, int r, int g, int b)
+	{
 		int i = b > 0 ? 1 : 0;
 		if (g > 0)
 		{
@@ -163,7 +168,7 @@ public class CSUtil
 		{
 			i += 8;
 		}
-		return "\u00a7" + Integer.toHexString(i);
+		return i;
 	}
 	
 	/**
@@ -239,6 +244,74 @@ public class CSUtil
 		}
 	}
 	
+	public static int fontColorInt(String name)
+	{
+		if (name == "black")
+		{
+			return fontColorInt(0, 0, 0, 0);
+		}
+		else if (name == "blue")
+		{
+			return fontColorInt(0, 0, 0, 1);
+		}
+		else if (name == "green")
+		{
+			return fontColorInt(0, 0, 1, 0);
+		}
+		else if (name == "cyan")
+		{
+			return fontColorInt(0, 0, 1, 1);
+		}
+		else if (name == "red")
+		{
+			return fontColorInt(0, 1, 0, 0);
+		}
+		else if (name == "purple")
+		{
+			return fontColorInt(0, 1, 0, 1);
+		}
+		else if (name == "orange")
+		{
+			return fontColorInt(0, 1, 1, 0);
+		}
+		else if (name == "lightgray")
+		{
+			return fontColorInt(0, 1, 1, 1);
+		}
+		else if (name == "darkgray")
+		{
+			return fontColorInt(1, 0, 0, 0);
+		}
+		else if (name == "purpleblue")
+		{
+			return fontColorInt(1, 0, 0, 1);
+		}
+		else if (name == "lightgreen")
+		{
+			return fontColorInt(1, 0, 1, 0);
+		}
+		else if (name == "lightblue")
+		{
+			return fontColorInt(1, 0, 1, 1);
+		}
+		else if (name == "lightred")
+		{
+			return fontColorInt(1, 1, 0, 0);
+		}
+		else if (name == "pink")
+		{
+			return fontColorInt(1, 1, 0, 1);
+		}
+		else if (name == "yellow")
+		{
+			return fontColorInt(1, 1, 1, 0);
+		}
+		else
+		{
+			return fontColorInt(1, 1, 1, 1);
+		}
+	}
+	
 	public static String convertToRoman(int number)
 	{
 		if (number <= 0 || number >= 4000)
@@ -280,6 +353,20 @@ public class CSUtil
 		for (int i = 0; i < ints.length; i++)
 		{
 			ret += (ints[i] << (i * 4));
+		}
+		return ret;
+	}
+	
+	public static String cutString(String string, int maxLineLength)
+	{
+		String ret = "";
+		for (int i = 0; i < string.length(); i++)
+		{
+			ret += string.charAt(i);
+			if (i != 0 && i % maxLineLength == 0)
+			{
+				ret += '\n';
+			}
 		}
 		return ret;
 	}
