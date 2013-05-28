@@ -359,15 +359,25 @@ public class CSUtil
 	
 	public static String cutString(String string, int maxLineLength)
 	{
+		String[] words = string.split(" ");
 		String ret = "";
-		for (int i = 0; i < string.length(); i++)
+		int i = 0;
+		while (i < words.length)
 		{
-			ret += string.charAt(i);
-			if (i != 0 && i % maxLineLength == 0)
+			String s = "";
+			while (i < words.length && (s += words[i]).length() <= maxLineLength)
 			{
-				ret += '\n';
+				s += " ";
+				i++;
 			}
+			ret += s + "\n";
+			i++;
 		}
 		return ret;
+	}
+	
+	public static String[] makeLineList(String string)
+	{
+		return string.split("\n");
 	}
 }
