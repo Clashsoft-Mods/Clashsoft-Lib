@@ -176,140 +176,14 @@ public class CSUtil
 	 * @param name
 	 * @return
 	 */
-	public static String fontColor(String name)
+	public static String fontColor(EnumFontColor fontColor)
 	{
-		if (name == "black")
-		{
-			return fontColor(0, 0, 0, 0);
-		}
-		else if (name == "blue")
-		{
-			return fontColor(0, 0, 0, 1);
-		}
-		else if (name == "green")
-		{
-			return fontColor(0, 0, 1, 0);
-		}
-		else if (name == "cyan")
-		{
-			return fontColor(0, 0, 1, 1);
-		}
-		else if (name == "red")
-		{
-			return fontColor(0, 1, 0, 0);
-		}
-		else if (name == "purple")
-		{
-			return fontColor(0, 1, 0, 1);
-		}
-		else if (name == "orange")
-		{
-			return fontColor(0, 1, 1, 0);
-		}
-		else if (name == "lightgray")
-		{
-			return fontColor(0, 1, 1, 1);
-		}
-		else if (name == "darkgray")
-		{
-			return fontColor(1, 0, 0, 0);
-		}
-		else if (name == "purpleblue")
-		{
-			return fontColor(1, 0, 0, 1);
-		}
-		else if (name == "lightgreen")
-		{
-			return fontColor(1, 0, 1, 0);
-		}
-		else if (name == "lightblue")
-		{
-			return fontColor(1, 0, 1, 1);
-		}
-		else if (name == "lightred")
-		{
-			return fontColor(1, 1, 0, 0);
-		}
-		else if (name == "pink")
-		{
-			return fontColor(1, 1, 0, 1);
-		}
-		else if (name == "yellow")
-		{
-			return fontColor(1, 1, 1, 0);
-		}
-		else
-		{
-			return fontColor(1, 1, 1, 1);
-		}
+		return fontColor(fontColor.getLight(), fontColor.getRed(), fontColor.getGreen(), fontColor.getBlue());
 	}
 	
-	public static int fontColorInt(String name)
+	public static int fontColorInt(EnumFontColor fontColor)
 	{
-		if (name == "black")
-		{
-			return fontColorInt(0, 0, 0, 0);
-		}
-		else if (name == "blue")
-		{
-			return fontColorInt(0, 0, 0, 1);
-		}
-		else if (name == "green")
-		{
-			return fontColorInt(0, 0, 1, 0);
-		}
-		else if (name == "cyan")
-		{
-			return fontColorInt(0, 0, 1, 1);
-		}
-		else if (name == "red")
-		{
-			return fontColorInt(0, 1, 0, 0);
-		}
-		else if (name == "purple")
-		{
-			return fontColorInt(0, 1, 0, 1);
-		}
-		else if (name == "orange")
-		{
-			return fontColorInt(0, 1, 1, 0);
-		}
-		else if (name == "lightgray")
-		{
-			return fontColorInt(0, 1, 1, 1);
-		}
-		else if (name == "darkgray")
-		{
-			return fontColorInt(1, 0, 0, 0);
-		}
-		else if (name == "purpleblue")
-		{
-			return fontColorInt(1, 0, 0, 1);
-		}
-		else if (name == "lightgreen")
-		{
-			return fontColorInt(1, 0, 1, 0);
-		}
-		else if (name == "lightblue")
-		{
-			return fontColorInt(1, 0, 1, 1);
-		}
-		else if (name == "lightred")
-		{
-			return fontColorInt(1, 1, 0, 0);
-		}
-		else if (name == "pink")
-		{
-			return fontColorInt(1, 1, 0, 1);
-		}
-		else if (name == "yellow")
-		{
-			return fontColorInt(1, 1, 1, 0);
-		}
-		else
-		{
-			return fontColorInt(1, 1, 1, 1);
-		}
+		return fontColorInt(fontColor.getLight(), fontColor.getRed(), fontColor.getGreen(), fontColor.getBlue());
 	}
 	
 	public static String convertToRoman(int number)
