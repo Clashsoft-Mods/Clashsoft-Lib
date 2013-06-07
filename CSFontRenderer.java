@@ -457,8 +457,12 @@ public class CSFontRenderer extends FontRenderer
 			int j;
 			int k;
 
-			if (c0 == '\u00a7' && i + 9 < par1Str.length() && par1Str.charAt(i + 1) == 'C')
+			if ((c0 == '@' || c0 == '\u00a7') && i + 9 < par1Str.length() && par1Str.charAt(i + 1) == 'C')
 			{
+				resetStyles();
+				
+				red = 1F; green = 1F; blue = 1F;
+				
 				String regex = "0123456789abcdefklmnorC[]";
 				char j0 = par1Str.charAt(i + 1);
 				char j1 = par1Str.charAt(i + 2); //[
@@ -513,6 +517,8 @@ public class CSFontRenderer extends FontRenderer
 
 				if (j < 16)
 				{
+					resetStyles();
+					
 					if (j < 0 || j > 15)
 					{
 						j = 15;
@@ -714,7 +720,7 @@ public class CSFontRenderer extends FontRenderer
 				char c0 = par1Str.charAt(j);
 				int k = this.getCharWidth(c0);
 
-				if (c0 == '\u00a7')
+				if (c0 == '\u00a7' || c0 == '@')
 				{
 					if (j + 9 < par1Str.length() && par1Str.charAt(j + 1) == 'C' && par1Str.charAt(j + 2) == '[')
 					{

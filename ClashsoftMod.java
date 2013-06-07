@@ -14,5 +14,6 @@ public class ClashsoftMod
 	public void init(FMLInitializationEvent event)
 	{
 		csFontRenderer = new CSFontRenderer(Minecraft.getMinecraft().gameSettings, "/font/default.png", Minecraft.getMinecraft().renderEngine, false);
+		Minecraft.getMinecraft().fontRenderer = csFontRenderer;
 	}
 }
