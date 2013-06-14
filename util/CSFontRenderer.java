@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi;
+package clashsoft.clashsoftapi.util;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,9 +20,11 @@ import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
+import clashsoft.clashsoftapi.ClashsoftMod;
 import scala.io.UTF8Codec;
 
 @SideOnly(Side.CLIENT)
@@ -99,6 +101,8 @@ public class CSFontRenderer extends FontRenderer
 	 * Set if the "m" style (strikethrough) is active in currently rendering string
 	 */
 	private boolean strikethroughStyle = false;
+	
+	private float scale = 2.0F;
 
 	public CSFontRenderer(GameSettings par1GameSettings, String par2Str, RenderEngine par3RenderEngine, boolean par4)
 	{
@@ -245,21 +249,28 @@ public class CSFontRenderer extends FontRenderer
 	 */
 	private float renderDefaultChar(int par1, boolean par2)
 	{
+		float scale = 2F;
 		float f = (float)(par1 % 16 * 8);
 		float f1 = (float)(par1 / 16 * 8);
-		float f2 = par2 ? 1.0F : 0.0F;
+		float f2 = (par2 ? 1.0F : 0.0F);
 		this.renderEngine.bindTexture(this.fontTextureName);
-		float f3 = (float)this.charWidth[par1] - 0.01F;
+		float f3 = ((float)this.charWidth[par1] - 0.01F);
+		
+		GL11.glPushMatrix();
+		GL11.glScalef(scale, scale, scale);
+		GL11.glPopMatrix();
+		
 		GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
-		GL11.glTexCoord2f(f / 128.0F, f1 / 128.0F);
+		GL11.glTexCoord2f((f / 128.0F), (f1 / 128.0F));
 		GL11.glVertex3f(this.posX + f2, this.posY, 0.0F);
-		GL11.glTexCoord2f(f / 128.0F, (f1 + 7.99F) / 128.0F);
+		GL11.glTexCoord2f((f / 128.0F), ((f1 + 7.99F) / 128.0F));
 		GL11.glVertex3f(this.posX - f2, this.posY + 7.99F, 0.0F);
-		GL11.glTexCoord2f((f + f3) / 128.0F, f1 / 128.0F);
+		GL11.glTexCoord2f(((f + f3) / 128.0F), (f1 / 128.0F));
 		GL11.glVertex3f(this.posX + f3 + f2, this.posY, 0.0F);
-		GL11.glTexCoord2f((f + f3) / 128.0F, (f1 + 7.99F) / 128.0F);
-		GL11.glVertex3f(this.posX + f3 - f2, this.posY + 7.99F, 0.0F);
+		GL11.glTexCoord2f(((f + f3) / 128.0F), ((f1 + 7.99F) / 128.0F));
+		GL11.glVertex3f((this.posX + f3 - f2), this.posY + 7.99F, 0.0F);
 		GL11.glEnd();
+		
 		return (float)this.charWidth[par1];
 	}
 

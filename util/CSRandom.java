@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi;
+package clashsoft.clashsoftapi.util;
 
 import java.util.Random;
 

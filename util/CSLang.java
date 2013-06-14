@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi;
+package clashsoft.clashsoftapi.util;
 
 import net.minecraft.potion.Potion;
 import net.minecraft.stats.Achievement;

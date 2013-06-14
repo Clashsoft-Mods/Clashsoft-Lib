@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi;
+package clashsoft.clashsoftapi.util;
 
 import java.awt.Color;
 import java.util.ArrayList;

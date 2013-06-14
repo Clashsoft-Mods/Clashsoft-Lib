@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi;
+package clashsoft.clashsoftapi.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

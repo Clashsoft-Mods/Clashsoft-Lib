@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class CustomItem extends Item
 {
@@ -19,12 +20,16 @@ public class CustomItem extends Item
 	private String[] descriptions;
 	private Icon[] icons;
 	
+	private boolean[] disabled;
+	
 	public CustomItem(int par1, String[] par2, String[] par3, String[] par4)
 	{
 		super(par1);
 		names = par2;
 		textures = par3;
 		icons = new Icon[textures.length];
+		disabled = new boolean[names.length];
+		for (int i = 0; i < disabled.length; i++) { disabled[i] = par3[i] == ""; }
 		this.setHasSubtypes(par2.length > 1);
 		descriptions = par4;
 	}
@@ -37,7 +42,16 @@ public class CustomItem extends Item
 	@Override
 	public String getItemDisplayName(ItemStack is)
 	{
-		return StatCollector.translateToLocal("item." + names[is.getItemDamage()] + ".name");
+		return StatCollector.translateToLocal(names[is.getItemDamage()]);
+	}
+	
+	public CustomItem disableMetadata(int... metadata)
+	{
+		for (int i : metadata)
+		{
+			disabled[i] = true;
+		}
+		return this;
 	}
 	
 	@Override
@@ -63,9 +77,9 @@ public class CustomItem extends Item
 	@Override
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
-		if (par1ItemStack != null && par1ItemStack.getItemDamage() < descriptions.length)
+		if (par1ItemStack != null)
 		{
-			if (descriptions[par1ItemStack.getItemDamage()] != null && descriptions[par1ItemStack.getItemDamage()] != "")
+			if (par1ItemStack.getItemDamage() < descriptions.length && descriptions[par1ItemStack.getItemDamage()] != null && descriptions[par1ItemStack.getItemDamage()] != "")
 			{
 				String[] lines = descriptions[par1ItemStack.getItemDamage()].split("\n");
 				for (String s : lines)
@@ -73,6 +87,7 @@ public class CustomItem extends Item
 					par3List.add(StatCollector.translateToLocal(s));
 				}
 			}
+			//par3List.add("Ore Dictionary Name: " + OreDictionary.getOreName(OreDictionary.getOreID(par1ItemStack)));
 		}
 	}
 	
@@ -85,7 +100,8 @@ public class CustomItem extends Item
     {
         for (int i = 0; i < names.length; i++)
         {
-        	par3List.add(new ItemStack(par1, 1, i));
+        	if (!disabled[i])
+        		par3List.add(new ItemStack(par1, 1, i));
         }
     }
 }

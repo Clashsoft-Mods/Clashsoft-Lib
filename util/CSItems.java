@@ -1,6 +1,7 @@
-package clashsoft.clashsoftapi;
+package clashsoft.clashsoftapi.util;
 
 //import clashsoft.mods.combinationcraft.EnumToolMaterial2;
+import clashsoft.clashsoftapi.ItemDataTool;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -54,7 +55,7 @@ public class CSItems
 		CSCrafting.addToolRecipe(new ItemStack(par1Item), par3ItemStack, par4);
 	}
 	
-	public static EnumToolMaterial addToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, int damage, int enchantability, int color, ItemStack recipe)
+	public static EnumToolMaterial addToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, int damage, int enchantability, int color, ItemStack recipe, boolean dataTool)
 	{
 		try
 		{
@@ -64,6 +65,9 @@ public class CSItems
 		{
 			System.out.println("CombinationCraft not installed");
 		}
-		return EnumHelper.addToolMaterial(name, harvestLevel, maxUses, efficiency, damage, enchantability);
+		EnumToolMaterial var1 = EnumHelper.addToolMaterial(name, harvestLevel, maxUses, efficiency, damage, enchantability);
+		if (dataTool)
+			ItemDataTool.registerMaterial(var1, name);
+		return var1;
 	}
 }

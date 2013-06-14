@@ -28,6 +28,7 @@ public class CustomBlock extends Block
 	private ItemStack[] drops;
 	private float[] hardnesses;
 	private CreativeTabs[] tabs;
+	private boolean[] disabled;
 	
 	/**
 	 * @param par1 Block ID
@@ -49,6 +50,8 @@ public class CustomBlock extends Block
 		renderType = par6;
 		drops = new ItemStack[names.length];
 		hardnesses = new float[names.length];
+		disabled = new boolean[names.length];
+		for (int i = 0; i < disabled.length; i++) { disabled[i] = par3[i] == "" || (par4[i][0] == "" || par4[i][1] == "" || par4[i][2] == "" || par4[i][3] == "" || par4[i][4] == "" || par4[i][5] == ""); }
 		tabs = par7;
 		this.setCreativeTab(par7[0]);
 	}
@@ -84,6 +87,12 @@ public class CustomBlock extends Block
 			}
 		}
 		return s;
+	}
+	
+	public CustomBlock disableMetadata(int metadata)
+	{
+		disabled[metadata] = true;
+		return this;
 	}
 	
 	public CustomBlock setHardnesses(float[] hardnesses)
@@ -133,7 +142,9 @@ public class CustomBlock extends Block
      */
     public Icon getIcon(int par1, int par2)
     {
-        return icons[par2][par1];
+		if (par2 < icons.length && par1 < icons[par2].length)
+			return icons[par2][par1];
+		return icons[0][0];
     }
 	
 	/**
@@ -141,7 +152,7 @@ public class CustomBlock extends Block
      */
     public float getBlockHardness(World par1World, int par2, int par3, int par4)
     {
-        if (par1World.getBlockMetadata(par2, par3, par4) < hardnesses.length)
+        if (par1World.getBlockMetadata(par2, par3, par4) < hardnesses.length && hardnesses[par1World.getBlockMetadata(par2, par3, par4)] > 0)
         {
         	return hardnesses[par1World.getBlockMetadata(par2, par3, par4)];
         }
@@ -168,14 +179,14 @@ public class CustomBlock extends Block
 		{
 			if (i < tabs.length)
 			{
-				if (tab == tabs[i])
+				if (tab == tabs[i] && !disabled[i])
 				{
 					subItems.add(new ItemStack(this, 1, i));
 				}
 			}
 			else
 			{
-				if (tab == tabs[tabs.length - 1])
+				if (tab == tabs[tabs.length - 1] && !disabled[i])
 				{
 					subItems.add(new ItemStack(this, 1, i));
 				}
