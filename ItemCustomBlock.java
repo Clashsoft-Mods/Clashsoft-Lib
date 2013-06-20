@@ -1,10 +1,16 @@
 package clashsoft.clashsoftapi;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import clashsoft.clashsoftapi.util.CSArray;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -73,15 +79,23 @@ public class ItemCustomBlock extends ItemBlock
 	{
 		if (par1ItemStack != null)
 		{
-			//if (par1ItemStack.getItemDamage() < theBlock.descriptions.length && descriptions[par1ItemStack.getItemDamage()] != null && descriptions[par1ItemStack.getItemDamage()] != "")
-			//{
-			//String[] lines = descriptions[par1ItemStack.getItemDamage()].split("\n");
-			//for (String s : lines)
-			//{
-			//par3List.add(StatCollector.translateToLocal(s));
-			//}
-			//}
-			//par3List.add("Ore Dictionary Name: " + OreDictionary.getOreName(OreDictionary.getOreID(par1ItemStack)));
+			//TODO Block Descriptions
 		}
 	}
+	
+	/**
+     * Gets a list of tabs that items belonging to this class can display on,
+     * combined properly with getSubItems allows for a single item to span
+     * many sub-items across many tabs.
+     *
+     * @return A list of all tabs that this item could possibly be one.
+     */
+    public CreativeTabs[] getCreativeTabs()
+    {
+    	List<CreativeTabs> list = Arrays.asList(theBlock.tabs);
+    	HashSet set = new HashSet();
+    	set.addAll(list);
+    	Object[] ret1 = set.toArray();
+    	return Arrays.copyOf(ret1, ret1.length, CreativeTabs[].class);
+    }
 }

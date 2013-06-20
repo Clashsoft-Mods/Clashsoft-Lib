@@ -1,6 +1,7 @@
-package clashsoft.clashsoftapi;
+package clashsoft.clashsoftapi.datatools;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
     private String toolType;
     
     public Map<EnumToolMaterial, Icon> icons = new HashMap<EnumToolMaterial, Icon>();
+    public static List<EnumToolMaterial> materials = new LinkedList<EnumToolMaterial>();
     public static Map<String, EnumToolMaterial> nameToMaterial = new HashMap<String, EnumToolMaterial>();
     public static Map<EnumToolMaterial, String> materialToName = new HashMap<EnumToolMaterial, String>();
 	
@@ -42,12 +44,14 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 		blocksEffectiveAgainst = par4ArrayOfBlock;
 		toolType = par5;
 		toolDamage = par2;
+		this.setNoRepair();
 	}
 	
 	public static void registerMaterial(EnumToolMaterial material, String name)
 	{
 		nameToMaterial.put(name, material);
 		materialToName.put(material, name);
+		materials.add(material);
 	}
 	
 	public static EnumToolMaterial getToolMaterialFromItemStack(ItemStack stack)
@@ -60,19 +64,17 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 		return null;
 	}
 	
-	public static ItemStack setToolMaterial(ItemStack stack, EnumToolMaterial material, String materialName)
+	public static ItemStack setToolMaterial(ItemStack stack, EnumToolMaterial material)
 	{
 		if (stack != null)
 		{
 			NBTTagCompound nbt = stack.getTagCompound();
 			if (nbt == null)
 				nbt = new NBTTagCompound();
+			String materialName = materialToName.get(material);
 			nbt.setString("ToolMaterial", materialName);
 			stack.setTagCompound(nbt);
-			
-			System.out.println(getToolMaterialFromItemStack(stack));
 		}
-			
 		return stack;
 	}
 	
@@ -112,7 +114,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
     
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
-    	par3List.add(EnumChatFormatting.ITALIC + materialToName.get(getToolMaterialFromItemStack(par1ItemStack)));
+    	//par3List.add(EnumChatFormatting.ITALIC + materialToName.get(getToolMaterialFromItemStack(par1ItemStack)));
     }
 
 	/**
@@ -222,9 +224,9 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
      */
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (EnumToolMaterial tm : nameToMaterial.values())
+        for (EnumToolMaterial tm : materials)
         {
-        	par3List.add(this.setToolMaterial(new ItemStack(this), tm, materialToName.get(tm)));
+        	par3List.add(this.setToolMaterial(new ItemStack(this), tm));
         }
     }
 }

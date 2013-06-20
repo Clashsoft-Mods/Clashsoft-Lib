@@ -1,5 +1,8 @@
 package clashsoft.clashsoftapi.util;
 
+import java.lang.reflect.Array;
+
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 

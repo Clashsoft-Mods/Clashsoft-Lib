@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi;
+package clashsoft.clashsoftapi.datatools;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

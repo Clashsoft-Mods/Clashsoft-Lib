@@ -25,6 +25,11 @@ public class CSUtil
 	
 	public static final String CURRENT_VERION = "1.5.2";
 	
+	public static void log(Object o)
+	{
+		System.out.println(o);
+	}
+	
 	/**
 	 * First algorythm to sort a List by using HashSets
 	 * @param list List to sort

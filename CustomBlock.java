@@ -27,7 +27,7 @@ public class CustomBlock extends Block
 	private int renderType;
 	private ItemStack[] drops;
 	private float[] hardnesses;
-	private CreativeTabs[] tabs;
+	protected CreativeTabs[] tabs;
 	private boolean[] disabled;
 	
 	/**
@@ -51,7 +51,7 @@ public class CustomBlock extends Block
 		drops = new ItemStack[names.length];
 		hardnesses = new float[names.length];
 		disabled = new boolean[names.length];
-		for (int i = 0; i < disabled.length; i++) { disabled[i] = par3[i] == "" || (par4[i][0] == "" || par4[i][1] == "" || par4[i][2] == "" || par4[i][3] == "" || par4[i][4] == "" || par4[i][5] == ""); }
+		for (int i = 0; i < disabled.length; i++) { disabled[i] = par3[i] == "" || par3[i].contains("%&") || (par4[i][0] == "" || par4[i][1] == "" || par4[i][2] == "" || par4[i][3] == "" || par4[i][4] == "" || par4[i][5] == ""); }
 		tabs = par7;
 		this.setCreativeTab(par7[0]);
 	}
@@ -92,6 +92,12 @@ public class CustomBlock extends Block
 	public CustomBlock disableMetadata(int metadata)
 	{
 		disabled[metadata] = true;
+		return this;
+	}
+	
+	public CustomBlock setHardness(int metadata, float hardness)
+	{
+		hardnesses[metadata] = hardness;
 		return this;
 	}
 	
@@ -147,6 +153,7 @@ public class CustomBlock extends Block
 		return icons[0][0];
     }
 	
+	@Override
 	/**
      * Returns the block hardness at a location. Args: world, x, y, z
      */
@@ -166,7 +173,8 @@ public class CustomBlock extends Block
 		{
 			for (int j = 0; j < textures[i].length; j++)
 			{
-				icons[i][j] = par1IconRegister.registerIcon(textures[i][j]);
+				if (!textures[i][j].contains("%&"))
+					icons[i][j] = par1IconRegister.registerIcon(textures[i][j]);
 			}
 		}
 	}
@@ -233,11 +241,19 @@ public class CustomBlock extends Block
     	return par1;
     }
     
+    @Override
+    /**
+     * Get the block's damage value (for use with pick block).
+     */
+    public int getDamageValue(World par1World, int par2, int par3, int par4)
+    {
+        return par1World.getBlockMetadata(par2, par3, par4);
+    }
+    
     public void addNames()
     {	
     	for (int i = 0; i < names.length; i++)
     	{
-    		System.out.println(this.getUnlocalizedName() + "." + i);
     		LanguageRegistry.addName(new ItemStack(
     				this, 1, 
     				i), 

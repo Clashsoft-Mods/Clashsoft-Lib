@@ -25,6 +25,7 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import clashsoft.clashsoftapi.ClashsoftMod;
+import clashsoft.clashsoftapi.ClientProxy;
 import scala.io.UTF8Codec;
 
 @SideOnly(Side.CLIENT)
@@ -233,7 +234,7 @@ public class CSFontRenderer extends FontRenderer
 
 	public static CSFontRenderer getFontRenderer()
 	{
-		return ClashsoftMod.csFontRenderer;
+		return ClientProxy.csFontRenderer;
 	}
 
 	/**

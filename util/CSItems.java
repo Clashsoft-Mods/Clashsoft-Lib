@@ -1,7 +1,7 @@
 package clashsoft.clashsoftapi.util;
 
 //import clashsoft.mods.combinationcraft.EnumToolMaterial2;
-import clashsoft.clashsoftapi.ItemDataTool;
+import clashsoft.clashsoftapi.datatools.ItemDataTool;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

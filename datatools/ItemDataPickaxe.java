@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi;
+package clashsoft.clashsoftapi.datatools;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

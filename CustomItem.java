@@ -29,7 +29,7 @@ public class CustomItem extends Item
 		textures = par3;
 		icons = new Icon[textures.length];
 		disabled = new boolean[names.length];
-		for (int i = 0; i < disabled.length; i++) { disabled[i] = par3[i] == ""; }
+		for (int i = 0; i < disabled.length; i++) { disabled[i] = par3[i] == "" || par2[i] == "" || par2[i].contains("%&"); }
 		this.setHasSubtypes(par2.length > 1);
 		descriptions = par4;
 	}
@@ -42,7 +42,7 @@ public class CustomItem extends Item
 	@Override
 	public String getItemDisplayName(ItemStack is)
 	{
-		return StatCollector.translateToLocal(names[is.getItemDamage()]);
+		return StatCollector.translateToLocal(names[is.getItemDamage()].replace("%&", ""));
 	}
 	
 	public CustomItem disableMetadata(int... metadata)
