@@ -66,7 +66,7 @@ public class CustomItem extends Item
     {
         for (int i = 0; i < textures.length; i++)
         {
-        	if (textures[i] != null)
+        	if (textures[i] != null && !textures[i].contains("%&"))
         	{
         		this.
         		icons[i] = par1IconRegister.registerIcon(textures[i]);

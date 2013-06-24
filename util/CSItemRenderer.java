@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -22,12 +24,13 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
 	public CSItemRenderer()
 	{
 		super();
+		this.renderManager = RenderManager.instance;
 	}
 
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type)
 	{
-		return type == ItemRenderType.INVENTORY;
+		return type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY; // || type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
 	}
 
 	@Override
@@ -44,12 +47,18 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
 			Icon icon = ((ICSItemRenderable)item.getItem()).getIcon(item);
 			if (type == ItemRenderType.INVENTORY)
 			{
-				this.renderIcon(0, 0, icon, 16, 16);
+				if (icon != null)
+					this.renderIcon(0, 0, icon, 16, 16);
 			}
 			else if (type == ItemRenderType.ENTITY)
 			{
 				EntityItem entity = (EntityItem) data[1];
-				//this.renderDroppedItem(entity, icon, item.getItem().getRenderPasses(item.getItemDamage()), 1, 1F, 1F, 1F);
+				this.renderDroppedItem(entity, icon, item.getItem().getRenderPasses(item.getItemDamage()), 1, 1F, 1F, 1F);
+			}
+			else if (type == ItemRenderType.EQUIPPED)
+			{
+				EntityLiving entity = (EntityLiving) data[1];
+				
 			}
 		}
 	}
