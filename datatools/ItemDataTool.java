@@ -229,4 +229,10 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
         	par3List.add(this.setToolMaterial(new ItemStack(this), tm));
         }
     }
+
+	@Override
+	public int getGlintColor(ItemStack par1ItemStack)
+	{
+		return -1;
+	}
 }

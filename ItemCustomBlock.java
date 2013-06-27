@@ -21,12 +21,12 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemCustomBlock extends ItemBlock
 {	
-	private CustomBlock theBlock;
+	private Block theBlock;
 
 	public ItemCustomBlock(int par1, Block par2Block)
 	{
 		super(par1);
-		this.theBlock = (CustomBlock)par2Block;
+		this.theBlock = par2Block;
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
@@ -92,10 +92,14 @@ public class ItemCustomBlock extends ItemBlock
      */
     public CreativeTabs[] getCreativeTabs()
     {
-    	List<CreativeTabs> list = Arrays.asList(theBlock.tabs);
+    	if (theBlock instanceof CustomBlock)
+    	{
+    	List<CreativeTabs> list = Arrays.asList(((CustomBlock)theBlock).tabs);
     	HashSet set = new HashSet();
     	set.addAll(list);
     	Object[] ret1 = set.toArray();
     	return Arrays.copyOf(ret1, ret1.length, CreativeTabs[].class);
+    	}
+    	return super.getCreativeTabs();
     }
 }
