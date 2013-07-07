@@ -1,10 +1,15 @@
 package clashsoft.clashsoftapi.datatools;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
@@ -26,7 +31,7 @@ public class ItemDataHoe extends ItemDataTool
     /**
      * Returns the damage against a given entity.
      */
-    public int getDamageVsEntity(Entity par1Entity, ItemStack par2ItemStack)
+    public float getDamageVsEntity(Entity par1Entity, ItemStack par2ItemStack)
     {
         return 1;
     }
@@ -79,5 +84,10 @@ public class ItemDataHoe extends ItemDataTool
                 }
             }
         }
+    }
+    
+    public Multimap func_111205_h()
+    {
+        return HashMultimap.create();
     }
 }

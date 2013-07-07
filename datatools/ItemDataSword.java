@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class ItemDataSword extends ItemDataTool
 {
-    private int weaponDamage;
+    private float weaponDamage;
     private final EnumToolMaterial toolMaterial;
 
     public ItemDataSword(int par1, EnumToolMaterial par2EnumToolMaterial)
@@ -28,7 +28,7 @@ public class ItemDataSword extends ItemDataTool
         this.weaponDamage = 4 + par2EnumToolMaterial.getDamageVsEntity();
     }
 
-    public int func_82803_g()
+    public float func_82803_g()
     {
         return this.toolMaterial.getDamageVsEntity();
     }

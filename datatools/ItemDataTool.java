@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Multimap;
+
 import clashsoft.clashsoftapi.util.ICSItemRenderable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,6 +15,8 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemStack;
@@ -160,12 +164,19 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
     /**
      * Returns the damage against a given entity.
      */
-    public int getDamageVsEntity(Entity par1Entity, ItemStack par2ItemStack)
+    public float getDamageVsEntity(Entity par1Entity, ItemStack par2ItemStack)
     {
         EnumToolMaterial tm = getToolMaterialFromItemStack(par2ItemStack);
         if (tm != null)
         	return toolDamage + tm.getDamageVsEntity();
         return damageVsEntity;
+    }
+    
+    public Multimap func_111205_h()
+    {
+        Multimap multimap = super.func_111205_h();
+        multimap.put(SharedMonsterAttributes.field_111264_e.func_111108_a(), new AttributeModifier(field_111210_e, "Weapon modifier", (double)this.toolDamage, 0));
+        return multimap;
     }
 
     @SideOnly(Side.CLIENT)

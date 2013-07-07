@@ -9,10 +9,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
@@ -24,6 +26,8 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
 {
 	private static RenderItem basicItemRenderer = new RenderItem();
 	private static Random random = new Random();
+	
+	private static final ResourceLocation field_110798_h = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 	
 	public CSItemRenderer()
 	{
@@ -72,17 +76,19 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
      */
     public void renderDroppedItem(EntityItem par1EntityItem, Icon par2Icon, int par3, float par4, float par5, float par6, float par7)
     {
-        Tessellator tessellator = Tessellator.instance;
+    	Tessellator tessellator = Tessellator.instance;
 
         if (par2Icon == null)
         {
-            par2Icon = this.renderManager.renderEngine.getMissingIcon(par1EntityItem.getEntityItem().getItemSpriteNumber());
+            TextureManager texturemanager = Minecraft.getMinecraft().func_110434_K();
+            ResourceLocation resourcelocation = texturemanager.func_130087_a(par1EntityItem.getEntityItem().getItemSpriteNumber());
+            par2Icon = ((TextureMap)texturemanager.func_110581_b(resourcelocation)).func_110572_b("missingno");
         }
 
-        float f4 = par2Icon.getMinU();
-        float f5 = par2Icon.getMaxU();
-        float f6 = par2Icon.getMinV();
-        float f7 = par2Icon.getMaxV();
+        float f4 = ((Icon)par2Icon).getMinU();
+        float f5 = ((Icon)par2Icon).getMaxU();
+        float f6 = ((Icon)par2Icon).getMinV();
+        float f7 = ((Icon)par2Icon).getMaxV();
         float f8 = 1.0F;
         float f9 = 0.5F;
         float f10 = 0.25F;
@@ -126,21 +132,21 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
 
                 if (itemstack.getItemSpriteNumber() == 0)
                 {
-                    this.loadTexture("/terrain.png");
+                    this.func_110776_a(TextureMap.field_110575_b);
                 }
                 else
                 {
-                    this.loadTexture("/gui/items.png");
+                    this.func_110776_a(TextureMap.field_110576_c);
                 }
 
                 GL11.glColor4f(par5, par6, par7, 1.0F);
-                ItemRenderer.renderItemIn2D(tessellator, f5, f6, f4, f7, par2Icon.getSheetWidth(), par2Icon.getSheetHeight(), f12);
+                ItemRenderer.renderItemIn2D(tessellator, f5, f6, f4, f7, ((Icon)par2Icon).getOriginX(), ((Icon)par2Icon).getOriginY(), f12);
 
-                if (itemstack != null && itemstack.hasEffect())
+                if (itemstack.hasEffect())
                 {
                     GL11.glDepthFunc(GL11.GL_EQUAL);
                     GL11.glDisable(GL11.GL_LIGHTING);
-                    this.renderManager.renderEngine.bindTexture("%blur%/misc/glint.png");
+                    this.renderManager.renderEngine.func_110577_a(field_110798_h);
                     GL11.glEnable(GL11.GL_BLEND);
                     GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
                     float f13 = 0.76F;
@@ -202,10 +208,11 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
         }
     }
     
+    @Override
     /**
      * Renders the item's icon or block into the UI at the specified position.
      */
-    public void renderItemIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5)
+    public void renderItemIntoGUI(FontRenderer par1FontRenderer, TextureManager par2TextureManager, ItemStack par3ItemStack, int par4, int par5)
     {
         int k = par3ItemStack.itemID;
         int l = par3ItemStack.getItemDamage();
@@ -217,7 +224,7 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
         Block block = (k < Block.blocksList.length ? Block.blocksList[k] : null);
         if (par3ItemStack.getItemSpriteNumber() == 0 && block != null && RenderBlocks.renderItemIn3d(Block.blocksList[k].getRenderType()))
         {
-            par2RenderEngine.bindTexture("/terrain.png");
+        	par2TextureManager.func_110577_a(TextureMap.field_110575_b);
             GL11.glPushMatrix();
             GL11.glTranslatef((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
             GL11.glScalef(10.0F, 10.0F, 10.0F);
@@ -243,17 +250,17 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
         }
         else
         {
-            int j1;
+            int i1;
 
             if (Item.itemsList[k].requiresMultipleRenderPasses())
             {
                 GL11.glDisable(GL11.GL_LIGHTING);
-                par2RenderEngine.bindTexture(par3ItemStack.getItemSpriteNumber() == 0 ? "/terrain.png" : "/gui/items.png");
+                par2TextureManager.func_110577_a(par3ItemStack.getItemSpriteNumber() == 0 ? TextureMap.field_110575_b : TextureMap.field_110576_c);
 
-                for (j1 = 0; j1 < Item.itemsList[k].getRenderPasses(l); ++j1)
+                for (i1 = 0; i1 < Item.itemsList[k].getRenderPasses(l); ++i1)
                 {
-                    Icon icon1 = Item.itemsList[k].getIcon(par3ItemStack, j1);
-                    int k1 = Item.itemsList[k].getColorFromItemStack(par3ItemStack, j1);
+                    Icon icon1 = Item.itemsList[k].getIcon(par3ItemStack, i1);
+                    int k1 = Item.itemsList[k].getColorFromItemStack(par3ItemStack, i1);
                     f = (float)(k1 >> 16 & 255) / 255.0F;
                     f1 = (float)(k1 >> 8 & 255) / 255.0F;
                     float f3 = (float)(k1 & 255) / 255.0F;
@@ -270,33 +277,26 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
             }
             else
             {
-                GL11.glDisable(GL11.GL_LIGHTING);
-
-                if (par3ItemStack.getItemSpriteNumber() == 0)
-                {
-                    par2RenderEngine.bindTexture("/terrain.png");
-                }
-                else
-                {
-                    par2RenderEngine.bindTexture("/gui/items.png");
-                }
+            	GL11.glDisable(GL11.GL_LIGHTING);
+                ResourceLocation resourcelocation = par2TextureManager.func_130087_a(par3ItemStack.getItemSpriteNumber());
+                par2TextureManager.func_110577_a(resourcelocation);
 
                 if (icon == null)
                 {
-                    icon = par2RenderEngine.getMissingIcon(par3ItemStack.getItemSpriteNumber());
+                    icon = ((TextureMap)Minecraft.getMinecraft().func_110434_K().func_110581_b(resourcelocation)).func_110572_b("missingno");
                 }
 
-                j1 = Item.itemsList[k].getColorFromItemStack(par3ItemStack, 0);
-                float f4 = (float)(j1 >> 16 & 255) / 255.0F;
-                f2 = (float)(j1 >> 8 & 255) / 255.0F;
-                f = (float)(j1 & 255) / 255.0F;
+                i1 = Item.itemsList[k].getColorFromItemStack(par3ItemStack, 0);
+                f2 = (float)(i1 >> 16 & 255) / 255.0F;
+                f = (float)(i1 >> 8 & 255) / 255.0F;
+                f1 = (float)(i1 & 255) / 255.0F;
 
                 if (this.renderWithColor)
                 {
-                    GL11.glColor4f(f4, f2, f, 1.0F);
+                    GL11.glColor4f(f2, f, f1, 1.0F);
                 }
 
-                this.renderIcon(par4, par5, icon, 16, 16);
+                this.renderIcon(par4, par5, (Icon)icon, 16, 16);
                 GL11.glEnable(GL11.GL_LIGHTING);
             }
         }
@@ -304,17 +304,18 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
         GL11.glEnable(GL11.GL_CULL_FACE);
     }
     
-    public void renderItemAndEffectIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5)
+    @Override
+    public void renderItemAndEffectIntoGUI(FontRenderer par1FontRenderer, TextureManager par2TextureManager, ItemStack par3ItemStack, int par4, int par5)
     {
         if (par3ItemStack != null)
         {
-            this.renderItemIntoGUI(par1FontRenderer, par2RenderEngine, par3ItemStack, par4, par5);
+            this.renderItemIntoGUI(par1FontRenderer, par2TextureManager, par3ItemStack, par4, par5);
             if (par3ItemStack.hasEffect())
             {
                 GL11.glDepthFunc(GL11.GL_GREATER);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDepthMask(false);
-                par2RenderEngine.bindTexture("%blur%/misc/glint.png");
+                par2TextureManager.func_110577_a(field_110798_h);
                 this.zLevel -= 50.0F;
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);

@@ -1,8 +1,5 @@
 package clashsoft.clashsoftapi.util;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,23 +13,25 @@ import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
-import clashsoft.clashsoftapi.ClashsoftMod;
 import clashsoft.clashsoftapi.ClientProxy;
-import scala.io.UTF8Codec;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class CSFontRenderer extends FontRenderer
 {
+	private static final ResourceLocation[] field_111274_c = new ResourceLocation[256];
+	
 	/** Array of width of all the characters in default.png */
-	private int[] charWidth = new int[256];
+	private final int[] charWidth = new int[256];
 
 	/** the height in pixels of default text */
 	public int FONT_HEIGHT = 9;
@@ -41,17 +40,14 @@ public class CSFontRenderer extends FontRenderer
 	/**
 	 * Array of the start/end column (in upper/lower nibble) for every glyph in the /font directory.
 	 */
-	private byte[] glyphWidth = new byte[65536];
+	private final byte[] glyphWidth = new byte[65536];
 
 	/**
 	 * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of the same colors for
 	 * drop shadows.
 	 */
-	private int[] colorCode = new int[32];
-	private final String fontTextureName;
-
-	/** The RenderEngine used to load and setup glyph textures. */
-	private final RenderEngine renderEngine;
+	public int[] colorCode = new int[32];
+	private final ResourceLocation fontTextureName;
 
 	/** Current X coordinate at which to draw the next character. */
 	private float posX;
@@ -103,16 +99,18 @@ public class CSFontRenderer extends FontRenderer
 	 */
 	private boolean strikethroughStyle = false;
 	
-	private float scale = 2.0F;
+	private final float scale = 2.0F;
+	
+	private TextureManager renderEngine;
 
-	public CSFontRenderer(GameSettings par1GameSettings, String par2Str, RenderEngine par3RenderEngine, boolean par4)
+	public CSFontRenderer(GameSettings par1GameSettings, ResourceLocation par2Str, TextureManager par3RenderEngine, boolean par4)
 	{
 		super(par1GameSettings, par2Str, par3RenderEngine, par4);
 		this.fontTextureName = par2Str;
 		this.renderEngine = par3RenderEngine;
 		this.unicodeFlag = par4;
 		this.readFontData(par2Str);
-		par3RenderEngine.bindTexture(par2Str);
+		par3RenderEngine.func_110577_a(par2Str);
 
 		for (int i = 0; i < 32; ++i)
 		{
@@ -147,19 +145,19 @@ public class CSFontRenderer extends FontRenderer
 		}
 	}
 	
-	public void readFontData(String par1Str)
+	public void readFontData(ResourceLocation par1Str)
     {
         this.readGlyphSizes();
         this.readFontTexture(par1Str);
     }
 
-    private void readFontTexture(String par1Str)
+    private void readFontTexture(ResourceLocation par1Str)
     {
         BufferedImage bufferedimage;
 
         try
         {
-            bufferedimage = ImageIO.read(RenderEngine.class.getResourceAsStream(par1Str));
+            bufferedimage = ImageIO.read(Minecraft.getMinecraft().func_110442_L().func_110536_a(par1Str).func_110527_b());
         }
         catch (IOException ioexception)
         {
@@ -220,7 +218,7 @@ public class CSFontRenderer extends FontRenderer
     {
         try
         {
-            InputStream inputstream = Minecraft.getMinecraft().texturePackList.getSelectedTexturePack().getResourceAsStream("/font/glyph_sizes.bin");
+            InputStream inputstream = Minecraft.getMinecraft().func_110442_L().func_110536_a(new ResourceLocation("font/glyph_sizes.bin")).func_110527_b();
             inputstream.read(this.glyphWidth);
         }
         catch (IOException ioexception)
@@ -251,11 +249,12 @@ public class CSFontRenderer extends FontRenderer
 	private float renderDefaultChar(int par1, boolean par2)
 	{
 		float scale = 2F;
-		float f = (float)(par1 % 16 * 8);
-		float f1 = (float)(par1 / 16 * 8);
+		float f = par1 % 16 * 8;
+		float f1 = par1 / 16 * 8;
 		float f2 = (par2 ? 1.0F : 0.0F);
-		this.renderEngine.bindTexture(this.fontTextureName);
-		float f3 = ((float)this.charWidth[par1] - 0.01F);
+		//Bind texture
+		Minecraft.getMinecraft().func_110434_K().func_110577_a(fontTextureName);
+		float f3 = (this.charWidth[par1] - 0.01F);
 		
 		GL11.glPushMatrix();
 		GL11.glScalef(scale, scale, scale);
@@ -272,7 +271,7 @@ public class CSFontRenderer extends FontRenderer
 		GL11.glVertex3f((this.posX + f3 - f2), this.posY + 7.99F, 0.0F);
 		GL11.glEnd();
 		
-		return (float)this.charWidth[par1];
+		return this.charWidth[par1];
 	}
 
 	/**
@@ -280,9 +279,18 @@ public class CSFontRenderer extends FontRenderer
 	 */
 	private void loadGlyphTexture(int par1)
 	{
-		String s = String.format("/font/glyph_%02X.png", new Object[] {Integer.valueOf(par1)});
-		this.renderEngine.bindTexture(s);
+		this.renderEngine.func_110577_a(this.func_111271_a(par1));
 	}
+	
+	private ResourceLocation func_111271_a(int par1)
+    {
+        if (field_111274_c[par1] == null)
+        {
+            field_111274_c[par1] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(par1)}));
+        }
+
+        return field_111274_c[par1];
+    }
 
 	/**
 	 * Render a single Unicode character at current (posX,posY) location using one of the /font/glyph_XX.png files...
@@ -299,10 +307,10 @@ public class CSFontRenderer extends FontRenderer
 			this.loadGlyphTexture(i);
 			int j = this.glyphWidth[par1] >>> 4;
 			int k = this.glyphWidth[par1] & 15;
-			float f = (float)j;
-			float f1 = (float)(k + 1);
-			float f2 = (float)(par1 % 16 * 16) + f;
-			float f3 = (float)((par1 & 255) / 16 * 16);
+			float f = j;
+			float f1 = k + 1;
+			float f2 = par1 % 16 * 16 + f;
+			float f3 = (par1 & 255) / 16 * 16;
 			float f4 = f1 - f - 0.02F;
 			float f5 = par2 ? 1.0F : 0.0F;
 			GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
@@ -387,7 +395,7 @@ public class CSFontRenderer extends FontRenderer
 				astring[j] = s1;
 			}
 
-			String[] astring1 = (String[])astring.clone();
+			String[] astring1 = astring.clone();
 			Bidi.reorderVisually(abyte, 0, astring, 0, abyte.length);
 			StringBuilder stringbuilder = new StringBuilder();
 			i = 0;
@@ -500,9 +508,9 @@ public class CSFontRenderer extends FontRenderer
 					}
 					color = Integer.parseInt(s1.toLowerCase(), 16);
 					
-					float r = (float)(color >> 16);
-					float g = (float)(color >> 8 & 255);
-					float b = (float)(color & 255);
+					float r = color >> 16;
+					float g = color >> 8 & 255;
+					float b = color & 255;
 					
 					if (par2)
 					{
@@ -543,7 +551,7 @@ public class CSFontRenderer extends FontRenderer
 
 					k = this.colorCode[j];
 					this.textColor = k;
-					GL11.glColor4f((float)(k >> 16) / 255.0F, (float)(k >> 8 & 255) / 255.0F, (float)(k & 255) / 255.0F, this.alpha);
+					GL11.glColor4f((k >> 16) / 255.0F, (k >> 8 & 255) / 255.0F, (k & 255) / 255.0F, this.alpha);
 				}
 				else if (j == 16)
 				{
@@ -638,10 +646,10 @@ public class CSFontRenderer extends FontRenderer
 					tessellator = Tessellator.instance;
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					tessellator.startDrawingQuads();
-					tessellator.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
-					tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
-					tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
-					tessellator.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
+					tessellator.addVertex(this.posX, this.posY + this.FONT_HEIGHT / 2, 0.0D);
+					tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT / 2, 0.0D);
+					tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT / 2 - 1.0F, 0.0D);
+					tessellator.addVertex(this.posX, this.posY + this.FONT_HEIGHT / 2 - 1.0F, 0.0D);
 					tessellator.draw();
 					GL11.glEnable(GL11.GL_TEXTURE_2D);
 				}
@@ -652,15 +660,15 @@ public class CSFontRenderer extends FontRenderer
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					tessellator.startDrawingQuads();
 					int l = this.underlineStyle ? -1 : 0;
-					tessellator.addVertex((double)(this.posX + (float)l), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
-					tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
-					tessellator.addVertex((double)(this.posX + f1), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D);
-					tessellator.addVertex((double)(this.posX + (float)l), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D);
+					tessellator.addVertex(this.posX + l, this.posY + this.FONT_HEIGHT, 0.0D);
+					tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT, 0.0D);
+					tessellator.addVertex(this.posX + f1, this.posY + this.FONT_HEIGHT - 1.0F, 0.0D);
+					tessellator.addVertex(this.posX + l, this.posY + this.FONT_HEIGHT - 1.0F, 0.0D);
 					tessellator.draw();
 					GL11.glEnable(GL11.GL_TEXTURE_2D);
 				}
 
-				this.posX += (float)((int)f1);
+				this.posX += ((int)f1);
 			}
 		}
 	}
@@ -701,13 +709,13 @@ public class CSFontRenderer extends FontRenderer
 				par4 = (par4 & 16579836) >> 2 | par4 & -16777216;
 			}
 
-			this.red = (float)(par4 >> 16 & 255) / 255.0F;
-			this.blue = (float)(par4 >> 8 & 255) / 255.0F;
-			this.green = (float)(par4 & 255) / 255.0F;
-			this.alpha = (float)(par4 >> 24 & 255) / 255.0F;
+			this.red = (par4 >> 16 & 255) / 255.0F;
+			this.blue = (par4 >> 8 & 255) / 255.0F;
+			this.green = (par4 & 255) / 255.0F;
+			this.alpha = (par4 >> 24 & 255) / 255.0F;
 			GL11.glColor4f(this.red, this.blue, this.green, this.alpha);
-			this.posX = (float)par2;
-			this.posY = (float)par3;
+			this.posX = par2;
+			this.posY = par3;
 			this.renderStringAtPos(par1Str, par5);
 			return (int)this.posX;
 		}
@@ -716,6 +724,7 @@ public class CSFontRenderer extends FontRenderer
 	/**
 	 * Returns the width of this string. Equivalent of FontMetrics.stringWidth(String s).
 	 */
+	@Override
 	public int getStringWidth(String par1Str)
 	{
 		if (par1Str == null)
@@ -782,6 +791,7 @@ public class CSFontRenderer extends FontRenderer
 	/**
 	 * Returns the width of this character as rendered.
 	 */
+	@Override
 	public int getCharWidth(char par1)
 	{
 		if (par1 == 167)
@@ -824,6 +834,7 @@ public class CSFontRenderer extends FontRenderer
 	/**
 	 * Trims a string to fit a specified Width.
 	 */
+	@Override
 	public String trimStringToWidth(String par1Str, int par2)
 	{
 		return this.trimStringToWidth(par1Str, par2, false);
@@ -832,6 +843,7 @@ public class CSFontRenderer extends FontRenderer
 	/**
 	 * Trims a string to a specified width, and will reverse it if par3 is set.
 	 */
+	@Override
 	public String trimStringToWidth(String par1Str, int par2, boolean par3)
 	{
 		StringBuilder stringbuilder = new StringBuilder();
@@ -910,6 +922,7 @@ public class CSFontRenderer extends FontRenderer
 	/**
 	 * Splits and draws a String with wordwrap (maximum length is parameter k)
 	 */
+	@Override
 	public void drawSplitString(String par1Str, int par2, int par3, int par4, int par5)
 	{
 		this.resetStyles();
@@ -936,6 +949,7 @@ public class CSFontRenderer extends FontRenderer
 	/**
 	 * Returns the width of the wordwrapped String (maximum length is parameter k)
 	 */
+	@Override
 	public int splitStringWidth(String par1Str, int par2)
 	{
 		return this.FONT_HEIGHT * this.listFormattedStringToWidth(par1Str, par2).size();
@@ -945,6 +959,7 @@ public class CSFontRenderer extends FontRenderer
 	 * Set unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png
 	 * font.
 	 */
+	@Override
 	public void setUnicodeFlag(boolean par1)
 	{
 		this.unicodeFlag = par1;
@@ -954,6 +969,7 @@ public class CSFontRenderer extends FontRenderer
 	 * Get unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png
 	 * font.
 	 */
+	@Override
 	public boolean getUnicodeFlag()
 	{
 		return this.unicodeFlag;
@@ -962,6 +978,7 @@ public class CSFontRenderer extends FontRenderer
 	/**
 	 * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be run before rendering any string.
 	 */
+	@Override
 	public void setBidiFlag(boolean par1)
 	{
 		this.bidiFlag = par1;
@@ -970,6 +987,7 @@ public class CSFontRenderer extends FontRenderer
 	/**
 	 * Breaks a string into a list of pieces that will fit a specified width.
 	 */
+	@Override
 	public List listFormattedStringToWidth(String par1Str, int par2)
 	{
 		return Arrays.asList(this.wrapFormattedStringToWidth(par1Str, par2).split("\n"));
@@ -1110,6 +1128,7 @@ public class CSFontRenderer extends FontRenderer
 	/**
 	 * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should be run before rendering any string
 	 */
+	@Override
 	public boolean getBidiFlag()
 	{
 		return this.bidiFlag;
