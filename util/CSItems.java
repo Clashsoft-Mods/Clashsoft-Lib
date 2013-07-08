@@ -1,12 +1,17 @@
 package clashsoft.clashsoftapi.util;
 
 //import clashsoft.mods.combinationcraft.EnumToolMaterial2;
-import clashsoft.clashsoftapi.datatools.ItemDataTool;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.src.*;
+import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.EnumHelper;
+import clashsoft.clashsoftapi.datatools.ItemDataAxe;
+import clashsoft.clashsoftapi.datatools.ItemDataHoe;
+import clashsoft.clashsoftapi.datatools.ItemDataPickaxe;
+import clashsoft.clashsoftapi.datatools.ItemDataSpade;
+import clashsoft.clashsoftapi.datatools.ItemDataSword;
+import clashsoft.clashsoftapi.datatools.ItemDataTool;
 
 public class CSItems
 {
@@ -55,7 +60,7 @@ public class CSItems
 		CSCrafting.addToolRecipe(new ItemStack(par1Item), par3ItemStack, par4);
 	}
 	
-	public static EnumToolMaterial addToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, int damage, int enchantability, int color, ItemStack recipe, boolean dataTool)
+	public static EnumToolMaterial addToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, float damage, int enchantability, int color, ItemStack recipe, DataToolSet dataToolSet)
 	{
 		try
 		{
@@ -66,8 +71,35 @@ public class CSItems
 			System.out.println("CombinationCraft not installed");
 		}
 		EnumToolMaterial var1 = EnumHelper.addToolMaterial(name, harvestLevel, maxUses, efficiency, damage, enchantability);
-		if (dataTool)
-			ItemDataTool.registerMaterial(var1, name);
+		if (dataToolSet != null)
+			dataToolSet.registerToolMaterial(var1, name);
 		return var1;
+	}
+	
+	public static class DataToolSet
+	{
+		public ItemDataSword sword;
+		public ItemDataSpade shovel;
+		public ItemDataPickaxe pickaxe;
+		public ItemDataAxe axe;
+		public ItemDataHoe hoe;
+		
+		public DataToolSet(ItemDataSword sword, ItemDataSpade shovel, ItemDataPickaxe pickaxe, ItemDataAxe axe, ItemDataHoe hoe)
+		{
+			this.sword = sword;
+			this.shovel = shovel;
+			this.pickaxe = pickaxe;
+			this.axe = axe;
+			this.hoe = hoe;
+		}
+		
+		public void registerToolMaterial(EnumToolMaterial material, String name)
+		{
+			this.sword.registerMaterial(material, name);
+			this.shovel.registerMaterial(material, name);
+			this.pickaxe.registerMaterial(material, name);
+			this.axe.registerMaterial(material, name);
+			this.hoe.registerMaterial(material, name);
+		}
 	}
 }

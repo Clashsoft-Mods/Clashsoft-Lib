@@ -30,7 +30,7 @@ import net.minecraftforge.common.ForgeHooks;
 
 public class ItemDataTool extends ItemTool implements ICSItemRenderable
 {
-	private int toolDamage;
+	private float toolDamage;
 	
 	/** Array of blocks the tool has extra effect against. */
     private Block[] blocksEffectiveAgainst;
@@ -38,11 +38,11 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
     private String toolType;
     
     public Map<EnumToolMaterial, Icon> icons = new HashMap<EnumToolMaterial, Icon>();
-    public static List<EnumToolMaterial> materials = new LinkedList<EnumToolMaterial>();
-    public static Map<String, EnumToolMaterial> nameToMaterial = new HashMap<String, EnumToolMaterial>();
-    public static Map<EnumToolMaterial, String> materialToName = new HashMap<EnumToolMaterial, String>();
+    public List<EnumToolMaterial> materials = new LinkedList<EnumToolMaterial>();
+    public Map<String, EnumToolMaterial> nameToMaterial = new HashMap<String, EnumToolMaterial>();
+    public Map<EnumToolMaterial, String> materialToName = new HashMap<EnumToolMaterial, String>();
 	
-	public ItemDataTool(int par1, int par2, EnumToolMaterial par3EnumToolMaterial, Block[] par4ArrayOfBlock, String par5)
+	public ItemDataTool(int par1, float par2, EnumToolMaterial par3EnumToolMaterial, Block[] par4ArrayOfBlock, String par5)
 	{
 		super(par1, par2, par3EnumToolMaterial, par4ArrayOfBlock);
 		blocksEffectiveAgainst = par4ArrayOfBlock;
@@ -51,7 +51,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 		this.setNoRepair();
 	}
 	
-	public static void registerMaterial(EnumToolMaterial material, String name)
+	public void registerMaterial(EnumToolMaterial material, String name)
 	{
 		nameToMaterial.put(name, material);
 		materialToName.put(material, name);
@@ -63,7 +63,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 		if (stack != null)
 		{
 			NBTTagCompound nbt = stack.getTagCompound();
-			return nameToMaterial.get(nbt.getString("ToolMaterial"));
+			return ((ItemDataTool)stack.getItem()).nameToMaterial.get(nbt.getString("ToolMaterial"));
 		}
 		return null;
 	}
@@ -75,7 +75,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 			NBTTagCompound nbt = stack.getTagCompound();
 			if (nbt == null)
 				nbt = new NBTTagCompound();
-			String materialName = materialToName.get(material);
+			String materialName = ((ItemDataTool)stack.getItem()).materialToName.get(material);
 			nbt.setString("ToolMaterial", materialName);
 			stack.setTagCompound(nbt);
 		}

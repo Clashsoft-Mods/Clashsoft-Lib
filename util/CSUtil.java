@@ -22,7 +22,7 @@ public class CSUtil
 	private static final String[] ROMANCODE = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 	private static final int[]    BINEQUAL  = {1000, 900, 500, 400,  100, 90,  	50,	 40,   10,  9,    5,   4,    1};
 	
-	public static final String CURRENT_VERION = "1.5.2";
+	public static final String CURRENT_VERION = "1.6.1";
 	
 	public static void log(Object o)
 	{

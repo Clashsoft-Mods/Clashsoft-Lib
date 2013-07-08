@@ -58,7 +58,7 @@ public class CustomPotion extends Potion
 	public static int getNextFreeID()
 	{
 		int id = 32;
-		for (int i = 0; i < potionTypes.length; i++)
+		for (int i = 32; i < potionTypes.length; i++)
 		{
 			if (potionTypes[i] == null)
 			{
@@ -89,7 +89,7 @@ public class CustomPotion extends Potion
 					modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
 
 					potionTypes = (Potion[])f.get(null);
-					final Potion[] newPotionTypes = new Potion[256];
+					final Potion[] newPotionTypes = new Potion[1024];
 					System.arraycopy(potionTypes, 0, newPotionTypes, 0, potionTypes.length);
 					f.set(null, newPotionTypes);
 				}
