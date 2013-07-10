@@ -12,7 +12,7 @@ public class ItemDataPickaxe extends ItemDataTool
 
     public ItemDataPickaxe(int par1, EnumToolMaterial par2EnumToolMaterial)
     {
-        super(par1, 2, par2EnumToolMaterial, blocksEffectiveAgainst, "Pickaxe");
+        super(par1, 2F, par2EnumToolMaterial, blocksEffectiveAgainst, "Pickaxe");
     }
 
     /**

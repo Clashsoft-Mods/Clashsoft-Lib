@@ -11,7 +11,7 @@ public class ItemDataSpade extends ItemDataTool
 
     public ItemDataSpade(int par1, EnumToolMaterial par2EnumToolMaterial)
     {
-        super(par1, 1, par2EnumToolMaterial, blocksEffectiveAgainst, "Shovel");
+        super(par1, 1F, par2EnumToolMaterial, blocksEffectiveAgainst, "Shovel");
     }
 
     /**

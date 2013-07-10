@@ -13,7 +13,7 @@ public class ItemDataAxe extends ItemDataTool
 
     public ItemDataAxe(int par1, EnumToolMaterial par2EnumToolMaterial)
     {
-        super(par1, 3, par2EnumToolMaterial, blocksEffectiveAgainst, "Axe");
+        super(par1, 3F, par2EnumToolMaterial, blocksEffectiveAgainst, "Axe");
     }
 
     /**

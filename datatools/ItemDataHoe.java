@@ -23,7 +23,7 @@ public class ItemDataHoe extends ItemDataTool
 {
     public ItemDataHoe(int par1, EnumToolMaterial par2EnumToolMaterial)
     {
-        super(par1, 0, par2EnumToolMaterial, new Block[] {}, "Hoe");
+        super(par1, 0F, par2EnumToolMaterial, new Block[] {}, "Hoe");
         this.maxStackSize = 1;
         this.setCreativeTab(CreativeTabs.tabTools);
     }

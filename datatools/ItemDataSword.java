@@ -20,7 +20,7 @@ public class ItemDataSword extends ItemDataTool
 
     public ItemDataSword(int par1, EnumToolMaterial par2EnumToolMaterial)
     {
-        super(par1, 4, par2EnumToolMaterial, new Block[] {}, "Sword");
+        super(par1, 4F, par2EnumToolMaterial, new Block[] {}, "Sword");
         this.toolMaterial = par2EnumToolMaterial;
         this.maxStackSize = 1;
         this.setMaxDamage(par2EnumToolMaterial.getMaxUses());

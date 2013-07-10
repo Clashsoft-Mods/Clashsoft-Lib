@@ -3,7 +3,7 @@ package clashsoft.clashsoftapi.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 
 public class CSResourceHelper
 {

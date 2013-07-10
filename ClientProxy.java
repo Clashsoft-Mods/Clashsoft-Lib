@@ -3,7 +3,7 @@ package clashsoft.clashsoftapi;
 import clashsoft.clashsoftapi.util.CSFontRenderer;
 import clashsoft.clashsoftapi.util.CSItemRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 public class ClientProxy extends CommonProxy
