@@ -8,6 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
@@ -257,5 +261,20 @@ public class CSUtil
 	public static String[] makeLineList(String string)
 	{
 		return string.split("\n");
+	}
+	
+	public static double calculateFromString(String string)
+	{
+		ScriptEngineManager mgr = new ScriptEngineManager();
+	    ScriptEngine engine = mgr.getEngineByName("JavaScript");
+	    
+	    try
+		{
+			return (Double) engine.eval(string);
+		}
+		catch (ScriptException e)
+		{
+			return Double.NaN;
+		}
 	}
 }

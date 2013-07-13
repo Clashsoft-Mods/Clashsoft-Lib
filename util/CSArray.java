@@ -105,4 +105,15 @@ public class CSArray
 	{
 		return valueOf(par1, par2) != -1;
 	}
+
+	public static String printArray(Object[] par1Objects)
+	{
+		String s = "Array<" + par1Objects.getClass().getName() + ">[" + par1Objects.length + "]{";
+		for (Object o : par1Objects)
+		{
+			s += "[" + o.toString() + "], ";
+		}
+		s += "}";
+		return s;
+	}
 }

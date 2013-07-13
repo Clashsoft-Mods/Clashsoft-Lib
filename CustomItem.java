@@ -36,7 +36,17 @@ public class CustomItem extends Item
 	
 	public CustomItem(int par1, String[] par2, String[] par3)
 	{
-		this(par1, par2, par3, new String[]{});
+		this(par1, par2, par3, new String[]{""});
+	}
+	
+	public CustomItem(int par1, String par2, String par3, String par4)
+	{
+		this(par1, new String[] {par2}, new String[] {par3}, new String[] {par4});
+	}
+	
+	public CustomItem(int par1, String par2, String par3)
+	{
+		this(par1, new String[] {par2}, new String[] {par3});
 	}
 	
 	@Override
