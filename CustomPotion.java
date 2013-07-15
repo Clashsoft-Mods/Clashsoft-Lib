@@ -57,14 +57,17 @@ public class CustomPotion extends Potion
 
 	public static int getNextFreeID()
 	{
+		System.out.println("Searching for free potion id...");
 		int id = 32;
 		for (int i = 32; i < potionTypes.length; i++)
 		{
 			if (potionTypes[i] == null)
 			{
 				id = i;
+				break;
 			}
 		}
+		System.out.println("Free potion id found: " + id);
 		return id;
 	}
 	
@@ -90,7 +93,13 @@ public class CustomPotion extends Potion
 
 					potionTypes = (Potion[])f.get(null);
 					final Potion[] newPotionTypes = new Potion[1024];
-					System.arraycopy(potionTypes, 0, newPotionTypes, 0, potionTypes.length);
+					for (int i = 0; i < newPotionTypes.length; i++)
+					{
+						if (i < Potion.potionTypes.length)
+							newPotionTypes[i] = Potion.potionTypes[i];
+						else
+							newPotionTypes[i] = null;
+					}
 					f.set(null, newPotionTypes);
 				}
 			}
