@@ -50,11 +50,6 @@ public class CustomPotion extends Potion
 		return instant;
 	}
 
-	public boolean isBadEffect()
-	{
-		return isBadEffect;
-	}
-
 	public static int getNextFreeID()
 	{
 		System.out.println("Searching for free potion id...");

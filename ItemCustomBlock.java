@@ -82,24 +82,24 @@ public class ItemCustomBlock extends ItemBlock
 			//TODO Block Descriptions
 		}
 	}
-	
+
 	/**
-     * Gets a list of tabs that items belonging to this class can display on,
-     * combined properly with getSubItems allows for a single item to span
-     * many sub-items across many tabs.
-     *
-     * @return A list of all tabs that this item could possibly be one.
-     */
-    public CreativeTabs[] getCreativeTabs()
-    {
-    	if (theBlock instanceof CustomBlock)
-    	{
-    	List<CreativeTabs> list = Arrays.asList(((CustomBlock)theBlock).tabs);
-    	HashSet set = new HashSet();
-    	set.addAll(list);
-    	Object[] ret1 = set.toArray();
-    	return Arrays.copyOf(ret1, ret1.length, CreativeTabs[].class);
-    	}
-    	return super.getCreativeTabs();
-    }
+	 * Gets a list of tabs that items belonging to this class can display on,
+	 * combined properly with getSubItems allows for a single item to span
+	 * many sub-items across many tabs.
+	 *
+	 * @return A list of all tabs that this item could possibly be one.
+	 */
+	public CreativeTabs[] getCreativeTabs()
+	{
+		if (theBlock instanceof CustomBlock)
+		{
+			List<CreativeTabs> list = Arrays.asList(((CustomBlock)theBlock).tabs);
+			HashSet set = new HashSet();
+			set.addAll(list);
+			Object[] ret1 = set.toArray();
+			return Arrays.copyOf(ret1, ret1.length, CreativeTabs[].class);
+		}
+		return super.getCreativeTabs();
+	}
 }

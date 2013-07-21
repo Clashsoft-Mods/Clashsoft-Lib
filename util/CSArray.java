@@ -108,10 +108,21 @@ public class CSArray
 
 	public static String printArray(Object[] par1Objects)
 	{
-		String s = "Array<" + par1Objects.getClass().getName() + ">[" + par1Objects.length + "]{";
+		String s = "Array<" + par1Objects.getClass().getSimpleName() + ">[" + par1Objects.length + "]{";
 		for (Object o : par1Objects)
 		{
 			s += "[" + o.toString() + "], ";
+		}
+		s += "}";
+		return s;
+	}
+	
+	public static String printTypes(Object[] par1Objects)
+	{
+		String s = "Array<" + par1Objects.getClass().getSimpleName() + ">[" + par1Objects.length + "]{";
+		for (Object o : par1Objects)
+		{
+			s += "[" + o.getClass().getSimpleName() + "], ";
 		}
 		s += "}";
 		return s;

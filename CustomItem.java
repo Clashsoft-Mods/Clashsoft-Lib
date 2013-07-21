@@ -97,7 +97,6 @@ public class CustomItem extends Item
 					par3List.add(StatCollector.translateToLocal(s));
 				}
 			}
-			//par3List.add("Ore Dictionary Name: " + OreDictionary.getOreName(OreDictionary.getOreID(par1ItemStack)));
 		}
 	}
 	
