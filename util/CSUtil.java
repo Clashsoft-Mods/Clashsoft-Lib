@@ -26,7 +26,7 @@ public class CSUtil
 	private static final String[] ROMANCODE = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 	private static final int[]    BINEQUAL  = {1000, 900, 500, 400,  100, 90,  	50,	 40,   10,  9,    5,   4,    1};
 	
-	public static final String CURRENT_VERION = "1.6.1";
+	public static final String CURRENT_VERION = "1.6.2";
 	
 	public static void log(Object o)
 	{
@@ -81,32 +81,13 @@ public class CSUtil
 		return list;
 	}
 	
-	
-	/**
-	 * Get the combined color from two colors
-	 * @param color1
-	 * @param color2
-	 * @return Color stored in an Integer
-	 */
-	public static int combineColors(int color1, int color2)
-	{
-		Color c1 = new Color(color1);
-		Color c2 = new Color(color2);
-		
-		int r = (c1.getRed() + c2.getRed()) / 2;
-		int g = (c1.getGreen() + c2.getGreen()) / 2;
-		int b = (c1.getBlue() + c2.getBlue()) / 2;
-		
-		return (b + (g * 256) + (r * 65536));
-	}
-	
 	/**
 	 * Get the combined color from an array of colors
 	 * @param color1
 	 * @param color2
 	 * @return Color stored in an Integer
 	 */
-	public static int combineColors(int[] par1)
+	public static int combineColors(int... par1)
 	{
 		int r = 0;
 		int g = 0;

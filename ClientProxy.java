@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 public class ClientProxy extends CommonProxy
-{
+{	
 	public static CSFontRenderer csFontRenderer = new CSFontRenderer(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().renderEngine, false);
 	public static CSItemRenderer csItemRenderer = new CSItemRenderer();
 	

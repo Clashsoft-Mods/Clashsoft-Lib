@@ -14,7 +14,7 @@ public class CustomPotion extends Potion
 	private ResourceLocation customIconFile;
 	private boolean instant;
 	private int customColor;
-	private boolean isBadEffect;
+	private boolean bad;
 
 	public CustomPotion(String name, boolean bad, int color, boolean instant, String iconFile, int iconX, int iconY)
 	{
@@ -28,7 +28,7 @@ public class CustomPotion extends Potion
 		this.instant = instant;
 		this.setIconIndex(iconX, iconY);
 		this.customColor = customColor;
-		this.isBadEffect = bad;
+		this.bad = bad;
 		this.customIconFile = new ResourceLocation(iconFile);
 	}
 
@@ -48,6 +48,11 @@ public class CustomPotion extends Potion
 	public boolean isInstant()
 	{
 		return instant;
+	}
+	
+	public boolean getIsGoodOrNotGoodEffect()
+	{
+		return bad;
 	}
 
 	public static int getNextFreeID()
