@@ -1,5 +1,6 @@
 package clashsoft.clashsoftapi;
 
+import net.minecraftforge.common.Configuration;
 import clashsoft.clashsoftapi.util.CSUtil;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -24,9 +25,18 @@ public class ClashsoftMod
 	@SidedProxy(modId = "ClashsoftAPI", clientSide = "clashsoft.clashsoftapi.ClientProxy", serverSide = "clashsoft.clashsoftapi.CommonProxy")
 	public static CommonProxy proxy;
 	
+	public static boolean csFont = true;
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{	
+		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		config.load();
+		
+		csFont = config.get("Options", "CS Font Render", true).getBoolean(true);
+		
+		config.save();
+		
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		proxy.registerRenderers();
 	}

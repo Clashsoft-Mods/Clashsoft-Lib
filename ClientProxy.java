@@ -14,6 +14,9 @@ public class ClientProxy extends CommonProxy
 	public void registerRenderers()
 	{
 		csFontRenderer = new CSFontRenderer(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().renderEngine, false);
-		Minecraft.getMinecraft().fontRenderer = csFontRenderer;
+		if (ClashsoftMod.csFont)
+		{
+			Minecraft.getMinecraft().fontRenderer = csFontRenderer;
+		}
 	}
 }
