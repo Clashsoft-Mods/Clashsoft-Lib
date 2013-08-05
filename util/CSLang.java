@@ -27,8 +27,8 @@ public class CSLang extends LanguageRegistry
 	public static void addAchievement(Achievement achievement, String lang, String name, String description)
 	{
 		String achName = achievement.getName();
-        addLocalization(achName, lang, name);
-        addLocalization(achName + ".desc", lang, description);
+		addLocalization(achName, lang, name);
+		addLocalization(achName + ".desc", lang, description);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -46,9 +46,9 @@ public class CSLang extends LanguageRegistry
 	public static void addPotion(Potion potion, String lang, String name, String effectname, String description)
 	{
 		String potionname = potion.getName();
-        addLocalization(potionname, lang, effectname);
-        addLocalization(potionname + ".postfix", lang, name);
-        addLocalization(potionname + ".description", lang, name);
+		addLocalization(potionname, lang, effectname);
+		addLocalization(potionname + ".postfix", lang, name);
+		addLocalization(potionname + ".description", lang, name);
 	}
 	
 	public static void addPotionUS(Potion potion, String name, String effectname, String description)

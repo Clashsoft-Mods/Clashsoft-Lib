@@ -11,16 +11,16 @@ import net.minecraft.potion.Potion;
 
 public class CustomPotion extends Potion
 {
-	private ResourceLocation customIconFile;
-	private boolean instant;
-	private int customColor;
-	private boolean bad;
-
+	private ResourceLocation	customIconFile;
+	private boolean				instant;
+	private int					customColor;
+	private boolean				bad;
+	
 	public CustomPotion(String name, boolean bad, int color, boolean instant, String iconFile, int iconX, int iconY)
 	{
 		this(name, bad, color, instant, iconFile, iconX, iconY, -1);
 	}
-
+	
 	public CustomPotion(String name, boolean bad, int color, boolean instant, String iconFile, int iconX, int iconY, int customColor)
 	{
 		super(getNextFreeID(), bad, color);
@@ -31,7 +31,7 @@ public class CustomPotion extends Potion
 		this.bad = bad;
 		this.customIconFile = new ResourceLocation(iconFile);
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getStatusIconIndex()
@@ -39,12 +39,13 @@ public class CustomPotion extends Potion
 		Minecraft.getMinecraft().func_110434_K().func_110577_a(customIconFile);
 		return super.getStatusIconIndex();
 	}
-
+	
 	public int getCustomColor()
 	{
 		return customColor;
 	}
-
+	
+	@Override
 	public boolean isInstant()
 	{
 		return instant;
@@ -54,7 +55,7 @@ public class CustomPotion extends Potion
 	{
 		return bad;
 	}
-
+	
 	public static int getNextFreeID()
 	{
 		System.out.println("Searching for free potion id...");
@@ -75,11 +76,11 @@ public class CustomPotion extends Potion
 	{
 		expandPotionList();
 	}
-
+	
 	public static void expandPotionList()
 	{
 		Potion[] potionTypes = null;
-
+		
 		for (Field f : Potion.class.getDeclaredFields())
 		{
 			f.setAccessible(true);
@@ -90,8 +91,8 @@ public class CustomPotion extends Potion
 					Field modfield = Field.class.getDeclaredField("modifiers");
 					modfield.setAccessible(true);
 					modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
-
-					potionTypes = (Potion[])f.get(null);
+					
+					potionTypes = (Potion[]) f.get(null);
 					final Potion[] newPotionTypes = new Potion[1024];
 					for (int i = 0; i < newPotionTypes.length; i++)
 					{
@@ -110,5 +111,5 @@ public class CustomPotion extends Potion
 			}
 		}
 	}
-
+	
 }

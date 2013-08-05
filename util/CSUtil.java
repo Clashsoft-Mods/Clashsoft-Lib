@@ -3,7 +3,6 @@ package clashsoft.clashsoftapi.util;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -12,21 +11,12 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.MinecraftForge;
-
 /**
  * @author Clashsoft
- *
  */
 public class CSUtil
-{	
-	private static final String[] ROMANCODE = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
-	private static final int[]    BINEQUAL  = {1000, 900, 500, 400,  100, 90,  	50,	 40,   10,  9,    5,   4,    1};
-	
-	public static final String CURRENT_VERION = "1.6.2";
+{
+	public static final String	CURRENT_VERION	= "1.6.2";
 	
 	public static void log(Object o)
 	{
@@ -35,7 +25,9 @@ public class CSUtil
 	
 	/**
 	 * First algorythm to sort a List by using HashSets
-	 * @param list List to sort
+	 * 
+	 * @param list
+	 *            List to sort
 	 * @return Sorted List
 	 */
 	public static List removeDuplicates(List list)
@@ -45,14 +37,16 @@ public class CSUtil
 			Set set = new HashSet(list);
 			list.clear();
 			list = new LinkedList<String>(set);
-		    return list;
+			return list;
 		}
 		return list;
 	}
 	
 	/**
 	 * Second algorythm to sort a list by searching for duplicates
-	 * @param list List to sort
+	 * 
+	 * @param list
+	 *            List to sort
 	 * @return Sorted List
 	 */
 	public static List removeDuplicates2(List list)
@@ -83,6 +77,7 @@ public class CSUtil
 	
 	/**
 	 * Get the combined color from an array of colors
+	 * 
 	 * @param color1
 	 * @param color2
 	 * @return Color stored in an Integer
@@ -108,17 +103,19 @@ public class CSUtil
 	
 	/**
 	 * Checks if bit 'pos' in 'n' is 1
+	 * 
 	 * @param n
 	 * @param pos
 	 * @return
 	 */
 	public static boolean checkBit(int n, int pos)
 	{
-        return (n & 1 << pos) != 0;
-    }
+		return (n & 1 << pos) != 0;
+	}
 	
 	/**
 	 * Sets bit 'pos' in Integer 'n' to 'value'
+	 * 
 	 * @param n
 	 * @param pos
 	 * @param value
@@ -126,11 +123,12 @@ public class CSUtil
 	public static int setBit(int n, int pos, boolean value)
 	{
 		int bitToSet = 1 << pos;
-		return  value ? (n | bitToSet) : ((n | bitToSet) ^ bitToSet);
+		return value ? (n | bitToSet) : ((n | bitToSet) ^ bitToSet);
 	}
-
+	
 	/**
 	 * Creates the colorcode for a color
+	 * 
 	 * @param light
 	 * @param r
 	 * @param g
@@ -162,6 +160,7 @@ public class CSUtil
 	
 	/**
 	 * Converts a color name to a color code
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -177,79 +176,30 @@ public class CSUtil
 	
 	public static String convertToRoman(int number)
 	{
-		if (number <= 0 || number >= 4000)
-		{
-            System.out.println("Exception while converting to Roman: Value outside roman numeral range.");
-            return "\u007akROMAN";
-        }
-        String roman = "";
-        
-        for (int i = 0; i < ROMANCODE.length; i++)
-        {
-            while (number >= BINEQUAL[i])
-            {
-                number -= BINEQUAL[i];
-                roman  += ROMANCODE[i];
-            }
-        }
-        return roman;
+		return CSString.convertToRoman(number);
 	}
 	
 	public static int convertVersion(String versionString)
 	{
-		String version = versionString.replace('.', '|');
-		System.out.println(version);
-		String[] s = version.split("|");
-		int[] ints = new int[s.length];
-		for (int i = 0; i < s.length; i++)
-		{
-			try
-			{
-				ints[i] = Integer.parseInt(s[i]);
-			}
-			catch (Exception ex)
-			{
-				//System.out.println("Exception while converting Version String: non-numerals contained.");
-			}
-		}
-		int ret = 0;
-		for (int i = 0; i < ints.length; i++)
-		{
-			ret += (ints[i] << (i * 4));
-		}
-		return ret;
+		return CSString.convertVersion(versionString);
 	}
 	
 	public static String cutString(String string, int maxLineLength)
 	{
-		String[] words = string.split(" ");
-		String ret = "";
-		int i = 0;
-		while (i < words.length)
-		{
-			String s = "";
-			while (i < words.length && (s += words[i]).length() <= maxLineLength)
-			{
-				s += " ";
-				i++;
-			}
-			ret += s + "\n";
-			i++;
-		}
-		return ret;
+		return CSString.cutString(string, maxLineLength);
 	}
 	
 	public static String[] makeLineList(String string)
 	{
-		return string.split("\n");
+		return CSString.makeLineList(string);
 	}
 	
 	public static double calculateFromString(String string)
 	{
 		ScriptEngineManager mgr = new ScriptEngineManager();
-	    ScriptEngine engine = mgr.getEngineByName("JavaScript");
-	    
-	    try
+		ScriptEngine engine = mgr.getEngineByName("JavaScript");
+		
+		try
 		{
 			return (Double) engine.eval(string);
 		}

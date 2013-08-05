@@ -11,16 +11,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class CustomItem extends Item
 {
-	private String[] names;
-	private String[] textures;
-	private String[] descriptions;
-	private Icon[] icons;
+	private String[]	names;
+	private String[]	textures;
+	private String[]	descriptions;
+	private Icon[]		icons;
 	
-	private boolean[] disabled;
+	private boolean[]	disabled;
 	
 	public CustomItem(int par1, String[] par2, String[] par3, String[] par4)
 	{
@@ -29,24 +28,27 @@ public class CustomItem extends Item
 		textures = par3;
 		icons = new Icon[textures.length];
 		disabled = new boolean[names.length];
-		for (int i = 0; i < disabled.length; i++) { disabled[i] = par3[i] == "" || par2[i] == "" || par2[i].contains("%&"); }
+		for (int i = 0; i < disabled.length; i++)
+		{
+			disabled[i] = par3[i] == "" || par2[i] == "" || par2[i].contains("%&");
+		}
 		this.setHasSubtypes(par2.length > 1);
 		descriptions = par4;
 	}
 	
 	public CustomItem(int par1, String[] par2, String[] par3)
 	{
-		this(par1, par2, par3, new String[]{""});
+		this(par1, par2, par3, new String[] { "" });
 	}
 	
 	public CustomItem(int par1, String par2, String par3, String par4)
 	{
-		this(par1, new String[] {par2}, new String[] {par3}, new String[] {par4});
+		this(par1, new String[] { par2 }, new String[] { par3 }, new String[] { par4 });
 	}
 	
 	public CustomItem(int par1, String par2, String par3)
 	{
-		this(par1, new String[] {par2}, new String[] {par3});
+		this(par1, new String[] { par2 }, new String[] { par3 });
 	}
 	
 	@Override
@@ -69,20 +71,19 @@ public class CustomItem extends Item
 	{
 		return icons[i];
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        for (int i = 0; i < textures.length; i++)
-        {
-        	if (textures[i] != null && !textures[i].contains("%&"))
-        	{
-        		this.
-        		icons[i] = par1IconRegister.registerIcon(textures[i]);
-        	}
-        }
-    }
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+		for (int i = 0; i < textures.length; i++)
+		{
+			if (textures[i] != null && !textures[i].contains("%&"))
+			{
+				this.icons[i] = par1IconRegister.registerIcon(textures[i]);
+			}
+		}
+	}
 	
 	@Override
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
@@ -102,15 +103,15 @@ public class CustomItem extends Item
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        for (int i = 0; i < names.length; i++)
-        {
-        	if (!disabled[i])
-        		par3List.add(new ItemStack(par1, 1, i));
-        }
-    }
+	/**
+	 * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
+	 */
+	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	{
+		for (int i = 0; i < names.length; i++)
+		{
+			if (!disabled[i])
+				par3List.add(new ItemStack(par1, 1, i));
+		}
+	}
 }

@@ -1,16 +1,12 @@
 package clashsoft.clashsoftapi.util;
 
-import java.lang.reflect.Array;
-
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 
 public class CSArray
 {
 	public static String[][] split(String[] par1Strings, int maxLength)
 	{
-		int arrays = MathHelper.ceiling_float_int(((float)par1Strings.length) / ((float)maxLength));
+		int arrays = MathHelper.ceiling_float_int(((float) par1Strings.length) / ((float) maxLength));
 		String[][] ret = new String[arrays][];
 		
 		for (int i = 0; i < ret.length; i++)
@@ -40,7 +36,7 @@ public class CSArray
 		}
 		return ret;
 	}
-
+	
 	public static String[] combine(String[] par1Strings, String[] par2Strings)
 	{
 		String[] ret = new String[par1Strings.length + par2Strings.length];
@@ -88,24 +84,24 @@ public class CSArray
 	{
 		for (int i = 0; i < par1.length; i++)
 		{
-			if (par1[i]== (par2Object))
+			if (par1[i] == (par2Object))
 			{
 				return i;
 			}
 		}
 		return -1;
 	}
-
+	
 	public static boolean contains(Object[] par1, Object par2)
 	{
 		return valueOf(par1, par2) != -1;
 	}
-
+	
 	public static boolean contains(int[] par1, int par2)
 	{
 		return valueOf(par1, par2) != -1;
 	}
-
+	
 	public static String printArray(Object[] par1Objects)
 	{
 		String s = "Array<" + par1Objects.getClass().getSimpleName() + ">[" + par1Objects.length + "]{";

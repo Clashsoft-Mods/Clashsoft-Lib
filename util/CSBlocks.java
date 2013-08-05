@@ -5,9 +5,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.src.*;
 
 public class CSBlocks
-{	
+{
 	/**
 	 * Registers a Block and its name
+	 * 
 	 * @param par1Block
 	 * @param par2
 	 */
@@ -16,9 +17,10 @@ public class CSBlocks
 		ModLoader.registerBlock(par1Block);
 		ModLoader.addName(par1Block, par2);
 	}
-
+	
 	/**
 	 * Register a block with its name and an recipe for it
+	 * 
 	 * @param par1Block
 	 * @param par2
 	 * @param par3
