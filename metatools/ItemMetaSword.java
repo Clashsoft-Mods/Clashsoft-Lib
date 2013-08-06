@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 
 public class ItemMetaSword extends ItemMetaTool
 {
-    private float weaponDamage;
     private final EnumToolMaterial toolMaterial;
     
     public ItemMetaSword(int par1, EnumToolMaterial par2EnumToolMaterial, String[] names, String[] icons, int[] colors)

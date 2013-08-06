@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class ItemDataSword extends ItemDataTool
 {
-	private float					weaponDamage;
+	public float					weaponDamage;
 	private final EnumToolMaterial	toolMaterial;
 	
 	public ItemDataSword(int par1, EnumToolMaterial par2EnumToolMaterial)

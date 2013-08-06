@@ -99,7 +99,7 @@ public class CSFontRenderer extends FontRenderer
 	 */
 	private boolean strikethroughStyle = false;
 	
-	private final float scale = 2.0F;
+	private float scale = 2.0F;
 	
 	private TextureManager renderEngine;
 

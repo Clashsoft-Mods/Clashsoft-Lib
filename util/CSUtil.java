@@ -26,12 +26,11 @@ public class CSUtil
 	/**
 	 * First algorythm to sort a List by using HashSets
 	 * 
-	 * @param list
-	 *            List to sort
+	 * @param list List to sort
 	 * @return Sorted List
 	 */
 	public static List removeDuplicates(List list)
-	{
+	{	
 		if (list != null && list.size() > 0)
 		{
 			Set set = new HashSet(list);

@@ -29,7 +29,7 @@ import net.minecraftforge.common.ForgeHooks;
 
 public class ItemDataTool extends ItemTool implements ICSItemRenderable
 {
-	private float							toolDamage;
+	public float							toolDamage;
 	
 	/** Array of blocks the tool has extra effect against. */
 	private Block[]							blocksEffectiveAgainst;
@@ -236,7 +236,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 	{
 		for (EnumToolMaterial tm : materials)
 		{
-			par3List.add(this.setToolMaterial(new ItemStack(this), tm));
+			par3List.add(setToolMaterial(new ItemStack(this), tm));
 		}
 	}
 	
