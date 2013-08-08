@@ -81,7 +81,8 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 		return stack;
 	}
 	
-	public int getItemMaxDamageFromStack(ItemStack stack)
+	@Override
+	public int getMaxDamage(ItemStack stack)
 	{
 		EnumToolMaterial tm = getToolMaterialFromItemStack(stack);
 		if (tm != null)
@@ -99,11 +100,13 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 		}
 	}
 	
+	@Override
 	public Icon getIcon(ItemStack stack)
 	{
 		return icons.get(getToolMaterialFromItemStack(stack));
 	}
 	
+	@Override
 	public Icon getIcon(ItemStack stack, int pass)
 	{
 		return icons.get(getToolMaterialFromItemStack(stack));
@@ -115,6 +118,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 		return StatCollector.translateToLocal(materialToName.get(getToolMaterialFromItemStack(stack)) + " " + toolType);
 	}
 	
+	@Override
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
 		// par3List.add(EnumChatFormatting.ITALIC +
@@ -125,6 +129,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 	 * Returns the strength of the stack against a given block. 1.0F base,
 	 * (Quality+1)*2 if correct blocktype, 1.5F if sword
 	 */
+	@Override
 	public float getStrVsBlock(ItemStack par1ItemStack, Block par2Block)
 	{
 		for (int i = 0; i < this.blocksEffectiveAgainst.length; ++i)
@@ -153,7 +158,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 	
 	public boolean onBlockDestroyed(ItemStack par1ItemStack, World par2World, int par3, int par4, int par5, int par6, EntityLiving par7EntityLiving)
 	{
-		if ((double) Block.blocksList[par3].getBlockHardness(par2World, par4, par5, par6) != 0.0D)
+		if (Block.blocksList[par3].getBlockHardness(par2World, par4, par5, par6) != 0.0D)
 		{
 			par1ItemStack.damageItem(1, par7EntityLiving);
 		}
@@ -164,6 +169,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 	/**
 	 * Returns the damage against a given entity.
 	 */
+	@Override
 	public float getDamageVsEntity(Entity par1Entity, ItemStack par2ItemStack)
 	{
 		EnumToolMaterial tm = getToolMaterialFromItemStack(par2ItemStack);
@@ -172,13 +178,15 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 		return damageVsEntity;
 	}
 	
+	@Override
 	public Multimap func_111205_h()
 	{
 		Multimap multimap = super.func_111205_h();
-		multimap.put(SharedMonsterAttributes.field_111264_e.func_111108_a(), new AttributeModifier(field_111210_e, "Weapon modifier", (double) this.toolDamage, 0));
+		multimap.put(SharedMonsterAttributes.field_111264_e.func_111108_a(), new AttributeModifier(field_111210_e, "Weapon modifier", this.toolDamage, 0));
 		return multimap;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	/**
 	 * Returns True is the item is renderer in full 3D when hold.
@@ -192,6 +200,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 	 * Return the enchantability factor of the item, most of the time is based
 	 * on material.
 	 */
+	@Override
 	public int getItemEnchantability()
 	{
 		return this.toolMaterial.getEnchantability();
@@ -200,6 +209,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 	/**
 	 * Return the name for this tool's material.
 	 */
+	@Override
 	public String getToolMaterialName()
 	{
 		return this.toolMaterial.toString();
@@ -208,6 +218,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 	/**
 	 * Return whether this item is repairable in an anvil.
 	 */
+	@Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
 	{
 		EnumToolMaterial tm = getToolMaterialFromItemStack(par1ItemStack);
@@ -228,6 +239,7 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 		return getStrVsBlock(stack, block);
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	/**
 	 * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)

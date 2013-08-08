@@ -1,6 +1,7 @@
 package clashsoft.clashsoftapi.util;
 
 import java.awt.Color;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -205,6 +206,41 @@ public class CSUtil
 		catch (ScriptException e)
 		{
 			return Double.NaN;
+		}
+	}
+	
+	public static boolean createBoolean(String string)
+	{
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine engine = mgr.getEngineByName("JavaScript");
+		
+		try
+		{
+			return (Boolean) engine.eval(string);
+		}
+		catch (ScriptException e)
+		{
+			return false;
+		}
+	}
+	
+	public static <T> T createInstance(Class c, Object... parameters)
+	{
+		Class[] parameterTypes = new Class[parameters.length];
+		for (int i = 0; i < parameters.length; i++)
+		{
+			if (parameters[i] != null)
+				parameterTypes[i] = parameters[i].getClass();
+		}
+		
+		try
+		{
+			Constructor<T> constructor = c.getConstructor(parameterTypes);
+			return constructor.newInstance(parameters);
+		}
+		catch (Exception ex)
+		{
+			return null;
 		}
 	}
 }

@@ -12,7 +12,8 @@ public class CSRandom extends Random
 			par3 = par2 + 1;
 		if (par3 == par2)
 			return par2;
-		return par2 + ((par2 != par3) ? par1Random.nextInt(par3 - par2) : 0);
+		int ret = par2 + ((par2 != par3) ? par1Random.nextInt(par3 - par2) : 0);
+		return ret;
 	}
 	
 	public static String getNextRandomName()
