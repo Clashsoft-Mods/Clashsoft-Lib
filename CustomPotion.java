@@ -1,10 +1,8 @@
 package clashsoft.clashsoftapi;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.potion.Potion;
@@ -71,45 +69,4 @@ public class CustomPotion extends Potion
 		System.out.println("Free potion id found: " + id);
 		return id;
 	}
-	
-	static
-	{
-		expandPotionList();
-	}
-	
-	public static void expandPotionList()
-	{
-		Potion[] potionTypes = null;
-		
-		for (Field f : Potion.class.getDeclaredFields())
-		{
-			f.setAccessible(true);
-			try
-			{
-				if (f.getName().equals("potionTypes") || f.getName().equals("field_76425_a"))
-				{
-					Field modfield = Field.class.getDeclaredField("modifiers");
-					modfield.setAccessible(true);
-					modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
-					
-					potionTypes = (Potion[]) f.get(null);
-					final Potion[] newPotionTypes = new Potion[1024];
-					for (int i = 0; i < newPotionTypes.length; i++)
-					{
-						if (i < Potion.potionTypes.length)
-							newPotionTypes[i] = Potion.potionTypes[i];
-						else
-							newPotionTypes[i] = null;
-					}
-					f.set(null, newPotionTypes);
-				}
-			}
-			catch (Exception e)
-			{
-				System.err.println("Severe error, please report this to the mod author:");
-				System.err.println(e);
-			}
-		}
-	}
-	
 }
