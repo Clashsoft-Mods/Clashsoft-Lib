@@ -28,7 +28,6 @@ public class CSItems
 	 * @param par4
 	 * @param par5ArrayOfObj
 	 */
-	@Deprecated
 	public static void addItemWithRecipe(Item par1Item, String par3, int par4, Object[] par5ArrayOfObj)
 	{
 		addItem(par1Item, par3);
@@ -42,7 +41,6 @@ public class CSItems
 	 * @param par4
 	 * @param par5ArrayOfObj
 	 */
-	@Deprecated
 	public static void addItemWithShapelessRecipe(Item par1Item, String par3, int par4, Object[] par5ArrayOfObj)
 	{
 		addItem(par1Item, par3);

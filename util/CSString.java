@@ -69,10 +69,10 @@ public class CSString
 				s += " ";
 				i++;
 			}
-			ret += s + "\n";
+			ret += s.trim() + "\n";
 			i++;
 		}
-		return ret;
+		return ret.trim();
 	}
 	
 	public static String[] makeLineList(String string)
