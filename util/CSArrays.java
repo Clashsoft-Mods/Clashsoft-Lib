@@ -2,7 +2,7 @@ package clashsoft.clashsoftapi.util;
 
 import net.minecraft.util.MathHelper;
 
-public class CSArray
+public class CSArrays
 {
 	public static String[][] split(String[] par1Strings, int maxLength)
 	{

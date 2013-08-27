@@ -1,7 +1,5 @@
 package clashsoft.clashsoftapi.util;
 
-import java.util.Collection;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;

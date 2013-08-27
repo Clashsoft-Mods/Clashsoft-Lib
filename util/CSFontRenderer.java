@@ -11,19 +11,19 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.util.ChatAllowedCharacters;
-
 import org.lwjgl.opengl.GL11;
 
 import clashsoft.clashsoftapi.ClientProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class CSFontRenderer extends FontRenderer
@@ -98,8 +98,6 @@ public class CSFontRenderer extends FontRenderer
 	 * Set if the "m" style (strikethrough) is active in currently rendering string
 	 */
 	private boolean strikethroughStyle = false;
-	
-	private float scale = 2.0F;
 	
 	private TextureManager renderEngine;
 

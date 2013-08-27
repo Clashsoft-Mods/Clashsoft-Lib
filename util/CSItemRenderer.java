@@ -14,16 +14,17 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 
 public class CSItemRenderer extends RenderItem implements IItemRenderer
 {
+	@SuppressWarnings("unused")
 	private static RenderItem				basicItemRenderer	= new RenderItem();
 	private static Random					random				= new Random();
 	
@@ -38,14 +39,7 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type)
 	{
-		return type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY; // ||
-																					// type
-																					// ==
-																					// ItemRenderType.EQUIPPED
-																					// ||
-																					// type
-																					// ==
-																					// ItemRenderType.EQUIPPED_FIRST_PERSON;
+		return type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY;
 	}
 	
 	@Override
@@ -150,7 +144,7 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
 				GL11.glColor4f(par5, par6, par7, 1.0F);
 				ItemRenderer.renderItemIn2D(tessellator, f5, f6, f4, f7, par2Icon.getOriginX(), par2Icon.getOriginY(), f12);
 				
-				if (itemstack.hasEffect())
+				if (itemstack.hasEffect(k))
 				{
 					GL11.glDepthFunc(GL11.GL_EQUAL);
 					GL11.glDisable(GL11.GL_LIGHTING);
@@ -318,7 +312,7 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
 		if (par3ItemStack != null)
 		{
 			this.renderItemIntoGUI(par1FontRenderer, par2TextureManager, par3ItemStack, par4, par5);
-			if (par3ItemStack.hasEffect())
+			if (par3ItemStack.hasEffect(0))
 			{
 				GL11.glDepthFunc(GL11.GL_GREATER);
 				GL11.glDisable(GL11.GL_LIGHTING);

@@ -17,6 +17,9 @@ import javax.script.ScriptException;
  */
 public class CSUtil
 {
+	public static ScriptEngineManager mgr = new ScriptEngineManager();
+	public static ScriptEngine engine = mgr.getEngineByName("JavaScript");
+	
 	public static final String	CURRENT_VERION	= "1.6.2";
 	
 	public static void log(Object o)
@@ -195,10 +198,7 @@ public class CSUtil
 	}
 	
 	public static double calculateFromString(String string)
-	{
-		ScriptEngineManager mgr = new ScriptEngineManager();
-		ScriptEngine engine = mgr.getEngineByName("JavaScript");
-		
+	{	
 		try
 		{
 			return (Double) engine.eval(string);
@@ -211,9 +211,6 @@ public class CSUtil
 	
 	public static boolean createBoolean(String string)
 	{
-		ScriptEngineManager mgr = new ScriptEngineManager();
-		ScriptEngine engine = mgr.getEngineByName("JavaScript");
-		
 		try
 		{
 			return (Boolean) engine.eval(string);
