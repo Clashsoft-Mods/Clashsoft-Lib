@@ -1,19 +1,13 @@
 package clashsoft.clashsoftapi.util;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.Bidi;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
-
 import org.lwjgl.opengl.GL11;
 
-import clashsoft.clashsoftapi.ClientProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -21,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.resources.ReloadableResourceManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
@@ -28,211 +23,100 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class CSFontRenderer extends FontRenderer
 {
-	private static final ResourceLocation[] field_111274_c = new ResourceLocation[256];
+	private static final ResourceLocation[]	field_111274_c		= new ResourceLocation[256];
+	
+	public static final CSFontRenderer		instance			= new CSFontRenderer(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().renderEngine, false);
+	static
+	{
+		((ReloadableResourceManager) Minecraft.getMinecraft().func_110442_L()).func_110542_a(instance);
+	}
 	
 	/** Array of width of all the characters in default.png */
-	private final int[] charWidth = new int[256];
-
+	private final int[]						charWidth			= new int[256];
+	
 	/** the height in pixels of default text */
-	public int FONT_HEIGHT = 9;
-	public Random fontRandom = new Random();
-
+	public int								FONT_HEIGHT			= 9;
+	public Random							fontRandom			= new Random();
+	
 	/**
-	 * Array of the start/end column (in upper/lower nibble) for every glyph in the /font directory.
+	 * Array of the start/end column (in upper/lower nibble) for every glyph in
+	 * the /font directory.
 	 */
-	private final byte[] glyphWidth = new byte[65536];
-
+	private final byte[]					glyphWidth			= new byte[65536];
+	
 	/**
-	 * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of the same colors for
-	 * drop shadows.
+	 * Array of RGB triplets defining the 16 standard chat colors followed by 16
+	 * darker version of the same colors for drop shadows.
 	 */
-	public int[] colorCode = new int[32];
-	private final ResourceLocation fontTextureName;
-
+	public int[]							colorCode			= new int[32];
+	private final ResourceLocation			fontTextureName;
+	
 	/** Current X coordinate at which to draw the next character. */
-	private float posX;
-
+	private float							posX;
+	
 	/** Current Y coordinate at which to draw the next character. */
-	private float posY;
-
+	private float							posY;
+	
 	/**
-	 * If true, strings should be rendered with Unicode fonts instead of the default.png font
+	 * If true, strings should be rendered with Unicode fonts instead of the
+	 * default.png font
 	 */
-	private boolean unicodeFlag;
-
+	private boolean							unicodeFlag;
+	
 	/**
-	 * If true, the Unicode Bidirectional Algorithm should be run before rendering any string.
+	 * If true, the Unicode Bidirectional Algorithm should be run before
+	 * rendering any string.
 	 */
-	private boolean bidiFlag;
-
+	private boolean							bidiFlag;
+	
 	/** Used to specify new red value for the current color. */
-	private float red;
-
+	private float							red;
+	
 	/** Used to specify new blue value for the current color. */
-	private float blue;
-
+	private float							blue;
+	
 	/** Used to specify new green value for the current color. */
-	private float green;
-
+	private float							green;
+	
 	/** Used to specify new alpha value for the current color. */
-	private float alpha;
-
+	private float							alpha;
+	
 	/** Text color of the currently rendering string. */
-	private int textColor;
-
+	private int								textColor;
+	
 	/** Set if the "k" style (random) is active in currently rendering string */
-	private boolean randomStyle = false;
-
+	private boolean							randomStyle			= false;
+	
 	/** Set if the "l" style (bold) is active in currently rendering string */
-	private boolean boldStyle = false;
-
+	private boolean							boldStyle			= false;
+	
 	/** Set if the "o" style (italic) is active in currently rendering string */
-	private boolean italicStyle = false;
-
+	private boolean							italicStyle			= false;
+	
 	/**
 	 * Set if the "n" style (underlined) is active in currently rendering string
 	 */
-	private boolean underlineStyle = false;
-
-	/**
-	 * Set if the "m" style (strikethrough) is active in currently rendering string
-	 */
-	private boolean strikethroughStyle = false;
+	private boolean							underlineStyle		= false;
 	
-	private TextureManager renderEngine;
-
-	public CSFontRenderer(GameSettings par1GameSettings, ResourceLocation par2Str, TextureManager par3RenderEngine, boolean par4)
+	/**
+	 * Set if the "m" style (strikethrough) is active in currently rendering
+	 * string
+	 */
+	private boolean							strikethroughStyle	= false;
+	
+	private TextureManager					renderEngine;
+	
+	public CSFontRenderer(GameSettings par1GameSettings, ResourceLocation par2ResourceLocation, TextureManager par3TextureManager, boolean par4)
 	{
-		super(par1GameSettings, par2Str, par3RenderEngine, par4);
-		this.fontTextureName = par2Str;
-		this.renderEngine = par3RenderEngine;
-		this.unicodeFlag = par4;
-		this.readFontData(par2Str);
-		par3RenderEngine.func_110577_a(par2Str);
-
-		for (int i = 0; i < 32; ++i)
-		{
-			int j = (i >> 3 & 1) * 85;
-			int k = (i >> 2 & 1) * 170 + j;
-			int l = (i >> 1 & 1) * 170 + j;
-			int i1 = (i >> 0 & 1) * 170 + j;
-
-			if (i == 6)
-			{
-				k += 85;
-			}
-
-			if (par1GameSettings.anaglyph)
-			{
-				int j1 = (k * 30 + l * 59 + i1 * 11) / 100;
-				int k1 = (k * 30 + l * 70) / 100;
-				int l1 = (k * 30 + i1 * 70) / 100;
-				k = j1;
-				l = k1;
-				i1 = l1;
-			}
-
-			if (i >= 16)
-			{
-				k /= 4;
-				l /= 4;
-				i1 /= 4;
-			}
-
-			this.colorCode[i] = (k & 255) << 16 | (l & 255) << 8 | i1 & 255;
-		}
+		super(par1GameSettings, par2ResourceLocation, par3TextureManager, par4);
+		this.fontTextureName = par2ResourceLocation;
 	}
 	
-	public void readFontData(ResourceLocation par1Str)
-    {
-        this.readGlyphSizes();
-        this.readFontTexture(par1Str);
-    }
-
-    private void readFontTexture(ResourceLocation par1Str)
-    {
-        BufferedImage bufferedimage;
-
-        try
-        {
-            bufferedimage = ImageIO.read(Minecraft.getMinecraft().func_110442_L().func_110536_a(par1Str).func_110527_b());
-        }
-        catch (IOException ioexception)
-        {
-            throw new RuntimeException(ioexception);
-        }
-        catch (NullPointerException npe) { return; }
-
-        int i = bufferedimage.getWidth();
-        int j = bufferedimage.getHeight();
-        int[] aint = new int[i * j];
-        bufferedimage.getRGB(0, 0, i, j, aint, 0, i);
-        int k = 0;
-
-        while (k < 256)
-        {
-            int l = k % 16;
-            int i1 = k / 16;
-            int j1 = 7;
-
-            while (true)
-            {
-                if (j1 >= 0)
-                {
-                    int k1 = l * 8 + j1;
-                    boolean flag = true;
-
-                    for (int l1 = 0; l1 < 8 && flag; ++l1)
-                    {
-                        int i2 = (i1 * 8 + l1) * i;
-                        int j2 = aint[k1 + i2] & 255;
-
-                        if (j2 > 0)
-                        {
-                            flag = false;
-                        }
-                    }
-
-                    if (flag)
-                    {
-                        --j1;
-                        continue;
-                    }
-                }
-
-                if (k == 32)
-                {
-                    j1 = 2;
-                }
-
-                this.charWidth[k] = j1 + 2;
-                ++k;
-                break;
-            }
-        }
-    }
-
-    private void readGlyphSizes()
-    {
-        try
-        {
-            InputStream inputstream = Minecraft.getMinecraft().func_110442_L().func_110536_a(new ResourceLocation("font/glyph_sizes.bin")).func_110527_b();
-            inputstream.read(this.glyphWidth);
-        }
-        catch (IOException ioexception)
-        {
-            throw new RuntimeException(ioexception);
-        }
-        catch (NullPointerException npe)
-        {
-        }
-    }
-
 	public static CSFontRenderer getFontRenderer()
 	{
-		return ClientProxy.csFontRenderer;
+		return instance;
 	}
-
+	
 	/**
 	 * Pick how to render a single character and return the width used.
 	 */
@@ -240,9 +124,10 @@ public class CSFontRenderer extends FontRenderer
 	{
 		return par2 == 32 ? 4.0F : (par1 > 0 && !this.unicodeFlag ? this.renderDefaultChar(par1 + 32, par3) : this.renderUnicodeChar(par2, par3));
 	}
-
+	
 	/**
-	 * Render a single character with the default.png font at current (posX,posY) location...
+	 * Render a single character with the default.png font at current
+	 * (posX,posY) location...
 	 */
 	private float renderDefaultChar(int par1, boolean par2)
 	{
@@ -250,7 +135,7 @@ public class CSFontRenderer extends FontRenderer
 		float f = par1 % 16 * 8;
 		float f1 = par1 / 16 * 8;
 		float f2 = (par2 ? 1.0F : 0.0F);
-		//Bind texture
+		// Bind texture
 		Minecraft.getMinecraft().func_110434_K().func_110577_a(fontTextureName);
 		float f3 = (this.charWidth[par1] - 0.01F);
 		
@@ -271,9 +156,10 @@ public class CSFontRenderer extends FontRenderer
 		
 		return this.charWidth[par1];
 	}
-
+	
 	/**
-	 * Load one of the /font/glyph_XX.png into a new GL texture and store the texture ID in glyphTextureName array.
+	 * Load one of the /font/glyph_XX.png into a new GL texture and store the
+	 * texture ID in glyphTextureName array.
 	 */
 	private void loadGlyphTexture(int par1)
 	{
@@ -281,17 +167,18 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	private ResourceLocation func_111271_a(int par1)
-    {
-        if (field_111274_c[par1] == null)
-        {
-            field_111274_c[par1] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(par1)}));
-        }
-
-        return field_111274_c[par1];
-    }
-
+	{
+		if (field_111274_c[par1] == null)
+		{
+			field_111274_c[par1] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] { Integer.valueOf(par1) }));
+		}
+		
+		return field_111274_c[par1];
+	}
+	
 	/**
-	 * Render a single Unicode character at current (posX,posY) location using one of the /font/glyph_XX.png files...
+	 * Render a single Unicode character at current (posX,posY) location using
+	 * one of the /font/glyph_XX.png files...
 	 */
 	private float renderUnicodeChar(char par1, boolean par2)
 	{
@@ -324,7 +211,7 @@ public class CSFontRenderer extends FontRenderer
 			return (f1 - f) / 2.0F + 1.0F;
 		}
 	}
-
+	
 	@Override
 	/**
 	 * Draws the specified string with a shadow.
@@ -333,7 +220,7 @@ public class CSFontRenderer extends FontRenderer
 	{
 		return this.drawString(par1Str, par2, par3, par4, true);
 	}
-
+	
 	@Override
 	/**
 	 * Draws the specified string.
@@ -342,7 +229,7 @@ public class CSFontRenderer extends FontRenderer
 	{
 		return this.drawString(par1Str, par2, par3, par4, false);
 	}
-
+	
 	@Override
 	/**
 	 * Draws the specified string. Args: string, x, y, color, dropShadow
@@ -350,14 +237,14 @@ public class CSFontRenderer extends FontRenderer
 	public int drawString(String par1Str, int par2, int par3, int par4, boolean par5)
 	{
 		this.resetStyles();
-
+		
 		if (this.bidiFlag)
 		{
 			par1Str = this.bidiReorder(par1Str);
 		}
-
+		
 		int l;
-
+		
 		if (par5)
 		{
 			l = this.renderString(par1Str, par2 + 1, par3 + 1, par4, true);
@@ -367,12 +254,13 @@ public class CSFontRenderer extends FontRenderer
 		{
 			l = this.renderString(par1Str, par2, par3, par4, false);
 		}
-
+		
 		return l;
 	}
-
+	
 	/**
-	 * Apply Unicode Bidirectional Algorithm to string and return a new possibly reordered string for visual rendering.
+	 * Apply Unicode Bidirectional Algorithm to string and return a new possibly
+	 * reordered string for visual rendering.
 	 */
 	private String bidiReorder(String par1Str)
 	{
@@ -382,27 +270,27 @@ public class CSFontRenderer extends FontRenderer
 			byte[] abyte = new byte[bidi.getRunCount()];
 			String[] astring = new String[abyte.length];
 			int i;
-
+			
 			for (int j = 0; j < abyte.length; ++j)
 			{
 				int k = bidi.getRunStart(j);
 				i = bidi.getRunLimit(j);
 				int l = bidi.getRunLevel(j);
 				String s1 = par1Str.substring(k, i);
-				abyte[j] = (byte)l;
+				abyte[j] = (byte) l;
 				astring[j] = s1;
 			}
-
+			
 			String[] astring1 = astring.clone();
 			Bidi.reorderVisually(abyte, 0, astring, 0, abyte.length);
 			StringBuilder stringbuilder = new StringBuilder();
 			i = 0;
-
+			
 			while (i < astring.length)
 			{
 				byte b0 = abyte[i];
 				int i1 = 0;
-
+				
 				while (true)
 				{
 					if (i1 < astring1.length)
@@ -412,10 +300,10 @@ public class CSFontRenderer extends FontRenderer
 							++i1;
 							continue;
 						}
-
+						
 						b0 = abyte[i1];
 					}
-
+					
 					if ((b0 & 1) == 0)
 					{
 						stringbuilder.append(astring[i]);
@@ -425,7 +313,7 @@ public class CSFontRenderer extends FontRenderer
 						for (i1 = astring[i].length() - 1; i1 >= 0; --i1)
 						{
 							char c0 = astring[i].charAt(i1);
-
+							
 							if (c0 == 40)
 							{
 								c0 = 41;
@@ -434,16 +322,16 @@ public class CSFontRenderer extends FontRenderer
 							{
 								c0 = 40;
 							}
-
+							
 							stringbuilder.append(c0);
 						}
 					}
-
+					
 					++i;
 					break;
 				}
 			}
-
+			
 			return stringbuilder.toString();
 		}
 		else
@@ -451,9 +339,10 @@ public class CSFontRenderer extends FontRenderer
 			return par1Str;
 		}
 	}
-
+	
 	/**
-	 * Reset all style flag fields in the class to false; called at the start of string rendering
+	 * Reset all style flag fields in the class to false; called at the start of
+	 * string rendering
 	 */
 	private void resetStyles()
 	{
@@ -463,7 +352,7 @@ public class CSFontRenderer extends FontRenderer
 		this.underlineStyle = false;
 		this.strikethroughStyle = false;
 	}
-
+	
 	/**
 	 * Render a single line string at the current (posX,posY) and update posX
 	 */
@@ -474,24 +363,26 @@ public class CSFontRenderer extends FontRenderer
 			char c0 = par1Str.charAt(i);
 			int j;
 			int k;
-
+			
 			if ((c0 == '@' || c0 == '\u00a7') && i + 9 < par1Str.length() && par1Str.charAt(i + 1) == 'C')
 			{
 				resetStyles();
 				
-				red = 1F; green = 1F; blue = 1F;
+				red = 1F;
+				green = 1F;
+				blue = 1F;
 				
 				String regex = "0123456789abcdefklmnorC[]";
 				char j0 = par1Str.charAt(i + 1);
-				char j1 = par1Str.charAt(i + 2); //[
+				char j1 = par1Str.charAt(i + 2); // [
 				char j2 = par1Str.charAt(i + 3);
 				char j3 = par1Str.charAt(i + 4);
 				char j4 = par1Str.charAt(i + 5);
 				char j5 = par1Str.charAt(i + 6);
 				char j6 = par1Str.charAt(i + 7);
 				char j7 = par1Str.charAt(i + 8);
-				char j8 = par1Str.charAt(i + 9); //]
-
+				char j8 = par1Str.charAt(i + 9); // ]
+				
 				if (j0 == 'C' && j1 == '[')
 				{
 					String s1 = "";
@@ -508,16 +399,21 @@ public class CSFontRenderer extends FontRenderer
 					
 					float r = color >> 16;
 					float g = color >> 8 & 255;
-					float b = color & 255;
-					
-					if (par2)
-					{
-						r /= 4; g /= 4; b /= 4;
-					}
-					
-					this.red = r / 255.0F; this.green = g / 255.0F; this.blue = b / 255.0F; this.textColor = ((int)r & 255) << 16 | ((int)g & 255) << 8 | (int)b & 255;
-					
-					GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
+		float b = color & 255;
+		
+		if (par2)
+		{
+			r /= 4;
+			g /= 4;
+			b /= 4;
+		}
+		
+		this.red = r / 255.0F;
+		this.green = g / 255.0F;
+		this.blue = b / 255.0F;
+		this.textColor = ((int) r & 255) << 16 | ((int) g & 255) << 8 | (int) b & 255;
+		
+		GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
 				}
 				for (int l = i; l < par1Str.length(); l++)
 				{
@@ -532,7 +428,7 @@ public class CSFontRenderer extends FontRenderer
 			{
 				String regex1 = "0123456789abcdefklmnor";
 				j = regex1.indexOf(par1Str.charAt(i + 1));
-
+				
 				if (j < 16)
 				{
 					resetStyles();
@@ -541,12 +437,12 @@ public class CSFontRenderer extends FontRenderer
 					{
 						j = 15;
 					}
-
+					
 					if (par2)
 					{
 						j += 16;
 					}
-
+					
 					k = this.colorCode[j];
 					this.textColor = k;
 					GL11.glColor4f((k >> 16) / 255.0F, (k >> 8 & 255) / 255.0F, (k & 255) / 255.0F, this.alpha);
@@ -580,13 +476,13 @@ public class CSFontRenderer extends FontRenderer
 					this.italicStyle = false;
 					GL11.glColor4f(this.red, this.blue, this.green, this.alpha);
 				}
-
+				
 				++i;
 			}
 			else
 			{
 				j = ChatAllowedCharacters.allowedCharacters.indexOf(c0);
-
+				
 				if (this.randomStyle && j > 0)
 				{
 					do
@@ -594,51 +490,51 @@ public class CSFontRenderer extends FontRenderer
 						k = this.fontRandom.nextInt(ChatAllowedCharacters.allowedCharacters.length());
 					}
 					while (this.charWidth[j + 32] != this.charWidth[k + 32]);
-
+					
 					j = k;
 				}
-
+				
 				float f = this.unicodeFlag ? 0.5F : 1.0F;
 				boolean flag1 = (j <= 0 || this.unicodeFlag) && par2;
-
+				
 				if (flag1)
 				{
 					this.posX -= f;
 					this.posY -= f;
 				}
-
+				
 				float f1 = this.renderCharAtPos(j, c0, this.italicStyle);
-
+				
 				if (flag1)
 				{
 					this.posX += f;
 					this.posY += f;
 				}
-
+				
 				if (this.boldStyle)
 				{
 					this.posX += f;
-
+					
 					if (flag1)
 					{
 						this.posX -= f;
 						this.posY -= f;
 					}
-
+					
 					this.renderCharAtPos(j, c0, this.italicStyle);
 					this.posX -= f;
-
+					
 					if (flag1)
 					{
 						this.posX += f;
 						this.posY += f;
 					}
-
+					
 					++f1;
 				}
-
+				
 				Tessellator tessellator;
-
+				
 				if (this.strikethroughStyle)
 				{
 					tessellator = Tessellator.instance;
@@ -651,7 +547,7 @@ public class CSFontRenderer extends FontRenderer
 					tessellator.draw();
 					GL11.glEnable(GL11.GL_TEXTURE_2D);
 				}
-
+				
 				if (this.underlineStyle)
 				{
 					tessellator = Tessellator.instance;
@@ -665,12 +561,12 @@ public class CSFontRenderer extends FontRenderer
 					tessellator.draw();
 					GL11.glEnable(GL11.GL_TEXTURE_2D);
 				}
-
-				this.posX += ((int)f1);
+				
+				this.posX += ((int) f1);
 			}
 		}
 	}
-
+	
 	/**
 	 * Render string either left or right aligned depending on bidiFlag
 	 */
@@ -682,12 +578,13 @@ public class CSFontRenderer extends FontRenderer
 			int i1 = this.getStringWidth(par1Str);
 			par2 = par2 + par4 - i1;
 		}
-
+		
 		return this.renderString(par1Str, par2, par3, par5, par6);
 	}
-
+	
 	/**
-	 * Render single line string by setting GL color, current (posX,posY), and calling renderStringAtPos()
+	 * Render single line string by setting GL color, current (posX,posY), and
+	 * calling renderStringAtPos()
 	 */
 	private int renderString(String par1Str, int par2, int par3, int par4, boolean par5)
 	{
@@ -701,12 +598,12 @@ public class CSFontRenderer extends FontRenderer
 			{
 				par4 |= -16777216;
 			}
-
+			
 			if (par5)
 			{
 				par4 = (par4 & 16579836) >> 2 | par4 & -16777216;
 			}
-
+			
 			this.red = (par4 >> 16 & 255) / 255.0F;
 			this.blue = (par4 >> 8 & 255) / 255.0F;
 			this.green = (par4 & 255) / 255.0F;
@@ -715,12 +612,13 @@ public class CSFontRenderer extends FontRenderer
 			this.posX = par2;
 			this.posY = par3;
 			this.renderStringAtPos(par1Str, par5);
-			return (int)this.posX;
+			return (int) this.posX;
 		}
 	}
-
+	
 	/**
-	 * Returns the width of this string. Equivalent of FontMetrics.stringWidth(String s).
+	 * Returns the width of this string. Equivalent of
+	 * FontMetrics.stringWidth(String s).
 	 */
 	@Override
 	public int getStringWidth(String par1Str)
@@ -733,12 +631,12 @@ public class CSFontRenderer extends FontRenderer
 		{
 			int i = 0;
 			boolean flag = false;
-
+			
 			for (int j = 0; j < par1Str.length(); ++j)
 			{
 				char c0 = par1Str.charAt(j);
 				int k = this.getCharWidth(c0);
-
+				
 				if (c0 == '\u00a7' || c0 == '@')
 				{
 					if (j + 9 < par1Str.length() && par1Str.charAt(j + 1) == 'C' && par1Str.charAt(j + 2) == '[')
@@ -753,12 +651,12 @@ public class CSFontRenderer extends FontRenderer
 						}
 					}
 				}
-
+				
 				if (k < 0 && j < par1Str.length() - 1)
 				{
 					++j;
 					c0 = par1Str.charAt(j);
-
+					
 					if (c0 != 108 && c0 != 76)
 					{
 						if (c0 == 114 || c0 == 82)
@@ -770,22 +668,22 @@ public class CSFontRenderer extends FontRenderer
 					{
 						flag = true;
 					}
-
+					
 					k = 0;
 				}
-
+				
 				i += k;
-
+				
 				if (flag)
 				{
 					++i;
 				}
 			}
-
+			
 			return i;
 		}
 	}
-
+	
 	/**
 	 * Returns the width of this character as rendered.
 	 */
@@ -803,7 +701,7 @@ public class CSFontRenderer extends FontRenderer
 		else
 		{
 			int i = ChatAllowedCharacters.allowedCharacters.indexOf(par1);
-
+			
 			if (i >= 0 && !this.unicodeFlag)
 			{
 				return this.charWidth[i + 32];
@@ -812,13 +710,13 @@ public class CSFontRenderer extends FontRenderer
 			{
 				int j = this.glyphWidth[par1] >>> 4;
 						int k = this.glyphWidth[par1] & 15;
-
+						
 						if (k > 7)
 						{
 							k = 15;
 							j = 0;
 						}
-
+						
 						++k;
 						return (k - j) / 2 + 1;
 			}
@@ -828,7 +726,7 @@ public class CSFontRenderer extends FontRenderer
 			}
 		}
 	}
-
+	
 	/**
 	 * Trims a string to fit a specified Width.
 	 */
@@ -837,7 +735,7 @@ public class CSFontRenderer extends FontRenderer
 	{
 		return this.trimStringToWidth(par1Str, par2, false);
 	}
-
+	
 	/**
 	 * Trims a string to a specified width, and will reverse it if par3 is set.
 	 */
@@ -850,16 +748,16 @@ public class CSFontRenderer extends FontRenderer
 		int l = par3 ? -1 : 1;
 		boolean flag1 = false;
 		boolean flag2 = false;
-
+		
 		for (int i1 = k; i1 >= 0 && i1 < par1Str.length() && j < par2; i1 += l)
 		{
 			char c0 = par1Str.charAt(i1);
 			int j1 = this.getCharWidth(c0);
-
+			
 			if (flag1)
 			{
 				flag1 = false;
-
+				
 				if (c0 != 108 && c0 != 76)
 				{
 					if (c0 == 114 || c0 == 82)
@@ -879,18 +777,18 @@ public class CSFontRenderer extends FontRenderer
 			else
 			{
 				j += j1;
-
+				
 				if (flag2)
 				{
 					++j;
 				}
 			}
-
+			
 			if (j > par2)
 			{
 				break;
 			}
-
+			
 			if (par3)
 			{
 				stringbuilder.insert(0, c0);
@@ -900,10 +798,10 @@ public class CSFontRenderer extends FontRenderer
 				stringbuilder.append(c0);
 			}
 		}
-
+		
 		return stringbuilder.toString();
 	}
-
+	
 	/**
 	 * Remove all newline characters from the end of the string
 	 */
@@ -913,10 +811,10 @@ public class CSFontRenderer extends FontRenderer
 		{
 			par1Str = par1Str.substring(0, par1Str.length() - 1);
 		}
-
+		
 		return par1Str;
 	}
-
+	
 	/**
 	 * Splits and draws a String with wordwrap (maximum length is parameter k)
 	 */
@@ -928,60 +826,62 @@ public class CSFontRenderer extends FontRenderer
 		par1Str = this.trimStringNewline(par1Str);
 		this.renderSplitString(par1Str, par2, par3, par4, false);
 	}
-
+	
 	/**
-	 * Perform actual work of rendering a multi-line string with wordwrap and with darker drop shadow color if flag is
-	 * set
+	 * Perform actual work of rendering a multi-line string with wordwrap and
+	 * with darker drop shadow color if flag is set
 	 */
 	private void renderSplitString(String par1Str, int par2, int par3, int par4, boolean par5)
 	{
 		List list = this.listFormattedStringToWidth(par1Str, par4);
-
+		
 		for (Iterator iterator = list.iterator(); iterator.hasNext(); par3 += this.FONT_HEIGHT)
 		{
-			String s1 = (String)iterator.next();
+			String s1 = (String) iterator.next();
 			this.renderStringAligned(s1, par2, par3, par4, this.textColor, par5);
 		}
 	}
-
+	
 	/**
-	 * Returns the width of the wordwrapped String (maximum length is parameter k)
+	 * Returns the width of the wordwrapped String (maximum length is parameter
+	 * k)
 	 */
 	@Override
 	public int splitStringWidth(String par1Str, int par2)
 	{
 		return this.FONT_HEIGHT * this.listFormattedStringToWidth(par1Str, par2).size();
 	}
-
+	
 	/**
-	 * Set unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png
-	 * font.
+	 * Set unicodeFlag controlling whether strings should be rendered with
+	 * Unicode fonts instead of the default.png font.
 	 */
 	@Override
 	public void setUnicodeFlag(boolean par1)
 	{
 		this.unicodeFlag = par1;
 	}
-
+	
 	/**
-	 * Get unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png
-	 * font.
+	 * Get unicodeFlag controlling whether strings should be rendered with
+	 * Unicode fonts instead of the default.png font.
 	 */
 	@Override
 	public boolean getUnicodeFlag()
 	{
 		return this.unicodeFlag;
 	}
-
+	
 	/**
-	 * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be run before rendering any string.
+	 * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be
+	 * run before rendering any string.
 	 */
 	@Override
 	public void setBidiFlag(boolean par1)
 	{
 		this.bidiFlag = par1;
 	}
-
+	
 	/**
 	 * Breaks a string into a list of pieces that will fit a specified width.
 	 */
@@ -990,14 +890,15 @@ public class CSFontRenderer extends FontRenderer
 	{
 		return Arrays.asList(this.wrapFormattedStringToWidth(par1Str, par2).split("\n"));
 	}
-
+	
 	/**
-	 * Inserts newline and formatting into a string to wrap it within the specified width.
+	 * Inserts newline and formatting into a string to wrap it within the
+	 * specified width.
 	 */
 	public String wrapFormattedStringToWidth(String par1Str, int par2)
 	{
 		int j = this.sizeStringToWidth(par1Str, par2);
-
+		
 		if (par1Str.length() <= j)
 		{
 			return par1Str;
@@ -1011,9 +912,10 @@ public class CSFontRenderer extends FontRenderer
 			return s1 + "\n" + this.wrapFormattedStringToWidth(s2, par2);
 		}
 	}
-
+	
 	/**
-	 * Determines how many characters from the string will fit into the specified width.
+	 * Determines how many characters from the string will fit into the
+	 * specified width.
 	 */
 	private int sizeStringToWidth(String par1Str, int par2)
 	{
@@ -1021,11 +923,11 @@ public class CSFontRenderer extends FontRenderer
 		int k = 0;
 		int l = 0;
 		int i1 = -1;
-
+		
 		for (boolean flag = false; l < j; ++l)
 		{
 			char c0 = par1Str.charAt(l);
-
+			
 			switch (c0)
 			{
 			case 10:
@@ -1036,7 +938,7 @@ public class CSFontRenderer extends FontRenderer
 				{
 					++l;
 					char c1 = par1Str.charAt(l);
-
+					
 					if (c1 != 108 && c1 != 76)
 					{
 						if (c1 == 114 || c1 == 82 || isFormatColor(c1))
@@ -1049,35 +951,35 @@ public class CSFontRenderer extends FontRenderer
 						flag = true;
 					}
 				}
-
+				
 				break;
 			case 32:
 				i1 = l;
 			default:
 				k += this.getCharWidth(c0);
-
+				
 				if (flag)
 				{
 					++k;
 				}
 			}
-
+			
 			if (c0 == 10)
 			{
 				++l;
 				i1 = l;
 				break;
 			}
-
+			
 			if (k > par2)
 			{
 				break;
 			}
 		}
-
+		
 		return l != j && i1 != -1 && i1 < l ? i1 : l;
 	}
-
+	
 	/**
 	 * Checks if the char code is a hexadecimal character, used to set colour.
 	 */
@@ -1085,30 +987,32 @@ public class CSFontRenderer extends FontRenderer
 	{
 		return par0 >= 48 && par0 <= 57 || par0 >= 97 && par0 <= 102 || par0 >= 65 && par0 <= 70;
 	}
-
+	
 	/**
-	 * Checks if the char code is O-K...lLrRk-o... used to set special formatting.
+	 * Checks if the char code is O-K...lLrRk-o... used to set special
+	 * formatting.
 	 */
 	private static boolean isFormatSpecial(char par0)
 	{
 		return par0 >= 107 && par0 <= 111 || par0 >= 75 && par0 <= 79 || par0 == 114 || par0 == 82 || par0 == 'C';
 	}
-
+	
 	/**
-	 * Digests a string for nonprinting formatting characters then returns a string containing only that formatting.
+	 * Digests a string for nonprinting formatting characters then returns a
+	 * string containing only that formatting.
 	 */
 	private static String getFormatFromString(String par0Str)
 	{
 		String s1 = "";
 		int i = -1;
 		int j = par0Str.length();
-
+		
 		while ((i = par0Str.indexOf(167, i + 1)) != -1)
 		{
 			if (i < j - 1)
 			{
 				char c0 = par0Str.charAt(i + 1);
-
+				
 				if (isFormatColor(c0))
 				{
 					s1 = "\u00a7" + c0;
@@ -1119,12 +1023,13 @@ public class CSFontRenderer extends FontRenderer
 				}
 			}
 		}
-
+		
 		return s1;
 	}
-
+	
 	/**
-	 * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should be run before rendering any string
+	 * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should
+	 * be run before rendering any string
 	 */
 	@Override
 	public boolean getBidiFlag()

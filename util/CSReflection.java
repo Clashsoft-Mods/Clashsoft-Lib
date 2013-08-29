@@ -21,7 +21,7 @@ public class CSReflection
 		{
 			for (String s : fieldNames)
 			{
-				if (f.getName().equals(fieldNames))
+				if (f.getName().equals(s))
 					return f;
 			}
 		}

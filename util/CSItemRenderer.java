@@ -28,7 +28,9 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
 	private static RenderItem				basicItemRenderer	= new RenderItem();
 	private static Random					random				= new Random();
 	
-	private static final ResourceLocation	field_110798_h		= new ResourceLocation("textures/misc/enchanted_item_glint.png");
+	public static final IItemRenderer	instance = new CSItemRenderer();
+	
+	private static final ResourceLocation	glintTexture		= new ResourceLocation("textures/misc/enchanted_item_glint.png");
 	
 	public CSItemRenderer()
 	{
@@ -148,7 +150,7 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
 				{
 					GL11.glDepthFunc(GL11.GL_EQUAL);
 					GL11.glDisable(GL11.GL_LIGHTING);
-					this.renderManager.renderEngine.func_110577_a(field_110798_h);
+					this.renderManager.renderEngine.func_110577_a(glintTexture);
 					GL11.glEnable(GL11.GL_BLEND);
 					GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
 					float f13 = 0.76F;
@@ -317,7 +319,7 @@ public class CSItemRenderer extends RenderItem implements IItemRenderer
 				GL11.glDepthFunc(GL11.GL_GREATER);
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDepthMask(false);
-				par2TextureManager.func_110577_a(field_110798_h);
+				par2TextureManager.func_110577_a(glintTexture);
 				this.zLevel -= 50.0F;
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);
