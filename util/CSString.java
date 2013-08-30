@@ -31,9 +31,7 @@ public class CSString
 	
 	public static int convertVersion(String versionString)
 	{
-		String version = versionString.replace('.', '|');
-		System.out.println(version);
-		String[] s = version.split("|");
+		String[] s = versionString.split("\\.");
 		int[] ints = new int[s.length];
 		for (int i = 0; i < s.length; i++)
 		{
