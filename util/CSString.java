@@ -14,19 +14,19 @@ public class CSString
 		if (number <= 0 || number >= 4000)
 		{
 			System.out.println("Exception while converting to Roman: Value outside roman numeral range.");
-			return "\u007akROMAN";
+			return String.valueOf(number);
 		}
-		String roman = "";
+		StringBuilder roman = new StringBuilder();
 		
 		for (int i = 0; i < ROMANCODE.length; i++)
 		{
 			while (number >= BINEQUAL[i])
 			{
 				number -= BINEQUAL[i];
-				roman += ROMANCODE[i];
+				roman.append(ROMANCODE[i]);
 			}
 		}
-		return roman;
+		return roman.toString();
 	}
 	
 	public static int convertVersion(String versionString)
