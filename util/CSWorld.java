@@ -1,9 +1,14 @@
 package clashsoft.clashsoftapi.util;
 
-import net.minecraft.world.*;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class CSWorld
 {
+	public static final int[][] sideMap = new int[][] {{0, -1, 0}, {0, 1, 0}, {0, 0, -1}, {0, 0, 1}, {-1, 0, 0}, {1, 0, 0}};
+	public static final int[] oppositeSideMap = new int[] {1, 0, 3, 2, 5, 4};
+	
 	public static int getBlock(IBlockAccess par1World, int x, int y, int z)
 	{
 		return par1World.getBlockId(x, y, z);
@@ -12,6 +17,11 @@ public class CSWorld
 	public static int getBlockMetadata(IBlockAccess par1World, int x, int y, int z)
 	{
 		return par1World.getBlockMetadata(x, y, z);
+	}
+	
+	public static <T extends TileEntity> T getBlockTileEntity(IBlockAccess par1World, int x, int y, int z)
+	{
+		return (T) par1World.getBlockTileEntity(x, y, z);
 	}
 	
 	public static int getBlockAtSide(IBlockAccess par1World, int x, int y, int z, int side)
@@ -56,6 +66,27 @@ public class CSWorld
 		}	
 	}
 	
+	public static <T extends TileEntity> T getBlockTileEntityAtSide(IBlockAccess par1World, int x, int y, int z, int side)
+	{
+		switch(side)
+		{
+		case 0:
+			return getBlockTileEntity(par1World, x, y - 1, z);
+		case 1:
+			return getBlockTileEntity(par1World, x, y + 1, z);
+		case 2:
+			return getBlockTileEntity(par1World, x, y, z - 1);
+		case 3:
+			return getBlockTileEntity(par1World, x, y, z + 1);
+		case 4:
+			return getBlockTileEntity(par1World, x - 1, y, z);
+		case 5:
+			return getBlockTileEntity(par1World, x + 1, y, z);
+		default:
+			return getBlockTileEntity(par1World, x, y, z);
+		}	
+	}
+	
 	/**
 	 * Generates a Block with meta
 	 * @param world
@@ -70,6 +101,11 @@ public class CSWorld
 		world.setBlock(x, y, z, block, meta, 0x02);
 	}
 	
+	public static void setBlockTileEntity(World world, int x, int y, int z, TileEntity tileentity)
+	{
+		world.setBlockTileEntity(x, y, z, tileentity);
+	}
+	
 	/**
 	 * Places a block at the side of another block
 	 * @param world
@@ -82,23 +118,12 @@ public class CSWorld
 	 */
 	public static void setBlockAtSide(World world, int x, int y, int z, int side, int block, int meta)
 	{
-		switch(side)
-		{
-		case 0:
-			setBlock(world, x, y - 1, z, block, meta);
-		case 1:
-			setBlock(world, x, y + 1, z, block, meta);
-		case 2:
-			setBlock(world, x, y, z - 1, block, meta);
-		case 3:
-			setBlock(world, x, y, z + 1, block, meta);
-		case 4:
-			setBlock(world, x - 1, y, z, block, meta);
-		case 5:
-			setBlock(world, x + 1, y, z, block, meta);
-		default:
-			setBlock(world, x, y, z, block, meta);	
-		}	
+		setBlock(world, x + sideMap[side][0], y + sideMap[side][1], z + sideMap[side][2], block, meta);
+	}
+	
+	public static void setBlockTileEntityAtSide(World world, int x, int y, int z, int side, TileEntity tileentity)
+	{
+		setBlockTileEntity(world, x + sideMap[side][0], y + sideMap[side][1], z + sideMap[side][2], tileentity);
 	}
 	
 	/**

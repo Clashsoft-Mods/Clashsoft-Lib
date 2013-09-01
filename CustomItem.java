@@ -116,9 +116,15 @@ public class CustomItem extends Item
 	{
 		if (par1ItemStack != null)
 		{
-			String[] s = (descriptions[par1ItemStack.getItemDamage()] != null && descriptions[par1ItemStack.getItemDamage()] != "" ? descriptions[par1ItemStack.getItemDamage()].split("\n") : new String[0]);
-			Collection<String> array = hasItemMetadataList() ? list.get(par1ItemStack.getItemDamage()).getDescription() : Arrays.asList(s);
-			par3List.addAll(array);
+			if (hasItemMetadataList())
+				par3List.addAll(this.list.get(par1ItemStack.getItemDamage()).getDescription());
+			else if (par1ItemStack.getItemDamage() < descriptions.length)
+			{
+				String s = this.descriptions[par1ItemStack.getItemDamage()];
+				if (s == "")
+					return;
+				par3List.addAll(Arrays.asList(s.split("\n")));
+			}
 		}
 	}
 	
