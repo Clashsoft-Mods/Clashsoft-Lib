@@ -1,7 +1,6 @@
 package clashsoft.clashsoftapi;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import clashsoft.clashsoftapi.util.IItemMetadataList;
