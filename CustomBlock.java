@@ -6,7 +6,8 @@ import java.util.Random;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.*;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,25 +17,34 @@ import net.minecraft.world.World;
 
 public class CustomBlock extends Block
 {
-	private String[] names;
-	private String[][] textures;
-	private Icon[][] icons;
-	private boolean opaque;
-	private int renderType;
-	private ItemStack[] drops;
-	private float[] hardnesses;
-	protected CreativeTabs[] tabs;
-	private boolean[] disabled;
+	private String[]			names;
+	private String[][]			textures;
+	private Icon[][]			icons;
+	private boolean				opaque;
+	private int					renderType;
+	private ItemStack[]			drops;
+	private float[]				hardnesses;
+	protected CreativeTabs[]	tabs;
+	private boolean[]			disabled;
 	
 	/**
-	 * @param par1 Block ID
-	 * @param par2Material Material
-	 * @param par3 Names (Will be used to check how many subblocks should be added)
-	 * @param par4 Block Textures (Metadata, Side 6!)
-	 * @param par5 isOpaqueCube
-	 * @param par6 renderType
-	 * @param par7 textureFile
-	 * @param par8 CreativeTab
+	 * @param par1
+	 *            Block ID
+	 * @param par2Material
+	 *            Material
+	 * @param par3
+	 *            Names (Will be used to check how many subblocks should be
+	 *            added)
+	 * @param par4
+	 *            Block Textures (Metadata, Side 6!)
+	 * @param par5
+	 *            isOpaqueCube
+	 * @param par6
+	 *            renderType
+	 * @param par7
+	 *            textureFile
+	 * @param par8
+	 *            CreativeTab
 	 */
 	public CustomBlock(int par1, Material par2Material, String[] par3, String[][] par4, boolean par5, int par6, CreativeTabs[] par7)
 	{
@@ -47,7 +57,10 @@ public class CustomBlock extends Block
 		drops = new ItemStack[names.length];
 		hardnesses = new float[names.length];
 		disabled = new boolean[names.length];
-		for (int i = 0; i < disabled.length; i++) { disabled[i] = par3[i] == "" || par3[i].contains("%&") || (par4[i][0] == "" || par4[i][1] == "" || par4[i][2] == "" || par4[i][3] == "" || par4[i][4] == "" || par4[i][5] == ""); }
+		for (int i = 0; i < disabled.length; i++)
+		{
+			disabled[i] = par3[i] == "" || par3[i].contains("%&") || (par4[i][0] == "" || par4[i][1] == "" || par4[i][2] == "" || par4[i][3] == "" || par4[i][4] == "" || par4[i][5] == "");
+		}
 		tabs = par7;
 		this.setCreativeTab(par7[0]);
 	}
@@ -59,7 +72,7 @@ public class CustomBlock extends Block
 	
 	public CustomBlock(int par1, Material par2Material, String par3, String par4, boolean par5, int par6, CreativeTabs par7)
 	{
-		this(par1, par2Material, new String[] {par3}, new String[][]{{par4, par4, par4, par4, par4, par4}}, par5, par6, new CreativeTabs[]{par7});
+		this(par1, par2Material, new String[] { par3 }, new String[][] { { par4, par4, par4, par4, par4, par4 } }, par5, par6, new CreativeTabs[] { par7 });
 	}
 	
 	public CustomBlock(int par1, Material par2Material, String[] par3, String[] par4, CreativeTabs[] par7)
@@ -69,7 +82,7 @@ public class CustomBlock extends Block
 	
 	public CustomBlock(int par1, Material par2Material, String par3, String par4, CreativeTabs par7)
 	{
-		this(par1, par2Material, new String[] {par3}, new String[][]{{par4, par4, par4, par4, par4, par4}}, true, 0, new CreativeTabs[]{par7});
+		this(par1, par2Material, new String[] { par3 }, new String[][] { { par4, par4, par4, par4, par4, par4 } }, true, 0, new CreativeTabs[] { par7 });
 	}
 	
 	private static String[][] metadataToSideArray(String[] par1)
@@ -140,27 +153,27 @@ public class CustomBlock extends Block
 	
 	@Override
 	/**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    public Icon getIcon(int par1, int par2)
-    {
+	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+	 */
+	public Icon getIcon(int par1, int par2)
+	{
 		if (par2 < icons.length && par1 < icons[par2].length)
 			return icons[par2][par1];
 		return icons[0][0];
-    }
+	}
 	
 	@Override
 	/**
-     * Returns the block hardness at a location. Args: world, x, y, z
-     */
-    public float getBlockHardness(World par1World, int par2, int par3, int par4)
-    {
-        if (par1World.getBlockMetadata(par2, par3, par4) < hardnesses.length && hardnesses[par1World.getBlockMetadata(par2, par3, par4)] > 0)
-        {
-        	return hardnesses[par1World.getBlockMetadata(par2, par3, par4)];
-        }
-        return this.blockHardness;
-    }
+	 * Returns the block hardness at a location. Args: world, x, y, z
+	 */
+	public float getBlockHardness(World par1World, int par2, int par3, int par4)
+	{
+		if (par1World.getBlockMetadata(par2, par3, par4) < hardnesses.length && hardnesses[par1World.getBlockMetadata(par2, par3, par4)] > 0)
+		{
+			return hardnesses[par1World.getBlockMetadata(par2, par3, par4)];
+		}
+		return this.blockHardness;
+	}
 	
 	@Override
 	public void registerIcons(IconRegister par1IconRegister)
@@ -198,62 +211,62 @@ public class CustomBlock extends Block
 		}
 	}
 	
-    /**
-     * Metadata and fortune sensitive version, this replaces the old (int meta, Random rand)
-     * version in 1.1. 
-     * 
-     * @param meta Blocks Metadata
-     * @param fortune Current item fortune level
-     * @param random Random number generator
-     * @return The number of items to drop
-     */
-    @Override
+	/**
+	 * Metadata and fortune sensitive version, this replaces the old (int meta,
+	 * Random rand) version in 1.1.
+	 * 
+	 * @param meta
+	 *            Blocks Metadata
+	 * @param fortune
+	 *            Current item fortune level
+	 * @param random
+	 *            Random number generator
+	 * @return The number of items to drop
+	 */
+	@Override
 	public int quantityDropped(int meta, int fortune, Random random)
-    {
-    	if (drops[meta] != null)
-    		return drops[meta].stackSize;
-    	return 1;
-    }
-
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
-    @Override
+	{
+		if (drops[meta] != null)
+			return drops[meta].stackSize;
+		return 1;
+	}
+	
+	/**
+	 * Returns the ID of the items to drop on destruction.
+	 */
+	@Override
 	public int idDropped(int par1, Random par2Random, int par3)
-    {
-    	if (drops[par1] != null)
-    		return drops[par1].itemID;
-    	return this.blockID;
-    }
-    
-    @Override
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    public int damageDropped(int par1)
-    {
-    	if (drops[par1] != null)
-    		return drops[par1].getItemDamage();
-    	return par1;
-    }
-    
-    @Override
-    /**
-     * Get the block's damage value (for use with pick block).
-     */
-    public int getDamageValue(World par1World, int par2, int par3, int par4)
-    {
-        return par1World.getBlockMetadata(par2, par3, par4);
-    }
-    
-    public void addNames()
-    {	
-    	for (int i = 0; i < names.length; i++)
-    	{
-    		LanguageRegistry.addName(new ItemStack(
-    				this, 1, 
-    				i), 
-    				names[i]);
-    	}
-    }
+	{
+		if (drops[par1] != null)
+			return drops[par1].itemID;
+		return this.blockID;
+	}
+	
+	@Override
+	/**
+	 * Determines the damage on the item the block drops. Used in cloth and wood.
+	 */
+	public int damageDropped(int par1)
+	{
+		if (drops[par1] != null)
+			return drops[par1].getItemDamage();
+		return par1;
+	}
+	
+	@Override
+	/**
+	 * Get the block's damage value (for use with pick block).
+	 */
+	public int getDamageValue(World par1World, int par2, int par3, int par4)
+	{
+		return par1World.getBlockMetadata(par2, par3, par4);
+	}
+	
+	public void addNames()
+	{
+		for (int i = 0; i < names.length; i++)
+		{
+			LanguageRegistry.addName(new ItemStack(this, 1, i), names[i]);
+		}
+	}
 }

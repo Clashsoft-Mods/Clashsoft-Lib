@@ -16,6 +16,7 @@ public class ItemDataSpade extends ItemDataTool
 	/**
 	 * Returns if the item (tool) can harvest results from the block type.
 	 */
+	@Override
 	public boolean canHarvestBlock(Block par1Block)
 	{
 		return par1Block == Block.snow ? true : par1Block == Block.blockSnow;

@@ -3,6 +3,10 @@ package clashsoft.clashsoftapi.specialblocks;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.block.BlockHalfSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -10,9 +14,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockSpecialSlab extends BlockHalfSlab
 {
@@ -38,6 +39,7 @@ public class BlockSpecialSlab extends BlockHalfSlab
 		this.otherSlab = par2;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 
 	/**
@@ -53,6 +55,7 @@ public class BlockSpecialSlab extends BlockHalfSlab
 		return par1 == 1 || par1 == 0 ? TopIcons[par2 & 7] : SideIcons[par2 & 7];
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 
 	/**
@@ -71,6 +74,7 @@ public class BlockSpecialSlab extends BlockHalfSlab
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
+	@Override
 	public int idDropped(int par1, Random par2Random, int par3)
 	{
 		return this.blockID;
@@ -80,11 +84,13 @@ public class BlockSpecialSlab extends BlockHalfSlab
 	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
 	 * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
 	 */
+	@Override
 	protected ItemStack createStackedBlock(int par1)
 	{
 		return new ItemStack(this.blockID, 2, par1 & 7);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	/**
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
@@ -100,7 +106,8 @@ public class BlockSpecialSlab extends BlockHalfSlab
 	/**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
-    public int idPicked(World par1World, int par2, int par3, int par4)
+    @Override
+	public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return !isDoubleSlab ? this.blockID : this.otherSlab;
     }

@@ -2,7 +2,7 @@ package clashsoft.clashsoftapi.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.src.*;
+import net.minecraft.src.ModLoader;
 
 public class CSBlocks
 {

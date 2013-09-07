@@ -34,6 +34,7 @@ public class ItemDataSword extends ItemDataTool
 	 * Returns the strength of the stack against a given block. 1.0F base,
 	 * (Quality+1)*2 if correct blocktype, 1.5F if sword
 	 */
+	@Override
 	public float getStrVsBlock(ItemStack par1ItemStack, Block par2Block)
 	{
 		if (par2Block.blockID == Block.web.blockID)
@@ -51,15 +52,17 @@ public class ItemDataSword extends ItemDataTool
 	 * Current implementations of this method in child classes do not use the
 	 * entry argument beside ev. They just raise the damage on the stack.
 	 */
+	@Override
 	public boolean hitEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving)
 	{
 		par1ItemStack.damageItem(1, par3EntityLiving);
 		return true;
 	}
 	
+	@Override
 	public boolean onBlockDestroyed(ItemStack par1ItemStack, World par2World, int par3, int par4, int par5, int par6, EntityLiving par7EntityLiving)
 	{
-		if ((double) Block.blocksList[par3].getBlockHardness(par2World, par4, par5, par6) != 0.0D)
+		if (Block.blocksList[par3].getBlockHardness(par2World, par4, par5, par6) != 0.0D)
 		{
 			par1ItemStack.damageItem(2, par7EntityLiving);
 		}
@@ -71,6 +74,7 @@ public class ItemDataSword extends ItemDataTool
 	 * returns the action that specifies what animation to play when the items
 	 * is being used
 	 */
+	@Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack)
 	{
 		return EnumAction.block;
@@ -79,6 +83,7 @@ public class ItemDataSword extends ItemDataTool
 	/**
 	 * How long it takes to use or consume an item
 	 */
+	@Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack)
 	{
 		return 72000;
@@ -88,6 +93,7 @@ public class ItemDataSword extends ItemDataTool
 	 * Called whenever this item is equipped and the right mouse button is
 	 * pressed. Args: itemStack, world, entityPlayer
 	 */
+	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
 	{
 		par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
@@ -97,6 +103,7 @@ public class ItemDataSword extends ItemDataTool
 	/**
 	 * Returns if the item (tool) can harvest results from the block type.
 	 */
+	@Override
 	public boolean canHarvestBlock(Block par1Block)
 	{
 		return par1Block.blockID == Block.web.blockID;

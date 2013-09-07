@@ -2,6 +2,10 @@ package clashsoft.clashsoftapi.specialblocks;
 
 import java.util.List;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -10,9 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockSpecialWorkbench extends Block
 {
@@ -43,6 +44,7 @@ public class BlockSpecialWorkbench extends Block
 		this.BottomIcons = new Icon[bottomIcons.length];
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	/**
 	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
@@ -59,6 +61,7 @@ public class BlockSpecialWorkbench extends Block
 			return Side2Icons[par2];
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	/**
 	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This
@@ -80,6 +83,7 @@ public class BlockSpecialWorkbench extends Block
 	/**
 	 * Called upon block activation (right click on the block.)
 	 */
+	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
 	{
 		if (par1World.isRemote)
@@ -97,6 +101,7 @@ public class BlockSpecialWorkbench extends Block
 	 * returns a list of blocks with the same ID, but different meta (eg: wood
 	 * returns 4 blocks)
 	 */
+	@Override
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < names.length; i++)

@@ -22,7 +22,7 @@ public class CustomItem extends Item
 	
 	private boolean[]	disabled;
 	
-	protected List<? extends IItemMetadataList> list, displayList;
+	protected List<? extends IItemMetadataList>	list, displayList;
 	
 	public CustomItem(int par1, List<? extends IItemMetadataList> list, List<? extends IItemMetadataList> displaylist)
 	{

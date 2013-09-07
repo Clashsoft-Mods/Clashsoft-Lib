@@ -12,7 +12,7 @@ public class RepairDataTools implements IRecipe
 {
 	@Override
 	public boolean matches(InventoryCrafting inventorycrafting, World world)
-	{	
+	{
 		ItemStack toolType = null;
 		int itemsOfType = 0;
 		for (int i = 0; i < inventorycrafting.getSizeInventory(); i++)
@@ -64,7 +64,7 @@ public class RepairDataTools implements IRecipe
 						damage2 = stack.getItemDamage();
 					else
 					{
-						resultdamage = (int) Math.min((float)maxDamage, (float)(MathHelper.floor_float(damage1 + damage2 + (maxDamage / 10F))));
+						resultdamage = (int) Math.min((float) maxDamage, (float) (MathHelper.floor_float(damage1 + damage2 + (maxDamage / 10F))));
 						break;
 					}
 				}

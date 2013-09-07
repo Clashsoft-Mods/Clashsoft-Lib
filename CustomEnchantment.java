@@ -5,8 +5,8 @@ import net.minecraft.enchantment.EnumEnchantmentType;
 
 public class CustomEnchantment extends Enchantment
 {
-	private int maxLevel;
-	private int minLevel;
+	private int	maxLevel;
+	private int	minLevel;
 	
 	public CustomEnchantment(int par1, int par2, int par3, EnumEnchantmentType par4EnumEnchantmentType, String par5)
 	{
@@ -17,22 +17,24 @@ public class CustomEnchantment extends Enchantment
 	}
 	
 	/**
-     * Returns the minimum level that the enchantment can have.
-     */
-    public int getMinLevel()
-    {
-        return maxLevel;
-    }
-
-    /**
-     * Returns the maximum level that the enchantment can have.
-     */
-    public int getMaxLevel()
-    {
-        return minLevel;
-    }
-    
-    private static int getNextFreeID()
+	 * Returns the minimum level that the enchantment can have.
+	 */
+	@Override
+	public int getMinLevel()
+	{
+		return maxLevel;
+	}
+	
+	/**
+	 * Returns the maximum level that the enchantment can have.
+	 */
+	@Override
+	public int getMaxLevel()
+	{
+		return minLevel;
+	}
+	
+	private static int getNextFreeID()
 	{
 		int id = 32;
 		for (int i = 0; i < enchantmentsList.length; i++)
@@ -44,5 +46,5 @@ public class CustomEnchantment extends Enchantment
 		}
 		return id;
 	}
-
+	
 }

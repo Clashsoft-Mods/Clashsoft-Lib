@@ -132,11 +132,11 @@ public class CSCrafting
 	{
 		try
 		{
-			if (r.getCraftingType() == FoodRecipe.FURNACE)
+			if (r.getCraftingType() == IItemMetadataRecipe.FURNACE)
 			{
 				return new ItemStack[][] { { null, (ItemStack) r.getData()[0], null }, { null, FIRE, null }, { null, COAL, null } };
 			}
-			else if (r.getCraftingType() == FoodRecipe.CRAFTING_SHAPELESS)
+			else if (r.getCraftingType() == IItemMetadataRecipe.CRAFTING_SHAPELESS)
 			{
 				ItemStack[][] ret = new ItemStack[3][3];
 				
@@ -149,7 +149,7 @@ public class CSCrafting
 				
 				return ret;
 			}
-			else if (r.getCraftingType() == FoodRecipe.CRAFTING)
+			else if (r.getCraftingType() == IItemMetadataRecipe.CRAFTING)
 			{
 				return analyseCraftingShaped(r.getData());
 			}
@@ -224,7 +224,7 @@ public class CSCrafting
 				char c0 = s.charAt(i1 % s.length());
 				
 				if (hashmap.containsKey(c0))
-					ret[k1 % 3][j1 % 3] = ((ItemStack) hashmap.get(c0)).copy();
+					ret[k1 % 3][j1 % 3] = hashmap.get(c0).copy();
 				else
 					ret[k1 % 3][j1 % 3] = null;
 			}

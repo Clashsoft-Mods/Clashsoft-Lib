@@ -1,10 +1,11 @@
 package clashsoft.clashsoftapi.util;
 
-import net.minecraft.potion.Potion;
-import net.minecraft.stats.Achievement;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.potion.Potion;
+import net.minecraft.stats.Achievement;
 
 public class CSLang extends LanguageRegistry
 {
