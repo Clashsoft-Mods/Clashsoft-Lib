@@ -191,7 +191,7 @@ public class CSCrafting
 			}
 		}
 		
-		Map<Character, ItemStack> hashmap = new HashMap<>();
+		Map<Character, ItemStack> hashmap = new HashMap<Character, ItemStack>();
 		
 		for (; i < objects.length; i += 2)
 		{

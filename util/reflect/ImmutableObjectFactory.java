@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class ImmutableObjectFactory
 {
-	public static Map<Class, Map<Object[], Object>>	objects	= new HashMap<>();
+	public static Map<Class, Map<Object[], Object>>	objects	= new HashMap<Class, Map<Object[], Object>>();
 	
 	public static <T> T createObject(Class<T> clazz, Object... args)
 	{

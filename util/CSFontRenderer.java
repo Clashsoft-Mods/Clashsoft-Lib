@@ -6,11 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -20,6 +15,11 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
 public class CSFontRenderer extends FontRenderer
 {
@@ -28,7 +28,7 @@ public class CSFontRenderer extends FontRenderer
 	public static final CSFontRenderer		instance			= new CSFontRenderer(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().renderEngine, false);
 	static
 	{
-		((ReloadableResourceManager) Minecraft.getMinecraft().func_110442_L()).func_110542_a(instance);
+		((ReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(instance);
 	}
 	
 	/** Array of width of all the characters in default.png */
@@ -136,7 +136,7 @@ public class CSFontRenderer extends FontRenderer
 		float f1 = par1 / 16 * 8;
 		float f2 = (par2 ? 1.0F : 0.0F);
 		// Bind texture
-		Minecraft.getMinecraft().func_110434_K().func_110577_a(fontTextureName);
+		Minecraft.getMinecraft().renderEngine.bindTexture(fontTextureName);
 		float f3 = (this.charWidth[par1] - 0.01F);
 		
 		GL11.glPushMatrix();
@@ -163,7 +163,7 @@ public class CSFontRenderer extends FontRenderer
 	 */
 	private void loadGlyphTexture(int par1)
 	{
-		this.renderEngine.func_110577_a(this.func_111271_a(par1));
+		this.renderEngine.bindTexture(this.func_111271_a(par1));
 	}
 	
 	private ResourceLocation func_111271_a(int par1)

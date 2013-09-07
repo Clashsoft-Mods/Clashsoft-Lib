@@ -44,7 +44,7 @@ public class ItemCustomBlock extends ItemBlock
 	}
 
 	@Override
-	public String getLocalizedName(ItemStack par1ItemStack)
+	public String getItemStackDisplayName(ItemStack par1ItemStack)
 	{
 		return StatCollector.translateToLocal(theBlock.getUnlocalizedName() + "." + par1ItemStack.getItemDamage());
 	}

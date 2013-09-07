@@ -85,7 +85,7 @@ public class ItemDataHoe extends ItemDataTool
 	}
 	
 	@Override
-	public Multimap func_111205_h()
+	public Multimap getItemAttributeModifiers()
 	{
 		return HashMultimap.create();
 	}

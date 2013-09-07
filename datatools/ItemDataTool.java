@@ -7,9 +7,9 @@ import java.util.Map;
 
 import com.google.common.collect.Multimap;
 
-import clashsoft.clashsoftapi.util.ICSItemRenderable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,7 +27,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class ItemDataTool extends ItemTool implements ICSItemRenderable
+public class ItemDataTool extends ItemTool
 {
 	public float							toolDamage;
 	
@@ -98,12 +98,6 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 		{
 			icons.put(tm, par1IconRegister.registerIcon(toolType.toLowerCase() + tm.toString().toLowerCase()));
 		}
-	}
-	
-	@Override
-	public Icon getIcon(ItemStack stack)
-	{
-		return icons.get(getToolMaterialFromItemStack(stack));
 	}
 	
 	@Override
@@ -179,10 +173,10 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 	}
 	
 	@Override
-	public Multimap func_111205_h()
+	public Multimap getItemAttributeModifiers()
 	{
-		Multimap multimap = super.func_111205_h();
-		multimap.put(SharedMonsterAttributes.field_111264_e.func_111108_a(), new AttributeModifier(field_111210_e, "Weapon modifier", this.toolDamage, 0));
+		Multimap multimap = super.getItemAttributeModifiers();
+		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Tool modifier", this.toolDamage, 0));
 		return multimap;
 	}
 	
@@ -250,11 +244,5 @@ public class ItemDataTool extends ItemTool implements ICSItemRenderable
 		{
 			par3List.add(setToolMaterial(new ItemStack(this), tm));
 		}
-	}
-	
-	@Override
-	public int getGlintColor(ItemStack par1ItemStack)
-	{
-		return -1;
 	}
 }
