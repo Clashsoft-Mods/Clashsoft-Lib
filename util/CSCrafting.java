@@ -126,29 +126,37 @@ public class CSCrafting
 		return ore;
 	}
 	
-	private static final ItemStack FIRE = new ItemStack(Block.fire, 1, 0), COAL = new ItemStack(Item.coal, 1, 0);
+	private static final ItemStack	FIRE	= new ItemStack(Block.fire, 1, 0), COAL = new ItemStack(Item.coal, 1, 0);
+	
 	public static ItemStack[][] analyseCrafting(IItemMetadataRecipe r)
 	{
-		if (r.getCraftingType() == FoodRecipe.FURNACE)
+		try
 		{
-			return new ItemStack[][] { { null, (ItemStack) r.getData()[0], null }, { null, FIRE, null }, { null, COAL, null } };
-		}
-		else if (r.getCraftingType() == FoodRecipe.CRAFTING_SHAPELESS)
-		{
-			ItemStack[][] ret = new ItemStack[3][3];
-			
-			for (int i = 0; i < r.getData().length; i++)
+			if (r.getCraftingType() == FoodRecipe.FURNACE)
 			{
-				int x = (i / 3) % 3;
-				int y = i % 3;
-				ret[x][y] = (ItemStack) r.getData()[i];
+				return new ItemStack[][] { { null, (ItemStack) r.getData()[0], null }, { null, FIRE, null }, { null, COAL, null } };
 			}
-			
-			return ret;
+			else if (r.getCraftingType() == FoodRecipe.CRAFTING_SHAPELESS)
+			{
+				ItemStack[][] ret = new ItemStack[3][3];
+				
+				for (int i = 0; i < r.getData().length; i++)
+				{
+					int x = (i / 3) % 3;
+					int y = i % 3;
+					ret[x][y] = (ItemStack) r.getData()[i];
+				}
+				
+				return ret;
+			}
+			else if (r.getCraftingType() == FoodRecipe.CRAFTING)
+			{
+				return analyseCraftingShaped(r.getData());
+			}
 		}
-		else if (r.getCraftingType() == FoodRecipe.CRAFTING)
+		catch (Exception ex)
 		{
-			return analyseCraftingShaped(r.getData());
+			ex.printStackTrace();
 		}
 		return new ItemStack[][] { { null, null, null }, { null, null, null }, { null, null, null } };
 	}
@@ -164,10 +172,10 @@ public class CSCrafting
 		{
 			String[] astring = ((String[]) objects[i++]);
 			
+			k = astring.length;
 			for (int l = 0; l < astring.length; ++l)
 			{
 				String s1 = astring[l];
-				++k;
 				j = s1.length();
 				s = s + s1;
 			}
@@ -212,8 +220,8 @@ public class CSCrafting
 		{
 			for (int k1 = 0; k1 < k; ++k1)
 			{
-				int i1 = (k1 * k) + j1;
-				char c0 = s.charAt(i1);
+				int i1 = (k1 * j) + j1;
+				char c0 = s.charAt(i1 % s.length());
 				
 				if (hashmap.containsKey(c0))
 					ret[k1 % 3][j1 % 3] = ((ItemStack) hashmap.get(c0)).copy();

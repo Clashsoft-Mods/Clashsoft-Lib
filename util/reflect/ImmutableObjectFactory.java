@@ -4,8 +4,6 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-
 public class ImmutableObjectFactory
 {
 	public static Map<Class, Map<Object[], Object>>	objects	= new HashMap<>();
