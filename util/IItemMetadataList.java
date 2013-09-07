@@ -41,6 +41,8 @@ public interface IItemMetadataList
 	 */
 	public int getBlockPlaced();
 	
+	public int getMetadataPlaced();
+	
 	/**
 	 * Gets the effects.
 	 * 
