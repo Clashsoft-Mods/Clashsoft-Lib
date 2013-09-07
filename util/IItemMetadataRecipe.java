@@ -5,6 +5,9 @@ package clashsoft.clashsoftapi.util;
  */
 public interface IItemMetadataRecipe
 {
+	public static final int	CRAFTING			= 0;
+	public static final int	CRAFTING_SHAPELESS	= 1;
+	public static final int	FURNACE				= 2;
 	
 	/**
 	 * Gets the crafting type.

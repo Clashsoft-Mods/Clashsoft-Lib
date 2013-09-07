@@ -1,7 +1,12 @@
 package clashsoft.clashsoftapi.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import clashsoft.mods.morefood.food.FoodRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -119,5 +124,102 @@ public class CSCrafting
 	{
 		OreDictionary.registerOre(name, ore);
 		return ore;
+	}
+	
+	public static ItemStack[][] analyseCrafting(IItemMetadataRecipe r)
+	{
+		if (r.getCraftingType() == FoodRecipe.FURNACE)
+		{
+			return new ItemStack[][] { { null, (ItemStack) r.getData()[0], null }, { null, new ItemStack(Block.fire, 1, -1), null }, { null, new ItemStack(Item.coal), null } };
+		}
+		else if (r.getCraftingType() == FoodRecipe.CRAFTING_SHAPELESS)
+		{
+			ItemStack[][] ret = new ItemStack[3][3];
+			
+			for (int i = 0; i < r.getData().length; i++)
+			{
+				int x = (i / 3) % 3;
+				int y = i % 3;
+				ret[x][y] = (ItemStack) r.getData()[i];
+			}
+			
+			return ret;
+		}
+		else if (r.getCraftingType() == FoodRecipe.CRAFTING)
+		{
+			return analyseCraftingShaped(r.getData());
+		}
+		return new ItemStack[][] { { null, null, null }, { null, null, null }, { null, null, null } };
+	}
+	
+	public static ItemStack[][] analyseCraftingShaped(Object... objects)
+	{
+		String s = "";
+		int i = 0;
+		int j = 0; // Width
+		int k = 0; // Height
+		
+		if (objects[i] instanceof String[])
+		{
+			String[] astring = ((String[]) objects[i++]);
+			
+			for (int l = 0; l < astring.length; ++l)
+			{
+				String s1 = astring[l];
+				++k;
+				j = s1.length();
+				s = s + s1;
+			}
+		}
+		else
+		{
+			while (objects[i] instanceof String)
+			{
+				String s2 = (String) objects[i++];
+				++k;
+				j = s2.length();
+				s = s + s2;
+			}
+		}
+		
+		Map<Character, ItemStack> hashmap = new HashMap<>();
+		
+		for (; i < objects.length; i += 2)
+		{
+			Character character = (Character) objects[i];
+			ItemStack itemstack1 = null;
+			
+			if (objects[i + 1] instanceof Item)
+			{
+				itemstack1 = new ItemStack((Item) objects[i + 1]);
+			}
+			else if (objects[i + 1] instanceof Block)
+			{
+				itemstack1 = new ItemStack((Block) objects[i + 1], 1, OreDictionary.WILDCARD_VALUE);
+			}
+			else if (objects[i + 1] instanceof ItemStack)
+			{
+				itemstack1 = (ItemStack) objects[i + 1];
+			}
+			
+			hashmap.put(character, itemstack1);
+		}
+		
+		ItemStack[][] ret = new ItemStack[3][3];
+		
+		for (int j1 = 0; j1 < j; ++j1)
+		{
+			for (int k1 = 0; k1 < k; ++k1)
+			{
+				int i1 = (k1 * k) + j1;
+				char c0 = s.charAt(i1);
+				
+				if (hashmap.containsKey(c0))
+					ret[k1 % 3][j1 % 3] = ((ItemStack) hashmap.get(c0)).copy();
+				else
+					ret[k1 % 3][j1 % 3] = null;
+			}
+		}
+		return ret;
 	}
 }
