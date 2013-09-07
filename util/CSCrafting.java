@@ -126,11 +126,12 @@ public class CSCrafting
 		return ore;
 	}
 	
+	private static final ItemStack FIRE = new ItemStack(Block.fire, 1, 0), COAL = new ItemStack(Item.coal, 1, 0);
 	public static ItemStack[][] analyseCrafting(IItemMetadataRecipe r)
 	{
 		if (r.getCraftingType() == FoodRecipe.FURNACE)
 		{
-			return new ItemStack[][] { { null, (ItemStack) r.getData()[0], null }, { null, new ItemStack(Block.fire, 1, -1), null }, { null, new ItemStack(Item.coal), null } };
+			return new ItemStack[][] { { null, (ItemStack) r.getData()[0], null }, { null, FIRE, null }, { null, COAL, null } };
 		}
 		else if (r.getCraftingType() == FoodRecipe.CRAFTING_SHAPELESS)
 		{
