@@ -3,7 +3,6 @@ package clashsoft.clashsoftapi.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import clashsoft.mods.morefood.food.FoodRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;

@@ -76,7 +76,7 @@ public class ImmutableObjectFactory
 	{
 		Map<Object[], Object> map = objects.get(clazz);
 		if (map == null)
-			map = new HashMap<>();
+			map = new HashMap();
 		map.put(args, object);
 		objects.put(clazz, map);
 	}
