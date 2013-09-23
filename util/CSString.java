@@ -4,6 +4,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import net.minecraft.client.Minecraft;
+
 public class CSString
 {
 	private static final String[]	ROMANCODE	= { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
@@ -50,6 +52,22 @@ public class CSString
 			ret |= (ints[i] << (i * 4));
 		}
 		return ret;
+	}
+	
+	public static String trimStringToRenderWidth(String string, int maxRenderWidth)
+	{
+		Minecraft mc = Minecraft.getMinecraft();
+		int i = mc.fontRenderer.getStringWidth("...");
+		boolean flag = false;
+		while(string.length() > 0 && mc.fontRenderer.getStringWidth(string) + i > maxRenderWidth - 6)
+		{
+			string = string.substring(0, string.length() - 1);
+			flag = true;
+		}
+		if (flag)
+			string += "...";
+		
+		return string;
 	}
 	
 	public static String cutString(String string, int maxLineLength)

@@ -89,8 +89,9 @@ public interface IItemMetadataList
 	
 	/**
 	 * Register.
+	 * @return 
 	 */
-	public void register();
+	public IItemMetadataList register();
 	
 	/**
 	 * Sets the block placed.
