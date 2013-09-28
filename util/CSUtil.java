@@ -1,6 +1,7 @@
 package clashsoft.clashsoftapi.util;
 
 import java.awt.Color;
+import java.io.BufferedInputStream;
 import java.lang.reflect.Constructor;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -10,16 +11,23 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import clashsoft.clashsoftapi.util.update.ModUpdate;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
+
 /**
  * @author Clashsoft
  */
 public class CSUtil
 {
-	public static ScriptEngineManager	mgr				= new ScriptEngineManager();
-	public static ScriptEngine			engine			= mgr.getEngineByName("JavaScript");
+	public static ScriptEngineManager	mgr						= new ScriptEngineManager();
+	public static ScriptEngine			engine					= mgr.getEngineByName("JavaScript");
 	
-	public static final String			CURRENT_VERION	= "1.6.4";
-	public static final String			CLASHSOFT_ADFLY	= "2175784";
+	public static final String			CURRENT_VERION			= "1.6.4";
+	public static final String			CLASHSOFT_ADFLY			= "2175784";
+	
+	public static final String[]		CLASHSOFT_UPDATE_NOTES	= readWebsite("https://dl.dropboxusercontent.com/s/pxm1ki6wbtxlvuv/update.txt").split("\n");
 	
 	public static String version(int rev)
 	{
@@ -202,9 +210,9 @@ public class CSUtil
 		return CSString.makeLineList(string);
 	}
 	
-	public static String checkForUpdate(String modPrefix, String adflyName, String version)
+	public static ModUpdate checkForUpdate(String modPrefix, String adflyName, String version)
 	{
-		String newestVersion = version;
+		String newVersion = version;
 		String nextVersion = increaseRevision(version);
 		
 		while (true)
@@ -213,13 +221,27 @@ public class CSUtil
 			
 			if (b)
 			{
-				newestVersion = nextVersion;
+				newVersion = nextVersion;
 				nextVersion = increaseRevision(nextVersion);
 				continue;
 			}
 			else
-				return newestVersion;
+				break;
 		}
+		
+		String updateNotes = "";
+		for (int i = 0; i < CLASHSOFT_UPDATE_NOTES.length; i++)
+		{
+			String s = CLASHSOFT_UPDATE_NOTES[i];
+			
+			if (s.startsWith(modPrefix + "="))
+			{
+				updateNotes = s.substring(s.indexOf('=') + 1);
+				break;
+			}
+		}
+		
+		return new ModUpdate(version, newVersion, updateNotes);
 	}
 	
 	public static boolean checkWebsiteAvailable(String url)
@@ -237,6 +259,37 @@ public class CSUtil
 		catch (Exception ex)
 		{
 			return false;
+		}
+	}
+	
+	public static String readWebsite(String url)
+	{
+		try
+		{
+			URL url1 = new URL(url);
+			HttpURLConnection.setFollowRedirects(true);
+			HttpURLConnection con = (HttpURLConnection) url1.openConnection();
+			con.setDoOutput(false);
+			con.setReadTimeout(20000);
+			con.setRequestProperty("Connection", "keep-alive");
+			
+			con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/20.0");
+			((HttpURLConnection) con).setRequestMethod("GET");
+			con.setConnectTimeout(5000);
+			BufferedInputStream in = new BufferedInputStream(con.getInputStream());
+			int responseCode = con.getResponseCode();
+			StringBuffer buffer = new StringBuffer();
+			int chars_read;
+			while ((chars_read = in.read()) != -1)
+			{
+				char g = (char) chars_read;
+				buffer.append(g);
+			}
+			return buffer.toString();
+		}
+		catch (Exception ex)
+		{
+			return null;
 		}
 	}
 	
@@ -258,6 +311,16 @@ public class CSUtil
 		catch (Exception ex)
 		{
 			return version;
+		}
+	}
+	
+	public static void notifyUpdate(EntityPlayer player, String modName, ModUpdate update)
+	{
+		if (update.isValid())
+		{
+			player.addChatMessage("A new " + modName + " version is available: " + EnumChatFormatting.GREEN + update.newVersion + EnumChatFormatting.RESET + ". You are using " + EnumChatFormatting.RED + update.version);
+			if (!update.updateNotes.isEmpty())
+				player.addChatMessage("Update Notes: " + update.updateNotes);
 		}
 	}
 	
