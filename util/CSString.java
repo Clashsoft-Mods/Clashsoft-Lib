@@ -108,4 +108,9 @@ public class CSString
 			return Double.NaN;
 		}
 	}
+
+	public static String firstCharToUpperCase(String string)
+	{
+		return Character.toUpperCase(string.charAt(0)) + string.substring(1);
+	}
 }

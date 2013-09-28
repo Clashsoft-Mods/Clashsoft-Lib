@@ -2,11 +2,9 @@ package clashsoft.clashsoftapi.util;
 
 import java.awt.Color;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -17,10 +15,16 @@ import javax.script.ScriptException;
  */
 public class CSUtil
 {
-	public static ScriptEngineManager mgr = new ScriptEngineManager();
-	public static ScriptEngine engine = mgr.getEngineByName("JavaScript");
+	public static ScriptEngineManager	mgr				= new ScriptEngineManager();
+	public static ScriptEngine			engine			= mgr.getEngineByName("JavaScript");
 	
-	public static final String	CURRENT_VERION	= "1.6.2";
+	public static final String			CURRENT_VERION	= "1.6.4";
+	public static final String			CLASHSOFT_ADFLY	= "2175784";
+	
+	public static String version(int rev)
+	{
+		return CURRENT_VERION + "-" + rev;
+	}
 	
 	public static void log(Object o)
 	{
@@ -30,11 +34,12 @@ public class CSUtil
 	/**
 	 * First algorythm to sort a List by using HashSets
 	 * 
-	 * @param list List to sort
+	 * @param list
+	 *            List to sort
 	 * @return Sorted List
 	 */
 	public static List removeDuplicates(List list)
-	{	
+	{
 		if (list != null && list.size() > 0)
 		{
 			Set set = new HashSet(list);
@@ -197,8 +202,67 @@ public class CSUtil
 		return CSString.makeLineList(string);
 	}
 	
+	public static String checkForUpdate(String modPrefix, String adflyName, String version)
+	{
+		String newestVersion = version;
+		String nextVersion = increaseRevision(version);
+		
+		while (true)
+		{
+			boolean b = checkWebsiteAvailable("http://adf.ly/" + adflyName + "/" + modPrefix + nextVersion.replaceAll("\\p{Punct}", ""));
+			
+			if (b)
+			{
+				newestVersion = nextVersion;
+				nextVersion = increaseRevision(nextVersion);
+				continue;
+			}
+			else
+				return newestVersion;
+		}
+	}
+	
+	public static boolean checkWebsiteAvailable(String url)
+	{
+		try
+		{
+			URL url1 = new URL(url);
+			
+			HttpURLConnection.setFollowRedirects(false);
+			HttpURLConnection con = (HttpURLConnection) url1.openConnection();
+			con.setRequestMethod("HEAD");
+			int response = con.getResponseCode();
+			return response == HttpURLConnection.HTTP_OK;
+		}
+		catch (Exception ex)
+		{
+			return false;
+		}
+	}
+	
+	public static String increaseRevision(String version)
+	{
+		int i = version.indexOf('-');
+		if (i < 0)
+			return version;
+		
+		String s1 = version.substring(0, i + 1);
+		String s2 = version.substring(i + 1, version.length());
+		
+		try
+		{
+			int i1 = Integer.parseInt(s2);
+			
+			return s1 + (i1 + 1);
+		}
+		catch (Exception ex)
+		{
+			return version;
+		}
+	}
+	
 	public static double calculateFromString(String string)
-	{	
+	{
 		try
 		{
 			return (Double) engine.eval(string);
