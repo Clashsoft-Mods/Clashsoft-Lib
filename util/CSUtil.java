@@ -210,37 +210,26 @@ public class CSUtil
 		return CSString.makeLineList(string);
 	}
 	
-	public static ModUpdate checkForUpdate(String modPrefix, String adflyName, String version)
+	public static ModUpdate checkForUpdate(String modName, String adflyName /* Unneccessary */, String version)
 	{
 		String newVersion = version;
-		String nextVersion = increaseRevision(version);
-		
-		while (true)
-		{
-			boolean b = checkWebsiteAvailable("http://adf.ly/" + adflyName + "/" + modPrefix + nextVersion.replaceAll("\\p{Punct}", ""));
-			
-			if (b)
-			{
-				newVersion = nextVersion;
-				nextVersion = increaseRevision(nextVersion);
-				continue;
-			}
-			else
-				break;
-		}
-		
 		String updateNotes = "";
 		for (int i = 0; i < CLASHSOFT_UPDATE_NOTES.length; i++)
 		{
 			String s = CLASHSOFT_UPDATE_NOTES[i];
 			
-			if (s.startsWith(modPrefix + "="))
+			if (s.startsWith(modName))
 			{
-				updateNotes = s.substring(s.indexOf('=') + 1);
+				int i0 = s.indexOf(':');
+				int i1 = s.indexOf('=');
+				if (i0 == -1 || i1 == -1)
+					break;
+				
+				newVersion = s.substring(i0 + 1, i1);
+				updateNotes = s.substring(i1 + 1);
 				break;
 			}
-		}
-		
+		}		
 		return new ModUpdate(version, newVersion, updateNotes);
 	}
 	
@@ -320,7 +309,7 @@ public class CSUtil
 		{
 			player.addChatMessage("A new " + modName + " version is available: " + EnumChatFormatting.GREEN + update.newVersion + EnumChatFormatting.RESET + ". You are using " + EnumChatFormatting.RED + update.version);
 			if (!update.updateNotes.isEmpty())
-				player.addChatMessage("Update Notes: " + update.updateNotes);
+				player.addChatMessage(EnumChatFormatting.RESET + "Update Notes: " + EnumChatFormatting.ITALIC + update.updateNotes);
 		}
 	}
 	

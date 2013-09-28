@@ -15,6 +15,6 @@ public class ModUpdate
 	
 	public boolean isValid()
 	{
-		return version != newVersion;
+		return !version.equals(newVersion);
 	}
 }
