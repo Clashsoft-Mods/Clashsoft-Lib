@@ -1,20 +1,12 @@
 package clashsoft.clashsoftapi.util;
 
 import java.awt.Color;
-import java.io.BufferedInputStream;
 import java.lang.reflect.Constructor;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.*;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
-import clashsoft.clashsoftapi.util.update.ModUpdate;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
 
 /**
  * @author Clashsoft
@@ -23,16 +15,6 @@ public class CSUtil
 {
 	public static ScriptEngineManager	mgr						= new ScriptEngineManager();
 	public static ScriptEngine			engine					= mgr.getEngineByName("JavaScript");
-	
-	public static final String			CURRENT_VERION			= "1.6.4";
-	public static final String			CLASHSOFT_ADFLY			= "2175784";
-	
-	public static final String[]		CLASHSOFT_UPDATE_NOTES	= readWebsite("https://dl.dropboxusercontent.com/s/pxm1ki6wbtxlvuv/update.txt").split("\n");
-	
-	public static String version(int rev)
-	{
-		return CURRENT_VERION + "-" + rev;
-	}
 	
 	public static void log(Object o)
 	{
@@ -208,109 +190,6 @@ public class CSUtil
 	public static String[] makeLineList(String string)
 	{
 		return CSString.makeLineList(string);
-	}
-	
-	public static ModUpdate checkForUpdate(String modName, String adflyName /* Unneccessary */, String version)
-	{
-		String newVersion = version;
-		String updateNotes = "";
-		for (int i = 0; i < CLASHSOFT_UPDATE_NOTES.length; i++)
-		{
-			String s = CLASHSOFT_UPDATE_NOTES[i];
-			
-			if (s.startsWith(modName))
-			{
-				int i0 = s.indexOf(':');
-				int i1 = s.indexOf('=');
-				if (i0 == -1 || i1 == -1)
-					break;
-				
-				newVersion = s.substring(i0 + 1, i1);
-				updateNotes = s.substring(i1 + 1);
-				break;
-			}
-		}		
-		return new ModUpdate(version, newVersion, updateNotes);
-	}
-	
-	public static boolean checkWebsiteAvailable(String url)
-	{
-		try
-		{
-			URL url1 = new URL(url);
-			
-			HttpURLConnection.setFollowRedirects(false);
-			HttpURLConnection con = (HttpURLConnection) url1.openConnection();
-			con.setRequestMethod("HEAD");
-			int response = con.getResponseCode();
-			return response == HttpURLConnection.HTTP_OK;
-		}
-		catch (Exception ex)
-		{
-			return false;
-		}
-	}
-	
-	public static String readWebsite(String url)
-	{
-		try
-		{
-			URL url1 = new URL(url);
-			HttpURLConnection.setFollowRedirects(true);
-			HttpURLConnection con = (HttpURLConnection) url1.openConnection();
-			con.setDoOutput(false);
-			con.setReadTimeout(20000);
-			con.setRequestProperty("Connection", "keep-alive");
-			
-			con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/20.0");
-			((HttpURLConnection) con).setRequestMethod("GET");
-			con.setConnectTimeout(5000);
-			BufferedInputStream in = new BufferedInputStream(con.getInputStream());
-			int responseCode = con.getResponseCode();
-			StringBuffer buffer = new StringBuffer();
-			int chars_read;
-			while ((chars_read = in.read()) != -1)
-			{
-				char g = (char) chars_read;
-				buffer.append(g);
-			}
-			return buffer.toString();
-		}
-		catch (Exception ex)
-		{
-			return null;
-		}
-	}
-	
-	public static String increaseRevision(String version)
-	{
-		int i = version.indexOf('-');
-		if (i < 0)
-			return version;
-		
-		String s1 = version.substring(0, i + 1);
-		String s2 = version.substring(i + 1, version.length());
-		
-		try
-		{
-			int i1 = Integer.parseInt(s2);
-			
-			return s1 + (i1 + 1);
-		}
-		catch (Exception ex)
-		{
-			return version;
-		}
-	}
-	
-	public static void notifyUpdate(EntityPlayer player, String modName, ModUpdate update)
-	{
-		if (update.isValid())
-		{
-			player.addChatMessage("A new " + modName + " version is available: " + EnumChatFormatting.GREEN + update.newVersion + EnumChatFormatting.RESET + ". You are using " + EnumChatFormatting.RED + update.version);
-			if (!update.updateNotes.isEmpty())
-				player.addChatMessage(EnumChatFormatting.RESET + "Update Notes: " + EnumChatFormatting.ITALIC + update.updateNotes);
-		}
 	}
 	
 	public static double calculateFromString(String string)

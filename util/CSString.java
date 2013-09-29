@@ -113,4 +113,12 @@ public class CSString
 	{
 		return Character.toUpperCase(string.charAt(0)) + string.substring(1);
 	}
+
+	public static String getInitials(String string)
+	{
+		StringBuilder builder = new StringBuilder(string.length());
+		for (String s : string.split(" "))
+			builder.append(Character.toUpperCase(s.charAt(0)));
+		return builder.toString();
+	}
 }
