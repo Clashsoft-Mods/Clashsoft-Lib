@@ -1,6 +1,6 @@
 package clashsoft.clashsoftapi.util.update;
 
-import clashsoft.clashsoftapi.ClashsoftAPI;
+import clashsoft.clashsoftapi.util.CSUpdate;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -25,12 +25,12 @@ public class ModUpdate
 	
 	public boolean isValid()
 	{
-		return !version.equals(newVersion);
+		return CSUpdate.compareVersion(version, newVersion) == -1 && newVersion.startsWith(CSUpdate.CURRENT_VERION);
 	}
 	
 	public void install(final EntityPlayer player)
 	{
-		if (ClashsoftAPI.autoUpdate && isValid() && !updateUrl.isEmpty())
+		if (isValid() && !updateUrl.isEmpty())
 		{
 			new InstallUpdateThread(this, player).start();
 		}

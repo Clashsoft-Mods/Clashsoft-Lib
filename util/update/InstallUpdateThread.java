@@ -26,6 +26,8 @@ public class InstallUpdateThread extends Thread
 	@Override
 	public void run()
 	{
+		player.addChatMessage("Installing " + update.modName + " version " + update.newVersion);
+		
 		File file;
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 			file = Minecraft.getMinecraft().mcDataDir;
@@ -34,16 +36,16 @@ public class InstallUpdateThread extends Thread
 		
 		File mods = new File(file, "mods");
 		
-		File output = new File(mods, update.updateUrl.substring(update.updateUrl.lastIndexOf('/')).replace('+', ' '));
-		
-		if (output.exists())
-		{
-			player.addChatMessage(EnumChatFormatting.GREEN + "Latest Mod version found - Skipping download.");
-			return;
-		}
-		
 		try
 		{
+			File output = new File(mods, update.updateUrl.substring(update.updateUrl.lastIndexOf('/')).replace('+', ' '));
+			
+			if (output.exists())
+			{
+				player.addChatMessage(EnumChatFormatting.GREEN + "Latest Mod version found - Skipping download.");
+				return;
+			}
+			
 			for (File f : mods.listFiles())
 			{
 				if (f.getName().startsWith(update.modName))

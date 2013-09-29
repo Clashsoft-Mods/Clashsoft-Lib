@@ -3,7 +3,10 @@ package clashsoft.clashsoftapi.util;
 import java.io.BufferedInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
+import clashsoft.clashsoftapi.ClashsoftAPI;
 import clashsoft.clashsoftapi.util.update.ModUpdate;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,11 +14,12 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class CSUpdate
 {
-
-	public static final String			CURRENT_VERION			= "1.6.4";
-	public static final String			CLASHSOFT_ADFLY			= "http://adf.ly/2175784/";
-	public static final String			CLASHSOFT_UPDATE_NOTES	= "https://dl.dropboxusercontent.com/s/pxm1ki6wbtxlvuv/update.txt";
-
+	protected static Map<String, ModUpdate>	foundUpdates			= new HashMap();
+	
+	public static final String				CURRENT_VERION			= "1.6.4";
+	public static final String				CLASHSOFT_ADFLY			= "http://adf.ly/2175784/";
+	public static final String				CLASHSOFT_UPDATE_NOTES	= "https://dl.dropboxusercontent.com/s/pxm1ki6wbtxlvuv/update.txt";
+	
 	public static String version(int rev)
 	{
 		return CURRENT_VERION + "-" + rev;
@@ -56,10 +60,19 @@ public class CSUpdate
 				break;
 			}
 		}
-		ModUpdate update = new ModUpdate(modName, modInitials, version, newVersion, updateNotes, updateUrl);
-		return update;
+		
+		if (version != newVersion)
+		{
+			ModUpdate update = new ModUpdate(modName, modInitials, version, newVersion, updateNotes, updateUrl);
+			
+			if (update.isValid())
+				foundUpdates.put(modName, update);
+			
+			return update;
+		}
+		return null;
 	}
-
+	
 	public static boolean checkWebsiteAvailable(String url)
 	{
 		try
@@ -77,7 +90,7 @@ public class CSUpdate
 			return false;
 		}
 	}
-
+	
 	public static String[] readWebsite(String url)
 	{
 		try
@@ -116,7 +129,26 @@ public class CSUpdate
 			player.addChatMessage("A new " + modName + " version is available: " + EnumChatFormatting.GREEN + update.newVersion + EnumChatFormatting.RESET + ". You are using " + EnumChatFormatting.RED + update.version);
 			if (!update.updateNotes.isEmpty())
 				player.addChatMessage(EnumChatFormatting.RESET + "Update Notes: " + EnumChatFormatting.ITALIC + update.updateNotes);
-			update.install(player);
+			
+			if (ClashsoftAPI.autoUpdate)
+				update.install(player);
+			else
+				player.addChatMessage(EnumChatFormatting.RED + "Automatic updates disabled. Type \"@Update " + modName + "\" to manually install the update.");
 		}
+	}
+	
+	public static void update(EntityPlayer player, String modName)
+	{
+		ModUpdate update = foundUpdates.get(modName);
+		if (update != null)
+			update.install(player);
+	}
+	
+	public static int compareVersion(String version1, String version2)
+	{
+		float f1 = Float.parseFloat(version1.replace(".", "").replace('-', '.'));
+		float f2 = Float.parseFloat(version2.replace(".", "").replace('-', '.'));
+		
+		return Float.compare(f1, f2);
 	}
 }

@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 @Mod(modid = "ClashsoftAPI", name = "Clashsoft API", version = ClashsoftAPI.VERSION)
@@ -49,6 +50,19 @@ public class ClashsoftAPI
 		{	
 			ModUpdate update = CSUpdate.checkForUpdate("Clashsoft API", "csapi", ClashsoftAPI.VERSION);
 			CSUpdate.notifyUpdate((EntityPlayer) event.entity, "Clashsoft API", update);
+		}
+	}
+	
+	@ForgeSubscribe
+	public void chatMessageSent(ServerChatEvent event)
+	{
+		String message = event.message;
+		
+		if (message.startsWith(">Update "))
+		{
+			String modName = message.substring(message.indexOf(' ') + 1);
+			CSUpdate.update(event.player, modName);
+			event.setCanceled(true);
 		}
 	}
 }
