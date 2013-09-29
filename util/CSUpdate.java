@@ -30,7 +30,7 @@ public class CSUpdate
 	{
 		return checkForUpdate(modName, modInitials, version, readWebsite(CLASHSOFT_UPDATE_NOTES));
 	}
-
+	
 	public static ModUpdate checkForUpdate(String modName, String modInitials, String version, String[] updateNoteFile)
 	{
 		String newVersion = version;
@@ -108,10 +108,10 @@ public class CSUpdate
 			return null;
 		}
 	}
-
+	
 	public static void notifyUpdate(EntityPlayer player, String modName, ModUpdate update)
 	{
-		if (update.isValid())
+		if (update != null && update.isValid())
 		{
 			player.addChatMessage("A new " + modName + " version is available: " + EnumChatFormatting.GREEN + update.newVersion + EnumChatFormatting.RESET + ". You are using " + EnumChatFormatting.RED + update.version);
 			if (!update.updateNotes.isEmpty())
@@ -119,5 +119,4 @@ public class CSUpdate
 			update.install(player);
 		}
 	}
-	
 }

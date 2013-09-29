@@ -13,7 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 
 public class ModUpdate
-{
+{	
 	public String	modName;
 	public String	modInitials;
 	public String	version;
@@ -56,10 +56,22 @@ public class ModUpdate
 				File output = new File(mods, updateUrl.substring(updateUrl.lastIndexOf('/')).replace('+', ' '));
 				
 				if (output.exists())
+				{
+					player.addChatMessage(EnumChatFormatting.GREEN + "Latest Mod version found - Skipping download.");
 					return;
+				}
 				
 				try
 				{
+					for (File f : mods.listFiles())
+					{
+						if (f.getName().startsWith(modName))
+						{
+							player.addChatMessage(EnumChatFormatting.YELLOW + "Old Mod version detected (" + f.getName() + "). Deleting.");
+							f.delete();
+						}
+					}
+					
 					URL url = new URL(updateUrl);
 					HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 					connection.setRequestMethod("GET");
@@ -67,10 +79,6 @@ public class ModUpdate
 					FileOutputStream out = new FileOutputStream(output);
 					copy(in, out, 1024);
 					out.close();
-					
-					for (File f : file.listFiles())
-						if (f.getName().startsWith(modName))
-							f.delete();
 					
 					player.addChatMessage(EnumChatFormatting.GREEN + "Update installed. Restart the game to apply changes.");
 				}
