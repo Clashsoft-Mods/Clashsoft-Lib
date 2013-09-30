@@ -20,6 +20,55 @@ public class CSUpdate
 	public static final String				CLASHSOFT_ADFLY			= "http://adf.ly/2175784/";
 	public static final String				CLASHSOFT_UPDATE_NOTES	= "https://dl.dropboxusercontent.com/s/pxm1ki6wbtxlvuv/update.txt";
 	
+	public static boolean checkWebsiteAvailable(String url)
+	{
+		try
+		{
+			URL url1 = new URL(url);
+			
+			HttpURLConnection.setFollowRedirects(false);
+			HttpURLConnection con = (HttpURLConnection) url1.openConnection();
+			con.setRequestMethod("HEAD");
+			int response = con.getResponseCode();
+			return response == HttpURLConnection.HTTP_OK;
+		}
+		catch (Exception ex)
+		{
+			return false;
+		}
+	}
+	
+	public static String[] readWebsite(String url)
+	{
+		try
+		{
+			URL url1 = new URL(url);
+			HttpURLConnection.setFollowRedirects(true);
+			HttpURLConnection con = (HttpURLConnection) url1.openConnection();
+			con.setDoOutput(false);
+			con.setReadTimeout(20000);
+			con.setRequestProperty("Connection", "keep-alive");
+			
+			con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/20.0");
+			((HttpURLConnection) con).setRequestMethod("GET");
+			con.setConnectTimeout(5000);
+			BufferedInputStream in = new BufferedInputStream(con.getInputStream());
+			int responseCode = con.getResponseCode();
+			StringBuffer buffer = new StringBuffer();
+			int chars_read;
+			while ((chars_read = in.read()) != -1)
+			{
+				char g = (char) chars_read;
+				buffer.append(g);
+			}
+			return buffer.toString().split("\n");
+		}
+		catch (Exception ex)
+		{
+			return null;
+		}
+	}
+	
 	public static String version(int rev)
 	{
 		return CURRENT_VERION + "-" + rev;
@@ -73,55 +122,6 @@ public class CSUpdate
 		return null;
 	}
 	
-	public static boolean checkWebsiteAvailable(String url)
-	{
-		try
-		{
-			URL url1 = new URL(url);
-			
-			HttpURLConnection.setFollowRedirects(false);
-			HttpURLConnection con = (HttpURLConnection) url1.openConnection();
-			con.setRequestMethod("HEAD");
-			int response = con.getResponseCode();
-			return response == HttpURLConnection.HTTP_OK;
-		}
-		catch (Exception ex)
-		{
-			return false;
-		}
-	}
-	
-	public static String[] readWebsite(String url)
-	{
-		try
-		{
-			URL url1 = new URL(url);
-			HttpURLConnection.setFollowRedirects(true);
-			HttpURLConnection con = (HttpURLConnection) url1.openConnection();
-			con.setDoOutput(false);
-			con.setReadTimeout(20000);
-			con.setRequestProperty("Connection", "keep-alive");
-			
-			con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/20.0");
-			((HttpURLConnection) con).setRequestMethod("GET");
-			con.setConnectTimeout(5000);
-			BufferedInputStream in = new BufferedInputStream(con.getInputStream());
-			int responseCode = con.getResponseCode();
-			StringBuffer buffer = new StringBuffer();
-			int chars_read;
-			while ((chars_read = in.read()) != -1)
-			{
-				char g = (char) chars_read;
-				buffer.append(g);
-			}
-			return buffer.toString().split("\n");
-		}
-		catch (Exception ex)
-		{
-			return null;
-		}
-	}
-	
 	public static void notifyUpdate(EntityPlayer player, String modName, ModUpdate update)
 	{
 		if (update != null && update.isValid())
@@ -146,9 +146,14 @@ public class CSUpdate
 	
 	public static int compareVersion(String version1, String version2)
 	{
-		float f1 = Float.parseFloat(version1.replace(".", "").replace('-', '.'));
-		float f2 = Float.parseFloat(version2.replace(".", "").replace('-', '.'));
+		int mcv1 = Integer.parseInt(version1.substring(0, version1.indexOf('-')).replace(".", ""));
+		int mcv2 = Integer.parseInt(version2.substring(0, version2.indexOf('-')).replace(".", ""));
+		int rev1 = Integer.parseInt(version1.substring(version1.indexOf('-') + 1, version1.length()));
+		int rev2 = Integer.parseInt(version2.substring(version2.indexOf('-') + 1, version2.length()));
 		
-		return Float.compare(f1, f2);
+		int v1 = mcv1 << 4 | rev1;
+		int v2 = mcv2 << 4 | rev2;
+		
+		return Integer.compare(v1, v2);
 	}
 }
