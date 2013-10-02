@@ -1,39 +1,81 @@
 package clashsoft.clashsoftapi.util;
 
+/**
+ * The Class CSVar.
+ * This class a wrapper class for variables, it stores their in-code name, their current value and their previous value.
+ * 
+ * @param <T>
+ *            the generic variable type
+ */
 public class CSVar<T>
 {
-	public final String name;
-	public T value;
-	public T prevValue;
+	/** The in-code name. */
+	public final String	name;
 	
+	/** The value. */
+	public T			value;
+	
+	/** The previous value. */
+	public T			prevValue;
+	
+	/**
+	 * Instantiates a new Clashsoft variable.
+	 * 
+	 * @param name
+	 *            the name
+	 * @param value
+	 *            the value
+	 */
 	public CSVar(String name, T value)
 	{
 		this.name = name;
 		this.value = value;
 	}
 	
+	/**
+	 * Sets the new value and sets the previous value.
+	 * 
+	 * @param value
+	 *            the value
+	 */
 	public void set(T value)
 	{
 		this.prevValue = this.value;
 		this.value = value;
 	}
 	
+	/**
+	 * Sets the current value to the previous value.
+	 */
 	public void unset()
 	{
 		this.value = this.prevValue;
 		this.prevValue = null;
 	}
 	
+	/**
+	 * Gets the value.
+	 * 
+	 * @return the value
+	 */
 	public T get()
 	{
-		return value;
+		return this.value;
 	}
 	
-	public T getLast()
+	/**
+	 * Gets the previous value.
+	 * 
+	 * @return the previous value
+	 */
+	public T getPrevious()
 	{
-		return prevValue;
+		return this.prevValue;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode()
 	{
@@ -44,7 +86,10 @@ public class CSVar<T>
 		result = prime * result + ((this.value == null) ? 0 : this.value.hashCode());
 		return result;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -52,7 +97,7 @@ public class CSVar<T>
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (this.getClass() != obj.getClass())
 			return false;
 		CSVar other = (CSVar) obj;
 		if (this.prevValue == null)
@@ -78,7 +123,10 @@ public class CSVar<T>
 			return false;
 		return true;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString()
 	{

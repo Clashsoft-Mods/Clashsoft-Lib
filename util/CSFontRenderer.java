@@ -136,7 +136,7 @@ public class CSFontRenderer extends FontRenderer
 		float f1 = par1 / 16 * 8;
 		float f2 = (par2 ? 1.0F : 0.0F);
 		// Bind texture
-		Minecraft.getMinecraft().renderEngine.bindTexture(fontTextureName);
+		Minecraft.getMinecraft().renderEngine.bindTexture(this.fontTextureName);
 		float f3 = (this.charWidth[par1] - 0.01F);
 		
 		GL11.glPushMatrix();
@@ -366,11 +366,11 @@ public class CSFontRenderer extends FontRenderer
 			
 			if ((c0 == '@' || c0 == '\u00a7') && i + 9 < par1Str.length() && par1Str.charAt(i + 1) == 'C')
 			{
-				resetStyles();
+				this.resetStyles();
 				
-				red = 1F;
-				green = 1F;
-				blue = 1F;
+				this.red = 1F;
+				this.green = 1F;
+				this.blue = 1F;
 				
 				String regex = "0123456789abcdefklmnorC[]";
 				char j0 = par1Str.charAt(i + 1);
@@ -399,21 +399,21 @@ public class CSFontRenderer extends FontRenderer
 					
 					float r = color >> 16;
 					float g = color >> 8 & 255;
-		float b = color & 255;
-		
-		if (par2)
-		{
-			r /= 4;
-			g /= 4;
-			b /= 4;
-		}
-		
-		this.red = r / 255.0F;
-		this.green = g / 255.0F;
-		this.blue = b / 255.0F;
-		this.textColor = ((int) r & 255) << 16 | ((int) g & 255) << 8 | (int) b & 255;
-		
-		GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
+					float b = color & 255;
+					
+					if (par2)
+					{
+						r /= 4;
+						g /= 4;
+						b /= 4;
+					}
+					
+					this.red = r / 255.0F;
+					this.green = g / 255.0F;
+					this.blue = b / 255.0F;
+					this.textColor = ((int) r & 255) << 16 | ((int) g & 255) << 8 | (int) b & 255;
+					
+					GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
 				}
 				for (int l = i; l < par1Str.length(); l++)
 				{
@@ -431,7 +431,7 @@ public class CSFontRenderer extends FontRenderer
 				
 				if (j < 16)
 				{
-					resetStyles();
+					this.resetStyles();
 					
 					if (j < 0 || j > 15)
 					{
@@ -709,16 +709,16 @@ public class CSFontRenderer extends FontRenderer
 			else if (this.glyphWidth[par1] != 0)
 			{
 				int j = this.glyphWidth[par1] >>> 4;
-						int k = this.glyphWidth[par1] & 15;
-						
-						if (k > 7)
-						{
-							k = 15;
-							j = 0;
-						}
-						
-						++k;
-						return (k - j) / 2 + 1;
+				int k = this.glyphWidth[par1] & 15;
+				
+				if (k > 7)
+				{
+					k = 15;
+					j = 0;
+				}
+				
+				++k;
+				return (k - j) / 2 + 1;
 			}
 			else
 			{

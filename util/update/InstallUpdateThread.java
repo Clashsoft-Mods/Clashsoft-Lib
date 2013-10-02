@@ -12,17 +12,34 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 
+/**
+ * The Class InstallUpdateThread.
+ */
 public class InstallUpdateThread extends Thread
 {
+	/** The mod update to install. */
 	private ModUpdate update;
+	
+	/** The player used for chat message notifications. */
 	private EntityPlayer player;
 	
+	/**
+	 * Instantiates a new install update thread.
+	 * 
+	 * @param update
+	 *            the update
+	 * @param player
+	 *            the player
+	 */
 	public InstallUpdateThread(ModUpdate update, EntityPlayer player)
 	{
 		this.update = update;
 		this.player = player;
 	}
 	
+	/**
+	 * Installs the mod update by downloading the file from {@link ModUpdate#updateUrl} and deleting old mod versions.
+	 */
 	@Override
 	public void run()
 	{
@@ -72,6 +89,18 @@ public class InstallUpdateThread extends Thread
 		}
 	}
 	
+	/**
+	 * Copys the data from an input stream to an output stream.
+	 * 
+	 * @param input
+	 *            the input
+	 * @param output
+	 *            the output
+	 * @param bufferSize
+	 *            the buffer size
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
 	private static void copy(InputStream input, OutputStream output, int bufferSize) throws IOException
 	{
 		byte[] buf = new byte[bufferSize];

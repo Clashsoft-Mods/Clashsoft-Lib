@@ -7,13 +7,21 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
 
+/**
+ * The Class CSBlocks.
+ * <p>
+ * This class adds several methods for block adding.
+ */
 public class CSBlocks
 {
+	
 	/**
-	 * Registers a Block and its name
+	 * Registers a Block and its name.
 	 * 
 	 * @param par1Block
+	 *            the par1 block
 	 * @param par2
+	 *            the par2
 	 */
 	public static void addBlock(Block par1Block, String par2)
 	{
@@ -22,28 +30,36 @@ public class CSBlocks
 	}
 	
 	/**
-	 * Registers a Block and its name
+	 * Registers a Block and its name to a block item.
 	 * 
-	 * @param par1Block
-	 * @param par2
+	 * @param block
+	 *            the block
+	 * @param itemClass
+	 *            the item class
+	 * @param name
+	 *            the name
 	 */
-	public static void addBlock(Block par1Block, Class<? extends ItemBlock> itemClass, String par2)
+	public static void addBlock(Block block, Class<? extends ItemBlock> itemClass, String name)
 	{
-		GameRegistry.registerBlock(par1Block, itemClass, par2);
-		ModLoader.addName(par1Block, par2);
+		GameRegistry.registerBlock(block, itemClass, name);
+		ModLoader.addName(block, name);
 	}
 	
 	/**
-	 * Register a block with its name and an recipe for it
+	 * Register a block with its name and an recipe for it.
 	 * 
-	 * @param par1Block
-	 * @param par2
-	 * @param par3
-	 * @param par4ArrayOfObj
+	 * @param block
+	 *            the block
+	 * @param name
+	 *            the name
+	 * @param craftingAmount
+	 *            the crafting amount
+	 * @param recipe
+	 *            the recipe
 	 */
-	public static void addBlockWithRecipe(Block par1Block, String par2, int par3, Object[] par4ArrayOfObj)
+	public static void addBlockWithRecipe(Block block, String name, int craftingAmount, Object... recipe)
 	{
-		addBlock(par1Block, par2);
-		ModLoader.addRecipe(new ItemStack(par1Block, par3), par4ArrayOfObj);
+		addBlock(block, name);
+		CSCrafting.addCrafting(new ItemStack(block, craftingAmount), recipe);
 	}
 }

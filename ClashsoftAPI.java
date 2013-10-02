@@ -18,13 +18,13 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 @Mod(modid = "ClashsoftAPI", name = "Clashsoft API", version = ClashsoftAPI.VERSION)
 public class ClashsoftAPI
 {
-	public static final int REVISION = 3;
-	public static final String VERSION = CSUpdate.CURRENT_VERION + "-" + REVISION;
+	public static final int		REVISION	= 5;
+	public static final String	VERSION		= CSUpdate.CURRENT_VERION + "-" + REVISION;
 	
 	@Instance("ClashsoftAPI")
-	public static ClashsoftAPI		instance;
+	public static ClashsoftAPI	instance;
 	
-	public static boolean autoUpdate = true;
+	public static boolean		autoUpdate	= true;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -47,7 +47,7 @@ public class ClashsoftAPI
 	public void playerJoined(EntityJoinWorldEvent event)
 	{
 		if (event.entity instanceof EntityPlayer)
-		{	
+		{
 			ModUpdate update = CSUpdate.checkForUpdate("Clashsoft API", "csapi", ClashsoftAPI.VERSION);
 			CSUpdate.notifyUpdate((EntityPlayer) event.entity, "Clashsoft API", update);
 		}

@@ -12,14 +12,33 @@ import clashsoft.clashsoftapi.util.update.ModUpdate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
+/**
+ * The Class CSUpdate.
+ * 
+ * This class adds several methods for updating mods.
+ */
 public class CSUpdate
 {
+	
+	/** The found updates. */
 	protected static Map<String, ModUpdate>	foundUpdates			= new HashMap();
 	
+	/** The Constant CURRENT_VERION. */
 	public static final String				CURRENT_VERION			= "1.6.4";
+	
+	/** The Constant CLASHSOFT_ADFLY. */
 	public static final String				CLASHSOFT_ADFLY			= "http://adf.ly/2175784/";
+	
+	/** The Constant CLASHSOFT_UPDATE_NOTES. */
 	public static final String				CLASHSOFT_UPDATE_NOTES	= "https://dl.dropboxusercontent.com/s/pxm1ki6wbtxlvuv/update.txt";
 	
+	/**
+	 * Checks if the website is available.
+	 * 
+	 * @param url
+	 *            the url
+	 * @return true, if available
+	 */
 	public static boolean checkWebsiteAvailable(String url)
 	{
 		try
@@ -38,6 +57,13 @@ public class CSUpdate
 		}
 	}
 	
+	/**
+	 * Reads a website or downloads its contents.
+	 * 
+	 * @param url
+	 *            the url
+	 * @return the string[]
+	 */
 	public static String[] readWebsite(String url)
 	{
 		try
@@ -50,7 +76,7 @@ public class CSUpdate
 			con.setRequestProperty("Connection", "keep-alive");
 			
 			con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/20.0");
-			((HttpURLConnection) con).setRequestMethod("GET");
+			con.setRequestMethod("GET");
 			con.setConnectTimeout(5000);
 			BufferedInputStream in = new BufferedInputStream(con.getInputStream());
 			int responseCode = con.getResponseCode();
@@ -69,29 +95,69 @@ public class CSUpdate
 		}
 	}
 	
+	/**
+	 * Creates a CLASHSOFT UNIQUE VERSION (e.g. v1.6.4-4)
+	 * 
+	 * @param rev
+	 *            the rev
+	 * @return the string
+	 */
 	public static String version(int rev)
 	{
 		return CURRENT_VERION + "-" + rev;
 	}
 	
+	/**
+	 * Checks if an update for Clashsoft mod is available.
+	 * 
+	 * @param modName
+	 *            the mod name
+	 * @param version
+	 *            the current version
+	 * @return the mod update
+	 */
 	public static ModUpdate checkForUpdate(String modName, String version)
 	{
 		return checkForUpdate(modName, CSString.getInitials(modName).toLowerCase(), version);
 	}
 	
+	/**
+	 * Checks if an update for Clashsoft mod is available.
+	 * 
+	 * @param modName
+	 *            the mod name
+	 * @param modInitials
+	 *            the mod initials
+	 * @param version
+	 *            the version
+	 * @return the mod update
+	 */
 	public static ModUpdate checkForUpdate(String modName, String modInitials, String version)
 	{
 		return checkForUpdate(modName, modInitials, version, readWebsite(CLASHSOFT_UPDATE_NOTES));
 	}
 	
-	public static ModUpdate checkForUpdate(String modName, String modInitials, String version, String[] updateNoteFile)
+	/**
+	 * Checks if an update for a mod is available by reading the update file.
+	 * 
+	 * @param modName
+	 *            the mod name
+	 * @param modInitials
+	 *            the mod initials
+	 * @param version
+	 *            the version
+	 * @param updateFile
+	 *            the update file
+	 * @return the mod update
+	 */
+	public static ModUpdate checkForUpdate(String modName, String modInitials, String version, String[] updateFile)
 	{
 		String newVersion = version;
 		String updateNotes = "";
 		String updateUrl = "";
-		for (int i = 0; i < updateNoteFile.length; i++)
+		for (int i = 0; i < updateFile.length; i++)
 		{
-			String s = updateNoteFile[i];
+			String s = updateFile[i];
 			
 			if (s.startsWith(modName) || s.startsWith(modInitials))
 			{
@@ -122,6 +188,16 @@ public class CSUpdate
 		return null;
 	}
 	
+	/**
+	 * Notifys a player about an update and installs it if {@link ClashsoftAPI.autoUpdate} is enabled.
+	 * 
+	 * @param player
+	 *            the player
+	 * @param modName
+	 *            the mod name
+	 * @param update
+	 *            the update
+	 */
 	public static void notifyUpdate(EntityPlayer player, String modName, ModUpdate update)
 	{
 		if (update != null && update.isValid())
@@ -137,6 +213,14 @@ public class CSUpdate
 		}
 	}
 	
+	/**
+	 * Installs an update.
+	 * 
+	 * @param player
+	 *            the player
+	 * @param modName
+	 *            the mod name
+	 */
 	public static void update(EntityPlayer player, String modName)
 	{
 		ModUpdate update = foundUpdates.get(modName);
@@ -144,6 +228,15 @@ public class CSUpdate
 			update.install(player);
 	}
 	
+	/**
+	 * Compares two versions.
+	 * 
+	 * @param version1
+	 *            the first version
+	 * @param version2
+	 *            the first version
+	 * @return the comparation result
+	 */
 	public static int compareVersion(String version1, String version2)
 	{
 		int mcv1 = Integer.parseInt(version1.substring(0, version1.indexOf('-')).replace(".", ""));

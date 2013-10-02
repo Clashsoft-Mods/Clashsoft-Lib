@@ -15,195 +15,363 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
+/**
+ * The Class CustomBlock.
+ */
 public class CustomBlock extends Block
 {
+	
+	/** The names. */
 	private String[]			names;
+	
+	/** The textures. */
 	private String[][]			textures;
+	
+	/** The icons. */
 	private Icon[][]			icons;
+	
+	/** The opaque. */
 	private boolean				opaque;
+	
+	/** The render type. */
 	private int					renderType;
+	
+	/** The drops. */
 	private ItemStack[]			drops;
+	
+	/** The hardnesses. */
 	private float[]				hardnesses;
+	
+	/** The tabs. */
 	protected CreativeTabs[]	tabs;
+	
+	/** The disabled. */
 	private boolean[]			disabled;
 	
 	/**
-	 * @param par1
-	 *            Block ID
-	 * @param par2Material
-	 *            Material
-	 * @param par3
-	 *            Names (Will be used to check how many subblocks should be
-	 *            added)
-	 * @param par4
-	 *            Block Textures (Metadata, Side 6!)
-	 * @param par5
-	 *            isOpaqueCube
-	 * @param par6
-	 *            renderType
-	 * @param par7
-	 *            textureFile
-	 * @param par8
-	 *            CreativeTab
+	 * Instantiates a new custom block.
+	 * 
+	 * @param blockID
+	 *            the block id
+	 * @param material
+	 *            the material
+	 * @param displayNames
+	 *            the display names
+	 * @param iconNames
+	 *            the icon names
+	 * @param opaque
+	 *            the opaque
+	 * @param renderType
+	 *            the render type
+	 * @param creativeTabs
+	 *            the creative tabs
 	 */
-	public CustomBlock(int par1, Material par2Material, String[] par3, String[][] par4, boolean par5, int par6, CreativeTabs[] par7)
+	public CustomBlock(int blockID, Material material, String[] displayNames, String[][] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
 	{
-		super(par1, par2Material);
-		names = par3;
-		textures = par4;
-		icons = new Icon[textures.length][6];
-		opaque = par5;
-		renderType = par6;
-		drops = new ItemStack[names.length];
-		hardnesses = new float[names.length];
-		disabled = new boolean[names.length];
-		for (int i = 0; i < disabled.length; i++)
+		super(blockID, material);
+		this.names = displayNames;
+		this.textures = iconNames;
+		this.icons = new Icon[this.textures.length][6];
+		this.opaque = opaque;
+		this.renderType = renderType;
+		this.drops = new ItemStack[this.names.length];
+		this.hardnesses = new float[this.names.length];
+		this.disabled = new boolean[this.names.length];
+		for (int i = 0; i < this.disabled.length; i++)
 		{
-			disabled[i] = par3[i] == "" || par3[i].contains("%&") || (par4[i][0] == "" || par4[i][1] == "" || par4[i][2] == "" || par4[i][3] == "" || par4[i][4] == "" || par4[i][5] == "");
+			this.disabled[i] = displayNames[i] == "" || displayNames[i].contains("%&") || (iconNames[i][0] == "" || iconNames[i][1] == "" || iconNames[i][2] == "" || iconNames[i][3] == "" || iconNames[i][4] == "" || iconNames[i][5] == "");
 		}
-		tabs = par7;
-		this.setCreativeTab(par7[0]);
+		this.tabs = creativeTabs;
+		this.setCreativeTab(creativeTabs[0]);
 	}
 	
-	public CustomBlock(int par1, Material par2Material, String[] par3, String[] par4, boolean par5, int par6, CreativeTabs[] par7)
+	/**
+	 * Instantiates a new custom block.
+	 * 
+	 * @param blockID
+	 *            the block id
+	 * @param material
+	 *            the material
+	 * @param displayNames
+	 *            the display names
+	 * @param iconNames
+	 *            the icon names
+	 * @param opaque
+	 *            the opaque
+	 * @param renderType
+	 *            the render type
+	 * @param creativeTabs
+	 *            the creative tabs
+	 */
+	public CustomBlock(int blockID, Material material, String[] displayNames, String[] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
 	{
-		this(par1, par2Material, par3, metadataToSideArray(par4), par5, par6, par7);
+		this(blockID, material, displayNames, iconMetadataToSideArray(iconNames), opaque, renderType, creativeTabs);
 	}
 	
-	public CustomBlock(int par1, Material par2Material, String par3, String par4, boolean par5, int par6, CreativeTabs par7)
+	/**
+	 * Instantiates a new custom block.
+	 * 
+	 * @param blockID
+	 *            the block id
+	 * @param material
+	 *            the material
+	 * @param displayName
+	 *            the display name
+	 * @param iconNames
+	 *            the icon names
+	 * @param opaque
+	 *            the opaque
+	 * @param renderType
+	 *            the render type
+	 * @param creativeTabs
+	 *            the creative tabs
+	 */
+	public CustomBlock(int blockID, Material material, String displayName, String iconNames, boolean opaque, int renderType, CreativeTabs creativeTabs)
 	{
-		this(par1, par2Material, new String[] { par3 }, new String[][] { { par4, par4, par4, par4, par4, par4 } }, par5, par6, new CreativeTabs[] { par7 });
+		this(blockID, material, new String[] { displayName }, new String[][] { { iconNames, iconNames, iconNames, iconNames, iconNames, iconNames } }, opaque, renderType, new CreativeTabs[] { creativeTabs });
 	}
 	
-	public CustomBlock(int par1, Material par2Material, String[] par3, String[] par4, CreativeTabs[] par7)
+	/**
+	 * Instantiates a new custom block.
+	 * 
+	 * @param blockID
+	 *            the block id
+	 * @param material
+	 *            the material
+	 * @param displayNames
+	 *            the display names
+	 * @param iconNames
+	 *            the icon names
+	 * @param creativeTabs
+	 *            the creative tabs
+	 */
+	public CustomBlock(int blockID, Material material, String[] displayNames, String[] iconNames, CreativeTabs[] creativeTabs)
 	{
-		this(par1, par2Material, par3, metadataToSideArray(par4), true, 0, par7);
+		this(blockID, material, displayNames, iconMetadataToSideArray(iconNames), true, 0, creativeTabs);
 	}
 	
-	public CustomBlock(int par1, Material par2Material, String par3, String par4, CreativeTabs par7)
+	/**
+	 * Instantiates a new custom block.
+	 * 
+	 * @param blockID
+	 *            the block id
+	 * @param material
+	 *            the material
+	 * @param displayName
+	 *            the display name
+	 * @param iconName
+	 *            the icon name
+	 * @param creativeTab
+	 *            the creative tab
+	 */
+	public CustomBlock(int blockID, Material material, String displayName, String iconName, CreativeTabs creativeTab)
 	{
-		this(par1, par2Material, new String[] { par3 }, new String[][] { { par4, par4, par4, par4, par4, par4 } }, true, 0, new CreativeTabs[] { par7 });
+		this(blockID, material, new String[] { displayName }, new String[][] { { iconName, iconName, iconName, iconName, iconName, iconName } }, true, 0, new CreativeTabs[] { creativeTab });
 	}
 	
-	private static String[][] metadataToSideArray(String[] par1)
+	/**
+	 * Icon metadata to side array.
+	 * 
+	 * @param metadataArray
+	 *            the metadata array
+	 * @return the string[][]
+	 */
+	private static String[][] iconMetadataToSideArray(String[] metadataArray)
 	{
-		String[][] s = new String[par1.length][6];
-		for (int i = 0; i < par1.length; i++)
+		String[][] s = new String[metadataArray.length][6];
+		for (int i = 0; i < metadataArray.length; i++)
 		{
 			for (int j = 0; j < 6; j++)
 			{
-				s[i][j] = par1[i];
+				s[i][j] = metadataArray[i];
 			}
 		}
 		return s;
 	}
 	
+	/**
+	 * Disable metadata.
+	 * 
+	 * @param metadata
+	 *            the metadata
+	 * @return the custom block
+	 */
 	public CustomBlock disableMetadata(int metadata)
 	{
-		disabled[metadata] = true;
+		this.disabled[metadata] = true;
 		return this;
 	}
 	
+	/**
+	 * Sets the hardness.
+	 * 
+	 * @param metadata
+	 *            the metadata
+	 * @param hardness
+	 *            the hardness
+	 * @return the custom block
+	 */
 	public CustomBlock setHardness(int metadata, float hardness)
 	{
-		hardnesses[metadata] = hardness;
+		this.hardnesses[metadata] = hardness;
 		return this;
 	}
 	
-	public CustomBlock setHardnesses(float[] hardnesses)
+	/**
+	 * Sets the hardnesses.
+	 * 
+	 * @param hardnessArray
+	 *            the hardness array
+	 * @return the custom block
+	 */
+	public CustomBlock setHardnesses(float[] hardnessArray)
 	{
-		this.hardnesses = hardnesses;
+		this.hardnesses = hardnessArray;
 		return this;
 	}
 	
+	/**
+	 * Sets the drops.
+	 * 
+	 * @param drops
+	 *            the drops
+	 * @return the custom block
+	 */
 	public CustomBlock setDrops(ItemStack[] drops)
 	{
 		this.drops = drops;
 		return this;
 	}
 	
+	/**
+	 * Sets the drops.
+	 * 
+	 * @param metadata
+	 *            the metadata
+	 * @param drop
+	 *            the drop
+	 * @return the custom block
+	 */
 	public CustomBlock setDrops(int metadata, ItemStack drop)
 	{
-		drops[metadata] = drop;
+		this.drops[metadata] = drop;
 		return this;
 	}
 	
+	/**
+	 * Gets the names.
+	 * 
+	 * @return the names
+	 */
 	public String[] getNames()
 	{
-		return names;
+		return this.names;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.minecraft.block.Block#isOpaqueCube()
+	 */
 	@Override
 	public boolean isOpaqueCube()
 	{
-		return opaque;
+		return this.opaque;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.minecraft.block.Block#renderAsNormalBlock()
+	 */
 	@Override
 	public boolean renderAsNormalBlock()
 	{
-		return renderType == 0;
+		return this.renderType == 0;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.minecraft.block.Block#getRenderType()
+	 */
 	@Override
 	public int getRenderType()
 	{
-		return renderType;
+		return this.renderType;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.minecraft.block.Block#getIcon(int, int)
+	 */
 	@Override
 	/**
 	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
 	public Icon getIcon(int par1, int par2)
 	{
-		if (par2 < icons.length && par1 < icons[par2].length)
-			return icons[par2][par1];
-		return icons[0][0];
+		if (par2 < this.icons.length && par1 < this.icons[par2].length)
+			return this.icons[par2][par1];
+		return this.icons[0][0];
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * net.minecraft.block.Block#getBlockHardness(net.minecraft.world.World,
+	 * int, int, int)
+	 */
 	@Override
 	/**
 	 * Returns the block hardness at a location. Args: world, x, y, z
 	 */
 	public float getBlockHardness(World par1World, int par2, int par3, int par4)
 	{
-		if (par1World.getBlockMetadata(par2, par3, par4) < hardnesses.length && hardnesses[par1World.getBlockMetadata(par2, par3, par4)] > 0)
+		if (par1World.getBlockMetadata(par2, par3, par4) < this.hardnesses.length && this.hardnesses[par1World.getBlockMetadata(par2, par3, par4)] > 0)
 		{
-			return hardnesses[par1World.getBlockMetadata(par2, par3, par4)];
+			return this.hardnesses[par1World.getBlockMetadata(par2, par3, par4)];
 		}
 		return this.blockHardness;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * net.minecraft.block.Block#registerIcons(net.minecraft.client.renderer
+	 * .texture.IconRegister)
+	 */
 	@Override
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		for (int i = 0; i < textures.length; i++)
+		for (int i = 0; i < this.textures.length; i++)
 		{
-			for (int j = 0; j < textures[i].length; j++)
+			for (int j = 0; j < this.textures[i].length; j++)
 			{
-				if (!textures[i][j].contains("%&"))
-					icons[i][j] = par1IconRegister.registerIcon(textures[i][j]);
+				if (!this.textures[i][j].contains("%&"))
+					this.icons[i][j] = par1IconRegister.registerIcon(this.textures[i][j]);
 			}
 		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.minecraft.block.Block#getSubBlocks(int,
+	 * net.minecraft.creativetab.CreativeTabs, java.util.List)
+	 */
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs tab, List subItems)
 	{
-		for (int i = 0; i < names.length; i++)
+		for (int i = 0; i < this.names.length; i++)
 		{
-			if (i < tabs.length)
+			if (i < this.tabs.length)
 			{
-				if (tab == tabs[i] && !disabled[i])
+				if (tab == this.tabs[i] && !this.disabled[i])
 				{
 					subItems.add(new ItemStack(this, 1, i));
 				}
 			}
 			else
 			{
-				if (tab == tabs[tabs.length - 1] && !disabled[i])
+				if (tab == this.tabs[this.tabs.length - 1] && !this.disabled[i])
 				{
 					subItems.add(new ItemStack(this, 1, i));
 				}
@@ -211,62 +379,65 @@ public class CustomBlock extends Block
 		}
 	}
 	
-	/**
-	 * Metadata and fortune sensitive version, this replaces the old (int meta,
-	 * Random rand) version in 1.1.
-	 * 
-	 * @param meta
-	 *            Blocks Metadata
-	 * @param fortune
-	 *            Current item fortune level
-	 * @param random
-	 *            Random number generator
-	 * @return The number of items to drop
+	/* (non-Javadoc)
+	 * @see net.minecraft.block.Block#quantityDropped(int, int, java.util.Random)
 	 */
 	@Override
 	public int quantityDropped(int meta, int fortune, Random random)
 	{
-		if (drops[meta] != null)
-			return drops[meta].stackSize;
+		if (this.drops[meta] != null)
+			return this.drops[meta].stackSize;
 		return 1;
 	}
 	
-	/**
-	 * Returns the ID of the items to drop on destruction.
+	/* (non-Javadoc)
+	 * @see net.minecraft.block.Block#idDropped(int, java.util.Random, int)
 	 */
 	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
+	public int idDropped(int metadata, Random random, int fortune)
 	{
-		if (drops[par1] != null)
-			return drops[par1].itemID;
+		if (this.drops[metadata] != null)
+			return this.drops[metadata].itemID;
 		return this.blockID;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.minecraft.block.Block#damageDropped(int)
+	 */
 	@Override
 	/**
 	 * Determines the damage on the item the block drops. Used in cloth and wood.
 	 */
-	public int damageDropped(int par1)
+	public int damageDropped(int metadata)
 	{
-		if (drops[par1] != null)
-			return drops[par1].getItemDamage();
-		return par1;
+		if (this.drops[metadata] != null)
+			return this.drops[metadata].getItemDamage();
+		return metadata;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see net.minecraft.block.Block#getDamageValue(net.minecraft.world.World,
+	 * int, int, int)
+	 */
 	@Override
 	/**
 	 * Get the block's damage value (for use with pick block).
 	 */
-	public int getDamageValue(World par1World, int par2, int par3, int par4)
+	public int getDamageValue(World world, int x, int y, int z)
 	{
-		return par1World.getBlockMetadata(par2, par3, par4);
+		return world.getBlockMetadata(x, y, z);
 	}
 	
+	/**
+	 * Adds the names.
+	 */
 	public void addNames()
 	{
-		for (int i = 0; i < names.length; i++)
+		for (int i = 0; i < this.names.length; i++)
 		{
-			LanguageRegistry.addName(new ItemStack(this, 1, i), names[i]);
+			LanguageRegistry.addName(new ItemStack(this, 1, i), this.names[i]);
 		}
 	}
 }

@@ -15,133 +15,223 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 
+/**
+ * The Class CustomItem.
+ */
 public class CustomItem extends Item
 {
-	private String[]	names, textures, descriptions;
+	
+	/** The descriptions. */
+	private String[]	displayNames, iconNames, descriptions;
+	
+	/** The icons. */
 	private Icon[]		icons;
 	
+	/** The disabled. */
 	private boolean[]	disabled;
 	
-	protected List<? extends IItemMetadataList>	list, displayList;
+	/** The display list. */
+	protected List<? extends IItemMetadataList>	metalist, displayList;
 	
-	public CustomItem(int par1, List<? extends IItemMetadataList> list, List<? extends IItemMetadataList> displaylist)
+	/**
+	 * Instantiates a new custom item.
+	 * 
+	 * @param itemID
+	 *            the item id
+	 * @param metalist
+	 *            the metalist
+	 * @param displaylist
+	 *            the displaylist
+	 */
+	public CustomItem(int itemID, List<? extends IItemMetadataList> metalist, List<? extends IItemMetadataList> displaylist)
 	{
-		super(par1);
-		this.list = list;
-		this.displayList = list;
+		super(itemID);
+		this.metalist = metalist;
+		this.displayList = metalist;
 	}
 	
-	public CustomItem(int par1, String[] par2, String[] par3, String[] par4)
+	/**
+	 * Instantiates a new custom item.
+	 * 
+	 * @param itemID
+	 *            the item id
+	 * @param displayNames
+	 *            the display names
+	 * @param iconNames
+	 *            the icon names
+	 * @param descriptions
+	 *            the descriptions
+	 */
+	public CustomItem(int itemID, String[] displayNames, String[] iconNames, String[] descriptions)
 	{
-		super(par1);
-		names = par2;
-		textures = par3;
-		icons = new Icon[textures.length];
-		disabled = new boolean[names.length];
-		for (int i = 0; i < disabled.length; i++)
+		super(itemID);
+		this.displayNames = displayNames;
+		this.iconNames = iconNames;
+		this.icons = new Icon[this.iconNames.length];
+		this.disabled = new boolean[this.displayNames.length];
+		for (int i = 0; i < this.disabled.length; i++)
 		{
-			disabled[i] = par3[i] == "" || par2[i] == "" || par2[i].contains("%&");
+			this.disabled[i] = iconNames[i] == "" || displayNames[i] == "" || displayNames[i].contains("%&");
 		}
-		this.setHasSubtypes(par2.length > 1);
-		descriptions = par4;
+		this.setHasSubtypes(displayNames.length > 1);
+		this.descriptions = descriptions;
 	}
 	
-	public CustomItem(int par1, String[] par2, String[] par3)
+	/**
+	 * Instantiates a new custom item.
+	 * 
+	 * @param itemID
+	 *            the item id
+	 * @param displayNames
+	 *            the display names
+	 * @param iconNames
+	 *            the icon names
+	 */
+	public CustomItem(int itemID, String[] displayNames, String[] iconNames)
 	{
-		this(par1, par2, par3, new String[] { "" });
+		this(itemID, displayNames, iconNames, new String[] { "" });
 	}
 	
-	public CustomItem(int par1, String par2, String par3, String par4)
+	/**
+	 * Instantiates a new custom item.
+	 * 
+	 * @param itemID
+	 *            the item id
+	 * @param displayName
+	 *            the display name
+	 * @param iconName
+	 *            the icon name
+	 * @param description
+	 *            the description
+	 */
+	public CustomItem(int itemID, String displayName, String iconName, String description)
 	{
-		this(par1, new String[] { par2 }, new String[] { par3 }, new String[] { par4 });
+		this(itemID, new String[] { displayName }, new String[] { iconName }, new String[] { description });
 	}
 	
-	public CustomItem(int par1, String par2, String par3)
+	/**
+	 * Instantiates a new custom item.
+	 * 
+	 * @param itemID
+	 *            the item id
+	 * @param displayName
+	 *            the display name
+	 * @param iconName
+	 *            the icon name
+	 */
+	public CustomItem(int itemID, String displayName, String iconName)
 	{
-		this(par1, new String[] { par2 }, new String[] { par3 });
+		this(itemID, new String[] { displayName }, new String[] { iconName });
 	}
 	
+	/**
+	 * Checks for item metadata list.
+	 * 
+	 * @return true, if successful
+	 */
 	public boolean hasItemMetadataList()
 	{
-		return list != null && displayList != null;
+		return this.metalist != null && this.displayList != null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.Item#getItemDisplayName(net.minecraft.item.ItemStack)
+	 */
 	@Override
-	public String getItemDisplayName(ItemStack is)
+	public String getItemDisplayName(ItemStack stack)
 	{
-		String ret = hasItemMetadataList() ? list.get(is.getItemDamage()).getName() : names[is.getItemDamage()];
+		String ret = this.hasItemMetadataList() ? this.metalist.get(stack.getItemDamage()).getName() : this.displayNames[stack.getItemDamage()];
 		return StatCollector.translateToLocal(ret.replace("%&", ""));
 	}
 	
+	/**
+	 * Disable metadata.
+	 * 
+	 * @param metadata
+	 *            the metadata
+	 * @return the custom item
+	 */
 	public CustomItem disableMetadata(int... metadata)
 	{
 		if (metadata != null)
 			for (int i : metadata)
 			{
-				disabled[i] = true;
+				this.disabled[i] = true;
 			}
 		return this;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.Item#getIconFromDamage(int)
+	 */
 	@Override
-	public Icon getIconFromDamage(int i)
+	public Icon getIconFromDamage(int damage)
 	{
-		return icons[i];
+		return this.icons[damage];
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.Item#registerIcons(net.minecraft.client.renderer.texture.IconRegister)
+	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		if (hasItemMetadataList())
-			for (int i = 0; i < list.size(); i++)
+		if (this.hasItemMetadataList())
+			for (int i = 0; i < this.metalist.size(); i++)
 			{
-				String s = list.get(i).getIconName();
+				String s = this.metalist.get(i).getIconName();
 				if (!s.contains("%&"))
-					this.icons[i] = par1IconRegister.registerIcon(s);
+					this.icons[i] = iconRegister.registerIcon(s);
 			}
 		else
-			for (int i = 0; i < textures.length; i++)
+			for (int i = 0; i < this.iconNames.length; i++)
 			{
-				if (textures[i] != null && !textures[i].contains("%&"))
+				if (this.iconNames[i] != null && !this.iconNames[i].contains("%&"))
 				{
-					this.icons[i] = par1IconRegister.registerIcon(textures[i]);
+					this.icons[i] = iconRegister.registerIcon(this.iconNames[i]);
 				}
 			}
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.Item#addInformation(net.minecraft.item.ItemStack, net.minecraft.entity.player.EntityPlayer, java.util.List, boolean)
+	 */
 	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag)
 	{
-		if (par1ItemStack != null)
+		if (stack != null)
 		{
-			if (hasItemMetadataList())
-				par3List.addAll(this.list.get(par1ItemStack.getItemDamage()).getDescription());
-			else if (par1ItemStack.getItemDamage() < descriptions.length)
+			if (this.hasItemMetadataList())
+				list.addAll(this.metalist.get(stack.getItemDamage()).getDescription());
+			else if (stack.getItemDamage() < this.descriptions.length)
 			{
-				String s = this.descriptions[par1ItemStack.getItemDamage()];
+				String s = this.descriptions[stack.getItemDamage()];
 				if (s == "")
 					return;
-				par3List.addAll(Arrays.asList(s.split("\n")));
+				list.addAll(Arrays.asList(s.split("\n")));
 			}
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.Item#getSubItems(int, net.minecraft.creativetab.CreativeTabs, java.util.List)
+	 */
 	@Override
 	@SideOnly(Side.CLIENT)
 	/**
 	 * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
 	 */
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(int itemID, CreativeTabs creativeTab, List list)
 	{
-		if (hasItemMetadataList())
-			for (IItemMetadataList item : displayList)
-				par3List.add(item.asStack());
+		if (this.hasItemMetadataList())
+			for (IItemMetadataList item : this.displayList)
+				list.add(item.asStack());
 		else
-			for (int i = 0; i < names.length; i++)
+			for (int i = 0; i < this.displayNames.length; i++)
 			{
-				if (!disabled[i])
-					par3List.add(new ItemStack(par1, 1, i));
+				if (!this.disabled[i])
+					list.add(new ItemStack(this, 1, i));
 			}
 	}
 }

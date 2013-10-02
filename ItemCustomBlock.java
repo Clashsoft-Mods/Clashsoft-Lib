@@ -15,77 +15,86 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 
+/**
+ * The Class ItemCustomBlock.
+ */
 public class ItemCustomBlock extends ItemBlock
 {
+	/** The block. */
 	private Block	theBlock;
 	
-	public ItemCustomBlock(int par1, Block par2Block)
+	/**
+	 * Instantiates a new item custom block.
+	 * 
+	 * @param itemID
+	 *            the item id
+	 * @param block
+	 *            the block
+	 */
+	public ItemCustomBlock(int itemID, Block block)
 	{
-		super(par1);
-		this.theBlock = par2Block;
+		super(itemID);
+		this.theBlock = block;
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.ItemBlock#getIconFromDamage(int)
+	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	/**
-	 * Gets an icon index based on an item's damage value
-	 */
-	public Icon getIconFromDamage(int par1)
+	public Icon getIconFromDamage(int damage)
 	{
-		return this.theBlock.getIcon(2, par1);
+		return this.theBlock.getIcon(2, damage);
 	}
 	
-	/**
-	 * Returns the metadata of the block which this Item (ItemBlock) can place
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.Item#getMetadata(int)
 	 */
 	@Override
-	public int getMetadata(int par1)
+	public int getMetadata(int damage)
 	{
-		return par1;
+		return damage;
 	}
 	
-	@Override
-	public String getItemStackDisplayName(ItemStack par1ItemStack)
-	{
-		return StatCollector.translateToLocal(theBlock.getUnlocalizedName() + "." + par1ItemStack.getItemDamage());
-	}
-	
-	@Override
-	/**
-	 * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
-	 * different names based on their damage or NBT.
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.Item#getItemStackDisplayName(net.minecraft.item.ItemStack)
 	 */
-	public String getUnlocalizedName(ItemStack par1ItemStack)
+	@Override
+	public String getItemStackDisplayName(ItemStack stack)
 	{
-		return theBlock.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
+		return StatCollector.translateToLocal(theBlock.getUnlocalizedName() + "." + stack.getItemDamage());
 	}
 	
-	@Override
-	/**
-	 * Returns the unlocalized name of this item.
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.ItemBlock#getUnlocalizedName(net.minecraft.item.ItemStack)
 	 */
+	@Override
+	public String getUnlocalizedName(ItemStack stack)
+	{
+		return theBlock.getUnlocalizedName() + "." + stack.getItemDamage();
+	}
+	
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.ItemBlock#getUnlocalizedName()
+	 */
+	@Override
 	public String getUnlocalizedName()
 	{
 		return theBlock.getUnlocalizedName() + ".0";
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.Item#addInformation(net.minecraft.item.ItemStack, net.minecraft.entity.player.EntityPlayer, java.util.List, boolean)
+	 */
 	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag)
 	{
-		if (par1ItemStack != null)
-		{
-			// TODO Block Descriptions
-		}
 	}
 	
-	/**
-	 * Gets a list of tabs that items belonging to this class can display on,
-	 * combined properly with getSubItems allows for a single item to span many
-	 * sub-items across many tabs.
-	 * 
-	 * @return A list of all tabs that this item could possibly be one.
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.Item#getCreativeTabs()
 	 */
 	@Override
 	public CreativeTabs[] getCreativeTabs()

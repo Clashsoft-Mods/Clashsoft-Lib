@@ -2,6 +2,7 @@ package clashsoft.clashsoftapi.util;
 
 import java.lang.reflect.Field;
 
+@Deprecated
 public class CSReflection
 {
 	public static Object getValue(Class clazz, String... fieldNames)

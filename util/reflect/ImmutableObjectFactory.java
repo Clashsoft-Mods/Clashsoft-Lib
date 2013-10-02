@@ -4,10 +4,30 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A factory for creating immutable objects.
+ * 
+ * If an object with the same class and the same constructor arguments is stored, the stored one will be returned and no new object will be created.
+ */
 public class ImmutableObjectFactory
 {
+	
+	/** The objects. */
 	public static Map<Class, Map<Object[], Object>>	objects	= new HashMap<Class, Map<Object[], Object>>();
 	
+	/**
+	 * Creates a new immutable object.
+	 * 
+	 * If an object with the same class and the same constructor arguments is stored, the stored one will be returned and no new object will be created.
+	 * 
+	 * @param <T>
+	 *            the generic type
+	 * @param clazz
+	 *            the class
+	 * @param args
+	 *            the arguments
+	 * @return the type
+	 */
 	public static <T> T createObject(Class<T> clazz, Object... args)
 	{
 		Class[] classes = new Class[args.length];
@@ -21,6 +41,21 @@ public class ImmutableObjectFactory
 		return createObject(clazz, classes, args);
 	}
 	
+	/**
+	 * Creates a new immutable object.
+	 * 
+	 * If an object with the same class and the same constructor arguments is stored, the stored one will be returned and no new object will be created.
+	 * 
+	 * @param <T>
+	 *            the generic type
+	 * @param clazz
+	 *            the class
+	 * @param argsTypes
+	 *            the argument types
+	 * @param args
+	 *            the arguments
+	 * @return the t
+	 */
 	public static <T> T createObject(Class<T> clazz, Class[] argsTypes, Object... args)
 	{
 		Map<Object[], Object> map = objects.get(clazz);
@@ -46,17 +81,41 @@ public class ImmutableObjectFactory
 		return null;
 	}
 	
+	/**
+	 * Casts an object to the class
+	 * 
+	 * @param <T>
+	 *            the generic type
+	 * @param clazz
+	 *            the class
+	 * @param object
+	 *            the object
+	 * @return the t
+	 */
 	public static <T> T cast(Class<T> clazz, Object object)
 	{
 		return (T) object;
 	}
 	
+	/**
+	 * Checks if the class is immutable, throws an exception if not.
+	 * 
+	 * @param clazz
+	 *            the class
+	 */
 	public static final void checkImmutable(Class clazz)
 	{
 		if (!isImmutable(clazz))
 			throw new IllegalArgumentException(clazz + " is not immutable! Sign with @Immutable annotation");
 	}
 	
+	/**
+	 * Checks if the class is immutable
+	 * 
+	 * @param clazz
+	 *            the class
+	 * @return true, if is immutable
+	 */
 	public static boolean isImmutable(Class clazz)
 	{
 		if (clazz == null)
@@ -72,6 +131,16 @@ public class ImmutableObjectFactory
 		return false;
 	}
 
+	/**
+	 * Adds the construction to the map.
+	 * 
+	 * @param clazz
+	 *            the class
+	 * @param args
+	 *            the args
+	 * @param object
+	 *            the object
+	 */
 	public static void addToMap(Class clazz, Object[] args, Object object)
 	{
 		Map<Object[], Object> map = objects.get(clazz);

@@ -4,29 +4,31 @@ import java.awt.Color;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import clashsoft.clashsoftapi.util.reflect.ImmutableObjectFactory;
 
 /**
- * @author Clashsoft
+ * The Class CSUtil.
+ * This class adds several util methods.
  */
 public class CSUtil
-{
-	public static ScriptEngineManager	mgr						= new ScriptEngineManager();
-	public static ScriptEngine			engine					= mgr.getEngineByName("JavaScript");
-	
+{	
+	/**
+	 * Log an object.
+	 * 
+	 * @param o
+	 *            the o
+	 */
 	public static void log(Object o)
 	{
 		System.out.println(o);
 	}
 	
 	/**
-	 * First algorythm to sort a List by using HashSets
+	 * First algorythm to sort a List using HashSets.
 	 * 
 	 * @param list
-	 *            List to sort
-	 * @return Sorted List
+	 *            the list
+	 * @return the list
 	 */
 	public static List removeDuplicates(List list)
 	{
@@ -41,11 +43,11 @@ public class CSUtil
 	}
 	
 	/**
-	 * Second algorythm to sort a list by searching for duplicates
+	 * Second algorythm to sort a list by searching for duplicates.
 	 * 
 	 * @param list
-	 *            List to sort
-	 * @return Sorted List
+	 *            the list
+	 * @return the list
 	 */
 	public static List removeDuplicates2(List list)
 	{
@@ -74,37 +76,39 @@ public class CSUtil
 	}
 	
 	/**
-	 * Get the combined color from an array of colors
+	 * Gets the combined color from an array of colors.
 	 * 
-	 * @param color1
-	 * @param color2
-	 * @return Color stored in an Integer
+	 * @param colors
+	 *            the colors
+	 * @return the int
 	 */
-	public static int combineColors(int... par1)
+	public static int combineColors(int... colors)
 	{
 		int r = 0;
 		int g = 0;
 		int b = 0;
-		for (int i : par1)
+		for (int i : colors)
 		{
 			Color c = new Color(i);
 			r += c.getRed();
 			g += c.getGreen();
 			b += c.getBlue();
 		}
-		r /= par1.length;
-		g /= par1.length;
-		b /= par1.length;
+		r /= colors.length;
+		g /= colors.length;
+		b /= colors.length;
 		
 		return (b + (g * 256) + (r * 65536));
 	}
 	
 	/**
-	 * Checks if bit 'pos' in 'n' is 1
+	 * Checks if bit 'pos' in 'n' is {@code 0b1}.
 	 * 
 	 * @param n
+	 *            the n
 	 * @param pos
-	 * @return
+	 *            the pos
+	 * @return true, if successful
 	 */
 	public static boolean checkBit(int n, int pos)
 	{
@@ -112,11 +116,15 @@ public class CSUtil
 	}
 	
 	/**
-	 * Sets bit 'pos' in Integer 'n' to 'value'
+	 * Sets bit 'pos' in Integer 'n' to 'value'.
 	 * 
 	 * @param n
+	 *            the n
 	 * @param pos
+	 *            the pos
 	 * @param value
+	 *            the value
+	 * @return the int
 	 */
 	public static int setBit(int n, int pos, boolean value)
 	{
@@ -125,19 +133,36 @@ public class CSUtil
 	}
 	
 	/**
-	 * Creates the colorcode for a color
+	 * Creates the color code for a color.
 	 * 
 	 * @param light
+	 *            the light
 	 * @param r
+	 *            the r
 	 * @param g
+	 *            the g
 	 * @param b
-	 * @return Colorcode
+	 *            the b
+	 * @return the color code
 	 */
 	public static String fontColor(int light, int r, int g, int b)
 	{
 		return "\u00a7" + Integer.toHexString(fontColorInt(light, r, g, b));
 	}
 	
+	/**
+	 * Creates the color code integer for a color.
+	 * 
+	 * @param light
+	 *            the light
+	 * @param r
+	 *            the r
+	 * @param g
+	 *            the g
+	 * @param b
+	 *            the b
+	 * @return the color code integer
+	 */
 	public static int fontColorInt(int light, int r, int g, int b)
 	{
 		int i = b > 0 ? 1 : 0;
@@ -157,66 +182,69 @@ public class CSUtil
 	}
 	
 	/**
-	 * Converts a color name to a color code
+	 * Converts a color name to a color code.
 	 * 
-	 * @param name
-	 * @return
+	 * @param fontColor
+	 *            the font color
+	 * @return the color code
 	 */
 	public static String fontColor(EnumFontColor fontColor)
 	{
 		return fontColor(fontColor.getLight(), fontColor.getRed(), fontColor.getGreen(), fontColor.getBlue());
 	}
 	
+	/**
+	 * Converts a color name to a color code integer.
+	 * 
+	 * @param fontColor
+	 *            the font color
+	 * @return the color code integer
+	 */
 	public static int fontColorInt(EnumFontColor fontColor)
 	{
 		return fontColorInt(fontColor.getLight(), fontColor.getRed(), fontColor.getGreen(), fontColor.getBlue());
 	}
 	
+	/* (non-Javadoc)
+	 * @see CSString#convertToRoman(int)
+	 */
+	@Deprecated
 	public static String convertToRoman(int number)
 	{
 		return CSString.convertToRoman(number);
 	}
 	
-	public static int convertVersion(String versionString)
-	{
-		return CSString.convertVersion(versionString);
-	}
-	
+	/* (non-Javadoc)
+	 * @see CSString#convertString(String, int)
+	 */
+	@Deprecated
 	public static String cutString(String string, int maxLineLength)
 	{
 		return CSString.cutString(string, maxLineLength);
 	}
 	
+	/* (non-Javadoc)
+	 * @see CSString#makeLineList(String)
+	 */
+	@Deprecated
 	public static String[] makeLineList(String string)
 	{
 		return CSString.makeLineList(string);
 	}
 	
-	public static double calculateFromString(String string)
-	{
-		try
-		{
-			return (Double) engine.eval(string);
-		}
-		catch (ScriptException e)
-		{
-			return Double.NaN;
-		}
-	}
-	
-	public static boolean createBoolean(String string)
-	{
-		try
-		{
-			return (Boolean) engine.eval(string);
-		}
-		catch (ScriptException e)
-		{
-			return false;
-		}
-	}
-	
-	public static <T> T createInstance(Class c, Object... parameters)
+	/**
+	 * Creates a new instance of T using the parameters.
+	 * 
+	 * @param <T>
+	 *            the generic type
+	 * @param c
+	 *            the c
+	 * @param parameters
+	 *            the parameters
+	 * @return the t
+	 * @see ImmutableObjectFactory#createObject(Class, Object...)
+	 */
+	public static <T> T createInstance(Class<T> c, Object... parameters)
 	{
 		Class[] parameterTypes = new Class[parameters.length];
 		for (int i = 0; i < parameters.length; i++)

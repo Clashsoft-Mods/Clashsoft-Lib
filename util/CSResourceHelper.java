@@ -7,11 +7,28 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * The Class CSResourceHelper.
+ * 
+ * This class is a factory for {@link ResourceLocation}s
+ */
 public class CSResourceHelper
 {
-	public static Map<String, ResourceLocation> resources = new HashMap<String, ResourceLocation>();
-	public static Map<String, Icon> icons = new HashMap<String, Icon>();
+	/** The resources. */
+	public static Map<String, ResourceLocation>	resources		= new HashMap<String, ResourceLocation>();
 	
+	/** The icons. */
+	public static Map<String, Icon>				icons			= new HashMap<String, Icon>();
+	
+	public static IconRegister					iconRegister	= null;
+	
+	/**
+	 * Returns a resource, may already be stored.
+	 * 
+	 * @param resource
+	 *            the resource
+	 * @return the resource
+	 */
 	public static ResourceLocation getResource(String resource)
 	{
 		ResourceLocation rl;
@@ -25,21 +42,42 @@ public class CSResourceHelper
 		return rl;
 	}
 	
-	public static Icon getIcon(IconRegister par1IconRegister, String iconName)
+	/**
+	 * Returns a new icon with the given icon name, if no stored icon is found a new one is registered and stored using the given icon register.
+	 * 
+	 * @param iconRegister
+	 *            the icon register
+	 * @param iconName
+	 *            the icon name
+	 * @return the icon
+	 */
+	public static Icon getIcon(IconRegister iconRegister, String iconName)
 	{
+		CSResourceHelper.iconRegister = iconRegister;
+		
 		Icon ic;
 		if (!icons.containsKey(iconName))
 		{
-			ic = par1IconRegister.registerIcon(iconName);
+			ic = iconRegister.registerIcon(iconName);
 			icons.put(iconName, ic);
 		}
 		else
-			ic = getIcon(iconName);
+			ic = icons.get(iconName);
 		return ic;
 	}
 	
+	/**
+	 * Returns a new icon with the given icon name, if no stored icon is found a new one is registered and stored using the stored icon register.
+	 * <p>
+	 * <b>Warning!</b><p>
+	 * If you call this method before an icon register is stored, it will cause a crash! Make sure to use {@link CSResourceHelper#getIcon(IconRegister, String)} at least once!
+	 * 
+	 * @param iconName
+	 *            the icon name
+	 * @return the icon
+	 */
 	public static Icon getIcon(String iconName)
 	{
-		return icons.get(iconName);
+		return getIcon(iconRegister, iconName);
 	}
 }
