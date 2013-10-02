@@ -152,6 +152,9 @@ public class CSUpdate
 	 */
 	public static ModUpdate checkForUpdate(String modName, String modInitials, String version, String[] updateFile)
 	{
+		if (!ClashsoftAPI.updateCheck)
+			return null;
+		
 		String newVersion = version;
 		String updateNotes = "";
 		String updateUrl = "";
@@ -200,7 +203,7 @@ public class CSUpdate
 	 */
 	public static void notifyUpdate(EntityPlayer player, String modName, ModUpdate update)
 	{
-		if (update != null && update.isValid())
+		if (ClashsoftAPI.updateCheck && update != null && update.isValid())
 		{
 			player.addChatMessage("A new " + modName + " version is available: " + EnumChatFormatting.GREEN + update.newVersion + EnumChatFormatting.RESET + ". You are using " + EnumChatFormatting.RED + update.version);
 			if (!update.updateNotes.isEmpty())
@@ -226,6 +229,8 @@ public class CSUpdate
 		ModUpdate update = foundUpdates.get(modName);
 		if (update != null)
 			update.install(player);
+		else
+			player.addChatMessage(EnumChatFormatting.RED + "No updates found for '" + modName + "'.");
 	}
 	
 	/**
