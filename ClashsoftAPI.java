@@ -1,5 +1,8 @@
 package clashsoft.clashsoftapi;
 
+import java.util.Random;
+
+import clashsoft.clashsoftapi.util.CSRandom;
 import clashsoft.clashsoftapi.util.CSUpdate;
 import clashsoft.clashsoftapi.util.update.ModUpdate;
 import cpw.mods.fml.common.Mod;
@@ -47,6 +50,9 @@ public class ClashsoftAPI
 	public void init(FMLInitializationEvent event)
 	{
 		MinecraftForge.EVENT_BUS.register(this);
+		
+		for (int i = 0; i < 10; i++)
+		System.out.println(CSRandom.getNextRandomName(new Random(), 4 + (i / 2), 8 + (i / 3)));
 	}
 	
 	@ForgeSubscribe

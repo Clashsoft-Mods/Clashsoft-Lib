@@ -85,10 +85,12 @@ public class CSRandom
 				int rnd = random.nextInt(6);
 				if (rnd < 4) // Add a new consonant
 				{
-					char c1 = CSString.nextConsonant(random);
-					if (CSString.canCharFollowChar(last, c1))
-						c = c1;
-					else
+					c = CSString.nextConsonant(random);
+					int i1 = 0;
+					while (!CSString.canCharFollowChar(last, c) && i1++ <= CSString.CONSONANTS.length())
+						c = CSString.nextConsonant(random);
+					
+					if (i1 > CSString.CONSONANTS.length())
 						c = CSString.nextVowel(random);
 				}
 				else

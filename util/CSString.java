@@ -173,9 +173,19 @@ public class CSString
 		case 1: // UPPERCASE
 			return string.toUpperCase();
 		case 2: // lower camelCase
-			return firstCharToCase(string, 0);
+		{
+			String[] array = string.toLowerCase().split(" ");
+			for (int i = 0; i < string.length(); i++)
+				array[i] = firstCharToCase(array[i], 0);
+			return concat(" ", array);
+		}
 		case 3: // Upper CamelCase
-			return firstCharToCase(string, 1);
+		{
+			String[] array = string.toLowerCase().split(" ");
+			for (int i = 0; i < string.length(); i++)
+				array[i] = firstCharToCase(array[i], 1);
+			return concat(" ", array);
+		}
 		case 4: // iNVERTED CASE
 		{
 			StringBuilder ret = new StringBuilder(string.length());
@@ -195,6 +205,27 @@ public class CSString
 		default:
 			return string;
 		}
+	}
+	
+	/**
+	 * Puts an array created with {@link String#split(String)} back together.
+	 * 
+	 * @param split
+	 *            the string used in {@link String#split(String)}.
+	 * @param parts
+	 *            the output of {@link String#split(String)}
+	 * @return
+	 */
+	public static String concat(String split, String... parts)
+	{
+		StringBuilder result = new StringBuilder(parts.length * 8);
+		for (int i = 0; i < parts.length; i++)
+		{
+			result.append(parts[i]);
+			if (i + 1 != parts.length)
+				result.append(split);
+		}
+		return result.toString();
 	}
 	
 	/**
@@ -238,7 +269,7 @@ public class CSString
 	 */
 	public static boolean isVowel(char c)
 	{
-		return VOWELS.indexOf(c) != -1;
+		return VOWELS.indexOf(Character.toLowerCase(c)) != -1;
 	}
 	
 	/**
@@ -250,7 +281,7 @@ public class CSString
 	 */
 	public static boolean isConsonant(char c)
 	{
-		return CONSONANTS.indexOf(c) != -1;
+		return CONSONANTS.indexOf(Character.toLowerCase(c)) != -1;
 	}
 	
 	/**
@@ -304,7 +335,7 @@ public class CSString
 		if (isVowel(c1) || isVowel(c2))
 			return true;
 		
-		String s = (c1 + "" + c2).toLowerCase();
+		String s = new String(new char[] { Character.toLowerCase(c1), Character.toLowerCase(c2) });
 		return CSArrays.contains(CONSONANTCOMBINATIONS, s);
 	}
 }
