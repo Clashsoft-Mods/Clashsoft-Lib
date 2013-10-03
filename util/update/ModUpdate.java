@@ -61,7 +61,7 @@ public class ModUpdate
 	 */
 	public boolean isValid()
 	{
-		return CSUpdate.compareVersion(version, newVersion) == -1 && newVersion.startsWith(CSUpdate.CURRENT_VERION);
+		return CSUpdate.compareVersion(version, newVersion) == -1 && newVersion.startsWith(CSUpdate.CURRENT_VERSION);
 	}
 	
 	/**

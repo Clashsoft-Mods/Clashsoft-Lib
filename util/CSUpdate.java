@@ -23,8 +23,8 @@ public class CSUpdate
 	/** The found updates. */
 	protected static Map<String, ModUpdate>	foundUpdates			= new HashMap();
 	
-	/** The Constant CURRENT_VERION. */
-	public static final String				CURRENT_VERION			= "1.6.4";
+	/** The Constant CURRENT_VERSION. */
+	public static final String				CURRENT_VERSION			= "1.6.4";
 	
 	/** The Constant CLASHSOFT_ADFLY. */
 	public static final String				CLASHSOFT_ADFLY			= "http://adf.ly/2175784/";
@@ -104,7 +104,7 @@ public class CSUpdate
 	 */
 	public static String version(int rev)
 	{
-		return CURRENT_VERION + "-" + rev;
+		return CURRENT_VERSION + "-" + rev;
 	}
 	
 	/**
