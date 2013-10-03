@@ -5,9 +5,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 
 /**
- * The Class CSString.
- * 
- * This class adds several string tools.
+ * The Class CSString. This class adds several string tools.
  */
 public class CSString
 {
@@ -28,6 +26,13 @@ public class CSString
 	
 	/** The Constant CONSONANTCOMBINATIONS. */
 	public static final String[]	CONSONANTCOMBINATIONS	= { "bl", "br", "cl", "cr", "dr", "fl", "fr", "gl", "gr", "pl", "pr", "sh", "sk", "sl", "sm", "sn", "sp", "st", "sw", "tr", "tw", "th" };
+	
+	/**
+	 * Case constants.
+	 * 
+	 * @see CSString#caseString(String, int)
+	 */
+	public static final int			LOWERCASE				= 0, UPPERCASE = 1, LOWER_CAMELCASE = 2, UPPER_CAMELCASE = 3, INVERTED_CASE = 4, INVERTED_LOWER_CAMELCASE = 5, INVERTED_UPPER_CAMELCASE = 6;
 	
 	/**
 	 * Converts a number to a roman number.
