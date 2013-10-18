@@ -103,21 +103,13 @@ public class CSCrafting
 	public static void addArmorRecipe(ItemStack output, ItemStack input, int type)
 	{
 		if (type == 0)
-		{
 			addCrafting(output, new Object[] { "XXX", "X X", Character.valueOf('X'), input });
-		}
 		else if (type == 1)
-		{
 			addCrafting(output, new Object[] { "X X", "XXX", "XXX", Character.valueOf('X'), input });
-		}
 		else if (type == 2)
-		{
 			addCrafting(output, new Object[] { "XXX", "X X", "X X", Character.valueOf('X'), input });
-		}
 		else if (type == 3)
-		{
 			addCrafting(output, new Object[] { "X X", "X X", Character.valueOf('X'), input });
-		}
 	}
 	
 	/**
@@ -134,25 +126,15 @@ public class CSCrafting
 	public static void addToolRecipe(ItemStack output, ItemStack input, int type)
 	{
 		if (type == 0)
-		{
 			addCrafting(output, new Object[] { "X", "X", "|", 'X', input, '|', Item.stick });
-		}
-		if (type == 1)
-		{
+		else if (type == 1)
 			addCrafting(output, "X", "|", "|", 'X', input, '|', Item.stick);
-		}
-		if (type == 2)
-		{
+		else if (type == 2)
 			addCrafting(output, "XXX", " | ", " | ", 'X', input, '|', Item.stick);
-		}
-		if (type == 3)
-		{
+		else if (type == 3)
 			addCrafting(output, "XX ", "X| ", " | ", 'X', input, '|', Item.stick);
-		}
-		if (type == 4)
-		{
+		else if (type == 4)
 			addCrafting(output, "XX", " |", " |", 'X', input, '|', Item.stick);
-		}
 	}
 	
 	/**

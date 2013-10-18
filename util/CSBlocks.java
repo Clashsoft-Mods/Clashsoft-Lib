@@ -1,11 +1,11 @@
 package clashsoft.clashsoftapi.util;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.src.ModLoader;
 
 /**
  * The Class CSBlocks.
@@ -26,7 +26,7 @@ public class CSBlocks
 	public static void addBlock(Block par1Block, String par2)
 	{
 		GameRegistry.registerBlock(par1Block, par2);
-		ModLoader.addName(par1Block, par2);
+		LanguageRegistry.addName(par1Block, par2);
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public class CSBlocks
 	public static void addBlock(Block block, Class<? extends ItemBlock> itemClass, String name)
 	{
 		GameRegistry.registerBlock(block, itemClass, name);
-		ModLoader.addName(block, name);
+		LanguageRegistry.addName(block, name);
 	}
 	
 	/**

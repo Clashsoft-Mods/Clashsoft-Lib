@@ -1,11 +1,11 @@
 package clashsoft.clashsoftapi.util;
 
 import clashsoft.clashsoftapi.datatools.*;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.EnumHelper;
 
 /**
@@ -26,7 +26,7 @@ public class CSItems
 	 */
 	public static void addItem(Item item, String name)
 	{
-		ModLoader.addName(item, name);
+		LanguageRegistry.addName(item, name);
 	}
 	
 	/**
@@ -67,6 +67,8 @@ public class CSItems
 	
 	/**
 	 * Adds a tool with a shaped recipe.
+	 * 
+	 * @see CSCrafting#addToolRecipe(ItemStack, ItemStack, int)
 	 * 
 	 * @param item
 	 *            the item

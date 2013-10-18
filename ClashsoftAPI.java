@@ -1,8 +1,5 @@
 package clashsoft.clashsoftapi;
 
-import java.util.Random;
-
-import clashsoft.clashsoftapi.util.CSRandom;
 import clashsoft.clashsoftapi.util.CSUpdate;
 import clashsoft.clashsoftapi.util.update.ModUpdate;
 import cpw.mods.fml.common.Mod;
@@ -12,7 +9,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.stats.StatList;
@@ -50,9 +46,6 @@ public class ClashsoftAPI
 	public void init(FMLInitializationEvent event)
 	{
 		MinecraftForge.EVENT_BUS.register(this);
-		
-		for (int i = 0; i < 10; i++)
-		System.out.println(CSRandom.getNextRandomName(new Random(), 4 + (i / 2), 8 + (i / 3)));
 	}
 	
 	@ForgeSubscribe
@@ -83,7 +76,6 @@ public class ClashsoftAPI
 				Minecraft.getMinecraft().statFileWriter.readStat(StatList.leaveGameStat, 1);
 				Minecraft.getMinecraft().theWorld.sendQuittingDisconnectingPacket();
 				Minecraft.getMinecraft().loadWorld((WorldClient) null);
-				Minecraft.getMinecraft().displayGuiScreen(new GuiMainMenu());
 				
 				Minecraft.getMinecraft().shutdown();
 			}

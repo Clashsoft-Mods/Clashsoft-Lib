@@ -91,7 +91,7 @@ public class CSUpdate
 		}
 		catch (Exception ex)
 		{
-			return null;
+			return new String[] {};
 		}
 	}
 	

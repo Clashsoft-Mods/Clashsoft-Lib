@@ -12,7 +12,6 @@ import net.minecraft.util.ResourceLocation;
  */
 public class CustomPotion extends Potion
 {
-	
 	/** The custom icon file. */
 	private ResourceLocation	customIconFile;
 	
