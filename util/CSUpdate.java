@@ -13,9 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
 /**
- * The Class CSUpdate.
- * 
- * This class adds several methods for updating mods.
+ * The Class CSUpdate. This class adds several methods for updating mods.
  */
 public class CSUpdate
 {
@@ -167,12 +165,16 @@ public class CSUpdate
 				int i0 = s.indexOf(':');
 				int i1 = s.indexOf('=');
 				int i2 = s.indexOf('@');
+				// Find an @ without a trailing backslash
+				while (i2 != -1 && s.charAt(i2 - 1) == '\\' && i2 < s.length())
+					i2 = s.indexOf('@', i2 + 1);
+				
 				if (i0 == -1)
 					break;
 				
 				newVersion = s.substring(i0 + 1, i1);
 				if (i1 != -1)
-					updateNotes = s.substring(i1 + 1, i2 == -1 ? s.length() : i2);
+					updateNotes = s.substring(i1 + 1, i2 == -1 ? s.length() : i2).replace("\\n", "\n").replace("\\@", "@");
 				if (i2 != -1)
 					updateUrl = s.substring(i2 + 1);
 				break;
@@ -192,7 +194,59 @@ public class CSUpdate
 	}
 	
 	/**
-	 * Notifys a player about an update and installs it if {@link ClashsoftAPI.autoUpdate} is enabled.
+	 * Does an update check and notification for Clashsoft mods.
+	 * 
+	 * @see CSUpdate#doUpdateCheck(EntityPlayer, String, String, String, String[])
+	 * 
+	 * @param player
+	 *            the player
+	 * @param modName
+	 *            the mod name
+	 * @param modInitials
+	 *            the mod initials
+	 * @param version
+	 *            the version
+	 */
+	public static void doClashsoftUpdateCheck(final EntityPlayer player, final String modName, final String modInitials, final String version)
+	{
+		doUpdateCheck(player, modName, modInitials, version, readWebsite(CLASHSOFT_UPDATE_NOTES));
+	}
+	
+	
+	/**
+	 * Does an update check and notification for mods.
+	 * This uses threading to check for updates.
+	 * 
+	 * @see CSUpdate#checkForUpdate(String, String, String, String[])
+	 * @see CSUpdate#notifyUpdate(EntityPlayer, String, ModUpdate)
+	 * 
+	 * @param player
+	 *            the player (used for chat notifations)
+	 * @param modName
+	 *            the mod name
+	 * @param modInitials
+	 *            the mod initials
+	 * @param version
+	 *            the mod version
+	 * @param updateFile
+	 *            the update file
+	 */
+	public static void doUpdateCheck(final EntityPlayer player, final String modName, final String modInitials, final String version, final String[] updateFile)
+	{
+		if (player.worldObj.isRemote)
+			new Thread(new Runnable()
+			{
+				public void run()
+				{
+					ModUpdate update = checkForUpdate(modName, modInitials, version, updateFile);
+					notifyUpdate(player, modName, update);
+				}
+			}).start();
+	}
+	
+	/**
+	 * Notifies a player about an update and installs it if
+	 * {@link ClashsoftAPI.autoUpdate} is enabled.
 	 * 
 	 * @param player
 	 *            the player
@@ -203,16 +257,22 @@ public class CSUpdate
 	 */
 	public static void notifyUpdate(EntityPlayer player, String modName, ModUpdate update)
 	{
-		if (ClashsoftAPI.updateCheck && update != null && update.isValid())
+		if (ClashsoftAPI.updateCheck && update != null && update.isValid() && player.worldObj.isRemote)
 		{
 			player.addChatMessage("A new " + modName + " version is available: " + EnumChatFormatting.GREEN + update.newVersion + EnumChatFormatting.RESET + ". You are using " + EnumChatFormatting.RED + update.version);
+			
 			if (!update.updateNotes.isEmpty())
-				player.addChatMessage(EnumChatFormatting.RESET + "Update Notes: " + EnumChatFormatting.ITALIC + update.updateNotes);
+			{
+				player.addChatMessage("Update Notes: ");
+				
+				for (String line : update.updateNotes.split("\n"))
+					player.addChatMessage(" " + EnumChatFormatting.ITALIC + line + EnumChatFormatting.RESET);
+			}
 			
 			if (ClashsoftAPI.autoUpdate)
 				update.install(player);
 			else
-				player.addChatMessage(EnumChatFormatting.RED + "Automatic updates disabled. Type \"@Update " + modName + "\" to manually install the update.");
+				player.addChatMessage(EnumChatFormatting.RED + "Automatic updates disabled. Type \">Update " + modName + "\" to manually install the update.");
 		}
 	}
 	

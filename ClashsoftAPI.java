@@ -1,7 +1,6 @@
 package clashsoft.clashsoftapi;
 
 import clashsoft.clashsoftapi.util.CSUpdate;
-import clashsoft.clashsoftapi.util.update.ModUpdate;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -21,7 +20,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 @Mod(modid = "ClashsoftAPI", name = "Clashsoft API", version = ClashsoftAPI.VERSION)
 public class ClashsoftAPI
 {
-	public static final int		REVISION	= 5;
+	public static final int		REVISION	= 6;
 	public static final String	VERSION		= CSUpdate.CURRENT_VERSION + "-" + REVISION;
 	
 	@Instance("ClashsoftAPI")
@@ -53,8 +52,7 @@ public class ClashsoftAPI
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			ModUpdate update = CSUpdate.checkForUpdate("Clashsoft API", "csapi", ClashsoftAPI.VERSION);
-			CSUpdate.notifyUpdate((EntityPlayer) event.entity, "Clashsoft API", update);
+			CSUpdate.doClashsoftUpdateCheck((EntityPlayer) event.entity, "Clashsoft API", "csapi", ClashsoftAPI.VERSION);
 		}
 	}
 	
