@@ -15,16 +15,16 @@ public class CSString
 	/** The Constant BINEQUAL. */
 	private static final int[]		BINEQUAL				= { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
 	
-	/** The Constant ALPHABET. */
+	/** The Alphabet. */
 	public static final String		ALPHABET				= "abcdefghijklmnopqrstuvwxyz";
 	
-	/** The Constant VOWELS. */
+	/** Vowels. */
 	public static final String		VOWELS					= "aeiou";
 	
-	/** The Constant CONSONANTS. */
+	/** Consonants. */
 	public static final String		CONSONANTS				= "bcdfghjklmnpqrstvwxyz";
 	
-	/** The Constant CONSONANTCOMBINATIONS. */
+	/** Possible consonant combinations in the english language. */
 	public static final String[]	CONSONANTCOMBINATIONS	= { "bl", "br", "cl", "cr", "dr", "fl", "fr", "gl", "gr", "pl", "pr", "sh", "sk", "sl", "sm", "sn", "sp", "st", "sw", "tr", "tw", "th" };
 	
 	/**
@@ -43,11 +43,16 @@ public class CSString
 	 */
 	public static String convertToRoman(int number)
 	{
-		if (number <= 0 || number >= 4000)
+		if (number == 0)
+			return "0";
+		else if (number < 0)
+			return "-" + convertToRoman(-number);
+		else if (number >= 4000)
 		{
 			System.out.println("Exception while converting to Roman: Value outside roman numeral range.");
 			return String.valueOf(number);
 		}
+		
 		StringBuilder roman = new StringBuilder();
 		
 		for (int i = 0; i < ROMANCODE.length; i++)
@@ -102,20 +107,22 @@ public class CSString
 	public static String cutString(String string, int maxLineLength)
 	{
 		String[] words = string.split(" ");
-		String ret = "";
+		StringBuilder ret = new StringBuilder(string.length());
+		StringBuilder temp = new StringBuilder(10);
+		
 		int i = 0;
 		while (i < words.length)
 		{
-			String s = "";
-			while (i < words.length && (s += words[i]).length() <= maxLineLength)
+			while (i < words.length && (temp.append(words[i])).length() <= maxLineLength)
 			{
-				s += " ";
+				temp.append(' ');
 				i++;
 			}
-			ret += s.trim() + "\n";
+			ret.append(temp.toString().trim()).append('\n');
+			temp.delete(0, temp.length());
 			i++;
 		}
-		return ret.trim();
+		return ret.toString().trim();
 	}
 	
 	/**
@@ -158,6 +165,8 @@ public class CSString
 	 * 0: lowercase 1: UPPERCASE 2: lower camelCase 3: Upper CamelCase 4:
 	 * iNVERTED CASE 5: INVERTED LOWER CAMELcASE 6: iNVERTED uPPER cAMELcASE
 	 * 
+	 * @see CSString#firstCharToCase(String, int)
+	 * 
 	 * @param string
 	 *            the string
 	 * @param mode
@@ -168,25 +177,25 @@ public class CSString
 	{
 		switch (mode)
 		{
-		case 0: // lowercase
+		case LOWERCASE: // lowercase
 			return string.toLowerCase();
-		case 1: // UPPERCASE
+		case UPPERCASE: // UPPERCASE
 			return string.toUpperCase();
-		case 2: // lower camelCase
+		case LOWER_CAMELCASE: // lower camelCase
 		{
 			String[] array = string.toLowerCase().split(" ");
 			for (int i = 0; i < string.length(); i++)
-				array[i] = firstCharToCase(array[i], 0);
+				array[i] = firstCharToCase(array[i], LOWERCASE);
 			return concat(" ", array);
 		}
-		case 3: // Upper CamelCase
+		case UPPER_CAMELCASE: // Upper CamelCase
 		{
 			String[] array = string.toLowerCase().split(" ");
 			for (int i = 0; i < string.length(); i++)
-				array[i] = firstCharToCase(array[i], 1);
+				array[i] = firstCharToCase(array[i], UPPERCASE);
 			return concat(" ", array);
 		}
-		case 4: // iNVERTED CASE
+		case INVERTED_CASE: // iNVERTED CASE
 		{
 			StringBuilder ret = new StringBuilder(string.length());
 			for (char c : string.toCharArray())
@@ -198,9 +207,9 @@ public class CSString
 			}
 			return ret.toString();
 		}
-		case 5: // INVERTED LOWER CAMELcASE
+		case INVERTED_LOWER_CAMELCASE: // INVERTED LOWER CAMELcASE
 			return caseString(caseString(string, 2), 4);
-		case 6: // iNVERTED uPPER cAMELcASE
+		case INVERTED_UPPER_CAMELCASE: // iNVERTED uPPER cAMELcASE
 			return caseString(caseString(string, 3), 4);
 		default:
 			return string;
@@ -218,7 +227,7 @@ public class CSString
 	 */
 	public static String concat(String split, String... parts)
 	{
-		StringBuilder result = new StringBuilder(parts.length * 8);
+		StringBuilder result = new StringBuilder(parts.length * 10);
 		for (int i = 0; i < parts.length; i++)
 		{
 			result.append(parts[i]);

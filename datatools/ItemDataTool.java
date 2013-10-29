@@ -1,7 +1,7 @@
 package clashsoft.clashsoftapi.datatools;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class ItemDataTool extends ItemTool
 	private String							toolType;
 	
 	public Map<EnumToolMaterial, Icon>		icons			= new HashMap<EnumToolMaterial, Icon>();
-	public List<EnumToolMaterial>			materials		= new LinkedList<EnumToolMaterial>();
+	public List<EnumToolMaterial>			materials		= new ArrayList<EnumToolMaterial>();
 	public Map<String, EnumToolMaterial>	nameToMaterial	= new HashMap<String, EnumToolMaterial>();
 	public Map<EnumToolMaterial, String>	materialToName	= new HashMap<EnumToolMaterial, String>();
 	
@@ -82,6 +82,18 @@ public class ItemDataTool extends ItemTool
 	}
 	
 	@Override
+	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+	{
+		return getIconIndex(stack);
+	}
+	
+	@Override
+	public Icon getIconIndex(ItemStack stack)
+	{
+		return icons.get(getToolMaterialFromItemStack(stack));
+	}
+	
+	@Override
 	public int getMaxDamage(ItemStack stack)
 	{
 		EnumToolMaterial tm = getToolMaterialFromItemStack(stack);
@@ -94,7 +106,7 @@ public class ItemDataTool extends ItemTool
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		for (EnumToolMaterial tm : EnumToolMaterial.values())
+		for (EnumToolMaterial tm : materials)
 		{
 			icons.put(tm, par1IconRegister.registerIcon(toolType.toLowerCase() + tm.toString().toLowerCase()));
 		}
@@ -110,13 +122,6 @@ public class ItemDataTool extends ItemTool
 	public String getItemDisplayName(ItemStack stack)
 	{
 		return StatCollector.translateToLocal(materialToName.get(getToolMaterialFromItemStack(stack)) + " " + toolType);
-	}
-	
-	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-	{
-		// par3List.add(EnumChatFormatting.ITALIC +
-		// materialToName.get(getToolMaterialFromItemStack(par1ItemStack)));
 	}
 	
 	/**

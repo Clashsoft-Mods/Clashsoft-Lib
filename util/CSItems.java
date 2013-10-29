@@ -66,9 +66,31 @@ public class CSItems
 	}
 	
 	/**
-	 * Adds a tool with a shaped recipe.
+	 * Adds an armor item with a shaped recipe.
 	 * 
-	 * @see CSCrafting#addToolRecipe(ItemStack, ItemStack, int)
+	 * @see CSCrafting#addArmorRecipe(ItemStack, ItemStack, int)
+	 * 
+	 * @param item
+	 *            the item
+	 * @param name
+	 *            the name
+	 * @param material
+	 *            the crafting material
+	 * @param stick
+	 *            the stick
+	 * @param type
+	 *            the type
+	 */
+	public static void addArmor(Item item, String name, ItemStack material, int type)
+	{
+		addItem(item, name);
+		CSCrafting.addArmorRecipe(new ItemStack(item), material, type);
+	}
+	
+	/**
+	 * Adds a tool with automatic shaped recipe.
+	 * 
+	 * @see CSItems#addTool(Item, String, ItemStack, ItemStack, int)
 	 * 
 	 * @param item
 	 *            the item
@@ -81,8 +103,29 @@ public class CSItems
 	 */
 	public static void addTool(Item item, String name, ItemStack material, int type)
 	{
+		addTool(item, name, material, CSCrafting.STICK, type);
+	}
+	
+	/**
+	 * Adds a tool with automatic shaped recipe.
+	 * 
+	 * @see CSCrafting#addToolRecipe(ItemStack, ItemStack, int)
+	 * 
+	 * @param item
+	 *            the item
+	 * @param name
+	 *            the name
+	 * @param material
+	 *            the crafting material
+	 * @param stick
+	 *            the stick
+	 * @param type
+	 *            the type
+	 */
+	public static void addTool(Item item, String name, ItemStack material, ItemStack stick, int type)
+	{
 		addItem(item, name);
-		CSCrafting.addToolRecipe(new ItemStack(item), material, type);
+		CSCrafting.addToolRecipe(new ItemStack(item), material, stick, type);
 	}
 	
 	/**

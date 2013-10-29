@@ -24,32 +24,34 @@ public class CSCrafting
 	/** The Constant COAL. */
 	private static final ItemStack	COAL = new ItemStack(Item.coal, 1, 0);
 	
+	public static final ItemStack	STICK = new ItemStack(Item.stick, 1, 0);
+	
 	/**
 	 * Adds a new shaped crafting recipe to the game.
 	 * 
-	 * @param stack
+	 * @param output
 	 *            the output
 	 * @param recipe
 	 *            the recipe
 	 * @see GameRegistry#addRecipe(ItemStack, Object...)
 	 */
-	public static void addCrafting(ItemStack stack, Object... recipe)
+	public static void addCrafting(ItemStack output, Object... recipe)
 	{
-		GameRegistry.addRecipe(stack, recipe);
+		GameRegistry.addRecipe(output, recipe);
 	}
 	
 	/**
 	 * Adds a new shapeless crafting recipe to the game.
 	 * 
-	 * @param stack
+	 * @param output
 	 *            the output
 	 * @param recipe
 	 *            the recipe
 	 * @see GameRegistry#addShapelessRecipe(ItemStack, Object...)
 	 */
-	public static void addShapelessCrafting(ItemStack stack, Object... recipe)
+	public static void addShapelessCrafting(ItemStack output, Object... recipe)
 	{
-		GameRegistry.addShapelessRecipe(stack, recipe);
+		GameRegistry.addShapelessRecipe(output, recipe);
 	}
 	
 	/**
@@ -90,8 +92,40 @@ public class CSCrafting
 	}
 	
 	/**
+	 * Adds a recipe for a storage block. The size can be
+	 * <p>
+	 * 1: [I] -> [O]
+	 * <p>
+	 * 2: [I][I]<p>
+	 *    [I][I] -> [O]
+	 * <p>
+	 * 3: [I][I][I]<p>
+	 *    [I][I][I] -> [O]<p>
+	 *    [I][I][I]
+	 *    
+	 * 
+	 * @param input
+	 *            the input
+	 * @param output
+	 *            the output
+	 * @param size
+	 *            the size of the recipe
+	 */
+	public static void addStorageBlock(ItemStack input, ItemStack output, int size)
+	{
+		if (size == 1)
+			addShapelessCrafting(output, input);
+		else if (size == 2)
+			addCrafting(output, "XX", "XX", 'X', input);
+		else if (size == 3)
+			addCrafting(output, "XXX", "XXX", "XXX", 'X', input);
+		else
+			throw new IllegalArgumentException("The size of a storage block recipe should be either 1, 2 or 3");
+	}
+	
+	/**
 	 * Adds a new armor-shaped recipe to the game. (Type 0 = Helmet, Type 1 =
-	 * Chestplate, Type 2 = Leggings, Type 3 = Boots)
+	 * Chestplate, Type 2 = Leggings, Type 3 = Boots, Type 4 = Gloves)
 	 * 
 	 * @param output
 	 *            the output
@@ -110,6 +144,23 @@ public class CSCrafting
 			addCrafting(output, new Object[] { "XXX", "X X", "X X", Character.valueOf('X'), input });
 		else if (type == 3)
 			addCrafting(output, new Object[] { "X X", "X X", Character.valueOf('X'), input });
+		else if (type == 4)
+			addCrafting(output, new Object[] { "X X" , 'X', input});
+	}
+	
+	/**
+	 * @see CSCrafting#addToolRecipe(ItemStack, ItemStack, ItemStack, int)
+	 * 
+	 * @param output
+	 *            the output
+	 * @param material
+	 *            the material
+	 * @param type
+	 *            the tool type
+	 */
+	public static void addToolRecipe(ItemStack output, ItemStack material, int type)
+	{
+		addToolRecipe(output, material, STICK, type);
 	}
 	
 	/**
@@ -118,23 +169,25 @@ public class CSCrafting
 	 * 
 	 * @param output
 	 *            the output
-	 * @param input
+	 * @param material
 	 *            the material
+	 * @param stick
+	 *            the stick material
 	 * @param type
 	 *            the tool type
 	 */
-	public static void addToolRecipe(ItemStack output, ItemStack input, int type)
+	public static void addToolRecipe(ItemStack output, ItemStack material, ItemStack stick, int type)
 	{
 		if (type == 0)
-			addCrafting(output, new Object[] { "X", "X", "|", 'X', input, '|', Item.stick });
+			addCrafting(output, new Object[] { "X", "X", "|", 'X', material, '|', stick });
 		else if (type == 1)
-			addCrafting(output, "X", "|", "|", 'X', input, '|', Item.stick);
+			addCrafting(output, "X", "|", "|", 'X', material, '|', stick);
 		else if (type == 2)
-			addCrafting(output, "XXX", " | ", " | ", 'X', input, '|', Item.stick);
+			addCrafting(output, "XXX", " | ", " | ", 'X', material, '|', stick);
 		else if (type == 3)
-			addCrafting(output, "XX ", "X| ", " | ", 'X', input, '|', Item.stick);
+			addCrafting(output, "XX ", "X| ", " | ", 'X', material, '|', stick);
 		else if (type == 4)
-			addCrafting(output, "XX", " |", " |", 'X', input, '|', Item.stick);
+			addCrafting(output, "XX", " |", " |", 'X', material, '|', stick);
 	}
 	
 	/**
