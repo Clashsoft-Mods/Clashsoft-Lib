@@ -20,7 +20,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 @Mod(modid = "ClashsoftAPI", name = "Clashsoft API", version = ClashsoftAPI.VERSION)
 public class ClashsoftAPI
 {
-	public static final int		REVISION	= 6;
+	public static final int		REVISION	= 7;
 	public static final String	VERSION		= CSUpdate.CURRENT_VERSION + "-" + REVISION;
 	
 	@Instance("ClashsoftAPI")
