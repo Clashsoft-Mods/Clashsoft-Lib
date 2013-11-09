@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi.specialblocks;
+package clashsoft.clashsoftapi.block;
 
 import java.util.List;
 
@@ -15,33 +15,29 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
-public class BlockSpecialWorkbench extends Block
+public class BlockCustomWorkbench extends Block implements ICustomBlock
 {
 	public String[]	names;
-	public String[]	topIcons;
-	public String[]	sideIcons;
-	public String[]	side2Icons;
-	public String[]	bottomIcons;
+	public String[]	topIconNames;
+	public String[]	sideIconNames;
+	public String[]	side2IconNames;
+	public String[]	bottomIconNames;
 	
-	public Icon[]	TopIcons;
-	public Icon[]	SideIcons;
-	public Icon[]	Side2Icons;
-	public Icon[]	BottomIcons;
+	public Icon[]	topIcons;
+	public Icon[]	sideIcons;
+	public Icon[]	side2Icons;
+	public Icon[]	bottomIcons;
 	
-	public BlockSpecialWorkbench(int par1, String[] names, String[] topIcons, String[] sideIcons, String[] side2Icons, String[] bottomIcons)
+	public BlockCustomWorkbench(int par1, String[] names, String[] topIcons, String[] sideIcons, String[] side2Icons, String[] bottomIcons)
 	{
 		super(par1, Material.wood);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		
 		this.names = names;
-		this.topIcons = topIcons;
-		this.sideIcons = sideIcons;
-		this.side2Icons = side2Icons;
-		this.bottomIcons = bottomIcons;
-		this.TopIcons = new Icon[topIcons.length];
-		this.SideIcons = new Icon[sideIcons.length];
-		this.Side2Icons = new Icon[side2Icons.length];
-		this.BottomIcons = new Icon[bottomIcons.length];
+		this.topIconNames = topIcons;
+		this.sideIconNames = sideIcons;
+		this.side2IconNames = side2Icons;
+		this.bottomIconNames = bottomIcons;
 	}
 	
 	@Override
@@ -52,13 +48,13 @@ public class BlockSpecialWorkbench extends Block
 	public Icon getIcon(int par1, int par2)
 	{
 		if (par1 == 1)
-			return TopIcons[par2];
+			return topIcons[par2];
 		else if (par1 == 0)
-			return BottomIcons[par2];
+			return bottomIcons[par2];
 		else if (par1 == 2 || par1 == 4)
-			return SideIcons[par2];
+			return sideIcons[par2];
 		else
-			return Side2Icons[par2];
+			return side2Icons[par2];
 	}
 	
 	@Override
@@ -69,15 +65,20 @@ public class BlockSpecialWorkbench extends Block
 	 */
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		for (int i = 0; i < topIcons.length; i++)
+		this.topIcons = new Icon[topIcons.length];
+		this.sideIcons = new Icon[sideIcons.length];
+		this.side2Icons = new Icon[side2Icons.length];
+		this.bottomIcons = new Icon[bottomIcons.length];
+		
+		for (int i = 0; i < topIconNames.length; i++)
 		{
-			TopIcons[i] = par1IconRegister.registerIcon(topIcons[i]);
-			SideIcons[i] = par1IconRegister.registerIcon(sideIcons[i]);
-			Side2Icons[i] = par1IconRegister.registerIcon(side2Icons[i]);
-			BottomIcons[i] = par1IconRegister.registerIcon(bottomIcons[i]);
+			topIcons[i] = par1IconRegister.registerIcon(topIconNames[i]);
+			sideIcons[i] = par1IconRegister.registerIcon(sideIconNames[i]);
+			side2Icons[i] = par1IconRegister.registerIcon(side2IconNames[i]);
+			bottomIcons[i] = par1IconRegister.registerIcon(bottomIconNames[i]);
 		}
 		
-		topIcons = sideIcons = side2Icons = bottomIcons = null;
+		topIconNames = sideIconNames = side2IconNames = bottomIconNames = null;
 	}
 	
 	/**

@@ -3,6 +3,7 @@ package clashsoft.clashsoftapi;
 import java.util.List;
 import java.util.Random;
 
+import clashsoft.clashsoftapi.block.ICustomBlock;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
 /**
  * The Class CustomBlock.
  */
-public class CustomBlock extends Block
+public class CustomBlock extends Block implements ICustomBlock
 {
 	
 	/** The names. */
@@ -303,9 +304,6 @@ public class CustomBlock extends Block
 	 * @see net.minecraft.block.Block#getIcon(int, int)
 	 */
 	@Override
-	/**
-	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-	 */
 	public Icon getIcon(int par1, int par2)
 	{
 		if (par2 < this.icons.length && par1 < this.icons[par2].length)
@@ -320,9 +318,6 @@ public class CustomBlock extends Block
 	 * int, int, int)
 	 */
 	@Override
-	/**
-	 * Returns the block hardness at a location. Args: world, x, y, z
-	 */
 	public float getBlockHardness(World par1World, int par2, int par3, int par4)
 	{
 		if (par1World.getBlockMetadata(par2, par3, par4) < this.hardnesses.length && this.hardnesses[par1World.getBlockMetadata(par2, par3, par4)] > 0)
@@ -379,8 +374,10 @@ public class CustomBlock extends Block
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.minecraft.block.Block#quantityDropped(int, int, java.util.Random)
+	/*
+	 * (non-Javadoc)
+	 * @see net.minecraft.block.Block#quantityDropped(int, int,
+	 * java.util.Random)
 	 */
 	@Override
 	public int quantityDropped(int meta, int fortune, Random random)
@@ -390,7 +387,8 @@ public class CustomBlock extends Block
 		return 1;
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.minecraft.block.Block#idDropped(int, java.util.Random, int)
 	 */
 	@Override
@@ -406,9 +404,6 @@ public class CustomBlock extends Block
 	 * @see net.minecraft.block.Block#damageDropped(int)
 	 */
 	@Override
-	/**
-	 * Determines the damage on the item the block drops. Used in cloth and wood.
-	 */
 	public int damageDropped(int metadata)
 	{
 		if (this.drops[metadata] != null)
@@ -422,9 +417,6 @@ public class CustomBlock extends Block
 	 * int, int, int)
 	 */
 	@Override
-	/**
-	 * Get the block's damage value (for use with pick block).
-	 */
 	public int getDamageValue(World world, int x, int y, int z)
 	{
 		return world.getBlockMetadata(x, y, z);

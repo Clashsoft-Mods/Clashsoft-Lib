@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi.specialblocks;
+package clashsoft.clashsoftapi.block;
 
 import java.util.List;
 import java.util.Random;
@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
-public class BlockSpecialSlab extends BlockHalfSlab
+public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 {
 	public int otherSlab;
 	
@@ -27,7 +27,7 @@ public class BlockSpecialSlab extends BlockHalfSlab
 	private Icon[] TopIcons;
 	private Icon[] SideIcons;
 
-	public BlockSpecialSlab(int par1, String[] names, String[] topIcons, String[] sideIcons, int par2, boolean doubleSlab)
+	public BlockCustomSlab(int par1, String[] names, String[] topIcons, String[] sideIcons, int par2, boolean doubleSlab)
 	{
 		super(par1, doubleSlab, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabBlock);
