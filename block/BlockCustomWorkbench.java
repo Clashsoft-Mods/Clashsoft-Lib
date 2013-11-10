@@ -111,6 +111,7 @@ public class BlockCustomWorkbench extends Block implements ICustomBlock
 		}
 	}
 	
+	@Override
 	public void addNames()
 	{
 		for (int i = 0; i < names.length; i++)

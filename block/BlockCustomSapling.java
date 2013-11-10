@@ -7,7 +7,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.minecraft.block.BlockFlower;
+import net.minecraft.block.BlockSapling;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-public abstract class BlockCustomSapling extends BlockFlower implements ICustomBlock
+public abstract class BlockCustomSapling extends BlockSapling implements ICustomBlock
 {
 	public String[]	names, iconNames;
 	
@@ -37,6 +37,7 @@ public abstract class BlockCustomSapling extends BlockFlower implements ICustomB
 	/**
 	 * Ticks the block if it's been scheduled
 	 */
+	@Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
 	{
 		if (!par1World.isRemote)
@@ -54,12 +55,14 @@ public abstract class BlockCustomSapling extends BlockFlower implements ICustomB
 	 * From the specified side and block metadata retrieves the blocks texture.
 	 * Args: side, metadata
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
 		return this.icons[par2 & 3];
 	}
 	
+	@Override
 	public void markOrGrowMarked(World par1World, int par2, int par3, int par4, Random par5Random)
 	{
 		int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -77,6 +80,7 @@ public abstract class BlockCustomSapling extends BlockFlower implements ICustomB
 	/**
 	 * Attempts to grow a sapling into a tree
 	 */
+	@Override
 	public void growTree(World par1World, int par2, int par3, int par4, Random par5Random)
 	{
 		if (!TerrainGen.saplingGrowTree(par1World, par5Random, par2, par3, par4))
@@ -121,6 +125,7 @@ public abstract class BlockCustomSapling extends BlockFlower implements ICustomB
 	/**
 	 * Determines if the same sapling is present at the given location.
 	 */
+	@Override
 	public boolean isSameSapling(World par1World, int par2, int par3, int par4, int par5)
 	{
 		return par1World.getBlockId(par2, par3, par4) == this.blockID && (par1World.getBlockMetadata(par2, par3, par4) & 3) == par5;
@@ -130,6 +135,7 @@ public abstract class BlockCustomSapling extends BlockFlower implements ICustomB
 	 * Determines the damage on the item the block drops. Used in cloth and
 	 * wood.
 	 */
+	@Override
 	public int damageDropped(int par1)
 	{
 		return par1 & 3;
@@ -139,6 +145,7 @@ public abstract class BlockCustomSapling extends BlockFlower implements ICustomB
 	 * returns a list of blocks with the same ID, but different meta (eg: wood
 	 * returns 4 blocks)
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{

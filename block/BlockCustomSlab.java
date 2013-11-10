@@ -17,16 +17,16 @@ import net.minecraft.world.World;
 
 public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 {
-	public int otherSlab;
+	public int		otherSlab;
 	
 	/** The list of the types of step blocks. */
-	public String[] names;
-	public String[] topIcons;
-	public String[] sideIcons;
-
-	private Icon[] TopIcons;
-	private Icon[] SideIcons;
-
+	public String[]	names;
+	public String[]	topIcons;
+	public String[]	sideIcons;
+	
+	private Icon[]	TopIcons;
+	private Icon[]	SideIcons;
+	
 	public BlockCustomSlab(int par1, String[] names, String[] topIcons, String[] sideIcons, int par2, boolean doubleSlab)
 	{
 		super(par1, doubleSlab, Material.rock);
@@ -38,10 +38,9 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 		this.SideIcons = new Icon[sideIcons.length];
 		this.otherSlab = par2;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
-
 	/**
 	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
@@ -51,13 +50,12 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 		{
 			par1 = 1;
 		}
-
+		
 		return par1 == 1 || par1 == 0 ? TopIcons[par2 & 7] : SideIcons[par2 & 7];
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
-
 	/**
 	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This
 	 * is the only chance you get to register icons.
@@ -70,7 +68,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 			SideIcons[i] = par1IconRegister.registerIcon(sideIcons[i]);
 		}
 	}
-
+	
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
@@ -79,17 +77,19 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 	{
 		return this.blockID;
 	}
-
+	
 	/**
-	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
-	 * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
+	 * Returns an item stack containing a single instance of the current block
+	 * type. 'i' is the block's subtype/damage and is ignored for blocks which
+	 * do not support subtypes. Blocks which cannot be harvested should return
+	 * null.
 	 */
 	@Override
 	protected ItemStack createStackedBlock(int par1)
 	{
 		return new ItemStack(this.blockID, 2, par1 & 7);
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	/**
@@ -104,22 +104,24 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 	}
 	
 	/**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
-    @Override
+	 * only called by clickMiddleMouseButton , and passed to
+	 * inventory.setCurrentItem (along with isCreative)
+	 */
+	@Override
 	public int idPicked(World par1World, int par2, int par3, int par4)
-    {
-        return !isDoubleSlab ? this.blockID : this.otherSlab;
-    }
-    
-    public void addNames()
-    {	
-    	for (int i = 0; i < names.length; i++)
-    	{
-    		LanguageRegistry.addName(new ItemStack(this, 1, i), names[i]);
-    	}
-    }
-
+	{
+		return !isDoubleSlab ? this.blockID : this.otherSlab;
+	}
+	
+	@Override
+	public void addNames()
+	{
+		for (int i = 0; i < names.length; i++)
+		{
+			LanguageRegistry.addName(new ItemStack(this, 1, i), names[i]);
+		}
+	}
+	
 	@Override
 	public String getFullSlabName(int i)
 	{

@@ -38,6 +38,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	/**
 	 * Returns the quantity of items to drop on block destruction.
 	 */
+	@Override
 	public int quantityDropped(Random par1Random)
 	{
 		return 1;
@@ -49,6 +50,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	 * but before the new metadata value is set. Args: World, x, y, z, old block
 	 * ID, old metadata
 	 */
+	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
 	{
 		byte b0 = 4;
@@ -77,6 +79,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	/**
 	 * The icon for the side of the block.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	protected Icon getSideIcon(int par1)
 	{
@@ -86,6 +89,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	/**
 	 * The icon for the tops and bottoms of the block.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	protected Icon getEndIcon(int par1)
 	{
@@ -104,6 +108,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	 * returns a list of blocks with the same ID, but different meta (eg: wood
 	 * returns 4 blocks)
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
@@ -116,6 +121,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	 * needs with the given IconRegister. This is the only chance you get to
 	 * register icons.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
@@ -140,7 +146,6 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 		return true;
 	}
 	
-	
 	/*
 	 * (non-Javadoc)
 	 * @see net.minecraft.block.Block#getDamageValue(net.minecraft.world.World,
@@ -152,6 +157,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 		return world.getBlockMetadata(x, y, z);
 	}
 	
+	@Override
 	public void addNames()
 	{
 		for (int i = 0; i < this.names.length; i++)

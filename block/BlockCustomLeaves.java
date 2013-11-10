@@ -11,6 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +30,7 @@ public class BlockCustomLeaves extends BlockLeavesBase implements IShearable, IC
 	public ItemStack[]	saplingStacks	= new ItemStack[4];
 	public boolean[]	isColored		= new boolean[4];
 	
-	public Icon[]		icons;
+	public Icon[]		icons, opaqueIcons;
 	public int[]		adjacentTreeBlocks;
 	
 	public BlockCustomLeaves(int blockID, String[] names, String[] icons)
@@ -397,7 +398,8 @@ public class BlockCustomLeaves extends BlockLeavesBase implements IShearable, IC
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
-		return this.icons[par2 & 3];
+		this.graphicsLevel = Minecraft.getMinecraft().gameSettings.fancyGraphics;
+		return this.graphicsLevel ? this.icons[par2 & 3] : this.opaqueIcons[par2 & 3];
 	}
 	
 	/**
@@ -434,9 +436,12 @@ public class BlockCustomLeaves extends BlockLeavesBase implements IShearable, IC
 	public void registerIcons(IconRegister par1IconRegister)
 	{
 		this.icons = new Icon[iconNames.length];
+		this.opaqueIcons = new Icon[iconNames.length];
+		
 		for (int i = 0; i < iconNames.length; ++i)
 		{
 			this.icons[i] = par1IconRegister.registerIcon(iconNames[i]);
+			this.opaqueIcons[i] = par1IconRegister.registerIcon(iconNames[i] + "_opaque");
 		}
 	}
 	
@@ -465,7 +470,7 @@ public class BlockCustomLeaves extends BlockLeavesBase implements IShearable, IC
 	{
 		return true;
 	}
-
+	
 	@Override
 	public void addNames()
 	{
