@@ -1,5 +1,7 @@
 package clashsoft.clashsoftapi;
 
+import clashsoft.clashsoftapi.util.CSArrays;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 
@@ -86,14 +88,9 @@ public class CustomEnchantment extends Enchantment
 	 */
 	private static int getNextFreeID()
 	{
-		int id = 32;
-		for (int i = 0; i < enchantmentsList.length; i++)
-		{
-			if (enchantmentsList[i] == null)
-			{
-				id = i;
-			}
-		}
+		int id = CSArrays.indexOf(enchantmentsList, null);
+		if (id == -1)
+			throw new IllegalStateException("No more empty enchantment IDs!");
 		return id;
 	}
 	

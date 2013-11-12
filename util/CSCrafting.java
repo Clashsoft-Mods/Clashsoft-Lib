@@ -14,17 +14,19 @@ import net.minecraftforge.oredict.OreDictionary;
 /**
  * The Class CSCrafting.
  * <p>
- * This class adds several methods for adding crafting and furnace recipes and analyzing them.
+ * This class adds several methods for adding crafting and furnace recipes and
+ * analyzing them.
  */
 public class CSCrafting
-{	
+{
 	/** The Constant FIRE. */
 	private static final ItemStack	FIRE	= new ItemStack(Block.fire, 1, 0);
 	
 	/** The Constant COAL. */
-	private static final ItemStack	COAL = new ItemStack(Item.coal, 1, 0);
+	private static final ItemStack	COAL	= new ItemStack(Item.coal, 1, 0);
 	
-	public static final ItemStack	STICK = new ItemStack(Item.stick, 1, 0);
+	/** The Constant STICK. */
+	public static final ItemStack	STICK	= new ItemStack(Item.stick, 1, 0);
 	
 	/**
 	 * Adds a new shaped crafting recipe to the game.
@@ -96,13 +98,15 @@ public class CSCrafting
 	 * <p>
 	 * 1: [I] -> [O]
 	 * <p>
-	 * 2: [I][I]<p>
-	 *    [I][I] -> [O]
+	 * 2: [I][I]
 	 * <p>
-	 * 3: [I][I][I]<p>
-	 *    [I][I][I] -> [O]<p>
-	 *    [I][I][I]
-	 *    
+	 * [I][I] -> [O]
+	 * <p>
+	 * 3: [I][I][I]
+	 * <p>
+	 * [I][I][I] -> [O]
+	 * <p>
+	 * [I][I][I]
 	 * 
 	 * @param input
 	 *            the input
@@ -121,6 +125,33 @@ public class CSCrafting
 			addCrafting(output, "XXX", "XXX", "XXX", 'X', input);
 		else
 			throw new IllegalArgumentException("The size of a storage block recipe should be either 1, 2 or 3");
+	}
+	
+	/**
+	 * Adds a new wooden stick-shaped recipe to the game.
+	 * 
+	 * @param output
+	 *            the stick item stack
+	 * @param input
+	 *            the planks item stack
+	 */
+	public static void addStick(ItemStack output, ItemStack input)
+	{
+		System.out.println();
+		addCrafting(output, "s", "s", 's', input);
+	}
+	
+	/**
+	 * Adds a new wood-planks-shaped recipe to the game.
+	 * 
+	 * @param output
+	 *            the planks item stack
+	 * @param input
+	 *            the log item stack
+	 */
+	public static void addPlanks(ItemStack output, ItemStack input)
+	{
+		addShapelessCrafting(output, input);
 	}
 	
 	/**
@@ -145,12 +176,11 @@ public class CSCrafting
 		else if (type == 3)
 			addCrafting(output, new Object[] { "X X", "X X", Character.valueOf('X'), input });
 		else if (type == 4)
-			addCrafting(output, new Object[] { "X X" , 'X', input});
+			addCrafting(output, new Object[] { "X X", 'X', input });
 	}
 	
 	/**
 	 * @see CSCrafting#addToolRecipe(ItemStack, ItemStack, ItemStack, int)
-	 * 
 	 * @param output
 	 *            the output
 	 * @param material
@@ -206,7 +236,6 @@ public class CSCrafting
 	 * 
 	 * @see OreDictionary
 	 * @see OreDictionary#registerOre(String, ItemStack)
-	 * 
 	 * @param name
 	 *            the name
 	 * @param ore
@@ -220,25 +249,35 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Analyzes a crafting recipe, mainly used for recipe displays.
-	 * 
-	 * Depending on the recipe type, the output is either
+	 * Analyzes a crafting recipe, mainly used for recipe displays. Depending on
+	 * the recipe type, the output is either
 	 * <p>
-	 * [1][2][ ] Any shape possible<p>
-	 * [3][4][ ] # = how you need to put the items in the crafting table<p>
-	 * [ ][ ][5]<p>
+	 * [1][2][ ] Any shape possible
 	 * <p>
-	 * for shaped recipes,<p>
+	 * [3][4][ ] # = how you need to put the items in the crafting table
 	 * <p>
-	 * [1][2][3] # = objects in shaped recipe list<p>
-	 * [4][5][ ]<p>
-	 * [ ][ ][ ]<p>
+	 * [ ][ ][5]
 	 * <p>
-	 * for shapeless recipes or<p>
 	 * <p>
-	 * [ ][o][ ] o = output<p>
-	 * [ ][f][ ] f = fire<p>
-	 * [ ][c][ ] c = coal<p>
+	 * for shaped recipes,
+	 * <p>
+	 * <p>
+	 * [1][2][3] # = objects in shaped recipe list
+	 * <p>
+	 * [4][5][ ]
+	 * <p>
+	 * [ ][ ][ ]
+	 * <p>
+	 * <p>
+	 * for shapeless recipes or
+	 * <p>
+	 * <p>
+	 * [ ][o][ ] o = output
+	 * <p>
+	 * [ ][f][ ] f = fire
+	 * <p>
+	 * [ ][c][ ] c = coal
+	 * <p>
 	 * <p>
 	 * for furnace recipes.
 	 * 

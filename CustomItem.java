@@ -134,8 +134,10 @@ public class CustomItem extends Item
 		return this.metalist != null && this.displayList != null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.minecraft.item.Item#getItemDisplayName(net.minecraft.item.ItemStack)
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * net.minecraft.item.Item#getItemDisplayName(net.minecraft.item.ItemStack)
 	 */
 	@Override
 	public String getItemDisplayName(ItemStack stack)
@@ -161,7 +163,8 @@ public class CustomItem extends Item
 		return this;
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.minecraft.item.Item#getIconFromDamage(int)
 	 */
 	@Override
@@ -170,8 +173,11 @@ public class CustomItem extends Item
 		return this.icons[damage];
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.minecraft.item.Item#registerIcons(net.minecraft.client.renderer.texture.IconRegister)
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * net.minecraft.item.Item#registerIcons(net.minecraft.client.renderer.texture
+	 * .IconRegister)
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -194,8 +200,10 @@ public class CustomItem extends Item
 			}
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.minecraft.item.Item#addInformation(net.minecraft.item.ItemStack, net.minecraft.entity.player.EntityPlayer, java.util.List, boolean)
+	/*
+	 * (non-Javadoc)
+	 * @see net.minecraft.item.Item#addInformation(net.minecraft.item.ItemStack,
+	 * net.minecraft.entity.player.EntityPlayer, java.util.List, boolean)
 	 */
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag)
@@ -214,8 +222,10 @@ public class CustomItem extends Item
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.minecraft.item.Item#getSubItems(int, net.minecraft.creativetab.CreativeTabs, java.util.List)
+	/*
+	 * (non-Javadoc)
+	 * @see net.minecraft.item.Item#getSubItems(int,
+	 * net.minecraft.creativetab.CreativeTabs, java.util.List)
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)

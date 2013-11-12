@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -176,5 +177,10 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 		{
 			LanguageRegistry.addName(new ItemStack(this, 1, i), this.names[i]);
 		}
+	}
+	
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
+	{
 	}
 }

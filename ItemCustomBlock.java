@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import clashsoft.clashsoftapi.block.ICustomBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -91,6 +92,8 @@ public class ItemCustomBlock extends ItemBlock
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag)
 	{
+		if (theBlock instanceof ICustomBlock)
+			((ICustomBlock)theBlock).addInformation(stack, player, list);
 	}
 	
 	/* (non-Javadoc)

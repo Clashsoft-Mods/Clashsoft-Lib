@@ -2,6 +2,8 @@ package clashsoft.clashsoftapi.util;
 
 import java.lang.reflect.Array;
 
+import com.google.common.base.Objects;
+
 import net.minecraft.util.MathHelper;
 
 /**
@@ -14,24 +16,23 @@ public class CSArrays
 	/**
 	 * Splits an array into sub-arrays of the length "maxLenght"
 	 * 
-	 * @param stringArray
-	 *            the string array to split
+	 * @param array
+	 *            the array to split
 	 * @param maxLength
 	 *            the max length
 	 * @return the two-dimensional array of strings
 	 */
-	public static String[][] split(String[] stringArray, int maxLength)
+	public static <T> T[][] split(T[] array, int maxLength)
 	{
-		int arrays = MathHelper.ceiling_float_int(((float) stringArray.length) / ((float) maxLength));
-		String[][] ret = new String[arrays][];
+		Class clazz = array.getClass().getComponentType();
+		int arrays = MathHelper.ceiling_float_int(((float) array.length) / ((float) maxLength));
+		T[][] ret = (T[][]) Array.newInstance(clazz, arrays, maxLength);
 		
 		for (int i = 0; i < ret.length; i++)
 		{
-			ret[i] = new String[maxLength];
-			for (int j = 0; j < maxLength && (j + (i * maxLength)) < stringArray.length; j++)
-			{
-				ret[i][j] = stringArray[j + (i * maxLength)];
-			}
+			ret[i] = (T[]) Array.newInstance(clazz, maxLength);
+			for (int j = 0; j < maxLength && (j + (i * maxLength)) < array.length; j++)
+				ret[i][j] = array[j + (i * maxLength)];
 		}
 		return ret;
 	}
@@ -53,13 +54,9 @@ public class CSArrays
 		for (int i = 0; i < ret.length; i++)
 		{
 			if (stringArray[i] != null)
-			{
 				ret[i] = prefix + stringArray[i] + postfix;
-			}
 			else
-			{
-				ret[i] = "";
-			}
+				ret[i] = prefix + postfix;
 		}
 		return ret;
 	}
@@ -113,74 +110,63 @@ public class CSArrays
 		return result;
 	}
 	
-	/**
-	 * Index of the object in the object array
-	 * 
-	 * @param objectArray
-	 *            the object array
-	 * @param object
-	 *            the object
-	 * @return the index
-	 */
-	@Deprecated
-	public static int valueOf(Object[] objectArray, Object object)
+	public static int indexOf(Object[] array, Object object)
 	{
-		return indexOf(objectArray, object);
+		return indexOf(array, 0, object);
 	}
 	
 	/**
 	 * Index of the object in the object array
 	 * 
-	 * @param objectArray
+	 * @param array
 	 *            the object array
 	 * @param object
 	 *            the object
 	 * @return the index
 	 */
-	public static int indexOf(Object[] objectArray, Object object)
+	public static int indexOf(Object[] array, int start, Object object)
 	{
-		for (int i = 0; i < objectArray.length; i++)
+		for (int i = start; i < array.length; i++)
 		{
-			if (object == null && objectArray[i] == null)
-				return i;
-			if (object.equals(objectArray[i]))
+			if (Objects.equal(object, array[i]))
 				return i;
 		}
 		return -1;
 	}
 	
-	/**
-	 * Index of the integer in the integer array
-	 * 
-	 * @param objectArray
-	 *            the object array
-	 * @param object
-	 *            the object
-	 * @return the index
-	 */
-	@Deprecated
-	public static int valueOf(int[] intArray, int integer)
+	public static int lastIndexOf(Object[] array, Object object)
 	{
-		return indexOf(intArray, integer);
+		return lastIndexOf(array, array.length - 1, object);
 	}
 	
-	/**
-	 * Index of the integer in the integer array
-	 * 
-	 * @param objectArray
-	 *            the object array
-	 * @param object
-	 *            the object
-	 * @return the index
-	 */
-	public static int indexOf(int[] intArray, int integer)
+	public static int lastIndexOf(Object[] array, int start, Object object)
 	{
-		for (int i = 0; i < intArray.length; i++)
+		for (int i = start; i >= 0; i--)
 		{
-			if (intArray[i] == (integer))
-			{
+			if (Objects.equal(object, array[i]))
 				return i;
-			}
+		}
+		return -1;
+	}
+	
+	public static int indexOfAny(Object[] array, Object... objects)
+	{
+		for (Object object : objects)
+		{
+			int index = indexOf(array, object);
+			if (index != -1)
+				return index;
+		}
+		return -1;
+	}
+	
+	public static int lastIndexOfAny(Object[] array, Object... objects)
+	{
+		for (Object object : objects)
+		{
+			int index = lastIndexOf(array, object);
+			if (index != -1)
+				return index;
 		}
 		return -1;
 	}
@@ -194,9 +180,46 @@ public class CSArrays
 	 *            the object
 	 * @return true, if object found
 	 */
-	public static boolean contains(Object[] objectArray, Object object)
+	public static boolean contains(Object[] array, Object object)
 	{
-		return indexOf(objectArray, object) != -1;
+		return indexOf(array, object) != -1;
+	}
+	
+	public static boolean containsAny(Object[] array, Object... objects)
+	{
+		for (Object object : objects)
+			if (contains(array, object))
+				return true;
+		return false;
+	}
+	
+	public static boolean containsAll(Object[] array, Object... objects)
+	{
+		for (Object object : objects)
+			if (!contains(array, object))
+				return false;
+		return true;
+	}
+	
+	/**
+	 * Index of the integer in the integer array
+	 * 
+	 * @param objectArray
+	 *            the object array
+	 * @param object
+	 *            the object
+	 * @return the index
+	 */
+	public static int indexOf(int[] array, int integer)
+	{
+		for (int i = 0; i < array.length; i++)
+		{
+			if (array[i] == (integer))
+			{
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	/**

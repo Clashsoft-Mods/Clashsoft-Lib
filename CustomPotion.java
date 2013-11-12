@@ -1,5 +1,6 @@
 package clashsoft.clashsoftapi;
 
+import clashsoft.clashsoftapi.util.CSArrays;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -111,6 +112,8 @@ public class CustomPotion extends Potion
 	/**
 	 * Checks if the effect is a bad effect
 	 * 
+	 * Awkward name because of compile/reobfuscate fail
+	 * 
 	 * @return true if the potion is a bad effect
 	 */
 	public boolean getIsGoodOrNotGoodEffect()
@@ -125,17 +128,9 @@ public class CustomPotion extends Potion
 	 */
 	public static int getNextFreeID()
 	{
-		System.out.println("Searching for free potion id...");
-		int id = 32;
-		for (int i = 32; i < potionTypes.length; i++)
-		{
-			if (potionTypes[i] == null)
-			{
-				id = i;
-				break;
-			}
-		}
-		System.out.println("Free potion id found: " + id);
+		int id = CSArrays.indexOf(potionTypes, null);
+		if (id == -1)
+			throw new IllegalStateException("No more empty potion IDs!");
 		return id;
 	}
 }

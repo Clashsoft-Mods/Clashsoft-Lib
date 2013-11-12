@@ -1,9 +1,11 @@
 package clashsoft.clashsoftapi;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import clashsoft.clashsoftapi.block.ICustomBlock;
+import clashsoft.clashsoftapi.util.CSString;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -23,31 +26,31 @@ public class CustomBlock extends Block implements ICustomBlock
 {
 	
 	/** The names. */
-	private String[]			names;
+	public String[]			names, descriptions;
 	
 	/** The textures. */
-	private String[][]			textures;
+	public String[][]			textures;
 	
 	/** The icons. */
-	private Icon[][]			icons;
+	public Icon[][]			icons;
 	
 	/** The opaque. */
-	private boolean				opaque;
+	public boolean				opaque;
 	
 	/** The render type. */
-	private int					renderType;
+	public int					renderType;
 	
 	/** The drops. */
-	private ItemStack[]			drops;
+	public ItemStack[]			drops;
 	
 	/** The hardnesses. */
-	private float[]				hardnesses;
+	public float[]				hardnesses;
 	
 	/** The tabs. */
 	protected CreativeTabs[]	tabs;
 	
 	/** The disabled. */
-	private boolean[]			disabled;
+	public boolean[]			disabled;
 	
 	/**
 	 * Instantiates a new custom block.
@@ -357,20 +360,21 @@ public class CustomBlock extends Block implements ICustomBlock
 	{
 		for (int i = 0; i < this.names.length; i++)
 		{
-			if (i < this.tabs.length)
-			{
-				if (tab == this.tabs[i] && !this.disabled[i])
+			if (!this.disabled[i])
+				if (i < this.tabs.length)
 				{
-					subItems.add(new ItemStack(this, 1, i));
+					if (tab == this.tabs[i])
+					{
+						subItems.add(new ItemStack(this, 1, i));
+					}
 				}
-			}
-			else
-			{
-				if (tab == this.tabs[this.tabs.length - 1] && !this.disabled[i])
+				else
 				{
-					subItems.add(new ItemStack(this, 1, i));
+					if (tab == this.tabs[this.tabs.length - 1])
+					{
+						subItems.add(new ItemStack(this, 1, i));
+					}
 				}
-			}
 		}
 	}
 	
@@ -425,11 +429,17 @@ public class CustomBlock extends Block implements ICustomBlock
 	/**
 	 * Adds the names.
 	 */
+	@Override
 	public void addNames()
 	{
 		for (int i = 0; i < this.names.length; i++)
-		{
 			LanguageRegistry.addName(new ItemStack(this, 1, i), this.names[i]);
-		}
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
+	{
+		int metadata = stack.getItemDamage();
+		list.addAll(Arrays.asList(CSString.makeLineList(descriptions[metadata])));
 	}
 }

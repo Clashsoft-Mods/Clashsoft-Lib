@@ -119,4 +119,9 @@ public class BlockCustomWorkbench extends Block implements ICustomBlock
 			LanguageRegistry.addName(new ItemStack(this, 1, i), names[i]);
 		}
 	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
+	{
+	}
 }

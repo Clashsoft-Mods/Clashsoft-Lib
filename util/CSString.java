@@ -1,6 +1,7 @@
 package clashsoft.clashsoftapi.util;
 
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import net.minecraft.client.Minecraft;
 
@@ -235,6 +236,37 @@ public class CSString
 				result.append(split);
 		}
 		return result.toString();
+	}
+	
+	public static boolean contains(String text, char c)
+	{
+		return text.indexOf(c) != -1;
+	}
+	
+	public static boolean containsRegex(String text, String regex)
+	{
+		return Pattern.compile(regex).matcher(text).find();
+	}
+	
+	public static boolean containsAny(String text, String regex)
+	{
+		return indexOfAny(text, regex) != -1;
+	}
+	
+	public static int indexOfRegex(String text, String regex)
+	{
+		return Pattern.compile(regex).matcher(text).start();
+	}
+	
+	public static int indexOfAny(String text, String regex)
+	{
+		for (int i = 0; i < regex.length(); i++)
+		{
+			int index = text.indexOf(regex.charAt(i));
+			if (index != -1)
+				return index;
+		}
+		return -1;
 	}
 	
 	/**

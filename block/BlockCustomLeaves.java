@@ -479,4 +479,9 @@ public class BlockCustomLeaves extends BlockLeavesBase implements IShearable, IC
 			LanguageRegistry.addName(new ItemStack(this, 1, i), this.names[i]);
 		}
 	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
+	{
+	}
 }

@@ -21,7 +21,6 @@ public class CSWorld
 	 * Gets the block id at the given coordinates.
 	 * 
 	 * @see World#getBlockId(int, int, int)
-	 * 
 	 * @param world
 	 *            the world
 	 * @param x
@@ -41,7 +40,6 @@ public class CSWorld
 	 * Gets the block metadata at the given coordinates.
 	 * 
 	 * @see World#getBlockMetadata(int, int, int)
-	 * 
 	 * @param world
 	 *            the world
 	 * @param x
@@ -61,7 +59,6 @@ public class CSWorld
 	 * Gets the block tile entity at the given coordinates.
 	 * 
 	 * @see World#getBlockTileEntity(int, int, int)
-	 * 
 	 * @param <T>
 	 *            the generic type
 	 * @param world
@@ -83,7 +80,6 @@ public class CSWorld
 	 * Gets the block id at the given side of the given coordinates.
 	 * 
 	 * @see World#getBlockId(int, int, int)
-	 * 
 	 * @param world
 	 *            the world
 	 * @param x
@@ -121,7 +117,6 @@ public class CSWorld
 	 * Gets the block metadata at the given side of the given coordinates.
 	 * 
 	 * @see World#getBlockMetadata(int, int, int)
-	 * 
 	 * @param world
 	 *            the world
 	 * @param x
@@ -159,7 +154,6 @@ public class CSWorld
 	 * Gets the block at the given side of the given coordinates.
 	 * 
 	 * @see World#getBlockTileEntity(int, int, int)
-	 * 
 	 * @param <T>
 	 *            the generic type
 	 * @param world
@@ -236,7 +230,8 @@ public class CSWorld
 	}
 	
 	/**
-	 * Sets the block with the given metadata at the given side of the given coordinates.
+	 * Sets the block with the given metadata at the given side of the given
+	 * coordinates.
 	 * 
 	 * @param world
 	 *            the world
@@ -316,7 +311,8 @@ public class CSWorld
 	}
 	
 	/**
-	 * Generates the wireframe of a cube made of the given block with the given metadata.
+	 * Generates the wireframe of a cube made of the given block with the given
+	 * metadata.
 	 * 
 	 * @param world
 	 *            the world
