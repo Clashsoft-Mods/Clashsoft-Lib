@@ -26,13 +26,13 @@ public class CustomBlock extends Block implements ICustomBlock
 {
 	
 	/** The names. */
-	public String[]			names, descriptions;
+	public String[]				names, descriptions;
 	
 	/** The textures. */
 	public String[][]			textures;
 	
 	/** The icons. */
-	public Icon[][]			icons;
+	public Icon[][]				icons;
 	
 	/** The opaque. */
 	public boolean				opaque;
@@ -74,6 +74,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	{
 		super(blockID, material);
 		this.names = displayNames;
+		this.descriptions = new String[displayNames.length];
 		this.textures = iconNames;
 		this.icons = new Icon[this.textures.length][6];
 		this.opaque = opaque;
@@ -184,12 +185,8 @@ public class CustomBlock extends Block implements ICustomBlock
 	{
 		String[][] s = new String[metadataArray.length][6];
 		for (int i = 0; i < metadataArray.length; i++)
-		{
 			for (int j = 0; j < 6; j++)
-			{
 				s[i][j] = metadataArray[i];
-			}
-		}
 		return s;
 	}
 	
@@ -435,11 +432,12 @@ public class CustomBlock extends Block implements ICustomBlock
 		for (int i = 0; i < this.names.length; i++)
 			LanguageRegistry.addName(new ItemStack(this, 1, i), this.names[i]);
 	}
-
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
 	{
 		int metadata = stack.getItemDamage();
-		list.addAll(Arrays.asList(CSString.makeLineList(descriptions[metadata])));
+		if (descriptions[metadata] != null && !descriptions[metadata].isEmpty())
+			list.addAll(Arrays.asList(CSString.makeLineList(descriptions[metadata])));
 	}
 }
