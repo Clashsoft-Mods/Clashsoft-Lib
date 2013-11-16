@@ -336,7 +336,9 @@ public class BlockCustomLeaves extends BlockLeavesBase implements IShearable, IC
 			
 			if (par1World.rand.nextInt(j1) == 0)
 			{
-				this.dropBlockAsItem_do(par1World, par2, par3, par4, this.saplingStacks[metadata & 3]);
+				ItemStack stack = this.saplingStacks[metadata & 3];
+				if (stack != null)
+					this.dropBlockAsItem_do(par1World, par2, par3, par4, stack);
 			}
 			
 			j1 = 200;
