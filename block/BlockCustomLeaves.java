@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import clashsoft.clashsoftapi.CustomBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -22,20 +21,22 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 
-public class BlockCustomLeaves extends BlockLeavesBase implements IShearable, ICustomBlock
+public class BlockCustomLeaves extends CustomBlock implements IShearable
 {
-	public String[]		names, iconNames;
+	public String[]			iconNames;
 	
-	public ItemStack[]	appleStacks		= new ItemStack[4];
-	public ItemStack[]	saplingStacks	= new ItemStack[4];
-	public boolean[]	isColored		= new boolean[4];
+	public ItemStack[]		appleStacks		= new ItemStack[4];
+	public ItemStack[]		saplingStacks	= new ItemStack[4];
+	public boolean[]		isColored		= new boolean[4];
 	
-	public Icon[]		icons, opaqueIcons;
-	public int[]		adjacentTreeBlocks;
+	public Icon[]			icons, opaqueIcons;
+	public int[]			adjacentTreeBlocks;
+	
+	public static boolean	graphicsLevel;
 	
 	public BlockCustomLeaves(int blockID, String[] names, String[] icons)
 	{
-		super(blockID, Material.leaves, false);
+		super(blockID, Material.leaves, names, icons, null);
 		this.setTickRandomly(true);
 		this.setStepSound(soundGrassFootstep);
 		
@@ -355,7 +356,10 @@ public class BlockCustomLeaves extends BlockLeavesBase implements IShearable, IC
 			
 			if ((par5 & 3) == 0 && par1World.rand.nextInt(j1) == 0)
 			{
-				this.dropBlockAsItem_do(par1World, par2, par3, par4, this.appleStacks[metadata]);
+				ItemStack stack = this.appleStacks[metadata & 3];
+				if (stack != null)
+					this.dropBlockAsItem_do(par1World, par2, par3, par4, stack);
+				;
 			}
 		}
 	}
@@ -389,7 +393,7 @@ public class BlockCustomLeaves extends BlockLeavesBase implements IShearable, IC
 	@Override
 	public boolean isOpaqueCube()
 	{
-		return !this.graphicsLevel;
+		return !graphicsLevel;
 	}
 	
 	/**
@@ -400,8 +404,8 @@ public class BlockCustomLeaves extends BlockLeavesBase implements IShearable, IC
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
-		this.graphicsLevel = Minecraft.getMinecraft().gameSettings.fancyGraphics;
-		return this.graphicsLevel ? this.icons[par2 & 3] : this.opaqueIcons[par2 & 3];
+		graphicsLevel = Minecraft.getMinecraft().gameSettings.fancyGraphics;
+		return graphicsLevel ? this.icons[par2 & 3] : this.opaqueIcons[par2 & 3];
 	}
 	
 	/**
@@ -473,17 +477,16 @@ public class BlockCustomLeaves extends BlockLeavesBase implements IShearable, IC
 		return true;
 	}
 	
+	/**
+	 * Returns true if the given side of this block type should be rendered, if
+	 * the adjacent block is at the given coordinates. Args: blockAccess, x, y,
+	 * z, side
+	 */
 	@Override
-	public void addNames()
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
 	{
-		for (int i = 0; i < this.names.length; i++)
-		{
-			LanguageRegistry.addName(new ItemStack(this, 1, i), this.names[i]);
-		}
-	}
-
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
-	{
+		int i1 = par1IBlockAccess.getBlockId(par2, par3, par4);
+		return !graphicsLevel && i1 == this.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
 	}
 }

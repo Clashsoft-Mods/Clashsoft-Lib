@@ -84,6 +84,9 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	@Override
 	public void growTree(World par1World, int par2, int par3, int par4, Random par5Random)
 	{
+		if (par1World.isRemote)
+			return;
+		
 		if (!TerrainGen.saplingGrowTree(par1World, par5Random, par2, par3, par4))
 			return;
 		
@@ -123,6 +126,19 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	
 	public abstract WorldGenerator getWorldGen(World world, int x, int y, int z, Random random);
 	
+	@Override
+	public boolean canBlockStay(World world, int x, int y, int z)
+	{
+		return super.canBlockStay(world, x, y, z) || this.isValidGround(world, x, y, z);
+	}
+	
+	public boolean isValidGround(World world, int x, int y, int z)
+	{
+		return this.isValidGround(world.getBlockId(x, y, z), world.getBlockMetadata(x, y, z));
+	}
+	
+	public abstract boolean isValidGround(int blockID, int blockMetadata);
+	
 	/**
 	 * Determines if the same sapling is present at the given location.
 	 */
@@ -130,16 +146,6 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	public boolean isSameSapling(World par1World, int par2, int par3, int par4, int par5)
 	{
 		return par1World.getBlockId(par2, par3, par4) == this.blockID && (par1World.getBlockMetadata(par2, par3, par4) & 3) == par5;
-	}
-	
-	/**
-	 * Determines the damage on the item the block drops. Used in cloth and
-	 * wood.
-	 */
-	@Override
-	public int damageDropped(int par1)
-	{
-		return par1 & 3;
 	}
 	
 	/**

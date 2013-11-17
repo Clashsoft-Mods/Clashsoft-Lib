@@ -2,7 +2,6 @@ package clashsoft.clashsoftapi.world.gen;
 
 import java.util.Random;
 
-import clashsoft.mods.moredimensions.addons.MDMBlocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.Direction;
@@ -54,7 +53,7 @@ public class CustomTreeGenerator extends WorldGenTrees
 		int treeHeight = random.nextInt(3) + this.minTreeHeight;
 		boolean flag = true;
 		
-		if (y >= 1 && y + treeHeight + 1 <= 256)
+		if (y > 0 && y + treeHeight < 256)
 		{
 			int var8;
 			byte var9;
@@ -86,7 +85,7 @@ public class CustomTreeGenerator extends WorldGenTrees
 							
 							Block block = Block.blocksList[var12];
 							
-							if (var12 != 0 && !block.isLeaves(world, var10, var8, var11) && var12 != Block.grass.blockID && var12 != Block.dirt.blockID && !(var12 == MDMBlocks.groundBlocks.blockID && var12_1 == 0) && var12 != MDMBlocks.heavenGrass.blockID && !block.isWood(world, var10, var8, var11))
+							if (var12 != 0 && !block.isLeaves(world, var10, var8, var11) && var12 != Block.grass.blockID && var12 != Block.dirt.blockID)
 							{
 								flag = false;
 							}
@@ -108,9 +107,8 @@ public class CustomTreeGenerator extends WorldGenTrees
 				var8 = world.getBlockId(x, y - 1, z);
 				int var8_1 = world.getBlockMetadata(x, y - 1, z);
 				
-				if ((var8 == Block.grass.blockID || var8 == Block.dirt.blockID || var8 == MDMBlocks.heavenGrass.blockID || (var8 == MDMBlocks.groundBlocks.blockID && var8_1 == 0)) && y < 256 - treeHeight - 1)
+				if (y < 256 - treeHeight - 1)
 				{
-					this.setBlock(world, x, y - 1, z, MDMBlocks.groundBlocks.blockID);
 					var9 = 3;
 					byte var18 = 0;
 					int var13;

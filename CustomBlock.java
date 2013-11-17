@@ -26,31 +26,31 @@ public class CustomBlock extends Block implements ICustomBlock
 {
 	
 	/** The names. */
-	public String[]				names, descriptions;
+	public String[]			names, descriptions;
 	
 	/** The textures. */
-	public String[][]			textures;
+	public String[][]		textures;
 	
 	/** The icons. */
-	public Icon[][]				icons;
+	public Icon[][]			icons;
 	
 	/** The opaque. */
-	public boolean				opaque;
+	public boolean			opaque;
 	
 	/** The render type. */
-	public int					renderType;
+	public int				renderType;
 	
 	/** The drops. */
-	public ItemStack[]			drops;
+	public ItemStack[]		drops;
 	
 	/** The hardnesses. */
-	public float[]				hardnesses;
+	public float[]			hardnesses;
 	
 	/** The tabs. */
-	protected CreativeTabs[]	tabs;
+	public CreativeTabs[]	tabs;
 	
 	/** The disabled. */
-	public boolean[]			disabled;
+	public boolean[]		disabled;
 	
 	/**
 	 * Instantiates a new custom block.
@@ -73,6 +73,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	public CustomBlock(int blockID, Material material, String[] displayNames, String[][] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
 	{
 		super(blockID, material);
+		
 		this.names = displayNames;
 		this.descriptions = new String[displayNames.length];
 		this.textures = iconNames;
@@ -82,12 +83,15 @@ public class CustomBlock extends Block implements ICustomBlock
 		this.drops = new ItemStack[this.names.length];
 		this.hardnesses = new float[this.names.length];
 		this.disabled = new boolean[this.names.length];
+		
 		for (int i = 0; i < this.disabled.length; i++)
 		{
 			this.disabled[i] = displayNames[i] == "" || displayNames[i].contains("%&") || (iconNames[i][0] == "" || iconNames[i][1] == "" || iconNames[i][2] == "" || iconNames[i][3] == "" || iconNames[i][4] == "" || iconNames[i][5] == "");
 		}
+		
 		this.tabs = creativeTabs;
-		this.setCreativeTab(creativeTabs[0]);
+		if (tabs != null)
+			this.setCreativeTab(creativeTabs[0]);
 	}
 	
 	/**
@@ -206,6 +210,18 @@ public class CustomBlock extends Block implements ICustomBlock
 	/**
 	 * Sets the hardness.
 	 * 
+	 * @param hardness
+	 *            the hardness
+	 * @return the custom block
+	 */
+	public CustomBlock setHardness(float hardness)
+	{
+		return this.setHardness(0, hardness);
+	}
+	
+	/**
+	 * Sets the hardness.
+	 * 
 	 * @param metadata
 	 *            the metadata
 	 * @param hardness
@@ -225,22 +241,9 @@ public class CustomBlock extends Block implements ICustomBlock
 	 *            the hardness array
 	 * @return the custom block
 	 */
-	public CustomBlock setHardnesses(float[] hardnessArray)
+	public CustomBlock setHardnesses(float... hardnessArray)
 	{
 		this.hardnesses = hardnessArray;
-		return this;
-	}
-	
-	/**
-	 * Sets the drops.
-	 * 
-	 * @param drops
-	 *            the drops
-	 * @return the custom block
-	 */
-	public CustomBlock setDrops(ItemStack[] drops)
-	{
-		this.drops = drops;
 		return this;
 	}
 	
@@ -256,6 +259,31 @@ public class CustomBlock extends Block implements ICustomBlock
 	public CustomBlock setDrops(int metadata, ItemStack drop)
 	{
 		this.drops[metadata] = drop;
+		return this;
+	}
+	
+	/**
+	 * Sets the drops.
+	 * 
+	 * @param drops
+	 *            the drops
+	 * @return the custom block
+	 */
+	public CustomBlock setDrops(ItemStack... drops)
+	{
+		this.drops = drops;
+		return this;
+	}
+	
+	public CustomBlock setCreativeTab(int metadata, CreativeTabs tab)
+	{
+		this.tabs[metadata] = tab;
+		return this;
+	}
+	
+	public CustomBlock setCreativeTabs(CreativeTabs... tabs)
+	{
+		this.tabs = tabs;
 		return this;
 	}
 	
@@ -358,20 +386,12 @@ public class CustomBlock extends Block implements ICustomBlock
 		for (int i = 0; i < this.names.length; i++)
 		{
 			if (!this.disabled[i])
-				if (i < this.tabs.length)
-				{
-					if (tab == this.tabs[i])
-					{
-						subItems.add(new ItemStack(this, 1, i));
-					}
-				}
-				else
-				{
-					if (tab == this.tabs[this.tabs.length - 1])
-					{
-						subItems.add(new ItemStack(this, 1, i));
-					}
-				}
+				if (this.tabs == null && tab == super.getCreativeTabToDisplayOn())
+					subItems.add(new ItemStack(this, 1, i));
+				else if (i < this.tabs.length && tab == this.tabs[i])
+					subItems.add(new ItemStack(this, 1, i));
+				else if (tab == this.tabs[this.tabs.length - 1])
+					subItems.add(new ItemStack(this, 1, i));
 		}
 	}
 	

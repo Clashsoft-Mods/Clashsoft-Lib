@@ -1,5 +1,7 @@
 package clashsoft.clashsoftapi.util;
 
+import clashsoft.clashsoftapi.ItemCustomBlock;
+import clashsoft.clashsoftapi.block.ICustomBlock;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -23,10 +25,9 @@ public class CSBlocks
 	 * @param par2
 	 *            the par2
 	 */
-	public static void addBlock(Block par1Block, String par2)
+	public static void addBlock(Block block, String name)
 	{
-		GameRegistry.registerBlock(par1Block, par2);
-		LanguageRegistry.addName(par1Block, par2);
+		addBlock(block, ItemCustomBlock.class, name);
 	}
 	
 	/**
@@ -41,8 +42,11 @@ public class CSBlocks
 	 */
 	public static void addBlock(Block block, Class<? extends ItemBlock> itemClass, String name)
 	{
-		GameRegistry.registerBlock(block, itemClass, name);
-		LanguageRegistry.addName(block, name);
+		GameRegistry.registerBlock(block, itemClass, name.replace(" ", ""));
+		if (block instanceof ICustomBlock)
+			((ICustomBlock) block).addNames();
+		else
+			LanguageRegistry.addName(block, name);
 	}
 	
 	/**

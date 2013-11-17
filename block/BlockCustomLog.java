@@ -155,7 +155,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	@Override
 	public int getDamageValue(World world, int x, int y, int z)
 	{
-		return world.getBlockMetadata(x, y, z);
+		return world.getBlockMetadata(x, y, z) & 3;
 	}
 	
 	@Override

@@ -1,23 +1,19 @@
 package clashsoft.clashsoftapi.block;
 
-import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import clashsoft.clashsoftapi.CustomBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
-public class BlockCustomGrass extends Block implements ICustomBlock
+public class BlockCustomGrass extends CustomBlock
 {
-	public String[]	names, topIconNames, sideIconNames, bottomIconNames;
+	public String[]	topIconNames, sideIconNames, bottomIconNames;
 	public int[]	dirtBlockIDs;
 	public int[]	dirtBlockMetadatas;
 	
@@ -30,7 +26,7 @@ public class BlockCustomGrass extends Block implements ICustomBlock
 	
 	public BlockCustomGrass(int blockID, String[] names, String[] topIcons, String[] sideIcons, String[] bottomIcons)
 	{
-		super(blockID, Material.grass);
+		super(blockID, Material.grass, names, sideIcons, null);
 		this.names = names;
 		this.topIconNames = topIcons;
 		this.sideIconNames = sideIcons;
@@ -38,6 +34,9 @@ public class BlockCustomGrass extends Block implements ICustomBlock
 		
 		this.dirtBlockIDs = new int[names.length];
 		this.dirtBlockMetadatas = new int[names.length];
+		
+		this.setStepSound(soundGrassFootstep);
+		this.setTickRandomly(true);
 	}
 	
 	public BlockCustomGrass setDirtBlocks(int[] ids, int[] metadata)
@@ -81,17 +80,21 @@ public class BlockCustomGrass extends Block implements ICustomBlock
 	}
 	
 	@Override
-	public void addNames()
+	public int idDropped(int metadata, Random random, int fortune)
 	{
-		for (int i = 0; i < this.names.length; i++)
-		{
-			LanguageRegistry.addName(new ItemStack(this, 1, i), this.names[i]);
-		}
+		return this.dirtBlockIDs[metadata];
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
+	public int damageDropped(int metadata)
 	{
+		return this.dirtBlockMetadatas[metadata];
+	}
+	
+	@Override
+	public int getDamageValue(World world, int x, int y, int z)
+	{
+		return damageDropped(world.getBlockMetadata(x, y, z));
 	}
 	
 	@Override
@@ -110,15 +113,17 @@ public class BlockCustomGrass extends Block implements ICustomBlock
 			{
 				for (int l = 0; l < 4; ++l)
 				{
-					int i1 = x + random.nextInt(3) - 1;
-					int j1 = y + random.nextInt(5) - 3;
-					int k1 = z + random.nextInt(3) - 1;
-					int l1 = world.getBlockId(i1, j1 + 1, k1);
+					int x1 = x + random.nextInt(3) - 1;
+					int y1 = y + random.nextInt(5) - 3;
+					int z1 = z + random.nextInt(3) - 1;
 					
-					if (world.getBlockId(i1, j1, k1) == dirtID && world.getBlockMetadata(i1, j1, k1) == dirtMetadata && world.getBlockLightValue(i1, j1 + 1, k1) >= 4 && world.getBlockLightOpacity(i1, j1 + 1, k1) <= 2)
-					{
-						world.setBlock(i1, j1, k1, this.blockID, metadata, 3);
-					}
+					int blockID = world.getBlockId(x1, y1, z1);
+					int blockMetadata = world.getBlockMetadata(x1, y1, z1);
+					int lightValue = world.getBlockLightValue(x1, y1 + 1, z1);
+					int lightOpacity = world.getBlockLightOpacity(x1, y1 + 1, z1);
+					
+					if (blockID == dirtID && blockMetadata == dirtMetadata && lightValue >= 4 && lightOpacity <= 2)
+						world.setBlock(x1, y1, z1, this.blockID, metadata, 3);
 				}
 			}
 		}

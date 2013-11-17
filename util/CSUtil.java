@@ -66,9 +66,7 @@ public class CSUtil
 					}
 				}
 				if (!duplicate)
-				{
 					result.add(item);
-				}
 			}
 			return result;
 		}
@@ -167,17 +165,11 @@ public class CSUtil
 	{
 		int i = b > 0 ? 1 : 0;
 		if (g > 0)
-		{
-			i += 2;
-		}
+			i |= 2;
 		if (r > 0)
-		{
-			i += 4;
-		}
+			i |= 4;
 		if (light > 0)
-		{
-			i += 8;
-		}
+			i |= 8;
 		return i;
 	}
 	

@@ -1,7 +1,5 @@
 package clashsoft.clashsoftapi;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import clashsoft.clashsoftapi.block.ICustomBlock;
@@ -104,11 +102,9 @@ public class ItemCustomBlock extends ItemBlock
 	{
 		if (theBlock instanceof CustomBlock)
 		{
-			List<CreativeTabs> list = Arrays.asList(((CustomBlock) theBlock).tabs);
-			HashSet set = new HashSet();
-			set.addAll(list);
-			Object[] ret1 = set.toArray();
-			return Arrays.copyOf(ret1, ret1.length, CreativeTabs[].class);
+			CreativeTabs[] tabs = ((CustomBlock)theBlock).tabs;
+			if (tabs != null)
+				return tabs;
 		}
 		return super.getCreativeTabs();
 	}

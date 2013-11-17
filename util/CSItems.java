@@ -1,6 +1,7 @@
 package clashsoft.clashsoftapi.util;
 
 import clashsoft.clashsoftapi.datatools.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import net.minecraft.item.EnumToolMaterial;
@@ -26,6 +27,7 @@ public class CSItems
 	 */
 	public static void addItem(Item item, String name)
 	{
+		GameRegistry.registerItem(item, name.replace(" ", ""));
 		LanguageRegistry.addName(item, name);
 	}
 	
