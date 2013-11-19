@@ -1,6 +1,10 @@
 package clashsoft.clashsoftapi.util;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import com.google.common.base.Objects;
 
@@ -13,15 +17,11 @@ import net.minecraft.util.MathHelper;
  */
 public class CSArrays
 {
-	/**
-	 * Splits an array into sub-arrays of the length "maxLenght"
-	 * 
-	 * @param array
-	 *            the array to split
-	 * @param maxLength
-	 *            the max length
-	 * @return the two-dimensional array of strings
-	 */
+	public static <T> Class<T> getComponentType(T[] array)
+	{
+		return (Class<T>) array.getClass().getComponentType();
+	}
+	
 	public static <T> T[][] split(T[] array, int maxLength)
 	{
 		Class clazz = array.getClass().getComponentType();
@@ -37,66 +37,25 @@ public class CSArrays
 		return ret;
 	}
 	
-	/**
-	 * Adds the prefix and the postfix to all objects in the string array
-	 * 
-	 * @param stringArray
-	 *            the string array
-	 * @param prefix
-	 *            the prefix
-	 * @param postfix
-	 *            the postfix
-	 * @return the string[]
-	 */
-	public static String[] addToAll(String[] stringArray, String prefix, String postfix)
+	@Deprecated
+	public static String[] addToAll(String[] array, String prefix, String postfix)
 	{
-		String[] ret = new String[stringArray.length];
+		return concatAll(array, prefix, postfix);
+	}
+	
+	public static String[] concatAll(String[] array, String prefix, String postfix)
+	{
+		String[] ret = new String[array.length];
 		for (int i = 0; i < ret.length; i++)
 		{
-			if (stringArray[i] != null)
-				ret[i] = prefix + stringArray[i] + postfix;
+			if (array[i] != null)
+				ret[i] = prefix + array[i] + postfix;
 			else
 				ret[i] = prefix + postfix;
 		}
 		return ret;
 	}
 	
-	/**
-	 * Combines two arrays of Type "T"
-	 * 
-	 * @param <T>
-	 *            the generic type
-	 * @param stringArray1
-	 *            the string array1
-	 * @param stringArray2
-	 *            the string array2
-	 * @return the a new array with the size of array1 plus the size of array2
-	 */
-	public static <T> T[] combine(T[] stringArray1, T[] stringArray2)
-	{
-		T[] ret = (T[]) Array.newInstance(stringArray1.getClass().getComponentType(), stringArray1.length + stringArray2.length);
-		for (int i = 0; i < stringArray1.length; i++)
-		{
-			ret[i] = stringArray1[i];
-		}
-		for (int i = 0; i < stringArray2.length; i++)
-		{
-			ret[i + stringArray1.length] = stringArray2[i];
-		}
-		return ret;
-	}
-	
-	/**
-	 * Cases all objects int the string array
-	 * 
-	 * @see CSString#caseString(String string, int mode)
-	 * 
-	 * @param stringArray
-	 *            the string array
-	 * @param mode
-	 *            the mode
-	 * @return the string[]
-	 */
 	public static String[] caseAll(String[] stringArray, int mode)
 	{
 		String[] result = new String[stringArray.length];
@@ -110,21 +69,67 @@ public class CSArrays
 		return result;
 	}
 	
-	public static int indexOf(Object[] array, Object object)
+	@Deprecated
+	public static <T> T[] combine(T[] array1, T[] array2)
+	{
+		return concat(array1, array2);
+	}
+	
+	public static <T> T[] concat(T[] array1, T... array2)
+	{
+		T[] ret = (T[]) Array.newInstance(array1.getClass().getComponentType(), array1.length + array2.length);
+		for (int i = 0; i < array1.length; i++)
+		{
+			ret[i] = array1[i];
+		}
+		for (int i = 0; i < array2.length; i++)
+		{
+			ret[i + array1.length] = array2[i];
+		}
+		return ret;
+	}
+	
+	public static <T> T[] removeDuplicates(T[] list)
+	{
+		if (list != null && list.length > 0)
+		{
+			Collection<T> result = new ArrayList<T>(list.length);
+			for (T t1 : list)
+			{
+				boolean duplicate = false;
+				for (T t2 : result)
+				{
+					if (Objects.equal(t1, t2))
+						duplicate = true;
+					break;
+				}
+				if (!duplicate)
+					result.add(t1);
+			}
+			return fromList(list.getClass().getComponentType(), result);
+		}
+		return list;
+		
+	}
+	
+	public static <T> List<T> asList(T[] array)
+	{
+		return Arrays.asList(array);
+	}
+	
+	public static <T> T[] fromList(Class type, Collection<T> collection)
+	{
+		T[] array = (T[]) Array.newInstance(type, collection.size());
+		collection.toArray(array);
+		return array;
+	}
+	
+	public static <T> int indexOf(T[] array, T object)
 	{
 		return indexOf(array, 0, object);
 	}
 	
-	/**
-	 * Index of the object in the object array
-	 * 
-	 * @param array
-	 *            the object array
-	 * @param object
-	 *            the object
-	 * @return the index
-	 */
-	public static int indexOf(Object[] array, int start, Object object)
+	public static <T> int indexOf(T[] array, int start, T object)
 	{
 		for (int i = start; i < array.length; i++)
 		{
@@ -134,12 +139,12 @@ public class CSArrays
 		return -1;
 	}
 	
-	public static int lastIndexOf(Object[] array, Object object)
+	public static <T> int lastIndexOf(T[] array, T object)
 	{
 		return lastIndexOf(array, array.length - 1, object);
 	}
 	
-	public static int lastIndexOf(Object[] array, int start, Object object)
+	public static <T> int lastIndexOf(T[] array, int start, T object)
 	{
 		for (int i = start; i >= 0; i--)
 		{
@@ -149,7 +154,7 @@ public class CSArrays
 		return -1;
 	}
 	
-	public static int indexOfAny(Object[] array, Object... objects)
+	public static <T> int indexOfAny(T[] array, T... objects)
 	{
 		for (Object object : objects)
 		{
@@ -160,7 +165,7 @@ public class CSArrays
 		return -1;
 	}
 	
-	public static int lastIndexOfAny(Object[] array, Object... objects)
+	public static <T> int lastIndexOfAny(T[] array, T... objects)
 	{
 		for (Object object : objects)
 		{
@@ -171,21 +176,12 @@ public class CSArrays
 		return -1;
 	}
 	
-	/**
-	 * Checks if the object array contains the object
-	 * 
-	 * @param objectArray
-	 *            the object array
-	 * @param object
-	 *            the object
-	 * @return true, if object found
-	 */
-	public static boolean contains(Object[] array, Object object)
+	public static <T> boolean contains(T[] array, T object)
 	{
 		return indexOf(array, object) != -1;
 	}
 	
-	public static boolean containsAny(Object[] array, Object... objects)
+	public static <T> boolean containsAny(T[] array, T... objects)
 	{
 		for (Object object : objects)
 			if (contains(array, object))
@@ -193,7 +189,7 @@ public class CSArrays
 		return false;
 	}
 	
-	public static boolean containsAll(Object[] array, Object... objects)
+	public static <T> boolean containsAll(T[] array, T... objects)
 	{
 		for (Object object : objects)
 			if (!contains(array, object))
@@ -201,36 +197,71 @@ public class CSArrays
 		return true;
 	}
 	
-	/**
-	 * Index of the integer in the integer array
-	 * 
-	 * @param objectArray
-	 *            the object array
-	 * @param object
-	 *            the object
-	 * @return the index
-	 */
+	public static Object[] primitiveTransform(Object array)
+	{
+		Object[] result = (Object[]) array;
+		if (array instanceof boolean[])
+		{
+			boolean[] array1 = (boolean[]) array;
+			result = new Object[array1.length];
+			for (int i = 0; i < array1.length; i++)
+				result[i] = Boolean.valueOf(array1[i]);
+		}
+		else if (array instanceof byte[])
+		{
+			byte[] array1 = (byte[]) array;
+			result = new Object[array1.length];
+			for (int i = 0; i < array1.length; i++)
+				result[i] = Byte.valueOf(array1[i]);
+		}
+		else if (array instanceof short[])
+		{
+			short[] array1 = (short[]) array;
+			result = new Object[array1.length];
+			for (int i = 0; i < array1.length; i++)
+				result[i] = Short.valueOf(array1[i]);
+		}
+		else if (array instanceof int[])
+		{
+			int[] array1 = (int[]) array;
+			result = new Object[array1.length];
+			for (int i = 0; i < array1.length; i++)
+				result[i] = Integer.valueOf(array1[i]);
+		}
+		else if (array instanceof float[])
+		{
+			float[] array1 = (float[]) array;
+			result = new Object[array1.length];
+			for (int i = 0; i < array1.length; i++)
+				result[i] = Float.valueOf(array1[i]);
+		}
+		else if (array instanceof double[])
+		{
+			double[] array1 = (double[]) array;
+			result = new Object[array1.length];
+			for (int i = 0; i < array1.length; i++)
+				result[i] = Double.valueOf(array1[i]);
+		}
+		else if (array instanceof long[])
+		{
+			long[] array1 = (long[]) array;
+			result = new Object[array1.length];
+			for (int i = 0; i < array1.length; i++)
+				result[i] = Long.valueOf(array1[i]);
+		}
+		return result;
+	}
+	
 	public static int indexOf(int[] array, int integer)
 	{
 		for (int i = 0; i < array.length; i++)
 		{
 			if (array[i] == (integer))
-			{
 				return i;
-			}
 		}
 		return -1;
 	}
 	
-	/**
-	 * Checks if the integer array contains the integer
-	 * 
-	 * @param intArray
-	 *            the int array
-	 * @param integer
-	 *            the integer
-	 * @return true, if integer found
-	 */
 	public static boolean contains(int[] intArray, int integer)
 	{
 		return indexOf(intArray, integer) != -1;

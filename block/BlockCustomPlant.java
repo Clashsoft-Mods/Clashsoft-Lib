@@ -31,6 +31,7 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	public BlockCustomPlant(int blockID, String[] names, String[] icons)
 	{
 		super(blockID, Material.plants, names, icons, null);
+		this.setBlockBounds(0.3F, 0F, 0.3F, 0.7F, 0.6F, 0.7F);
 		this.setStepSound(soundGrassFootstep);
 		
 		this.names = names;
@@ -43,120 +44,163 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public Icon getIcon(int side, int metadata)
 	{
-		return this.icons[par2];
+		return this.icons[metadata];
 	}
 	
-	 /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
-    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
-    {
-        return super.canPlaceBlockAt(par1World, par2, par3, par4) && canBlockStay(par1World, par2, par3, par4);
-    }
-
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
-    {
-        super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
-        this.checkFlowerChange(par1World, par2, par3, par4);
-    }
-
-    /**
-     * Ticks the block if it's been scheduled
-     */
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
-        this.checkFlowerChange(par1World, par2, par3, par4);
-    }
-
-    protected void checkFlowerChange(World par1World, int par2, int par3, int par4)
-    {
-        if (!this.canBlockStay(par1World, par2, par3, par4))
-        {
-            this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-            par1World.setBlock(par2, par3, par4, 0, 0, 2);
-        }
-    }
-
-    /**
-     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
-     */
-    public boolean canBlockStay(World world, int x, int y, int z)
-    {
-        Block soil = blocksList[world.getBlockId(x, y - 1, z)];
-        
-        boolean validLight = world.getFullBlockLightValue(x, y, z) >= 8 || world.canBlockSeeTheSky(x, y, z);
-        boolean validSoil = soil != null && soil.canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, this);
-        
-        return validLight && (validSoil || this.isValidGround(world, x, y, z));
-    }
-
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
-    {
-        return null;
-    }
-
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    /**
-     * The type of render function that is called for this block
-     */
-    public int getRenderType()
-    {
-        return 1;
-    }
-
-    @Override
-    public EnumPlantType getPlantType(World world, int x, int y, int z)
-    {
-        if (blockID == crops.blockID        ) return Crop;
-        if (blockID == deadBush.blockID     ) return Desert;
-        if (blockID == waterlily.blockID    ) return Water;
-        if (blockID == mushroomRed.blockID  ) return Cave;
-        if (blockID == mushroomBrown.blockID) return Cave;
-        if (blockID == netherStalk.blockID  ) return Nether;
-        if (blockID == sapling.blockID      ) return Plains;
-        if (blockID == melonStem.blockID    ) return Crop;
-        if (blockID == pumpkinStem.blockID  ) return Crop;
-        if (blockID == tallGrass.blockID    ) return Plains;
-        return Plains;
-    }
-
-    @Override
-    public int getPlantID(World world, int x, int y, int z)
-    {
-        return blockID;
-    }
-
-    @Override
-    public int getPlantMetadata(World world, int x, int y, int z)
-    {
-        return world.getBlockMetadata(x, y, z);
-    }
+	/**
+	 * Checks to see if its valid to put this block at the specified
+	 * coordinates. Args: world, x, y, z
+	 */
+	@Override
+	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side, ItemStack stack)
+	{
+		return super.canPlaceBlockOnSide(world, x, y, z, side, stack) && canBlockStay(world, x, y, z, stack.getItemDamage());
+	}
+	
+	@Override
+	public void onBlockAdded(World world, int x, int y, int z)
+	{
+		super.onBlockAdded(world, x, y, z);
+		this.checkFlowerChange(world, x, y, z);
+	}
+	
+	/**
+	 * Lets the block know when one of its neighbor changes. Doesn't know which
+	 * neighbor changed (coordinates passed are their own) Args: x, y, z,
+	 * neighbor blockID
+	 */
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, int neighborBlockID)
+	{
+		super.onNeighborBlockChange(world, x, y, z, neighborBlockID);
+		this.checkFlowerChange(world, x, y, z);
+	}
+	
+	/**
+	 * Ticks the block if it's been scheduled
+	 */
+	@Override
+	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+	{
+		this.checkFlowerChange(par1World, par2, par3, par4);
+	}
+	
+	protected void checkFlowerChange(World world, int x, int y, int z)
+	{
+		checkFlowerChange(world, x, y, z, world.getBlockMetadata(x, y, z));
+	}
+	
+	protected void checkFlowerChange(World world, int x, int y, int z, int metadata)
+	{
+		if (!this.canBlockStay(world, x, y, z, metadata))
+		{
+			this.dropBlockAsItem(world, x, y, z, metadata, 0);
+			world.setBlock(x, y, z, 0, 0, 2);
+		}
+	}
+	
+	/**
+	 * Can this block stay at this position. Similar to canPlaceBlockAt except
+	 * gets checked often with plants.
+	 */
+	@Override
+	public boolean canBlockStay(World world, int x, int y, int z)
+	{
+		return canBlockStay(world, x, y, z, world.getBlockMetadata(x, y, z));
+	}
+	
+	public boolean canBlockStay(World world, int x, int y, int z, int metadata)
+	{
+		Block soil = blocksList[world.getBlockId(x, y - 1, z)];
+		
+		if (soil == null)
+			return false;
+		
+		boolean validLight = world.getFullBlockLightValue(x, y, z) >= 8 || world.canBlockSeeTheSky(x, y, z);
+		boolean validSoil = soil.canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, this);
+		
+		return validLight && this.isValidGround(metadata, soil.blockID, world.getBlockMetadata(x, y - 1, z));
+	}
+	
+	/**
+	 * Returns a bounding box from the pool of bounding boxes (this means this
+	 * box can change after the pool has been cleared to be reused)
+	 */
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+	{
+		return null;
+	}
+	
+	/**
+	 * Is this block (a) opaque and (b) a full 1m cube? This determines whether
+	 * or not to render the shared face of two adjacent blocks and also whether
+	 * the player can attach torches, redstone wire, etc to this block.
+	 */
+	@Override
+	public boolean isOpaqueCube()
+	{
+		return false;
+	}
+	
+	/**
+	 * If this block doesn't render as an ordinary block it will return False
+	 * (examples: signs, buttons, stairs, etc)
+	 */
+	@Override
+	public boolean renderAsNormalBlock()
+	{
+		return false;
+	}
+	
+	/**
+	 * The type of render function that is called for this block
+	 */
+	@Override
+	public int getRenderType()
+	{
+		return 1;
+	}
+	
+	@Override
+	public EnumPlantType getPlantType(World world, int x, int y, int z)
+	{
+		if (blockID == crops.blockID)
+			return Crop;
+		if (blockID == deadBush.blockID)
+			return Desert;
+		if (blockID == waterlily.blockID)
+			return Water;
+		if (blockID == mushroomRed.blockID)
+			return Cave;
+		if (blockID == mushroomBrown.blockID)
+			return Cave;
+		if (blockID == netherStalk.blockID)
+			return Nether;
+		if (blockID == sapling.blockID)
+			return Plains;
+		if (blockID == melonStem.blockID)
+			return Crop;
+		if (blockID == pumpkinStem.blockID)
+			return Crop;
+		if (blockID == tallGrass.blockID)
+			return Plains;
+		return Plains;
+	}
+	
+	@Override
+	public int getPlantID(World world, int x, int y, int z)
+	{
+		return blockID;
+	}
+	
+	@Override
+	public int getPlantMetadata(World world, int x, int y, int z)
+	{
+		return world.getBlockMetadata(x, y, z);
+	}
 	
 	public boolean isValidGround(World world, int x, int y, int z)
 	{
@@ -181,10 +225,10 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(int blockID, CreativeTabs tab, List itemList)
 	{
 		for (int i = 0; i < names.length; i++)
-			par3List.add(new ItemStack(this, 1, i));
+			itemList.add(new ItemStack(this, 1, i));
 	}
 	
 	/**
@@ -194,12 +238,12 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		this.icons = new Icon[iconNames.length];
 		for (int i = 0; i < iconNames.length; ++i)
 		{
-			this.icons[i] = par1IconRegister.registerIcon(iconNames[i]);
+			this.icons[i] = iconRegister.registerIcon(iconNames[i]);
 		}
 	}
 }

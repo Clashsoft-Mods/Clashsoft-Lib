@@ -94,7 +94,7 @@ public class BlockCustomGrass extends CustomBlock
 	@Override
 	public int getDamageValue(World world, int x, int y, int z)
 	{
-		return damageDropped(world.getBlockMetadata(x, y, z));
+		return world.getBlockMetadata(x, y, z);
 	}
 	
 	@Override
