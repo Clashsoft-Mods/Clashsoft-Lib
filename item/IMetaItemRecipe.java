@@ -1,9 +1,9 @@
-package clashsoft.clashsoftapi.util;
+package clashsoft.clashsoftapi.item;
 
 /**
  * The Interface IItemMetadataRecipe.
  */
-public interface IItemMetadataRecipe
+public interface IMetaItemRecipe
 {
 	public static final int	CRAFTING			= 0;
 	public static final int	CRAFTING_SHAPELESS	= 1;

@@ -17,9 +17,34 @@ import net.minecraft.util.MathHelper;
  */
 public class CSArrays
 {
+	public static <T> T[] create(T... array)
+	{
+		return array;
+	}
+	
+	public static <T> T[] create(int size, Class<T> type)
+	{
+		return (T[]) Array.newInstance(type, size);
+	}
+	
+	public static <T> T[] create(int size, T... array)
+	{
+		T[] array1 = (T[]) create(array.getClass().getComponentType(), size);
+		System.arraycopy(array, 0, array1, 0, array.length);
+		return array1;
+	}
+	
 	public static <T> Class<T> getComponentType(T[] array)
 	{
 		return (Class<T>) array.getClass().getComponentType();
+	}
+	
+	public static <T> Class<T> getComponentTypeSave(T[] array)
+	{
+		Class<T> ret = getComponentType(array);
+		while(ret != ret.getComponentType())
+			ret = (Class<T>) ret.getComponentType();
+		return ret;
 	}
 	
 	public static <T> T[][] split(T[] array, int maxLength)
@@ -77,24 +102,23 @@ public class CSArrays
 	
 	public static <T> T[] concat(T[] array1, T... array2)
 	{
-		T[] ret = (T[]) Array.newInstance(array1.getClass().getComponentType(), array1.length + array2.length);
-		for (int i = 0; i < array1.length; i++)
-		{
-			ret[i] = array1[i];
-		}
-		for (int i = 0; i < array2.length; i++)
-		{
-			ret[i + array1.length] = array2[i];
-		}
-		return ret;
+		return concat(array1, array2);
 	}
 	
-	public static <T> T[] removeDuplicates(T[] list)
+	public static <T> T[] concat(T[]... arrays)
 	{
-		if (list != null && list.length > 0)
+		List<T> list = asList(arrays[0]);
+		for (int i = 1; i < arrays.length; i++)
+			list.addAll(asList(arrays[i]));
+		return fromList(getComponentType(arrays), list);
+	}
+	
+	public static <T> T[] removeDuplicates(T... array)
+	{
+		if (array != null && array.length > 0)
 		{
-			Collection<T> result = new ArrayList<T>(list.length);
-			for (T t1 : list)
+			Collection<T> result = new ArrayList<T>(array.length);
+			for (T t1 : array)
 			{
 				boolean duplicate = false;
 				for (T t2 : result)
@@ -106,13 +130,13 @@ public class CSArrays
 				if (!duplicate)
 					result.add(t1);
 			}
-			return fromList(list.getClass().getComponentType(), result);
+			return fromList(array.getClass().getComponentType(), result);
 		}
-		return list;
+		return array;
 		
 	}
 	
-	public static <T> List<T> asList(T[] array)
+	public static <T> List<T> asList(T... array)
 	{
 		return Arrays.asList(array);
 	}

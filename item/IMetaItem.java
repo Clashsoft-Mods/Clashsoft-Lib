@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi.util;
+package clashsoft.clashsoftapi.item;
 
 import java.util.Collection;
 
@@ -9,7 +9,7 @@ import net.minecraft.potion.PotionEffect;
 /**
  * The Interface IItemMetadataList.
  */
-public interface IItemMetadataList
+public interface IMetaItem
 {	
 	/**
 	 * As stack.
@@ -91,7 +91,7 @@ public interface IItemMetadataList
 	 * Register.
 	 * @return 
 	 */
-	public IItemMetadataList register();
+	public IMetaItem register();
 	
 	/**
 	 * Sets the block placed.
@@ -108,7 +108,7 @@ public interface IItemMetadataList
 	 *            the effects
 	 * @return this
 	 */
-	public IItemMetadataList setEffects(PotionEffect... effects);
+	public IMetaItem setEffects(PotionEffect... effects);
 	
 	/**
 	 * Sets the enabled.
@@ -117,7 +117,7 @@ public interface IItemMetadataList
 	 *            the enabled
 	 * @return this
 	 */
-	public IItemMetadataList setEnabled(boolean enabled);
+	public IMetaItem setEnabled(boolean enabled);
 	
 	/**
 	 * Sets the food value.
@@ -151,6 +151,6 @@ public interface IItemMetadataList
 	 */
 	public void setName(String name);
 
-	IItemMetadataRecipe getRecipe();
+	IMetaItemRecipe getRecipe();
 	
 }

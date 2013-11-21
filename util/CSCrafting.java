@@ -3,6 +3,7 @@ package clashsoft.clashsoftapi.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import clashsoft.clashsoftapi.item.IMetaItemRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
@@ -285,15 +286,15 @@ public class CSCrafting
 	 *            the recipe
 	 * @return the item stack[][]
 	 */
-	public static ItemStack[][] analyseCrafting(IItemMetadataRecipe recipe)
+	public static ItemStack[][] analyseCrafting(IMetaItemRecipe recipe)
 	{
 		try
 		{
-			if (recipe.getCraftingType() == IItemMetadataRecipe.FURNACE)
+			if (recipe.getCraftingType() == IMetaItemRecipe.FURNACE)
 			{
 				return new ItemStack[][] { { null, (ItemStack) recipe.getData()[0], null }, { null, FIRE, null }, { null, COAL, null } };
 			}
-			else if (recipe.getCraftingType() == IItemMetadataRecipe.CRAFTING_SHAPELESS)
+			else if (recipe.getCraftingType() == IMetaItemRecipe.CRAFTING_SHAPELESS)
 			{
 				ItemStack[][] ret = new ItemStack[3][3];
 				
@@ -306,7 +307,7 @@ public class CSCrafting
 				
 				return ret;
 			}
-			else if (recipe.getCraftingType() == IItemMetadataRecipe.CRAFTING)
+			else if (recipe.getCraftingType() == IMetaItemRecipe.CRAFTING)
 			{
 				return analyseCraftingShaped(recipe.getData());
 			}
