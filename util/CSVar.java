@@ -130,6 +130,6 @@ public class CSVar<T>
 	@Override
 	public String toString()
 	{
-		return "CSVar [name=" + this.name + ", value=" + this.value + ", prevValue=" + this.prevValue + "]";
+		return this.name + "=" + this.value + (prevValue != null ? "{" + prevValue + "}" : "");
 	}
 }

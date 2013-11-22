@@ -138,7 +138,6 @@ public class CSCrafting
 	 */
 	public static void addStick(ItemStack output, ItemStack input)
 	{
-		System.out.println();
 		addCrafting(output, "s", "s", 's', input);
 	}
 	

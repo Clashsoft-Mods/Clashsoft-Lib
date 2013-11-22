@@ -187,6 +187,19 @@ public class CSString
 		}
 	}
 	
+	public static String[] caseAll(String[] stringArray, int mode)
+	{
+		String[] result = new String[stringArray.length];
+		for (int i = 0; i < stringArray.length; i++)
+		{
+			if (stringArray[i] != null)
+				result[i] = caseString(stringArray[i], mode);
+			else
+				result[i] = "";
+		}
+		return result;
+	}
+	
 	/**
 	 * Puts an array created with {@link String#split(String)} back together.
 	 * 
@@ -206,6 +219,19 @@ public class CSString
 				result.append(split);
 		}
 		return result.toString();
+	}
+	
+	public static String[] concatAll(String[] array, String prefix, String postfix)
+	{
+		String[] ret = new String[array.length];
+		for (int i = 0; i < ret.length; i++)
+		{
+			if (array[i] != null)
+				ret[i] = prefix + array[i] + postfix;
+			else
+				ret[i] = prefix + postfix;
+		}
+		return ret;
 	}
 	
 	public static boolean contains(String text, char c)
@@ -237,19 +263,6 @@ public class CSString
 				return index;
 		}
 		return -1;
-	}
-	
-	/**
-	 * Returns the string with the first char being an uppercase char.
-	 * 
-	 * @param string
-	 *            the string
-	 * @return the string
-	 */
-	@Deprecated
-	public static String firstCharToUpperCase(String string)
-	{
-		return firstCharToCase(string, 1);
 	}
 	
 	/**

@@ -34,11 +34,17 @@ public class CSArrays
 		return (Class<T>) array.getClass().getComponentType();
 	}
 	
-	public static <T> Class<T> getComponentTypeSave(T[] array)
+	public static <T> Class getComponentTypeSave(T[] array)
 	{
-		Class<T> ret = getComponentType(array);
-		while(ret != ret.getComponentType())
-			ret = (Class<T>) ret.getComponentType();
+		Class ret = getComponentType(array);
+		while (true)
+		{
+			Class c = ret.getComponentType();
+			if (c != null && c != ret)
+				ret = c;
+			else
+				break;
+		}
 		return ret;
 	}
 	
@@ -57,62 +63,20 @@ public class CSArrays
 		return ret;
 	}
 	
-	@Deprecated
-	public static String[] addToAll(String[] array, String prefix, String postfix)
-	{
-		return concatAll(array, prefix, postfix);
-	}
-	
-	public static String[] concatAll(String[] array, String prefix, String postfix)
-	{
-		String[] ret = new String[array.length];
-		for (int i = 0; i < ret.length; i++)
-		{
-			if (array[i] != null)
-				ret[i] = prefix + array[i] + postfix;
-			else
-				ret[i] = prefix + postfix;
-		}
-		return ret;
-	}
-	
-	public static String[] caseAll(String[] stringArray, int mode)
-	{
-		String[] result = new String[stringArray.length];
-		for (int i = 0; i < stringArray.length; i++)
-		{
-			if (stringArray[i] != null)
-				result[i] = CSString.caseString(stringArray[i], mode);
-			else
-				result[i] = "";
-		}
-		return result;
-	}
-	
-	@Deprecated
-	public static <T> T[] combine(T[] array1, T[] array2)
-	{
-		return concat(array1, array2);
-	}
-	
-	public static <T> T[] concat(T[] array1, T... array2)
-	{
-		return concat(array1, array2);
-	}
-	
 	public static <T> T[] concat(T[]... arrays)
 	{
-		List<T> list = asList(arrays[0]);
-		for (int i = 1; i < arrays.length; i++)
-			list.addAll(asList(arrays[i]));
-		return fromList(getComponentType(arrays), list);
+		List<T> list = new ArrayList<T>(arrays.length);
+		for (int i = 0; i < arrays.length; i++)
+			for (int j = 0; j < arrays[i].length; j++)
+				list.add(arrays[i][j]);
+		return (T[]) fromList(getComponentTypeSave(arrays), list);
 	}
 	
 	public static <T> T[] removeDuplicates(T... array)
 	{
 		if (array != null && array.length > 0)
 		{
-			Collection<T> result = new ArrayList<T>(array.length);
+			List<T> result = new ArrayList<T>(array.length);
 			for (T t1 : array)
 			{
 				boolean duplicate = false;
@@ -125,7 +89,7 @@ public class CSArrays
 				if (!duplicate)
 					result.add(t1);
 			}
-			return fromList(array.getClass().getComponentType(), result);
+			return fromList(getComponentType(array), result);
 		}
 		return array;
 		
@@ -136,10 +100,11 @@ public class CSArrays
 		return Arrays.asList(array);
 	}
 	
-	public static <T> T[] fromList(Class type, Collection<T> collection)
+	public static <T> T[] fromList(Class<T> type, List<? extends T> list)
 	{
-		T[] array = (T[]) Array.newInstance(type, collection.size());
-		collection.toArray(array);
+		T[] array = (T[]) Array.newInstance(type, list.size());
+		for (int i = 0; i < list.size(); i++)
+			array[i] = (T) list.get(i);
 		return array;
 	}
 	

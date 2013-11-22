@@ -265,7 +265,7 @@ public class CustomItem extends Item
 			Collection<String> s = this.subItemList.get(stack.getItemDamage()).getDescription();
 			list.addAll(s);
 		}
-		else if (stack.getItemDamage() < this.descriptions.length)
+		else if (this.descriptions != null)
 		{
 			String s = this.descriptions[stack.getItemDamage()];
 			if (s == null || s.isEmpty())
