@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi.util;
+package clashsoft.cslib.util;
 
 /**
  * The Class CSVar.

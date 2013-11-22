@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi.network;
+package clashsoft.cslib.network;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;

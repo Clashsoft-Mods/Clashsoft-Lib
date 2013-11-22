@@ -1,10 +1,10 @@
-package clashsoft.clashsoftapi.util;
+package clashsoft.cslib.util;
 
 import java.awt.Color;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
-import clashsoft.clashsoftapi.util.reflect.ImmutableObjectFactory;
+import clashsoft.cslib.reflect.ImmutableObjectFactory;
 
 /**
  * The Class CSUtil.
@@ -36,39 +36,8 @@ public class CSUtil
 		{
 			Set set = new HashSet(list);
 			list.clear();
-			list = new LinkedList<String>(set);
+			list.addAll(set);
 			return list;
-		}
-		return list;
-	}
-	
-	/**
-	 * Second algorythm to sort a list by searching for duplicates.
-	 * 
-	 * @param list
-	 *            the list
-	 * @return the list
-	 */
-	public static List removeDuplicates2(List list)
-	{
-		if (list != null && list.size() > 0)
-		{
-			List result = new ArrayList();
-			for (Object item : list)
-			{
-				boolean duplicate = false;
-				for (Object ob : result)
-				{
-					if (ob.equals(item))
-					{
-						duplicate = true;
-						break;
-					}
-				}
-				if (!duplicate)
-					result.add(item);
-			}
-			return result;
 		}
 		return list;
 	}

@@ -1,12 +1,7 @@
-package clashsoft.clashsoftapi.util;
+package clashsoft.cslib.util;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import com.google.common.base.Objects;
+import java.util.*;
 
 import net.minecraft.util.MathHelper;
 
@@ -123,7 +118,7 @@ public class CSArrays
 				boolean duplicate = false;
 				for (T t2 : result)
 				{
-					if (Objects.equal(t1, t2))
+					if (Objects.equals(t1, t2))
 						duplicate = true;
 					break;
 				}
@@ -157,7 +152,7 @@ public class CSArrays
 	{
 		for (int i = start; i < array.length; i++)
 		{
-			if (Objects.equal(object, array[i]))
+			if (Objects.equals(object, array[i]))
 				return i;
 		}
 		return -1;
@@ -172,7 +167,7 @@ public class CSArrays
 	{
 		for (int i = start; i >= 0; i--)
 		{
-			if (Objects.equal(object, array[i]))
+			if (Objects.equals(object, array[i]))
 				return i;
 		}
 		return -1;

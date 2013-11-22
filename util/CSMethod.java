@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi.util;
+package clashsoft.cslib.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,9 +25,7 @@ public abstract class CSMethod<R> implements Callable
 			if ((i & 1) == 0 && args[i] instanceof String)
 				name = (String) args[i];
 			else
-			{
 				this.args.put(name, args[i]);
-			}
 		}
 	}
 	

@@ -1,4 +1,4 @@
-package clashsoft.clashsoftapi.util;
+package clashsoft.cslib.util;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -6,9 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.common.base.Objects;
-
-import net.minecraft.util.MathHelper;
+import java.util.Objects;
 
 public class CSCollections
 {
@@ -38,7 +36,7 @@ public class CSCollections
 	public static <T> List<List<T>> split(List<T> list, int maxLength)
 	{
 		Class clazz = list.getClass().getComponentType();
-		int arrays = MathHelper.ceiling_float_int(((float) list.size()) / ((float) maxLength));
+		int arrays = (int) Math.ceil((float) list.size() / (float) maxLength);
 		List<List<T>> ret = new ArrayList();
 		
 		for (int i = 0; i < ret.size(); i++)
@@ -97,7 +95,7 @@ public class CSCollections
 				boolean duplicate = false;
 				for (T t2 : result)
 				{
-					if (Objects.equal(t1, t2))
+					if (Objects.equals(t1, t2))
 						duplicate = true;
 					break;
 				}
@@ -130,7 +128,7 @@ public class CSCollections
 	{
 		for (int i = start; i < array.size(); i++)
 		{
-			if (Objects.equal(object, array.get(i)))
+			if (Objects.equals(object, array.get(i)))
 				return i;
 		}
 		return -1;
@@ -145,7 +143,7 @@ public class CSCollections
 	{
 		for (int i = start; i >= 0; i--)
 		{
-			if (Objects.equal(object, array.get(i)))
+			if (Objects.equals(object, array.get(i)))
 				return i;
 		}
 		return -1;
