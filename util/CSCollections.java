@@ -1,20 +1,29 @@
 package clashsoft.cslib.util;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
 import java.util.Objects;
 
 public class CSCollections
 {
+	/** Hacky way to get the component type of a list **/
 	public static Collection<?>	tempCollection;
 	
-	public static Class getComponentType(Collection list)
+	/**
+	 * Returns the component type of a collection
+	 * 
+	 * @see CSCollections#tempCollection
+	 * @param collection
+	 *            the collection
+	 * @return the component type class
+	 */
+	public static Class getComponentType(Collection collection)
 	{
-		tempCollection = list;
+		tempCollection = collection;
 		try
 		{
 			Field tempCollectionField = CSCollections.class.getDeclaredField("tempCollection");
@@ -33,6 +42,15 @@ public class CSCollections
 		return Object.class;
 	}
 	
+	/**
+	 * Splits a list into sub-lists of size {@code maxLength}
+	 * 
+	 * @param list
+	 *            the list
+	 * @param maxLength
+	 *            the maximum length
+	 * @return the list of lists
+	 */
 	public static <T> List<List<T>> split(List<T> list, int maxLength)
 	{
 		Class clazz = list.getClass().getComponentType();
@@ -49,42 +67,30 @@ public class CSCollections
 		return ret;
 	}
 	
-	public static List<String> concatAll(List<String> list, String prefix, String postfix)
+	/**
+	 * Concats two lists
+	 * 
+	 * @param list1
+	 *            the first list
+	 * @param list2
+	 *            the second list
+	 * @return the list
+	 */
+	public static <T> List<T> concat(List<T> list1, List<T> list2)
 	{
-		List<String> ret = new ArrayList<String>(list.size());
-		for (int i = 0; i < ret.size(); i++)
-		{
-			String string = list.get(i);
-			if (string != null)
-				string = prefix + string + postfix;
-			else
-				string = prefix + postfix;
-			ret.add(string);
-		}
+		List<T> ret = new ArrayList<T>(list1.size() + list2.size());
+		ret.addAll(list1);
+		ret.addAll(list2);
 		return ret;
 	}
 	
-	public static List<String> caseAll(List<String> stringArray, int mode)
-	{
-		List<String> result = new ArrayList<String>();
-		for (int i = 0; i < stringArray.size(); i++)
-		{
-			if (stringArray.get(i) != null)
-				result.add(CSString.caseString(stringArray.get(i), mode));
-			else
-				result.add("");
-		}
-		return result;
-	}
-	
-	public static <T> List<T> concat(List<T> array1, List<T> array2)
-	{
-		List<T> ret = new ArrayList<T>(array1.size() + array2.size());
-		ret.addAll(array1);
-		ret.addAll(array2);
-		return ret;
-	}
-	
+	/**
+	 * Removes all duplicates from a collection
+	 * 
+	 * @param collection
+	 *            the collection
+	 * @return the collection without duplicates
+	 */
 	public static <T> Collection<T> removeDuplicates(Collection<T> collection)
 	{
 		if (collection != null && collection.size() > 0)
@@ -107,11 +113,42 @@ public class CSCollections
 		return collection;
 	}
 	
-	public static <T> List<T> fromArray(T[] array)
+	/**
+	 * Creates a new Array List from the array
+	 * 
+	 * @see CSArrays#asList(Object...)
+	 * @param array
+	 *            the array
+	 * @return the array list
+	 */
+	public static <T> List<T> fromArray(T... array)
 	{
-		return Arrays.asList(array);
+		return CSArrays.asList(array);
 	}
 	
+	/**
+	 * Creates an array from the given {@code collection}
+	 * 
+	 * @see CSCollections#toArray(Class, Collection)
+	 * @param collection
+	 *            the collection
+	 * @return the array
+	 */
+	public static <T> T[] toArray(Collection<T> collection)
+	{
+		return toArray(getComponentType(collection), collection);
+	}
+	
+	/**
+	 * Creates an array from the given {@code collection}
+	 * 
+	 * @see CSCollections#toArray(Class, Collection)
+	 * @param type
+	 *            the expected type
+	 * @param collection
+	 *            the collection
+	 * @return the array
+	 */
 	public static <T> T[] toArray(Class type, Collection<T> collection)
 	{
 		T[] array = (T[]) Array.newInstance(type, collection.size());
@@ -119,75 +156,166 @@ public class CSCollections
 		return array;
 	}
 	
-	public static <T> int indexOf(List<T> array, T object)
+	/**
+	 * Returns the first index of the {@code object} in the {@code list}
+	 * 
+	 * @param list
+	 *            the list
+	 * @param object
+	 *            the object
+	 * @return the first index of the object in the list
+	 */
+	public static <T> int indexOf(List<T> list, T object)
 	{
-		return indexOf(array, 0, object);
+		return indexOf(list, 0, object);
 	}
 	
-	public static <T> int indexOf(List<T> array, int start, T object)
+	/**
+	 * Returns the first index after {@code start} of the {@code object} in the
+	 * {@code list}
+	 * 
+	 * @param list
+	 *            the list
+	 * @param start
+	 *            the index to start from
+	 * @param object
+	 *            the object
+	 * @return the first index of the object in the array
+	 */
+	public static <T> int indexOf(List<T> list, int start, T object)
 	{
-		for (int i = start; i < array.size(); i++)
+		for (int i = start; i < list.size(); i++)
 		{
-			if (Objects.equals(object, array.get(i)))
+			if (Objects.equals(object, list.get(i)))
 				return i;
 		}
 		return -1;
 	}
 	
-	public static <T> int lastIndexOf(List<T> array, T object)
+	/**
+	 * Returns the last index of the {@code object} in the {@code list}
+	 * 
+	 * @param list
+	 *            the list
+	 * @param object
+	 *            the object
+	 * @return the last index of the object in the array
+	 */
+	public static <T> int lastIndexOf(List<T> list, T object)
 	{
-		return lastIndexOf(array, array.size() - 1, object);
+		return lastIndexOf(list, list.size() - 1, object);
 	}
 	
-	public static <T> int lastIndexOf(List<T> array, int start, T object)
+	/**
+	 * Returns the last index before {@code start} of the {@code object} in the
+	 * {@code list}
+	 * 
+	 * @param list
+	 *            the list
+	 * @param start
+	 *            the index to start from
+	 * @param object
+	 *            the object
+	 * @return the last index of the object in the array
+	 */
+	public static <T> int lastIndexOf(List<T> list, int start, T object)
 	{
 		for (int i = start; i >= 0; i--)
 		{
-			if (Objects.equals(object, array.get(i)))
+			if (Objects.equals(object, list.get(i)))
 				return i;
 		}
 		return -1;
 	}
 	
-	public static <T> int indexOfAny(List<T> array, T... objects)
+	/**
+	 * Returns the first index of the any of the {@code objects} in the
+	 * {@code list}
+	 * 
+	 * @param list
+	 *            the list
+	 * @param objects
+	 *            the objects
+	 * @return the first index of the object in the list
+	 */
+	public static <T> int indexOfAny(List<T> list, T... objects)
 	{
 		for (T object : objects)
 		{
-			int index = indexOf(array, object);
+			int index = indexOf(list, object);
 			if (index != -1)
 				return index;
 		}
 		return -1;
 	}
 	
-	public static <T> int lastIndexOfAny(List<T> array, T... objects)
+	/**
+	 * Returns the last index of any of the {@code objects} in the {@code list}
+	 * 
+	 * @param list
+	 *            the list
+	 * @param objects
+	 *            the objects
+	 * @return the last index of the object in the list
+	 */
+	public static <T> int lastIndexOfAny(List<T> list, T... objects)
 	{
 		for (T object : objects)
 		{
-			int index = lastIndexOf(array, object);
+			int index = lastIndexOf(list, object);
 			if (index != -1)
 				return index;
 		}
 		return -1;
 	}
 	
-	public static <T> boolean contains(List<T> array, T object)
+	/**
+	 * Checks if {@code collection} contains the {@code object}.
+	 * 
+	 * @param collection
+	 *            the collection
+	 * @param object
+	 *            the object
+	 * @return true, if the collection contains the object
+	 */
+	public static <T> boolean contains(Collection<T> collection, T object)
 	{
-		return indexOf(array, object) != -1;
-	}
-	
-	public static <T> boolean containsAny(List<T> array, T... objects)
-	{
-		for (T object : objects)
-			if (contains(array, object))
+		for (T t : collection)
+			if (Objects.equals(t, object))
 				return true;
 		return false;
 	}
 	
-	public static <T> boolean containsAll(List<T> array, T... objects)
+	/**
+	 * Checks if {@code collection} contains any of the {@code objects}.
+	 * 
+	 * @param collection
+	 *            the collection
+	 * @param objects
+	 *            the objects
+	 * @return true, if the collection contains any of the objects
+	 */
+	public static <T> boolean containsAny(Collection<T> collection, T... objects)
 	{
 		for (T object : objects)
-			if (!contains(array, object))
+			if (contains(collection, object))
+				return true;
+		return false;
+	}
+	
+	/**
+	 * Checks if {@code collection} contains all {@code objects}.
+	 * 
+	 * @param collection
+	 *            the collection
+	 * @param objects
+	 *            the objects
+	 * @return true, if the collection contains all objects
+	 */
+	public static <T> boolean containsAll(Collection<T> collection, T... objects)
+	{
+		for (T object : objects)
+			if (!contains(collection, object))
 				return false;
 		return true;
 	}

@@ -26,7 +26,7 @@ public class CSReflection
 		for (int i = 1; i < stElements.length; i++)
 		{
 			StackTraceElement ste = stElements[i];
-			if (!ste.getClassName().equals(CSReflection.class.getName()) && ste.getClassName().indexOf("java.lang.Thread") != 0)
+			if (!ste.getClassName().equals(CSReflection.class.getName()) && ste.getClassName().startsWith("java.lang.Thread"))
 			{
 				if (callerClassName == null)
 				{

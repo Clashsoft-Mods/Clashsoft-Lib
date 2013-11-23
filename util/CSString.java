@@ -1,5 +1,7 @@
 package clashsoft.cslib.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -361,5 +363,33 @@ public class CSString
 		
 		String s = new String(new char[] { Character.toLowerCase(c1), Character.toLowerCase(c2) });
 		return CSArrays.contains(CONSONANTCOMBINATIONS, s);
+	}
+
+	public static List<String> concatAll(List<String> list, String prefix, String postfix)
+	{
+		List<String> ret = new ArrayList<String>(list.size());
+		for (int i = 0; i < ret.size(); i++)
+		{
+			String string = list.get(i);
+			if (string != null)
+				string = prefix + string + postfix;
+			else
+				string = prefix + postfix;
+			ret.add(string);
+		}
+		return ret;
+	}
+
+	public static List<String> caseAll(List<String> stringArray, int mode)
+	{
+		List<String> result = new ArrayList<String>();
+		for (int i = 0; i < stringArray.size(); i++)
+		{
+			if (stringArray.get(i) != null)
+				result.add(caseString(stringArray.get(i), mode));
+			else
+				result.add("");
+		}
+		return result;
 	}
 }

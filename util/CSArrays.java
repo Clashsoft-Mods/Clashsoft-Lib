@@ -12,16 +12,46 @@ import net.minecraft.util.MathHelper;
  */
 public class CSArrays
 {
+	/**
+	 * Creates a new array (actually just returns the given argument, but its a
+	 * varargs argument)
+	 * 
+	 * @param array
+	 *            the varargs array
+	 * @return
+	 */
 	public static <T> T[] create(T... array)
 	{
 		return array;
 	}
 	
+	/**
+	 * Creates a new empty array of type {@code type} and size {@code size}
+	 * 
+	 * @param size
+	 *            the expected size
+	 * @param type
+	 *            the expected type
+	 * @return the array
+	 */
 	public static <T> T[] create(int size, Class<T> type)
 	{
 		return (T[]) Array.newInstance(type, size);
 	}
 	
+	/**
+	 * Creates a new array of size {@code size} and fills it with {@code array}.
+	 * <p>
+	 * Uses the class of the given argument
+	 * 
+	 * @see CSArrays#create(int, Class)
+	 * @see System#arraycopy(Object, int, Object, int, int)
+	 * @param size
+	 *            the expected size
+	 * @param array
+	 *            the source array
+	 * @return
+	 */
 	public static <T> T[] create(int size, T... array)
 	{
 		T[] array1 = (T[]) create(array.getClass().getComponentType(), size);
@@ -29,12 +59,27 @@ public class CSArrays
 		return array1;
 	}
 	
+	/**
+	 * Returns the component type of a one-dimensional array
+	 * 
+	 * @see Class#getComponentType()
+	 * @param array
+	 *            the array
+	 * @return the component type
+	 */
 	public static <T> Class<T> getComponentType(T[] array)
 	{
 		return (Class<T>) array.getClass().getComponentType();
 	}
 	
-	public static <T> Class getComponentTypeSave(T[] array)
+	/**
+	 * Returns the component tyoe of a multi-dimensional array
+	 * 
+	 * @param array
+	 *            the array
+	 * @return the component type
+	 */
+	public static <T> Class getDeepComponentType(T[] array)
 	{
 		Class ret = getComponentType(array);
 		while (true)
@@ -48,6 +93,15 @@ public class CSArrays
 		return ret;
 	}
 	
+	/**
+	 * Splits an array into sub-arrays of size {@code maxLength}
+	 * 
+	 * @param array
+	 *            the array
+	 * @param maxLength
+	 *            the maximum length
+	 * @return the two-dimensional array
+	 */
 	public static <T> T[][] split(T[] array, int maxLength)
 	{
 		Class clazz = array.getClass().getComponentType();
@@ -63,15 +117,29 @@ public class CSArrays
 		return ret;
 	}
 	
+	/**
+	 * Concats all arrays
+	 * 
+	 * @param arrays
+	 *            the arrays to concat
+	 * @return the array
+	 */
 	public static <T> T[] concat(T[]... arrays)
 	{
 		List<T> list = new ArrayList<T>(arrays.length);
 		for (int i = 0; i < arrays.length; i++)
 			for (int j = 0; j < arrays[i].length; j++)
 				list.add(arrays[i][j]);
-		return (T[]) fromList(getComponentTypeSave(arrays), list);
+		return (T[]) fromList(getDeepComponentType(arrays), list);
 	}
 	
+	/**
+	 * Removes all duplicates from an array
+	 * 
+	 * @param array
+	 *            the array
+	 * @return the array without duplicates
+	 */
 	public static <T> T[] removeDuplicates(T... array)
 	{
 		if (array != null && array.length > 0)
@@ -92,27 +160,75 @@ public class CSArrays
 			return fromList(getComponentType(array), result);
 		}
 		return array;
-		
 	}
 	
+	/**
+	 * Creates a new Array List from the array
+	 * 
+	 * @see ArrayList
+	 * @param array
+	 *            the array
+	 * @return an ArrayList
+	 */
 	public static <T> List<T> asList(T... array)
 	{
 		return Arrays.asList(array);
 	}
 	
-	public static <T> T[] fromList(Class<T> type, List<? extends T> list)
+	/**
+	 * Creates an array from the given {@code collection}
+	 * 
+	 * @see CSCollections#toArray(Collection)
+	 * @param collection
+	 *            the collection
+	 * @return the array
+	 */
+	public static <T> T[] fromList(Collection<? extends T> collection)
 	{
-		T[] array = (T[]) Array.newInstance(type, list.size());
-		for (int i = 0; i < list.size(); i++)
-			array[i] = (T) list.get(i);
-		return array;
+		return CSCollections.toArray(collection);
 	}
 	
+	/**
+	 * Creates an array from the given {@code collection}
+	 * 
+	 * @see CSCollections#toArray(Class, Collection)
+	 * @param type
+	 *            the expected type
+	 * @param collection
+	 *            the collection
+	 * @return the array
+	 */
+	public static <T> T[] fromList(Class<T> type, Collection<? extends T> collection)
+	{
+		return CSCollections.toArray(type, collection);
+	}
+	
+	/**
+	 * Returns the first index of the {@code object} in the {@code array}
+	 * 
+	 * @param array
+	 *            the array
+	 * @param object
+	 *            the object
+	 * @return the first index of the object in the array
+	 */
 	public static <T> int indexOf(T[] array, T object)
 	{
 		return indexOf(array, 0, object);
 	}
 	
+	/**
+	 * Returns the first index after {@code start} of the {@code object} in the
+	 * {@code array}
+	 * 
+	 * @param array
+	 *            the array
+	 * @param start
+	 *            the index to start from
+	 * @param object
+	 *            the object
+	 * @return the first index of the object in the array
+	 */
 	public static <T> int indexOf(T[] array, int start, T object)
 	{
 		for (int i = start; i < array.length; i++)
@@ -123,11 +239,32 @@ public class CSArrays
 		return -1;
 	}
 	
+	/**
+	 * Returns the last index of the {@code object} in the {@code array}
+	 * 
+	 * @param array
+	 *            the array
+	 * @param object
+	 *            the object
+	 * @return the last index of the object in the array
+	 */
 	public static <T> int lastIndexOf(T[] array, T object)
 	{
 		return lastIndexOf(array, array.length - 1, object);
 	}
 	
+	/**
+	 * Returns the last index before {@code start} of the {@code object} in the
+	 * {@code array}
+	 * 
+	 * @param array
+	 *            the array
+	 * @param start
+	 *            the index to start from
+	 * @param object
+	 *            the object
+	 * @return the last index of the object in the array
+	 */
 	public static <T> int lastIndexOf(T[] array, int start, T object)
 	{
 		for (int i = start; i >= 0; i--)
@@ -138,6 +275,16 @@ public class CSArrays
 		return -1;
 	}
 	
+	/**
+	 * Returns the first index of the any of the {@code objects} in the
+	 * {@code array}
+	 * 
+	 * @param array
+	 *            the array
+	 * @param objects
+	 *            the objects
+	 * @return the first index of the object in the array
+	 */
 	public static <T> int indexOfAny(T[] array, T... objects)
 	{
 		for (Object object : objects)
@@ -149,6 +296,15 @@ public class CSArrays
 		return -1;
 	}
 	
+	/**
+	 * Returns the last index of any of the {@code objects} in the {@code array}
+	 * 
+	 * @param array
+	 *            the array
+	 * @param objects
+	 *            the objects
+	 * @return the last index of the object in the array
+	 */
 	public static <T> int lastIndexOfAny(T[] array, T... objects)
 	{
 		for (Object object : objects)
@@ -160,11 +316,29 @@ public class CSArrays
 		return -1;
 	}
 	
+	/**
+	 * Checks if {@code array} contains the {@code object}.
+	 * 
+	 * @param array
+	 *            the array
+	 * @param object
+	 *            the object
+	 * @return true, if the array contains the object
+	 */
 	public static <T> boolean contains(T[] array, T object)
 	{
 		return indexOf(array, object) != -1;
 	}
 	
+	/**
+	 * Checks if {@code array} contains any of the {@code objects}.
+	 * 
+	 * @param array
+	 *            the array
+	 * @param objects
+	 *            the objects
+	 * @return true, if the array contains any of the objects
+	 */
 	public static <T> boolean containsAny(T[] array, T... objects)
 	{
 		for (Object object : objects)
@@ -173,6 +347,15 @@ public class CSArrays
 		return false;
 	}
 	
+	/**
+	 * Checks if {@code array} contains all {@code objects}.
+	 * 
+	 * @param array
+	 *            the array
+	 * @param objects
+	 *            the objects
+	 * @return true, if the array contains all objects
+	 */
 	public static <T> boolean containsAll(T[] array, T... objects)
 	{
 		for (Object object : objects)
@@ -181,6 +364,14 @@ public class CSArrays
 		return true;
 	}
 	
+	/**
+	 * Transform an array of a primitive type to an array of its corresponding
+	 * wrapper class.
+	 * 
+	 * @param array
+	 *            the array of a primitive type
+	 * @return the array of wrapper objects
+	 */
 	public static Object[] primitiveTransform(Object array)
 	{
 		Object[] result = (Object[]) array;
@@ -236,6 +427,15 @@ public class CSArrays
 		return result;
 	}
 	
+	/**
+	 * Returns the first index of the {@code integer} in the {@code array}
+	 * 
+	 * @param array
+	 *            the int array
+	 * @param integer
+	 *            the integer
+	 * @return the first index of the integer in the array
+	 */
 	public static int indexOf(int[] array, int integer)
 	{
 		for (int i = 0; i < array.length; i++)
@@ -246,6 +446,15 @@ public class CSArrays
 		return -1;
 	}
 	
+	/**
+	 * Checks if {@code array} contains the {@code integer}.
+	 * 
+	 * @param array
+	 *            the array
+	 * @param integer
+	 *            the integer
+	 * @return true, if the array contains the integer
+	 */
 	public static boolean contains(int[] intArray, int integer)
 	{
 		return indexOf(intArray, integer) != -1;
