@@ -13,11 +13,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
 /**
- * The Class CSUpdate. This class adds several methods for updating mods.
+ * The class CSUpdate.
+ * <p>
+ * This class adds several utils for updating mods.
+ * 
+ * @author Clashsoft
  */
 public class CSUpdate
 {
-	
 	/** The found updates. */
 	protected static Map<String, ModUpdate>	foundUpdates			= new HashMap();
 	

@@ -9,8 +9,10 @@ import net.minecraft.util.ResourceLocation;
 
 /**
  * The Class CSResourceHelper.
- * 
+ * <p>
  * This class is a factory for {@link ResourceLocation}s
+ * 
+ * @author Clashsoft
  */
 public class CSResourceHelper
 {

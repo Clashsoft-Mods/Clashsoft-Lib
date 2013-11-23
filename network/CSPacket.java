@@ -5,8 +5,17 @@ import java.io.DataOutputStream;
 import java.util.Map;
 import java.util.TreeMap;
 
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
+/**
+ * The class CSPacket.
+ * <p>
+ * This class adds several {@link Packet} utils.
+ * 
+ * @author Clashsoft
+ * @deprecated Not yet implemented
+ */
 public class CSPacket
 {
 	public static class Entry<E>

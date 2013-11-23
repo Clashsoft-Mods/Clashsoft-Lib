@@ -7,9 +7,14 @@ import java.lang.annotation.Target;
 
 /**
  * The annotation Immutable.
+ * <p>
+ * This annotation defines that objects of the annotated type can be used with
+ * {@link ImmutableObjectFactory}.
  * 
- * This annotation defines that objects of the annotated type can be used with {@link ImmutableObjectFactory}.
+ * @author Clashsoft
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Immutable {}
+public @interface Immutable
+{
+}

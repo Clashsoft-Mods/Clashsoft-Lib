@@ -10,7 +10,9 @@ import net.minecraft.stats.Achievement;
 /**
  * The Class CSLang
  * <p>
- * This class adds several methods for adding localizations.
+ * This class adds several utils for adding localizations.
+ * 
+ * @author Clashsoft
  */
 public class CSLang extends LanguageRegistry
 {

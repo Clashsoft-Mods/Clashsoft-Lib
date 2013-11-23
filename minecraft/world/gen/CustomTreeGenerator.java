@@ -8,6 +8,11 @@ import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 
+/**
+ * The class CustomTreeGenerator
+ * 
+ * @author Clashsoft
+ */
 public class CustomTreeGenerator extends WorldGenTrees
 {
 	/** The minimum height of a generated tree. */

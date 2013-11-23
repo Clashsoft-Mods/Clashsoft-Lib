@@ -4,8 +4,10 @@ import java.util.Random;
 
 /**
  * The Class CSRandom.
+ * <p>
+ * A class that adds several randomization utils.
  * 
- * A class that adds several methods for randomization.
+ * @author Clashsoft
  */
 public class CSRandom
 {	

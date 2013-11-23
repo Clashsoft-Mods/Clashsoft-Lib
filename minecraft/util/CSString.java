@@ -2,6 +2,13 @@ package clashsoft.cslib.minecraft.util;
 
 import net.minecraft.client.Minecraft;
 
+/**
+ * The class CSString
+ * <p>
+ * Extension for {@link clashsoft.cslib.util.CSString} adding String utils only usable with Minecraft.
+ * 
+ * @author Clashsoft
+ */
 public class CSString extends clashsoft.cslib.util.CSString
 {
 	/**

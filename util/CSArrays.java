@@ -6,9 +6,11 @@ import java.util.*;
 import net.minecraft.util.MathHelper;
 
 /**
- * The Class CSArrays.
+ * The class CSArrays.
  * <p>
- * This class adds several array util methods
+ * This class adds several array utils.
+ * 
+ * @author Clashsoft
  */
 public class CSArrays
 {

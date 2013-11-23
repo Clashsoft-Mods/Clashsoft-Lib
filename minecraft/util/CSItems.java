@@ -12,7 +12,9 @@ import net.minecraftforge.common.EnumHelper;
 /**
  * The Class CSItems.
  * <p>
- * This class adds several methods for adding items.
+ * This class adds several utils for adding items.
+ * 
+ *  @author Clashsoft
  */
 public class CSItems
 {

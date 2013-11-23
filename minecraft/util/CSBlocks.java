@@ -13,6 +13,8 @@ import net.minecraft.item.ItemStack;
  * The Class CSBlocks.
  * <p>
  * This class adds several methods for block adding.
+ * 
+ * @author Clashsoft
  */
 public class CSBlocks
 {

@@ -13,7 +13,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 
 /**
- * The Class InstallUpdateThread.
+ * The class InstallUpdateThread.
+ * 
+ * @author Clashsoft
  */
 public class InstallUpdateThread extends Thread
 {

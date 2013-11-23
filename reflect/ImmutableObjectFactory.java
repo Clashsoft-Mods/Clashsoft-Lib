@@ -6,19 +6,21 @@ import java.util.Map;
 
 /**
  * A factory for creating immutable objects.
+ * <p>
+ * If an object with the same class and the same constructor arguments is
+ * stored, the stored one will be returned and no new object will be created.
  * 
- * If an object with the same class and the same constructor arguments is stored, the stored one will be returned and no new object will be created.
+ * @author Clashsoft
  */
 public class ImmutableObjectFactory
 {
-	
 	/** The objects. */
 	public static Map<Class, Map<Object[], Object>>	objects	= new HashMap<Class, Map<Object[], Object>>();
 	
 	/**
-	 * Creates a new immutable object.
-	 * 
-	 * If an object with the same class and the same constructor arguments is stored, the stored one will be returned and no new object will be created.
+	 * Creates a new immutable object. If an object with the same class and the
+	 * same constructor arguments is stored, the stored one will be returned and
+	 * no new object will be created.
 	 * 
 	 * @param <T>
 	 *            the generic type
@@ -42,9 +44,9 @@ public class ImmutableObjectFactory
 	}
 	
 	/**
-	 * Creates a new immutable object.
-	 * 
-	 * If an object with the same class and the same constructor arguments is stored, the stored one will be returned and no new object will be created.
+	 * Creates a new immutable object. If an object with the same class and the
+	 * same constructor arguments is stored, the stored one will be returned and
+	 * no new object will be created.
 	 * 
 	 * @param <T>
 	 *            the generic type
@@ -130,7 +132,7 @@ public class ImmutableObjectFactory
 			return true;
 		return false;
 	}
-
+	
 	/**
 	 * Adds the construction to the map.
 	 * 

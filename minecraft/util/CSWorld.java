@@ -7,7 +7,9 @@ import net.minecraft.world.World;
 /**
  * The Class CSWorld.
  * <p>
- * This class adds several methods for world editing.
+ * This class adds several utils for world editing.
+ * 
+ *  @author Clashsoft
  */
 public class CSWorld
 {

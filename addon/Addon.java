@@ -5,6 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * The clas Addon.
+ * <p>
+ * An annotation that marks mod parts / mod extensions.
+ * 
+ * @author Clashsoft
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Addon

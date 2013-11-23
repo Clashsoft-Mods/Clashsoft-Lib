@@ -3,6 +3,13 @@ package clashsoft.cslib.util;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+/**
+ * The class CSReflection.
+ * <p>
+ * This class adds several utils for "hacking" into the JVM, also known as Reflection.
+ * 
+ * @author Clashsoft
+ */
 public class CSReflection
 {
 	public static Class getCallerClass()

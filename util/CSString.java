@@ -3,10 +3,15 @@ package clashsoft.cslib.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * The Class CSString. This class adds several string tools.
+ * The Class CSString.
+ * <p>
+ * This class adds several string tools.
+ * 
+ * @author Clashsoft
  */
 public class CSString
 {
@@ -131,7 +136,7 @@ public class CSString
 	}
 	
 	/**
-	 * Case a string
+	 * Cases a string.
 	 * <p>
 	 * Modes:
 	 * <p>
@@ -159,14 +164,14 @@ public class CSString
 			String[] array = string.toLowerCase().split(" ");
 			for (int i = 0; i < string.length(); i++)
 				array[i] = firstCharToCase(array[i], LOWERCASE);
-			return concat(" ", array);
+			return unsplit(" ", array);
 		}
 		case UPPER_CAMELCASE: // Upper CamelCase
 		{
 			String[] array = string.toLowerCase().split(" ");
 			for (int i = 0; i < string.length(); i++)
 				array[i] = firstCharToCase(array[i], UPPERCASE);
-			return concat(" ", array);
+			return unsplit(" ", array);
 		}
 		case INVERTED_CASE: // iNVERTED CASE
 		{
@@ -189,15 +194,46 @@ public class CSString
 		}
 	}
 	
-	public static String[] caseAll(String[] stringArray, int mode)
+	/**
+	 * Cases all Strings in an array. Returns a new array.
+	 * 
+	 * @see CSString#caseString(String, int)
+	 * 
+	 * @param array the array
+	 * @param mode the case mode
+	 * @return the new array
+	 */
+	public static String[] caseAll(String[] array, int mode)
 	{
-		String[] result = new String[stringArray.length];
-		for (int i = 0; i < stringArray.length; i++)
+		String[] result = new String[array.length];
+		for (int i = 0; i < array.length; i++)
 		{
-			if (stringArray[i] != null)
-				result[i] = caseString(stringArray[i], mode);
+			if (array[i] != null)
+				result[i] = caseString(array[i], mode);
 			else
 				result[i] = "";
+		}
+		return result;
+	}
+
+	/**
+	 * Cases all Strings in a list. Returns a new list.
+	 * 
+	 * @see CSString#caseString(String, int)
+	 * 
+	 * @param list the list
+	 * @param mode the case mode
+	 * @return the new list
+	 */
+	public static List<String> caseAll(List<String> list, int mode)
+	{
+		List<String> result = new ArrayList<String>();
+		for (int i = 0; i < list.size(); i++)
+		{
+			if (list.get(i) != null)
+				result.add(caseString(list.get(i), mode));
+			else
+				result.add("");
 		}
 		return result;
 	}
@@ -211,7 +247,7 @@ public class CSString
 	 *            the output of {@link String#split(String)}
 	 * @return
 	 */
-	public static String concat(String split, String... parts)
+	public static String unsplit(String split, String... parts)
 	{
 		StringBuilder result = new StringBuilder(parts.length * 10);
 		for (int i = 0; i < parts.length; i++)
@@ -223,44 +259,140 @@ public class CSString
 		return result.toString();
 	}
 	
+	/**
+	 * Concats {@code string} with the {@code prefix} and the {@code postfix}
+	 * @param string the string
+	 * @param prefix the prefix
+	 * @param postfix the postfix
+	 * @return prefix + string + postfix
+	 */
+	public static String concat(String string, String prefix, String postfix)
+	{
+		if (string != null)
+			return prefix + string + postfix;
+		else
+			return prefix + postfix;
+	}
+	
+	/**
+	 * Concats all Strings in {@code array} with the {@code prefix} and the {@code postfix}
+	 * 
+	 * @see CSString#concat(String, String, String)
+	 * 
+	 * @param array the array
+	 * @param prefix the prefix
+	 * @param postfix the postfix
+	 * @return the new array
+	 */
 	public static String[] concatAll(String[] array, String prefix, String postfix)
 	{
 		String[] ret = new String[array.length];
 		for (int i = 0; i < ret.length; i++)
 		{
-			if (array[i] != null)
-				ret[i] = prefix + array[i] + postfix;
-			else
-				ret[i] = prefix + postfix;
+			ret[i] = concat(array[i], prefix, postfix);
 		}
 		return ret;
 	}
 	
-	public static boolean contains(String text, char c)
+	/**
+	 * Concats all Strings in the list {@code list} with the {@code prefix} and the {@code postfix}
+	 * 
+	 * @see CSString#concat(String, String, String)
+	 * 
+	 * @param list the list
+	 * @param prefix the prefix
+	 * @param postfix the postfix
+	 * @return the new list
+	 */
+	public static List<String> concatAll(List<String> list, String prefix, String postfix)
 	{
-		return text.indexOf(c) != -1;
+		List<String> ret = new ArrayList<String>(list.size());
+		for (int i = 0; i < ret.size(); i++)
+		{
+			String string = list.get(i);
+			if (string != null)
+				string = prefix + string + postfix;
+			else
+				string = prefix + postfix;
+			ret.add(string);
+		}
+		return ret;
 	}
 	
-	public static boolean containsRegex(String text, String regex)
+	/**
+	 * Checks if {@code text} contains the character {@code character}.
+	 * 
+	 * @param string
+	 *            the string
+	 * @param character
+	 *            the character
+	 * @return true, if the string contains the character
+	 */
+	public static boolean contains(String string, char character)
 	{
-		return Pattern.compile(regex).matcher(text).find();
+		return string.indexOf(character) != -1;
 	}
 	
-	public static boolean containsAny(String text, String regex)
+	/**
+	 * Checks if {@code text} contains the regex {@code regex}.
+	 * 
+	 * @see Pattern
+	 * @see Matcher#find()
+	 * 
+	 * @param string
+	 *            the string
+	 * @param regex
+	 *            the regex
+	 * @return true, if the string contains the regex
+	 */
+	public static boolean containsRegex(String string, String regex)
 	{
-		return indexOfAny(text, regex) != -1;
+		return Pattern.compile(regex).matcher(string).find();
 	}
 	
-	public static int indexOfRegex(String text, String regex)
+	/**
+	 * Checks if {@code text} contains any of the characters in {@code regex}.
+	 * 
+	 * @param string
+	 *            the string
+	 * @param regex
+	 *            the regex
+	 * @return true, if the string contains the any of the characters in regex
+	 */
+	public static boolean containsAny(String string, String regex)
 	{
-		return Pattern.compile(regex).matcher(text).start();
+		return indexOfAny(string, regex) != -1;
 	}
 	
-	public static int indexOfAny(String text, String regex)
+	/**
+	 * Returns the first index of the {@code regex} in the {@code text}
+	 * 
+	 * @param string
+	 *            the string
+	 * @param integer
+	 *            the integer
+	 * @return the first index of the regex in the string
+	 */
+	public static int indexOfRegex(String string, String regex)
+	{
+		return Pattern.compile(regex).matcher(string).start();
+	}
+	
+	/**
+	 * Returns the first index of the any of the {@code regex} in the
+	 * {@code string}
+	 * 
+	 * @param string
+	 *            the string
+	 * @param regex
+	 *            the regex
+	 * @return the first index of the regex in the string
+	 */
+	public static int indexOfAny(String string, String regex)
 	{
 		for (int i = 0; i < regex.length(); i++)
 		{
-			int index = text.indexOf(regex.charAt(i));
+			int index = string.indexOf(regex.charAt(i));
 			if (index != -1)
 				return index;
 		}
@@ -363,33 +495,5 @@ public class CSString
 		
 		String s = new String(new char[] { Character.toLowerCase(c1), Character.toLowerCase(c2) });
 		return CSArrays.contains(CONSONANTCOMBINATIONS, s);
-	}
-
-	public static List<String> concatAll(List<String> list, String prefix, String postfix)
-	{
-		List<String> ret = new ArrayList<String>(list.size());
-		for (int i = 0; i < ret.size(); i++)
-		{
-			String string = list.get(i);
-			if (string != null)
-				string = prefix + string + postfix;
-			else
-				string = prefix + postfix;
-			ret.add(string);
-		}
-		return ret;
-	}
-
-	public static List<String> caseAll(List<String> stringArray, int mode)
-	{
-		List<String> result = new ArrayList<String>();
-		for (int i = 0; i < stringArray.size(); i++)
-		{
-			if (stringArray.get(i) != null)
-				result.add(caseString(stringArray.get(i), mode));
-			else
-				result.add("");
-		}
-		return result;
 	}
 }

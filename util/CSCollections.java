@@ -8,6 +8,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The class CSCollections.
+ * <p>
+ * This class adds several collection utils.
+ * 
+ * @author Clashsoft
+ */
 public class CSCollections
 {
 	/** Hacky way to get the component type of a list **/

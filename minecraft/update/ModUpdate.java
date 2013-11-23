@@ -3,7 +3,11 @@ package clashsoft.cslib.minecraft.update;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
- * The Class ModUpdate.
+ * The class ModUpdate.
+ * <p>
+ * This class stores mod update data and installs updates.
+ * 
+ * @author Clashsoft
  */
 public class ModUpdate
 {

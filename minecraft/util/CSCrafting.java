@@ -15,8 +15,10 @@ import net.minecraftforge.oredict.OreDictionary;
 /**
  * The Class CSCrafting.
  * <p>
- * This class adds several methods for adding crafting and furnace recipes and
+ * This class adds several utils for adding crafting and furnace recipes and
  * analyzing them.
+ * 
+ * @author Clashsoft
  */
 public class CSCrafting
 {
