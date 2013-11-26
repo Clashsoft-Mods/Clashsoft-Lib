@@ -386,8 +386,11 @@ public class CustomBlock extends Block implements ICustomBlock
 		for (int i = 0; i < this.names.length; i++)
 		{
 			if (!this.disabled[i])
-				if (this.tabs == null && tab == super.getCreativeTabToDisplayOn())
-					subItems.add(new ItemStack(this, 1, i));
+				if (this.tabs == null)
+				{
+					if (tab == super.getCreativeTabToDisplayOn())
+						subItems.add(new ItemStack(this, 1, i));
+				}
 				else if (i < this.tabs.length && tab == this.tabs[i])
 					subItems.add(new ItemStack(this, 1, i));
 				else if (tab == this.tabs[this.tabs.length - 1])

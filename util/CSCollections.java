@@ -3,10 +3,7 @@ package clashsoft.cslib.util;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * The class CSCollections.
@@ -19,6 +16,40 @@ public class CSCollections
 {
 	/** Hacky way to get the component type of a list **/
 	public static Collection<?>	tempCollection;
+	
+	/**
+	 * Creates a new list from the given {@code array}
+	 * 
+	 * @see List
+	 * @see ArrayList
+	 * @param array
+	 *            the array
+	 * @return the ArrayList representing the array
+	 */
+	public static <T> List<T> create(T... array)
+	{
+		List<T> list = new ArrayList<T>(array.length);
+		for (T t : array)
+			list.add(t);
+		return list;
+	}
+	
+	/**
+	 * Creates a new set from the given {@code array}
+	 * 
+	 * @see Set
+	 * @see HashSet
+	 * @param array
+	 *            the array
+	 * @return the HashSet representing the array
+	 */
+	public static <T> Set<T> createSet(T... array)
+	{
+		Set<T> set = new HashSet<T>(array.length);
+		for (T t : array)
+			set.add(t);
+		return set;
+	}
 	
 	/**
 	 * Returns the component type of a collection
@@ -92,17 +123,34 @@ public class CSCollections
 	}
 	
 	/**
-	 * Removes all duplicates from a collection
+	 * Removes all duplicates from a collection by using {@link HashSet}s
 	 * 
 	 * @param collection
 	 *            the collection
 	 * @return the collection without duplicates
 	 */
-	public static <T> Collection<T> removeDuplicates(Collection<T> collection)
+	public static <T> List<T> removeDuplicatesSet(List<T> collection)
 	{
 		if (collection != null && collection.size() > 0)
 		{
-			Collection<T> result = new ArrayList<T>();
+			Set<T> set = new HashSet(collection);
+			return new ArrayList<T>(set);
+		}
+		return collection;
+	}
+	
+	/**
+	 * Removes all duplicates from a Collection
+	 * 
+	 * @param collection
+	 *            the collection
+	 * @return the collection without duplicates
+	 */
+	public static <T> List<T> removeDuplicates(List<T> collection)
+	{
+		if (collection != null && collection.size() > 0)
+		{
+			List<T> result = new ArrayList<T>();
 			for (T t1 : collection)
 			{
 				boolean duplicate = false;
@@ -115,6 +163,7 @@ public class CSCollections
 				if (!duplicate)
 					result.add(t1);
 			}
+			
 			return result;
 		}
 		return collection;

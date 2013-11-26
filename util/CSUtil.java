@@ -1,10 +1,5 @@
 package clashsoft.cslib.util;
 
-import java.awt.Color;
-import java.lang.reflect.Constructor;
-import java.util.*;
-
-import clashsoft.cslib.reflect.ImmutableObjectFactory;
 
 /**
  * The Class CSUtil.
@@ -13,10 +8,10 @@ import clashsoft.cslib.reflect.ImmutableObjectFactory;
 public class CSUtil
 {	
 	/**
-	 * Log an object.
+	 * Logs an object.
 	 * 
 	 * @param o
-	 *            the o
+	 *            the object to log
 	 */
 	public static void log(Object o)
 	{
@@ -24,68 +19,49 @@ public class CSUtil
 	}
 	
 	/**
-	 * First algorythm to sort a List using HashSets.
-	 * 
-	 * @param list
-	 *            the list
-	 * @return the list
-	 */
-	public static List removeDuplicates(List list)
-	{
-		if (list != null && list.size() > 0)
-		{
-			Set set = new HashSet(list);
-			list.clear();
-			list.addAll(set);
-			return list;
-		}
-		return list;
-	}
-	
-	/**
-	 * Gets the combined color from an array of colors.
+	 * Returns set color average of an array of colors.
 	 * 
 	 * @param colors
-	 *            the colors
-	 * @return the int
+	 *            the color array
+	 * @return the color
 	 */
 	public static int combineColors(int... colors)
 	{
 		int r = 0;
 		int g = 0;
 		int b = 0;
+		
 		for (int i : colors)
 		{
-			Color c = new Color(i);
-			r += c.getRed();
-			g += c.getGreen();
-			b += c.getBlue();
+			r += (i >> 16) & 255;
+			g += (i >> 8) & 255;
+			b += (i >> 0) & 255;
 		}
 		r /= colors.length;
 		g /= colors.length;
 		b /= colors.length;
 		
-		return (b + (g * 256) + (r * 65536));
+		return ((r & 255) << 16) | ((g & 255) << 8) | ((b & 255) << 0);
 	}
 	
 	/**
-	 * Checks if bit 'pos' in 'n' is {@code 0b1}.
+	 * Checks if bit {@code pos} in {@code n} is {@code 1}.
 	 * 
-	 * @param n
-	 *            the n
+	 * @param number
+	 *            the number
 	 * @param pos
-	 *            the pos
-	 * @return true, if successful
+	 *            the position to check
+	 * @return true, if {@code (n & 1 << pos) != 0}
 	 */
-	public static boolean checkBit(int n, int pos)
+	public static boolean checkBit(long number, int pos)
 	{
-		return (n & 1 << pos) != 0;
+		return (number & 1 << pos) != 0;
 	}
 	
 	/**
 	 * Sets bit 'pos' in Integer 'n' to 'value'.
 	 * 
-	 * @param n
+	 * @param number
 	 *            the n
 	 * @param pos
 	 *            the pos
@@ -93,10 +69,10 @@ public class CSUtil
 	 *            the value
 	 * @return the int
 	 */
-	public static int setBit(int n, int pos, boolean value)
+	public static long setBit(long number, int pos, boolean value)
 	{
-		int bitToSet = 1 << pos;
-		return value ? (n | bitToSet) : ((n | bitToSet) ^ bitToSet);
+		long bitToSet = 1L << pos;
+		return value ? (number | bitToSet) : ((number | bitToSet) ^ bitToSet);
 	}
 	
 	/**
@@ -164,64 +140,5 @@ public class CSUtil
 	public static int fontColorInt(EnumFontColor fontColor)
 	{
 		return fontColorInt(fontColor.getLight(), fontColor.getRed(), fontColor.getGreen(), fontColor.getBlue());
-	}
-	
-	/* (non-Javadoc)
-	 * @see CSString#convertToRoman(int)
-	 */
-	@Deprecated
-	public static String convertToRoman(int number)
-	{
-		return CSString.convertToRoman(number);
-	}
-	
-	/* (non-Javadoc)
-	 * @see CSString#convertString(String, int)
-	 */
-	@Deprecated
-	public static String cutString(String string, int maxLineLength)
-	{
-		return CSString.cutString(string, maxLineLength);
-	}
-	
-	/* (non-Javadoc)
-	 * @see CSString#makeLineList(String)
-	 */
-	@Deprecated
-	public static String[] makeLineList(String string)
-	{
-		return CSString.makeLineList(string);
-	}
-	
-	/**
-	 * Creates a new instance of T using the parameters.
-	 * 
-	 * @param <T>
-	 *            the generic type
-	 * @param c
-	 *            the c
-	 * @param parameters
-	 *            the parameters
-	 * @return the t
-	 * @see ImmutableObjectFactory#createObject(Class, Object...)
-	 */
-	public static <T> T createInstance(Class<T> c, Object... parameters)
-	{
-		Class[] parameterTypes = new Class[parameters.length];
-		for (int i = 0; i < parameters.length; i++)
-		{
-			if (parameters[i] != null)
-				parameterTypes[i] = parameters[i].getClass();
-		}
-		
-		try
-		{
-			Constructor<T> constructor = c.getConstructor(parameterTypes);
-			return constructor.newInstance(parameters);
-		}
-		catch (Exception ex)
-		{
-			return null;
-		}
 	}
 }

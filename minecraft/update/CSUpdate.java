@@ -119,7 +119,7 @@ public class CSUpdate
 	 */
 	public static ModUpdate checkForUpdate(String modName, String version)
 	{
-		return checkForUpdate(modName, CSString.getInitials(modName).toLowerCase(), version);
+		return checkForUpdate(modName, CSString.getAcronym(modName).toLowerCase(), version);
 	}
 	
 	/**

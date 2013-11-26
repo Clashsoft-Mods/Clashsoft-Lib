@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
  * <p>
  * This class adds several string tools.
  * 
+ * @see String
+ * @see StringBuilder
+ * @see StringBuffer
+ * 
  * @author Clashsoft
  */
 public class CSString
@@ -116,7 +120,7 @@ public class CSString
 	}
 	
 	/**
-	 * Gets the initials of a string.
+	 * Returns the acronym of a string.
 	 * <p>
 	 * Example:
 	 * <p>
@@ -127,11 +131,15 @@ public class CSString
 	 *            the string
 	 * @return the initials
 	 */
-	public static String getInitials(String string)
+	public static String getAcronym(String string)
 	{
 		StringBuilder builder = new StringBuilder(string.length());
-		for (String s : string.split("\\p{Punct}"))
-			builder.append(Character.toUpperCase(s.charAt(0)));
+		String[] strings = string.split("\\p{Punct}");
+		for (String s : strings)
+		{
+			char c = Character.toUpperCase(s.charAt(0));
+			builder.append(c);
+		}
 		return builder.toString();
 	}
 	
@@ -144,7 +152,6 @@ public class CSString
 	 * iNVERTED CASE 5: INVERTED LOWER CAMELcASE 6: iNVERTED uPPER cAMELcASE
 	 * 
 	 * @see CSString#firstCharToCase(String, int)
-	 * 
 	 * @param string
 	 *            the string
 	 * @param mode
@@ -198,9 +205,10 @@ public class CSString
 	 * Cases all Strings in an array. Returns a new array.
 	 * 
 	 * @see CSString#caseString(String, int)
-	 * 
-	 * @param array the array
-	 * @param mode the case mode
+	 * @param array
+	 *            the array
+	 * @param mode
+	 *            the case mode
 	 * @return the new array
 	 */
 	public static String[] caseAll(String[] array, int mode)
@@ -215,14 +223,15 @@ public class CSString
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Cases all Strings in a list. Returns a new list.
 	 * 
 	 * @see CSString#caseString(String, int)
-	 * 
-	 * @param list the list
-	 * @param mode the case mode
+	 * @param list
+	 *            the list
+	 * @param mode
+	 *            the case mode
 	 * @return the new list
 	 */
 	public static List<String> caseAll(List<String> list, int mode)
@@ -260,28 +269,71 @@ public class CSString
 	}
 	
 	/**
+	 * Fastly concats an array of strings.
+	 * <p>
+	 * If {@code strings} is null or {@code strings} has a length of 0, this
+	 * method will return an empty string.
+	 * <p>
+	 * If {@code strings} has a size less than three, concatening will be done
+	 * using the default {@code +} operator. Otherwise, a new
+	 * {@link StringBuilder} will be created to compute the result.
+	 * 
+	 * @see String
+	 * @see StringBuilder
+	 * 
+	 * @param strings
+	 *            the array of strings
+	 * @return the new string
+	 */
+	public static String fastConcat(String... strings)
+	{
+		if (strings != null && strings.length > 0)
+		{
+			if (strings.length < 4)
+			{
+				String result = strings[0];
+				for (int i = 1; i < strings.length; i++)
+					result += strings[i];
+				return result;
+			}
+			else
+			{
+				StringBuilder result = new StringBuilder(strings.length * strings[0].length());
+				for (int i = 0; i < strings.length; i++)
+					result.append(strings[i]);
+				return result.toString();
+			}
+		}
+		return "";
+	}
+	
+	/**
 	 * Concats {@code string} with the {@code prefix} and the {@code postfix}
-	 * @param string the string
-	 * @param prefix the prefix
-	 * @param postfix the postfix
+	 * 
+	 * @param string
+	 *            the string
+	 * @param prefix
+	 *            the prefix
+	 * @param postfix
+	 *            the postfix
 	 * @return prefix + string + postfix
 	 */
 	public static String concat(String string, String prefix, String postfix)
 	{
-		if (string != null)
-			return prefix + string + postfix;
-		else
-			return prefix + postfix;
+		return fastConcat(prefix, string, postfix);
 	}
 	
 	/**
-	 * Concats all Strings in {@code array} with the {@code prefix} and the {@code postfix}
+	 * Concats all Strings in {@code array} with the {@code prefix} and the
+	 * {@code postfix}
 	 * 
 	 * @see CSString#concat(String, String, String)
-	 * 
-	 * @param array the array
-	 * @param prefix the prefix
-	 * @param postfix the postfix
+	 * @param array
+	 *            the array
+	 * @param prefix
+	 *            the prefix
+	 * @param postfix
+	 *            the postfix
 	 * @return the new array
 	 */
 	public static String[] concatAll(String[] array, String prefix, String postfix)
@@ -295,13 +347,16 @@ public class CSString
 	}
 	
 	/**
-	 * Concats all Strings in the list {@code list} with the {@code prefix} and the {@code postfix}
+	 * Concats all Strings in the list {@code list} with the {@code prefix} and
+	 * the {@code postfix}
 	 * 
 	 * @see CSString#concat(String, String, String)
-	 * 
-	 * @param list the list
-	 * @param prefix the prefix
-	 * @param postfix the postfix
+	 * @param list
+	 *            the list
+	 * @param prefix
+	 *            the prefix
+	 * @param postfix
+	 *            the postfix
 	 * @return the new list
 	 */
 	public static List<String> concatAll(List<String> list, String prefix, String postfix)
@@ -338,7 +393,6 @@ public class CSString
 	 * 
 	 * @see Pattern
 	 * @see Matcher#find()
-	 * 
 	 * @param string
 	 *            the string
 	 * @param regex
@@ -421,6 +475,8 @@ public class CSString
 	/**
 	 * Checks the char is a vowel.
 	 * 
+	 * @see CSString#VOWELS
+	 * 
 	 * @param c
 	 *            the char
 	 * @return true, if the char is a vowel
@@ -432,6 +488,8 @@ public class CSString
 	
 	/**
 	 * Checks if the char is a consonant.
+	 * 
+	 * @see CSString#CONSONANTS
 	 * 
 	 * @param c
 	 *            the char
@@ -445,6 +503,8 @@ public class CSString
 	/**
 	 * Returns a new random letter (a-z).
 	 * 
+	 * @see CSString#ALPHABET
+	 * 
 	 * @param random
 	 *            the random
 	 * @return the random letter
@@ -456,6 +516,8 @@ public class CSString
 	
 	/**
 	 * Returns a new random vowel (a, e, i, o, u)
+	 * 
+	 * @see CSString#VOWELS
 	 * 
 	 * @param random
 	 *            the random
@@ -470,6 +532,8 @@ public class CSString
 	 * Returns a new random consonant (b, c, d, f, g, h, j, k, l, m, n, p, q, r,
 	 * s, t, v, w, x, y, z)
 	 * 
+	 * @see CSString#CONSONANTS
+	 * 
 	 * @param random
 	 *            the random
 	 * @return the random consonant
@@ -481,6 +545,8 @@ public class CSString
 	
 	/**
 	 * Checks if char c2 can directly follow c1 in normal english.
+	 * 
+	 * @see CSString#CONSONANTCOMBINATIONS
 	 * 
 	 * @param c1
 	 *            the first char
