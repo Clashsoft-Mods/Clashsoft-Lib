@@ -24,14 +24,14 @@ public class CSLib
 	public static final String	VERSION		= CSUpdate.CURRENT_VERSION + "-" + REVISION;
 	
 	@Instance("ClashsoftAPI")
-	public static CSLib	instance;
+	public static CSLib			instance;
 	
 	public static boolean		updateCheck	= true;
 	public static boolean		autoUpdate	= true;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
-	{
+	{	
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		
@@ -43,7 +43,7 @@ public class CSLib
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event)
-	{	
+	{
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 	

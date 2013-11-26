@@ -1,9 +1,11 @@
-package clashsoft.cslib.util;
+package clashsoft.cslib.collections;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
+
+import clashsoft.cslib.util.CSArrays;
 
 /**
  * The class CSCollections.
