@@ -1,13 +1,10 @@
 package clashsoft.cslib.collections;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import clashsoft.cslib.util.CSArrays;
 
-public class ArraySet<E> implements Set<E>
+public class ArraySet<E> extends AbstractSet<E>
 {
 	private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 	
@@ -20,7 +17,6 @@ public class ArraySet<E> implements Set<E>
 	
 
 	private transient Object[]	toArray;
-	private transient String toString;
 	
 	public ArraySet()
 	{
@@ -129,7 +125,6 @@ public class ArraySet<E> implements Set<E>
 	protected void onChanged()
 	{
 		this.toArray = null;
-		this.toString = null;
 	}
 	
 	protected void ensureCapacity(int minCapacity)
@@ -228,11 +223,5 @@ public class ArraySet<E> implements Set<E>
 		this.size = 0;
 		this.entries = new Object[initialCapacity];
 		this.onChanged();
-	}
-	
-	@Override
-	public String toString()
-	{
-		return toString != null ? toString : (toString = Arrays.toString(this.toArray()));
 	}
 }
