@@ -142,7 +142,8 @@ public class CSSource extends CSString
 	/**
 	 * Strips comments from Java source code.
 	 * 
-	 * @param string the source code
+	 * @param string
+	 *            the source code
 	 * @return the string without any comments
 	 */
 	public static String stripComments(String string)
@@ -157,25 +158,33 @@ public class CSSource extends CSString
 		{
 			char c = string.charAt(i);
 			
-			if (!literal) // Do not check if the current char is a literal
+			// Do not check if the current char is a literal
+			if (!literal)
 			{
-				if (c == '"') // String quote switch
+				// String quote switch
+				if (c == '"')
 					quote = !quote;
-				else if (c == '\'') // Char quote switch
+				// Char quote switch
+				else if (c == '\'')
 					charQuote = !charQuote;
-				else if (c == '\\') // Literals
+				// Literals
+				else if (c == '\\')
 					literal = true;
-				else if (!quote && !charQuote) // Do not check if the current char is quoted
+				// Do not check if the current char is quoted
+				else if (!quote && !charQuote)
 				{
-					if (c == '/' && i + 1 < string.length()) // Comment indicators always start with a '/'
+					// Comment indicators always start with a '/'
+					if (c == '/' && i + 1 < string.length())
 					{
 						char c1 = string.charAt(i + 1);
-						if (c1 == '/') // Line comment
+						// Line comment
+						if (c1 == '/')
 						{
 							i = string.indexOf("\n", i) - 1;
 							continue;
 						}
-						else if (c1 == '*') // Multi-line comment
+						// Multi-line comment
+						else if (c1 == '*')
 						{
 							i = string.indexOf("*/", i + 1) + 1;
 							continue;
@@ -189,6 +198,45 @@ public class CSSource extends CSString
 			result.append(c);
 		}
 		
+		return result.toString();
+	}
+	
+	public static String replaceLiterals(String string)
+	{
+		StringBuilder result = new StringBuilder(string.length());
+		
+		boolean literal = false;
+		for (int i = 0; i < string.length(); i++)
+		{
+			char c = string.charAt(i);
+			if (!literal)
+			{
+				if (c == '\\')
+				{
+					literal = true;
+					continue;
+				}
+			}
+			else
+			{
+				literal = false;
+				if (c == 'n')
+					c = '\n';
+				else if (c == 't')
+					c = '\t';
+				else if (c == 'r')
+					c = '\r';
+				else if (c == 'b')
+					c = '\b';
+				else if (c == 'u' && i + 5 < string.length())
+				{
+					String u = string.substring(i + 1, i + 5);
+					c = (char) Integer.parseInt(u, 16);
+					i += 4;
+				}
+			}
+			result.append(c);
+		}
 		return result.toString();
 	}
 	
