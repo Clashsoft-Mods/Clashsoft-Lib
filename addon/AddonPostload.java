@@ -6,15 +6,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The class AddonLoad
+ * The class AddonPostload
  * <p>
- * Marks the {@code load()} method in an {@link Addon} class
+ * Marks the {@code postLoad()} method in an {@link Addon} class
  * 
  * @author Clashsoft
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface AddonLoad
+public @interface AddonPostload
 {
 	
 }

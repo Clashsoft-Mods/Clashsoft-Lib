@@ -2,8 +2,8 @@ package clashsoft.cslib.network;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -37,12 +37,14 @@ public class CSPacket
 		}
 	}
 	
-	public Map<String, Entry> objects = new TreeMap<String, Entry>();
+	public Map<String, Entry> objects = new HashMap<String, Entry>();
 	
-	protected void put(String id, Object value)
+	public void put(String id, Object value)
 	{
 		objects.put(id, new Entry(id, value));
 	}
+	
+	
 	
 	public void write(Packet250CustomPayload packet)
 	{
