@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * @see String
  * @see StringBuilder
  * @see StringBuffer
- * 
  * @author Clashsoft
  */
 public class CSString
@@ -258,7 +257,10 @@ public class CSString
 	 */
 	public static String unsplit(String split, String... parts)
 	{
-		StringBuilder result = new StringBuilder(parts.length * 10);
+		if (parts.length < 1)
+			return "";
+		
+		StringBuilder result = new StringBuilder(parts.length * parts[0].length());
 		for (int i = 0; i < parts.length; i++)
 		{
 			result.append(parts[i]);
@@ -280,31 +282,28 @@ public class CSString
 	 * 
 	 * @see String
 	 * @see StringBuilder
-	 * 
 	 * @param strings
 	 *            the array of strings
 	 * @return the new string
 	 */
 	public static String fastConcat(String... strings)
 	{
-		if (strings != null && strings.length > 0)
+		if (strings.length < 1)
+			return "";
+		else if (strings.length < 4)
 		{
-			if (strings.length < 4)
-			{
-				String result = strings[0];
-				for (int i = 1; i < strings.length; i++)
-					result += strings[i];
-				return result;
-			}
-			else
-			{
-				StringBuilder result = new StringBuilder(strings.length * strings[0].length());
-				for (int i = 0; i < strings.length; i++)
-					result.append(strings[i]);
-				return result.toString();
-			}
+			String result = strings[0];
+			for (int i = 1; i < strings.length; i++)
+				result += strings[i];
+			return result;
 		}
-		return "";
+		else
+		{
+			StringBuilder result = new StringBuilder(strings.length * strings[0].length());
+			for (int i = 0; i < strings.length; i++)
+				result.append(strings[i]);
+			return result.toString();
+		}
 	}
 	
 	/**
@@ -364,12 +363,7 @@ public class CSString
 		List<String> ret = new ArrayList<String>(list.size());
 		for (int i = 0; i < ret.size(); i++)
 		{
-			String string = list.get(i);
-			if (string != null)
-				string = prefix + string + postfix;
-			else
-				string = prefix + postfix;
-			ret.add(string);
+			ret.add(concat(list.get(i), prefix, postfix));
 		}
 		return ret;
 	}
@@ -453,6 +447,12 @@ public class CSString
 		return -1;
 	}
 	
+	public static int indexOfRange(String string, String regex, int min, int max)
+	{
+		int index = string.indexOf(regex, min);
+		return index < max ? index : -1;
+	}
+	
 	/**
 	 * Returns the string with the first string being a) a lowercase char or b)
 	 * an uppercase char
@@ -476,7 +476,6 @@ public class CSString
 	 * Checks the char is a vowel.
 	 * 
 	 * @see CSString#VOWELS
-	 * 
 	 * @param c
 	 *            the char
 	 * @return true, if the char is a vowel
@@ -490,7 +489,6 @@ public class CSString
 	 * Checks if the char is a consonant.
 	 * 
 	 * @see CSString#CONSONANTS
-	 * 
 	 * @param c
 	 *            the char
 	 * @return true, if the char is a consonant
@@ -504,7 +502,6 @@ public class CSString
 	 * Returns a new random letter (a-z).
 	 * 
 	 * @see CSString#ALPHABET
-	 * 
 	 * @param random
 	 *            the random
 	 * @return the random letter
@@ -518,7 +515,6 @@ public class CSString
 	 * Returns a new random vowel (a, e, i, o, u)
 	 * 
 	 * @see CSString#VOWELS
-	 * 
 	 * @param random
 	 *            the random
 	 * @return the random vowel
@@ -533,7 +529,6 @@ public class CSString
 	 * s, t, v, w, x, y, z)
 	 * 
 	 * @see CSString#CONSONANTS
-	 * 
 	 * @param random
 	 *            the random
 	 * @return the random consonant
@@ -547,7 +542,6 @@ public class CSString
 	 * Checks if char c2 can directly follow c1 in normal english.
 	 * 
 	 * @see CSString#CONSONANTCOMBINATIONS
-	 * 
 	 * @param c1
 	 *            the first char
 	 * @param c2

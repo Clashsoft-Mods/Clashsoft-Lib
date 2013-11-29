@@ -139,6 +139,12 @@ public class CSSource extends CSString
 		return new int[] { depth1, depth2, depth3, depth4, other };
 	}
 	
+	/**
+	 * Strips comments from Java source code.
+	 * 
+	 * @param string the source code
+	 * @return the string without any comments
+	 */
 	public static String stripComments(String string)
 	{
 		StringBuilder result = new StringBuilder(string.length());
@@ -180,12 +186,7 @@ public class CSSource extends CSString
 			else
 				literal = false;
 			
-			// Append the string
-			int i1 = string.indexOf("/", i);
-			if (i1 == -1)
-				i1 = string.length();
-			result.append(string.substring(i, i1));
-			i = i1 - 1;
+			result.append(c);
 		}
 		
 		return result.toString();
