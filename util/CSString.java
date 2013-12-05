@@ -142,6 +142,17 @@ public class CSString
 		return builder.toString();
 	}
 	
+	public static int count(String string, char ch)
+	{
+		int count = 0;
+		for (char c : string.toCharArray())
+		{
+			if (c == ch)
+				count++;
+		}
+		return count;
+	}
+	
 	/**
 	 * Cases a string.
 	 * <p>

@@ -100,23 +100,13 @@ public class CustomPotion extends Potion
 		return customColor;
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.minecraft.potion.Potion#isInstant()
-	 */
 	@Override
 	public boolean isInstant()
 	{
 		return instant;
 	}
 	
-	/**
-	 * Checks if the effect is a bad effect
-	 * 
-	 * Awkward name because of compile/reobfuscate fail
-	 * 
-	 * @return true if the potion is a bad effect
-	 */
-	public boolean getIsGoodOrNotGoodEffect()
+	public boolean getIsBadEffect()
 	{
 		return bad;
 	}

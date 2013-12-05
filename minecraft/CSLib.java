@@ -45,6 +45,8 @@ public class CSLib
 	public void init(FMLInitializationEvent event)
 	{
 		MinecraftForge.EVENT_BUS.register(this);
+		
+		Hidden.hidden();
 	}
 	
 	@ForgeSubscribe
