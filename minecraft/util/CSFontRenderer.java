@@ -1,16 +1,22 @@
 package clashsoft.cslib.minecraft.util;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.Bidi;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.ReloadableResourceManager;
+import net.minecraft.client.resources.ResourceManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
@@ -29,6 +35,12 @@ public class CSFontRenderer extends FontRenderer
 	static
 	{
 		((ReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(instance);
+		
+		if (Minecraft.getMinecraft().gameSettings.language != null)
+		{
+			instance.setUnicodeFlag(Minecraft.getMinecraft().getLanguageManager().isCurrentLocaleUnicode());
+			instance.setBidiFlag(Minecraft.getMinecraft().getLanguageManager().isCurrentLanguageBidirectional());
+		}
 	}
 	
 	/** Array of width of all the characters in default.png */
@@ -49,7 +61,7 @@ public class CSFontRenderer extends FontRenderer
 	 * darker version of the same colors for drop shadows.
 	 */
 	public int[]							colorCode			= new int[32];
-	private final ResourceLocation			fontTextureName;
+	private final ResourceLocation			locationFontTexture;
 	
 	/** Current X coordinate at which to draw the next character. */
 	private float							posX;
@@ -106,10 +118,133 @@ public class CSFontRenderer extends FontRenderer
 	
 	private TextureManager					renderEngine;
 	
-	public CSFontRenderer(GameSettings par1GameSettings, ResourceLocation par2ResourceLocation, TextureManager par3TextureManager, boolean par4)
+	public CSFontRenderer(GameSettings gameSettings, ResourceLocation fontTexture, TextureManager textureManager, boolean unicode)
 	{
-		super(par1GameSettings, par2ResourceLocation, par3TextureManager, par4);
-		this.fontTextureName = par2ResourceLocation;
+		super(gameSettings, fontTexture, textureManager, unicode);
+		this.locationFontTexture = fontTexture;
+		this.renderEngine = textureManager;
+		this.unicodeFlag = unicode;
+		textureManager.bindTexture(this.locationFontTexture);
+		
+		for (int i = 0; i < 32; ++i)
+		{
+			int j = (i >> 3 & 1) * 85;
+			int k = (i >> 2 & 1) * 170 + j;
+			int l = (i >> 1 & 1) * 170 + j;
+			int i1 = (i >> 0 & 1) * 170 + j;
+			
+			if (i == 6)
+			{
+				k += 85;
+			}
+			
+			if (gameSettings.anaglyph)
+			{
+				int j1 = (k * 30 + l * 59 + i1 * 11) / 100;
+				int k1 = (k * 30 + l * 70) / 100;
+				int l1 = (k * 30 + i1 * 70) / 100;
+				k = j1;
+				l = k1;
+				i1 = l1;
+			}
+			
+			if (i >= 16)
+			{
+				k /= 4;
+				l /= 4;
+				i1 /= 4;
+			}
+			
+			this.colorCode[i] = (k & 255) << 16 | (l & 255) << 8 | i1 & 255;
+		}
+		
+		this.readGlyphSizes();
+	}
+	
+	@Override
+	public void onResourceManagerReload(ResourceManager par1ResourceManager)
+	{
+		this.readFontTexture();
+	}
+	
+	private void readFontTexture()
+	{
+		BufferedImage bufferedimage;
+		
+		try
+		{
+			bufferedimage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(this.locationFontTexture).getInputStream());
+		}
+		catch (IOException ioexception)
+		{
+			throw new RuntimeException(ioexception);
+		}
+		
+		int i = bufferedimage.getWidth();
+		int j = bufferedimage.getHeight();
+		int[] aint = new int[i * j];
+		bufferedimage.getRGB(0, 0, i, j, aint, 0, i);
+		int k = j / 16;
+		int l = i / 16;
+		byte b0 = 1;
+		float f = 8.0F / l;
+		int i1 = 0;
+		
+		while (i1 < 256)
+		{
+			int j1 = i1 % 16;
+			int k1 = i1 / 16;
+			
+			if (i1 == 32)
+			{
+				this.charWidth[i1] = 3 + b0;
+			}
+			
+			int l1 = l - 1;
+			
+			while (true)
+			{
+				if (l1 >= 0)
+				{
+					int i2 = j1 * l + l1;
+					boolean flag = true;
+					
+					for (int j2 = 0; j2 < k && flag; ++j2)
+					{
+						int k2 = (k1 * l + j2) * i;
+						
+						if ((aint[i2 + k2] >> 24 & 255) != 0)
+						{
+							flag = false;
+						}
+					}
+					
+					if (flag)
+					{
+						--l1;
+						continue;
+					}
+				}
+				
+				++l1;
+				this.charWidth[i1] = (int) (0.5D + l1 * f) + b0;
+				++i1;
+				break;
+			}
+		}
+	}
+	
+	private void readGlyphSizes()
+	{
+		try
+		{
+			InputStream inputstream = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("font/glyph_sizes.bin")).getInputStream();
+			inputstream.read(this.glyphWidth);
+		}
+		catch (IOException ioexception)
+		{
+			throw new RuntimeException(ioexception);
+		}
 	}
 	
 	public static CSFontRenderer getFontRenderer()
@@ -136,12 +271,8 @@ public class CSFontRenderer extends FontRenderer
 		float f1 = par1 / 16 * 8;
 		float f2 = (par2 ? 1.0F : 0.0F);
 		// Bind texture
-		Minecraft.getMinecraft().renderEngine.bindTexture(this.fontTextureName);
+		Minecraft.getMinecraft().renderEngine.bindTexture(this.locationFontTexture);
 		float f3 = (this.charWidth[par1] - 0.01F);
-		
-		GL11.glPushMatrix();
-		GL11.glScalef(scale, scale, scale);
-		GL11.glPopMatrix();
 		
 		GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
 		GL11.glTexCoord2f((f / 128.0F), (f1 / 128.0F));
@@ -346,6 +477,7 @@ public class CSFontRenderer extends FontRenderer
 	 */
 	private void resetStyles()
 	{
+		this.red = this.green = this.blue = this.alpha = 1F;
 		this.randomStyle = false;
 		this.boldStyle = false;
 		this.italicStyle = false;
@@ -353,135 +485,113 @@ public class CSFontRenderer extends FontRenderer
 		this.strikethroughStyle = false;
 	}
 	
+	public void setColor_I(int color)
+	{
+		this.setColor_F(((color >> 16) & 255) / 255F, ((color >> 8) & 255) / 255F, ((color >> 0) & 255) / 255F);
+	}
+	
+	public void setColor_F(float r, float g, float b)
+	{
+		this.red = r;
+		this.green = g;
+		this.blue = b;
+	}
+	
+	public void setColor_S(String color)
+	{
+		try
+		{
+			if (color.startsWith("0x"))
+				this.setColor_I(Integer.parseInt(color.substring(2), 16));
+			else if (color.contains(";"))
+			{
+				float r = 1F;
+				float g = 1F;
+				float b = 1F;
+				
+				String[] split = color.split(";");
+				
+				if (split.length >= 1)
+					r = Float.parseFloat(split[0]);
+				if (split.length >= 2)
+					g = Float.parseFloat(split[1]);
+				if (split.length >= 3)
+					b = Float.parseFloat(split[2]);
+				
+				this.setColor_F(r, g, b);
+			}
+			else
+				this.setColor_I(Integer.parseInt(color));
+		}
+		catch (NumberFormatException ex)
+		{
+		}
+	}
+	
+	protected void updateColor(boolean shadow)
+	{
+		if (shadow)
+			GL11.glColor4f(red / 4, green / 4, blue / 4, alpha);
+		else
+			GL11.glColor4f(red, green, blue, alpha);
+	}
+	
 	/**
 	 * Render a single line string at the current (posX,posY) and update posX
 	 */
-	private void renderStringAtPos(String par1Str, boolean par2)
-	{
-		for (int i = 0; i < par1Str.length(); ++i)
+	private void renderStringAtPos(String text, boolean shadow)
+	{	
+		for (int i = 0; i < text.length(); ++i)
 		{
-			char c0 = par1Str.charAt(i);
+			char c = text.charAt(i);
 			int j;
 			int k;
 			
-			if ((c0 == '@' || c0 == '\u00a7') && i + 9 < par1Str.length() && par1Str.charAt(i + 1) == 'C')
+			if (c == '\u00A7' && i + 1 < text.length())
 			{
-				this.resetStyles();
+				char c1 = text.charAt(i + 1);
 				
-				this.red = 1F;
-				this.green = 1F;
-				this.blue = 1F;
-				
-				String regex = "0123456789abcdefklmnorC[]";
-				char j0 = par1Str.charAt(i + 1);
-				char j1 = par1Str.charAt(i + 2); // [
-				char j2 = par1Str.charAt(i + 3);
-				char j3 = par1Str.charAt(i + 4);
-				char j4 = par1Str.charAt(i + 5);
-				char j5 = par1Str.charAt(i + 6);
-				char j6 = par1Str.charAt(i + 7);
-				char j7 = par1Str.charAt(i + 8);
-				char j8 = par1Str.charAt(i + 9); // ]
-				
-				if (j0 == 'C' && j1 == '[')
-				{
-					String s1 = "";
-					int color;
-					for (int m = i + 2; m < i + 9; m++)
-					{
-						int var1 = "0123456789abcdef".indexOf(par1Str.toLowerCase().charAt(m));
-						if (var1 != -1)
-						{
-							s1 += par1Str.toLowerCase().charAt(m);
-						}
-					}
-					color = Integer.parseInt(s1.toLowerCase(), 16);
-					
-					float r = color >> 16;
-					float g = color >> 8 & 255;
-					float b = color & 255;
-					
-					if (par2)
-					{
-						r /= 4;
-						g /= 4;
-						b /= 4;
-					}
-					
-					this.red = r / 255.0F;
-					this.green = g / 255.0F;
-					this.blue = b / 255.0F;
-					this.textColor = ((int) r & 255) << 16 | ((int) g & 255) << 8 | (int) b & 255;
-					
-					GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
-				}
-				for (int l = i; l < par1Str.length(); l++)
-				{
-					if (par1Str.charAt(l) == ']')
-					{
-						i = l;
-						break;
-					}
-				}
-			}
-			else if (c0 == '\u00a7' && i + 1 < par1Str.length())
-			{
-				String regex1 = "0123456789abcdefklmnor";
-				j = regex1.indexOf(par1Str.charAt(i + 1));
-				
-				if (j < 16)
+				if (c1 == 'k') // Obfuscated
+					this.randomStyle = !this.randomStyle;
+				else if (c1 == 'l') // Bold
+					this.boldStyle = !this.boldStyle;
+				else if (c1 == 'm') // Strikethrough
+					this.strikethroughStyle = !this.strikethroughStyle;
+				else if (c1 == 'n') // Underline
+					this.underlineStyle = !this.underlineStyle;
+				else if (c1 == 'o') // Italic
+					this.italicStyle = !this.italicStyle;
+				else if (c1 == 'r') // Reset
 				{
 					this.resetStyles();
-					
-					if (j < 0 || j > 15)
+					this.updateColor(shadow);
+				}
+				else if (c1 == 'C') // Color
+				{
+					int i2 = text.indexOf('[', i + 2);
+					int i3 = text.indexOf(']', i + 3);
+					if (i2 != -1 && i3 != -1)
 					{
-						j = 15;
+						String s1 = text.substring(i2 + 1, i3);
+						this.setColor_S(s1);
+						this.updateColor(shadow);
+						i = i3;
+						continue;
 					}
-					
-					if (par2)
-					{
-						j += 16;
-					}
-					
-					k = this.colorCode[j];
-					this.textColor = k;
-					GL11.glColor4f((k >> 16) / 255.0F, (k >> 8 & 255) / 255.0F, (k & 255) / 255.0F, this.alpha);
 				}
-				else if (j == 16)
+				else
 				{
-					this.randomStyle = true;
-				}
-				else if (j == 17)
-				{
-					this.boldStyle = true;
-				}
-				else if (j == 18)
-				{
-					this.strikethroughStyle = true;
-				}
-				else if (j == 19)
-				{
-					this.underlineStyle = true;
-				}
-				else if (j == 20)
-				{
-					this.italicStyle = true;
-				}
-				else if (j == 21)
-				{
-					this.randomStyle = false;
-					this.boldStyle = false;
-					this.strikethroughStyle = false;
-					this.underlineStyle = false;
-					this.italicStyle = false;
-					GL11.glColor4f(this.red, this.blue, this.green, this.alpha);
+					int i1 = "0123456789abcdef".indexOf(Character.toLowerCase(c1));
+					this.setColor_I(this.colorCode[i1]);
+					this.updateColor(shadow);
 				}
 				
-				++i;
+				i++;
+				continue;
 			}
 			else
 			{
-				j = ChatAllowedCharacters.allowedCharacters.indexOf(c0);
+				j = ChatAllowedCharacters.allowedCharacters.indexOf(c);
 				
 				if (this.randomStyle && j > 0)
 				{
@@ -495,7 +605,7 @@ public class CSFontRenderer extends FontRenderer
 				}
 				
 				float f = this.unicodeFlag ? 0.5F : 1.0F;
-				boolean flag1 = (j <= 0 || this.unicodeFlag) && par2;
+				boolean flag1 = (j <= 0 || this.unicodeFlag) && shadow;
 				
 				if (flag1)
 				{
@@ -503,7 +613,7 @@ public class CSFontRenderer extends FontRenderer
 					this.posY -= f;
 				}
 				
-				float f1 = this.renderCharAtPos(j, c0, this.italicStyle);
+				float f1 = this.renderCharAtPos(j, c, this.italicStyle);
 				
 				if (flag1)
 				{
@@ -521,7 +631,7 @@ public class CSFontRenderer extends FontRenderer
 						this.posY -= f;
 					}
 					
-					this.renderCharAtPos(j, c0, this.italicStyle);
+					this.renderCharAtPos(j, c, this.italicStyle);
 					this.posX -= f;
 					
 					if (flag1)
@@ -621,9 +731,9 @@ public class CSFontRenderer extends FontRenderer
 	 * FontMetrics.stringWidth(String s).
 	 */
 	@Override
-	public int getStringWidth(String par1Str)
+	public int getStringWidth(String text)
 	{
-		if (par1Str == null)
+		if (text == null)
 		{
 			return 0;
 		}
@@ -632,30 +742,24 @@ public class CSFontRenderer extends FontRenderer
 			int i = 0;
 			boolean flag = false;
 			
-			for (int j = 0; j < par1Str.length(); ++j)
+			for (int j = 0; j < text.length(); ++j)
 			{
-				char c0 = par1Str.charAt(j);
+				char c0 = text.charAt(j);
 				int k = this.getCharWidth(c0);
 				
 				if (c0 == '\u00a7' || c0 == '@')
 				{
-					if (j + 9 < par1Str.length() && par1Str.charAt(j + 1) == 'C' && par1Str.charAt(j + 2) == '[')
+					if (j + 2 < text.length() && text.charAt(j + 1) == 'C' && text.charAt(j + 2) == '[')
 					{
-						for (int l = j; l < par1Str.length(); l++)
-						{
-							if (par1Str.charAt(l) == ']')
-							{
-								j += l - 3;
-								break;
-							}
-						}
+						j = text.indexOf(']', j + 2);
+						continue;
 					}
 				}
 				
-				if (k < 0 && j < par1Str.length() - 1)
+				if (k < 0 && j < text.length() - 1)
 				{
 					++j;
-					c0 = par1Str.charAt(j);
+					c0 = text.charAt(j);
 					
 					if (c0 != 108 && c0 != 76)
 					{
