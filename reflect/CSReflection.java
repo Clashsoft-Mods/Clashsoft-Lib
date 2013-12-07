@@ -167,6 +167,31 @@ public class CSReflection
 		}
 	}
 	
+	public static <T, R> R getStaticValue(Class<? super T> clazz, int fieldID)
+	{
+		return getValue(clazz, null, fieldID);
+	}
+	
+	public static <T, R> R getValue(T instance, int fieldID)
+	{
+		return getValue((Class<T>) instance.getClass(), instance, fieldID);
+	}
+	
+	public static <T, R> R getValue(Class<? super T> clazz, T instance, int fieldID)
+	{
+		try
+		{
+			Field f = getField(clazz, fieldID);
+			f.setAccessible(true);
+			return (R) f.get(instance);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
 	// Field setters
 	
 	public static <T, V> void setStaticValue(Class<? super T> clazz, String... fieldNames)
@@ -184,6 +209,30 @@ public class CSReflection
 		try
 		{
 			Field f = getField(clazz, fieldNames);
+			f.setAccessible(true);
+			f.set(instance, value);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public static <T, V> void setStaticValue(Class<? super T> clazz, int fieldID)
+	{
+		setValue(clazz, null, fieldID);
+	}
+	
+	public static <T, V> void setValue(T instance, V value, int fieldID)
+	{
+		setValue(instance.getClass(), value, fieldID);
+	}
+	
+	public static <T, V> void setValue(Class<? super T> clazz, T instance, V value, int fieldID)
+	{
+		try
+		{
+			Field f = getField(clazz, fieldID);
 			f.setAccessible(true);
 			f.set(instance, value);
 		}
