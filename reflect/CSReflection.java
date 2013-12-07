@@ -174,7 +174,7 @@ public class CSReflection
 	
 	public static <T, R> R getValue(T instance, int fieldID)
 	{
-		return getValue((Class<T>) instance.getClass(), instance, fieldID);
+		return getValue((Class<? super T>) instance.getClass(), instance, fieldID);
 	}
 	
 	public static <T, R> R getValue(Class<? super T> clazz, T instance, int fieldID)
@@ -194,14 +194,14 @@ public class CSReflection
 	
 	// Field setters
 	
-	public static <T, V> void setStaticValue(Class<? super T> clazz, String... fieldNames)
+	public static <T, V> void setStaticValue(Class<? super T> clazz, V value, String... fieldNames)
 	{
-		setValue(clazz, null, fieldNames);
+		setValue(clazz, null, value, fieldNames);
 	}
 	
 	public static <T, V> void setValue(T instance, V value, String... fieldNames)
 	{
-		setValue(instance.getClass(), value, fieldNames);
+		setValue((Class<? super T>) instance.getClass(), instance, value, fieldNames);
 	}
 	
 	public static <T, V> void setValue(Class<? super T> clazz, T instance, V value, String... fieldNames)
@@ -218,14 +218,14 @@ public class CSReflection
 		}
 	}
 	
-	public static <T, V> void setStaticValue(Class<? super T> clazz, int fieldID)
+	public static <T, V> void setStaticValue(Class<? super T> clazz, V value, int fieldID)
 	{
-		setValue(clazz, null, fieldID);
+		setValue(clazz, null, value, fieldID);
 	}
 	
 	public static <T, V> void setValue(T instance, V value, int fieldID)
 	{
-		setValue(instance.getClass(), value, fieldID);
+		setValue((Class<? super T>) instance.getClass(), instance, value, fieldID);
 	}
 	
 	public static <T, V> void setValue(Class<? super T> clazz, T instance, V value, int fieldID)

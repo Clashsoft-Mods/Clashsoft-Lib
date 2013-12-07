@@ -7,7 +7,6 @@ import net.minecraft.item.ItemArmor;
 
 public class ItemCustomArmor extends ItemArmor
 {
-
 	public ItemCustomArmor(int itemID, EnumArmorMaterial material, int renderIndex, int armorType)
 	{
 		super(itemID, material, renderIndex, armorType & 3);
