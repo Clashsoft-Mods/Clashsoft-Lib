@@ -37,6 +37,24 @@ public class CSRandom
 		return min + random.nextInt(max - min);
 	}
 	
+	public static float nextFloat(Random random, float min, float max)
+	{
+		if (max < min)
+			max = min + 1;
+		if (max == min)
+			return min;
+		return min + random.nextInt((int)(max - min)) * random.nextFloat();
+	}
+	
+	public static double nextDouble(Random random, double min, double max)
+	{
+		if (max < min)
+			max = min + 1;
+		if (max == min)
+			return min;
+		return min + random.nextInt((int)(max - min)) * random.nextDouble();
+	}
+	
 	/**
 	 * Returns true with the given chance.
 	 * 

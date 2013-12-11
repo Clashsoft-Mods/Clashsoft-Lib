@@ -29,9 +29,16 @@ public class CSLib
 	public static boolean		updateCheck	= true;
 	public static boolean		autoUpdate	= true;
 	
+	private void test()
+	{
+		
+	}
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{	
+		test();
+		
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		

@@ -45,37 +45,6 @@ public class CSUtil
 	}
 	
 	/**
-	 * Checks if bit {@code pos} in {@code n} is {@code 1}.
-	 * 
-	 * @param number
-	 *            the number
-	 * @param pos
-	 *            the position to check
-	 * @return true, if {@code (n & 1 << pos) != 0}
-	 */
-	public static boolean checkBit(long number, int pos)
-	{
-		return (number & 1 << pos) != 0;
-	}
-	
-	/**
-	 * Sets bit 'pos' in Integer 'n' to 'value'.
-	 * 
-	 * @param number
-	 *            the n
-	 * @param pos
-	 *            the pos
-	 * @param value
-	 *            the value
-	 * @return the int
-	 */
-	public static long setBit(long number, int pos, boolean value)
-	{
-		long bitToSet = 1L << pos;
-		return value ? (number | bitToSet) : ((number | bitToSet) ^ bitToSet);
-	}
-	
-	/**
 	 * Creates the color code for a color.
 	 * 
 	 * @param light
