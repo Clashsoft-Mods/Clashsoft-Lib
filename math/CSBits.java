@@ -51,6 +51,27 @@ public class CSBits
 		return getBits(i, bits);
 	}
 	
+	public static boolean[] getBits(long l)
+	{
+		boolean[] bits = new boolean[64];
+		return getBits(l, bits);
+	}
+	
+	public static boolean[] getBits(float f)
+	{
+		return getBits(Float.floatToRawIntBits(f));
+	}
+	
+	public static boolean[] getBits(double d)
+	{
+		return getBits(Double.doubleToRawLongBits(d));
+	}
+	
+	public static boolean[] getBits(char c)
+	{
+		return getBits((int) c);
+	}
+	
 	private static boolean[] getBits(byte b, boolean[] bits)
 	{
 		bits[0] = (b & 0x1) != 0;
@@ -98,12 +119,6 @@ public class CSBits
 		bits[30] = (i & 0x40000000) != 0;
 		bits[31] = (i & 0x80000000) != 0;
 		return bits;
-	}
-	
-	public static boolean[] getBits(long l)
-	{
-		boolean[] bits = new boolean[64];
-		return getBits(l, bits);
 	}
 	
 	private static boolean[] getBits(long l, boolean[] bits)
@@ -174,6 +189,20 @@ public class CSBits
 		return getLong_(bits);
 	}
 	
+	public static float getFloat(boolean[] bits)
+	{
+		return Float.intBitsToFloat(getInt(bits));
+	}
+	
+	public static double getDouble(boolean[] bits)
+	{
+		return Double.longBitsToDouble(getLong(bits));
+	}
+	
+	public static char getChar(boolean[] bits)
+	{
+		return (char) getInt(bits);
+	}
 	private static byte getByte_(boolean[] bits)
 	{
 		byte b0 = (byte) ((bits[0] ? 0x1 : 0) | (bits[1] ? 0x2 : 0) | (bits[2] ? 0x4 : 0) | (bits[3] ? 0x8 : 0) | (bits[4] ? 0x10 : 0) | (bits[5] ? 0x20 : 0) | (bits[6] ? 0x40 : 0) | (bits[7] ? 0x80 : 0));
