@@ -63,7 +63,7 @@ public class ItemCustomBlock extends ItemBlock
 	@Override
 	public String getItemStackDisplayName(ItemStack stack)
 	{
-		return StatCollector.translateToLocal(theBlock.getUnlocalizedName() + "." + stack.getItemDamage());
+		return StatCollector.translateToLocal(this.getUnlocalizedName() + ".name");
 	}
 	
 	/* (non-Javadoc)
@@ -72,7 +72,7 @@ public class ItemCustomBlock extends ItemBlock
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
-		return theBlock.getUnlocalizedName() + "." + stack.getItemDamage();
+		return this.theBlock instanceof ICustomBlock ? this.theBlock.getUnlocalizedName() + "." + stack.getItemDamage() : this.theBlock.getUnlocalizedName();
 	}
 	
 	/* (non-Javadoc)
@@ -81,7 +81,7 @@ public class ItemCustomBlock extends ItemBlock
 	@Override
 	public String getUnlocalizedName()
 	{
-		return theBlock.getUnlocalizedName() + ".0";
+		return this.theBlock instanceof ICustomBlock ? this.theBlock.getUnlocalizedName() : theBlock.getUnlocalizedName() + ".0";
 	}
 	
 	/* (non-Javadoc)

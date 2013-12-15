@@ -74,9 +74,9 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderColor(int par1)
+	public int getRenderColor(int pass)
 	{
-		return isColored[par1 & 3] ? ColorizerFoliage.getFoliageColorBasic() : super.getRenderColor(par1);
+		return isColored[pass & 3] ? ColorizerFoliage.getFoliageColorBasic() : super.getRenderColor(pass);
 	}
 	
 	/**
@@ -86,9 +86,9 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+	public int colorMultiplier(IBlockAccess world, int x, int y, int z)
 	{
-		int l = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+		int l = world.getBlockMetadata(x, y, z);
 		
 		if (isColored[l & 3])
 		{
@@ -106,7 +106,7 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 				{
 					for (int i2 = -1; i2 <= 1; ++i2)
 					{
-						int j2 = par1IBlockAccess.getBiomeGenForCoords(par2 + i2, par4 + l1).getBiomeFoliageColor();
+						int j2 = world.getBiomeGenForCoords(x + i2, z + l1).getBiomeFoliageColor();
 						i1 += (j2 & 16711680) >> 16;
 						j1 += (j2 & 65280) >> 8;
 						k1 += j2 & 255;
@@ -116,7 +116,7 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 				return (i1 / 9 & 255) << 16 | (j1 / 9 & 255) << 8 | k1 / 9 & 255;
 			}
 		}
-		return super.colorMultiplier(par1IBlockAccess, par2, par3, par4);
+		return super.colorMultiplier(world, x, y, z);
 	}
 	
 	/**
@@ -126,12 +126,12 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 * ID, old metadata
 	 */
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+	public void breakBlock(World world, int x, int y, int z, int oldBlockID, int oldBlockMetadata)
 	{
 		byte b0 = 1;
 		int j1 = b0 + 1;
 		
-		if (par1World.checkChunksExist(par2 - j1, par3 - j1, par4 - j1, par2 + j1, par3 + j1, par4 + j1))
+		if (world.checkChunksExist(x - j1, y - j1, z - j1, x + j1, y + j1, z + j1))
 		{
 			for (int k1 = -b0; k1 <= b0; ++k1)
 			{
@@ -139,10 +139,10 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 				{
 					for (int i2 = -b0; i2 <= b0; ++i2)
 					{
-						int j2 = par1World.getBlockId(par2 + k1, par3 + l1, par4 + i2);
+						int j2 = world.getBlockId(x + k1, y + l1, z + i2);
 						
 						if (Block.blocksList[j2] != null)
-							Block.blocksList[j2].beginLeavesDecay(par1World, par2 + k1, par3 + l1, par4 + i2);
+							Block.blocksList[j2].beginLeavesDecay(world, x + k1, y + l1, z + i2);
 					}
 				}
 			}
@@ -153,11 +153,11 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+	public void updateTick(World world, int par2, int par3, int par4, Random par5Random)
 	{
-		if (!par1World.isRemote)
+		if (!world.isRemote)
 		{
-			int l = par1World.getBlockMetadata(par2, par3, par4);
+			int l = world.getBlockMetadata(par2, par3, par4);
 			
 			if ((l & 8) != 0 && (l & 4) == 0)
 			{
@@ -174,7 +174,7 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 				
 				int l1;
 				
-				if (par1World.checkChunksExist(par2 - i1, par3 - i1, par4 - i1, par2 + i1, par3 + i1, par4 + i1))
+				if (world.checkChunksExist(par2 - i1, par3 - i1, par4 - i1, par2 + i1, par3 + i1, par4 + i1))
 				{
 					int i2;
 					int j2;
@@ -186,15 +186,15 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 						{
 							for (j2 = -b0; j2 <= b0; ++j2)
 							{
-								k2 = par1World.getBlockId(par2 + l1, par3 + i2, par4 + j2);
+								k2 = world.getBlockId(par2 + l1, par3 + i2, par4 + j2);
 								
 								Block block = Block.blocksList[k2];
 								
-								if (block != null && block.canSustainLeaves(par1World, par2 + l1, par3 + i2, par4 + j2))
+								if (block != null && block.canSustainLeaves(world, par2 + l1, par3 + i2, par4 + j2))
 								{
 									this.adjacentTreeBlocks[(l1 + k1) * j1 + (i2 + k1) * b1 + j2 + k1] = 0;
 								}
-								else if (block != null && block.isLeaves(par1World, par2 + l1, par3 + i2, par4 + j2))
+								else if (block != null && block.isLeaves(world, par2 + l1, par3 + i2, par4 + j2))
 								{
 									this.adjacentTreeBlocks[(l1 + k1) * j1 + (i2 + k1) * b1 + j2 + k1] = -2;
 								}
@@ -256,11 +256,11 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 				
 				if (l1 >= 0)
 				{
-					par1World.setBlockMetadataWithNotify(par2, par3, par4, l & -9, 4);
+					world.setBlockMetadataWithNotify(par2, par3, par4, l & -9, 4);
 				}
 				else
 				{
-					this.removeLeaves(par1World, par2, par3, par4);
+					this.removeLeaves(world, par2, par3, par4);
 				}
 			}
 		}
@@ -272,21 +272,21 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
+	public void randomDisplayTick(World world, int par2, int par3, int par4, Random par5Random)
 	{
-		if (par1World.canLightningStrikeAt(par2, par3 + 1, par4) && !par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && par5Random.nextInt(15) == 1)
+		if (world.canLightningStrikeAt(par2, par3 + 1, par4) && !world.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && par5Random.nextInt(15) == 1)
 		{
 			double d0 = par2 + par5Random.nextFloat();
 			double d1 = par3 - 0.05D;
 			double d2 = par4 + par5Random.nextFloat();
-			par1World.spawnParticle("dripWater", d0, d1, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("dripWater", d0, d1, d2, 0.0D, 0.0D, 0.0D);
 		}
 	}
 	
-	public void removeLeaves(World par1World, int par2, int par3, int par4)
+	public void removeLeaves(World world, int par2, int par3, int par4)
 	{
-		this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
-		par1World.setBlockToAir(par2, par3, par4);
+		this.dropBlockAsItem(world, par2, par3, par4, world.getBlockMetadata(par2, par3, par4), 0);
+		world.setBlockToAir(par2, par3, par4);
 	}
 	
 	/**
@@ -313,12 +313,12 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 * items
 	 */
 	@Override
-	public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7)
+	public void dropBlockAsItemWithChance(World world, int par2, int par3, int par4, int par5, float par6, int par7)
 	{
-		if (!par1World.isRemote)
+		if (!world.isRemote)
 		{
 			int j1 = 20;
-			int metadata = par1World.getBlockMetadata(par2, par3, par4);
+			int metadata = world.getBlockMetadata(par2, par3, par4);
 			
 			if ((par5 & 3) == 3)
 			{
@@ -335,11 +335,11 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 				}
 			}
 			
-			if (par1World.rand.nextInt(j1) == 0)
+			if (world.rand.nextInt(j1) == 0)
 			{
 				ItemStack stack = this.saplingStacks[metadata & 3];
 				if (stack != null)
-					this.dropBlockAsItem_do(par1World, par2, par3, par4, stack);
+					this.dropBlockAsItem_do(world, par2, par3, par4, stack);
 			}
 			
 			j1 = 200;
@@ -354,11 +354,11 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 				}
 			}
 			
-			if ((par5 & 3) == 0 && par1World.rand.nextInt(j1) == 0)
+			if ((par5 & 3) == 0 && world.rand.nextInt(j1) == 0)
 			{
 				ItemStack stack = this.appleStacks[metadata & 3];
 				if (stack != null)
-					this.dropBlockAsItem_do(par1World, par2, par3, par4, stack);
+					this.dropBlockAsItem_do(world, par2, par3, par4, stack);
 				;
 			}
 		}
@@ -370,9 +370,9 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 * subtype/damage.
 	 */
 	@Override
-	public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
+	public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int metadata)
 	{
-		super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);
+		super.harvestBlock(world, player, x, y, z, metadata);
 	}
 	
 	/**
@@ -380,9 +380,9 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 * wood.
 	 */
 	@Override
-	public int damageDropped(int par1)
+	public int damageDropped(int metadata)
 	{
-		return par1 & 3;
+		return metadata & 3;
 	}
 	
 	/**
@@ -402,10 +402,10 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public Icon getIcon(int side, int metadata)
 	{
 		graphicsLevel = Minecraft.getMinecraft().gameSettings.fancyGraphics;
-		return graphicsLevel ? this.icons[par2 & 3] : this.opaqueIcons[par2 & 3];
+		return graphicsLevel ? this.icons[metadata & 3] : this.opaqueIcons[metadata & 3];
 	}
 	
 	/**
@@ -414,10 +414,10 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(int blockID, CreativeTabs creativeTab, List list)
 	{
 		for (int i = 0; i < names.length; i++)
-			par3List.add(new ItemStack(this, 1, i));
+			list.add(new ItemStack(this, 1, i));
 	}
 	
 	/**
@@ -427,9 +427,9 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 * null.
 	 */
 	@Override
-	protected ItemStack createStackedBlock(int par1)
+	protected ItemStack createStackedBlock(int metadata)
 	{
-		return new ItemStack(this.blockID, 1, par1 & 3);
+		return new ItemStack(this.blockID, 1, metadata & 3);
 	}
 	
 	/**
@@ -439,15 +439,15 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		this.icons = new Icon[iconNames.length];
 		this.opaqueIcons = new Icon[iconNames.length];
 		
 		for (int i = 0; i < iconNames.length; ++i)
 		{
-			this.icons[i] = par1IconRegister.registerIcon(iconNames[i]);
-			this.opaqueIcons[i] = par1IconRegister.registerIcon(iconNames[i] + "_opaque");
+			this.icons[i] = iconRegister.registerIcon(iconNames[i]);
+			this.opaqueIcons[i] = iconRegister.registerIcon(iconNames[i] + "_opaque");
 		}
 	}
 	
@@ -484,9 +484,9 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
 	{
-		int i1 = par1IBlockAccess.getBlockId(par2, par3, par4);
-		return !graphicsLevel && i1 == this.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
+		int i1 = world.getBlockId(x, y, z);
+		return !graphicsLevel && i1 == this.blockID ? false : super.shouldSideBeRendered(world, x, y, z, side);
 	}
 }

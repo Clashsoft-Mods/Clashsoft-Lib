@@ -346,11 +346,11 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * int, int, int)
 	 */
 	@Override
-	public float getBlockHardness(World par1World, int par2, int par3, int par4)
+	public float getBlockHardness(World world, int x, int y, int z)
 	{
-		if (par1World.getBlockMetadata(par2, par3, par4) < this.hardnesses.length && this.hardnesses[par1World.getBlockMetadata(par2, par3, par4)] > 0)
+		if (world.getBlockMetadata(x, y, z) < this.hardnesses.length && this.hardnesses[world.getBlockMetadata(x, y, z)] > 0)
 		{
-			return this.hardnesses[par1World.getBlockMetadata(par2, par3, par4)];
+			return this.hardnesses[world.getBlockMetadata(x, y, z)];
 		}
 		return this.blockHardness;
 	}
@@ -362,14 +362,14 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * .texture.IconRegister)
 	 */
 	@Override
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		for (int i = 0; i < this.textures.length; i++)
 		{
 			for (int j = 0; j < this.textures[i].length; j++)
 			{
 				if (!this.textures[i][j].contains("%&"))
-					this.icons[i][j] = par1IconRegister.registerIcon(this.textures[i][j]);
+					this.icons[i][j] = iconRegister.registerIcon(this.textures[i][j]);
 			}
 		}
 	}
@@ -381,20 +381,20 @@ public class CustomBlock extends Block implements ICustomBlock
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs tab, List subItems)
+	public void getSubBlocks(int blockID, CreativeTabs creativeTab, List list)
 	{
 		for (int i = 0; i < this.names.length; i++)
 		{
 			if (!this.disabled[i])
 				if (this.tabs == null)
 				{
-					if (tab == super.getCreativeTabToDisplayOn())
-						subItems.add(new ItemStack(this, 1, i));
+					if (creativeTab == super.getCreativeTabToDisplayOn())
+						list.add(new ItemStack(this, 1, i));
 				}
-				else if (i < this.tabs.length && tab == this.tabs[i])
-					subItems.add(new ItemStack(this, 1, i));
-				else if (tab == this.tabs[this.tabs.length - 1])
-					subItems.add(new ItemStack(this, 1, i));
+				else if (i < this.tabs.length && creativeTab == this.tabs[i])
+					list.add(new ItemStack(this, 1, i));
+				else if (creativeTab == this.tabs[this.tabs.length - 1])
+					list.add(new ItemStack(this, 1, i));
 		}
 	}
 	
@@ -404,10 +404,10 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * java.util.Random)
 	 */
 	@Override
-	public int quantityDropped(int meta, int fortune, Random random)
+	public int quantityDropped(int metadata, int fortune, Random random)
 	{
-		if (this.drops[meta] != null)
-			return this.drops[meta].stackSize;
+		if (this.drops[metadata] != null)
+			return this.drops[metadata].stackSize;
 		return 1;
 	}
 	

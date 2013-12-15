@@ -54,7 +54,7 @@ public class BlockCustomGrass extends CustomBlock
 	}
 	
 	@Override
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		this.topIcons = new Icon[topIconNames.length];
 		this.sideIcons = new Icon[sideIconNames.length];
@@ -62,15 +62,14 @@ public class BlockCustomGrass extends CustomBlock
 		
 		for (int i = 0; i < topIconNames.length; i++)
 		{
-			this.topIcons[i] = par1IconRegister.registerIcon(this.topIconNames[i]);
-			this.sideIcons[i] = par1IconRegister.registerIcon(this.sideIconNames[i]);
-			this.bottomIcons[i] = par1IconRegister.registerIcon(this.bottomIconNames[i]);
+			this.topIcons[i] = iconRegister.registerIcon(this.topIconNames[i]);
+			this.sideIcons[i] = iconRegister.registerIcon(this.sideIconNames[i]);
+			this.bottomIcons[i] = iconRegister.registerIcon(this.bottomIconNames[i]);
 		}
 	}
 	
 	/**
-	 * From the specified side and block metadata retrieves the blocks texture.
-	 * Args: side, metadata
+	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
 	@SideOnly(Side.CLIENT)
 	@Override

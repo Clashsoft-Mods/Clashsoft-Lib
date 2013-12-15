@@ -28,16 +28,16 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 	private Icon[]	TopIcons;
 	private Icon[]	SideIcons;
 	
-	public BlockCustomSlab(int par1, String[] names, String[] topIcons, String[] sideIcons, int par2, boolean doubleSlab)
+	public BlockCustomSlab(int blockID, String[] names, String[] topIcons, String[] sideIcons, int otherSlabID, boolean doubleSlab)
 	{
-		super(par1, doubleSlab, Material.rock);
+		super(blockID, doubleSlab, Material.rock);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.names = names;
 		this.topIcons = topIcons;
 		this.TopIcons = new Icon[topIcons.length];
 		this.sideIcons = sideIcons;
 		this.SideIcons = new Icon[sideIcons.length];
-		this.otherSlab = par2;
+		this.otherSlab = otherSlabID;
 	}
 	
 	@Override
@@ -45,14 +45,14 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 	/**
 	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
-	public Icon getIcon(int par1, int par2)
+	public Icon getIcon(int side, int metadata)
 	{
-		if (this.isDoubleSlab && (par2 & 8) != 0)
+		if (this.isDoubleSlab && (metadata & 8) != 0)
 		{
-			par1 = 1;
+			side = 1;
 		}
 		
-		return par1 == 1 || par1 == 0 ? TopIcons[par2 & 7] : SideIcons[par2 & 7];
+		return side == 1 || side == 0 ? TopIcons[metadata & 7] : SideIcons[metadata & 7];
 	}
 	
 	@Override
@@ -61,12 +61,12 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This
 	 * is the only chance you get to register icons.
 	 */
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		for (int i = 0; i < topIcons.length; i++)
 		{
-			TopIcons[i] = par1IconRegister.registerIcon(topIcons[i]);
-			SideIcons[i] = par1IconRegister.registerIcon(sideIcons[i]);
+			TopIcons[i] = iconRegister.registerIcon(topIcons[i]);
+			SideIcons[i] = iconRegister.registerIcon(sideIcons[i]);
 		}
 	}
 	
@@ -74,7 +74,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
+	public int idDropped(int metadata, Random random, int fortune)
 	{
 		return this.blockID;
 	}
@@ -86,21 +86,21 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 	 * null.
 	 */
 	@Override
-	protected ItemStack createStackedBlock(int par1)
+	protected ItemStack createStackedBlock(int metadata)
 	{
-		return new ItemStack(this.blockID, 2, par1 & 7);
+		return new ItemStack(this.blockID, 2, metadata & 7);
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
 	/**
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(int blockID, CreativeTabs creativeTab, List list)
 	{
 		for (int j = 0; j < names.length; ++j)
 		{
-			par3List.add(new ItemStack(par1, 1, j));
+			list.add(new ItemStack(blockID, 1, j));
 		}
 	}
 	
@@ -109,7 +109,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 	 * inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public int idPicked(World par1World, int par2, int par3, int par4)
+	public int idPicked(World world, int x, int y, int z)
 	{
 		return !isDoubleSlab ? this.blockID : this.otherSlab;
 	}
@@ -124,9 +124,9 @@ public class BlockCustomSlab extends BlockHalfSlab implements ICustomBlock
 	}
 	
 	@Override
-	public String getFullSlabName(int i)
+	public String getFullSlabName(int metadata)
 	{
-		return names[i];
+		return names[metadata];
 	}
 
 	@Override

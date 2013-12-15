@@ -40,7 +40,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	 * Returns the quantity of items to drop on block destruction.
 	 */
 	@Override
-	public int quantityDropped(Random par1Random)
+	public int quantityDropped(Random random)
 	{
 		return 1;
 	}
@@ -52,12 +52,12 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	 * ID, old metadata
 	 */
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+	public void breakBlock(World world, int x, int y, int z, int oldBlockID, int oldBlockMetadata)
 	{
 		byte b0 = 4;
 		int j1 = b0 + 1;
 		
-		if (par1World.checkChunksExist(par2 - j1, par3 - j1, par4 - j1, par2 + j1, par3 + j1, par4 + j1))
+		if (world.checkChunksExist(x - j1, y - j1, z - j1, x + j1, y + j1, z + j1))
 		{
 			for (int k1 = -b0; k1 <= b0; ++k1)
 			{
@@ -65,11 +65,11 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 				{
 					for (int i2 = -b0; i2 <= b0; ++i2)
 					{
-						int j2 = par1World.getBlockId(par2 + k1, par3 + l1, par4 + i2);
+						int j2 = world.getBlockId(x + k1, y + l1, z + i2);
 						
 						if (Block.blocksList[j2] != null)
 						{
-							Block.blocksList[j2].beginLeavesDecay(par1World, par2 + k1, par3 + l1, par4 + i2);
+							Block.blocksList[j2].beginLeavesDecay(world, x + k1, y + l1, z + i2);
 						}
 					}
 				}
@@ -82,9 +82,9 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	protected Icon getSideIcon(int par1)
+	protected Icon getSideIcon(int metadata)
 	{
-		return this.sideIcons[par1];
+		return this.sideIcons[metadata];
 	}
 	
 	/**
@@ -92,17 +92,17 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	protected Icon getEndIcon(int par1)
+	protected Icon getEndIcon(int metadata)
 	{
-		return this.topIcons[par1];
+		return this.topIcons[metadata];
 	}
 	
 	/**
 	 * returns a number between 0 and 3
 	 */
-	public static int limitToValidMetadata(int par0)
+	public static int limitToValidMetadata(int metadata)
 	{
-		return par0 & 3;
+		return metadata & 3;
 	}
 	
 	/**
@@ -111,10 +111,10 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(int blockID, CreativeTabs creativeTab, List list)
 	{
 		for (int i = 0; i < this.names.length; i++)
-			par3List.add(new ItemStack(this, 1, i));
+			list.add(new ItemStack(this, 1, i));
 	}
 	
 	/**
@@ -124,15 +124,15 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		this.topIcons = new Icon[topIconNames.length];
 		this.sideIcons = new Icon[sideIconNames.length];
 		
 		for (int i = 0; i < this.topIconNames.length; ++i)
-			this.topIcons[i] = par1IconRegister.registerIcon(topIconNames[i]);
+			this.topIcons[i] = iconRegister.registerIcon(topIconNames[i]);
 		for (int i = 0; i < this.sideIconNames.length; ++i)
-			this.sideIcons[i] = par1IconRegister.registerIcon(sideIconNames[i]);
+			this.sideIcons[i] = iconRegister.registerIcon(sideIconNames[i]);
 	}
 	
 	@Override

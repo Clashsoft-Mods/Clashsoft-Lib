@@ -13,7 +13,7 @@ public class CSBitMath
 		boolean[] b = new boolean[bits.length];
 		return not_(bits, b);
 	}
-
+	
 	public static boolean[] negative(boolean[] bits)
 	{
 		boolean[] b = new boolean[bits.length];
@@ -25,7 +25,7 @@ public class CSBitMath
 		boolean[] b = new boolean[bits.length];
 		return bitshift_left_(bits, b, n);
 	}
-
+	
 	public static boolean[] bitshiftRight(boolean[] bits, int n)
 	{
 		boolean[] b = new boolean[bits.length];
@@ -49,7 +49,7 @@ public class CSBitMath
 		boolean[] b = new boolean[len + 1];
 		return add_(bits1, bits2, b);
 	}
-
+	
 	public static boolean[] substract(boolean[] bits1, boolean[] bits2)
 	{
 		// Pad them to same length
@@ -61,7 +61,19 @@ public class CSBitMath
 		boolean[] b = new boolean[len + 1];
 		return substract_(bits1, bits1, b);
 	}
-
+	
+	public static boolean[] multiply(boolean[] bits1, boolean[] bits2)
+	{
+		// Pad them to same length
+		int len = bits1.length > bits2.length ? bits1.length : bits2.length;
+		bits1 = Arrays.copyOf(bits1, len);
+		bits2 = Arrays.copyOf(bits2, len);
+		
+		// Prevent overflow, make the results bigger
+		boolean[] b = new boolean[len + 1];
+		return multiply_(bits1, bits2, b);
+	}
+	
 	public static boolean[] and(boolean[] bits1, boolean[] bits2)
 	{
 		// Pad them to same length
@@ -73,7 +85,7 @@ public class CSBitMath
 		boolean[] b = new boolean[len + 1];
 		return and_(bits1, bits2, b);
 	}
-
+	
 	public static boolean[] or(boolean[] bits1, boolean[] bits2)
 	{
 		// Pad them to same length
@@ -105,7 +117,7 @@ public class CSBitMath
 			dest[i] = !src[i];
 		return dest;
 	}
-
+	
 	private static boolean[] negative_(boolean[] src, boolean[] dest)
 	{
 		return add_(not_(src, dest), ONE_BITS, dest);
@@ -121,7 +133,9 @@ public class CSBitMath
 	private static boolean[] bitshift_right_(boolean[] src, boolean[] dest, int n, boolean signed)
 	{
 		int len = src.length;
-		System.arraycopy(src, n, dest, 0, len - n - (signed ? 0 : 1));
+		System.arraycopy(src, n, dest, 0, len - n);
+		if (signed)
+			dest[len - 1] = src[len - 1];
 		return dest;
 	}
 	
@@ -156,12 +170,19 @@ public class CSBitMath
 		
 		return dest;
 	}
-
+	
+	private static boolean[] multiply_(boolean[] src1, boolean[] src2, boolean[] dest)
+	{
+		int len = src1.length;
+		// Implementation
+		return dest;
+	}
+	
 	private static boolean[] substract_(boolean[] src1, boolean[] src2, boolean[] dest)
 	{
 		return add_(src1, not_(src2, dest), dest);
 	}
-
+	
 	private static boolean[] and_(boolean[] src1, boolean[] src2, boolean[] dest)
 	{
 		int len = src1.length;

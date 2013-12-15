@@ -39,42 +39,41 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+	public void updateTick(World world, int x, int y, int z, Random random)
 	{
-		if (!par1World.isRemote)
+		if (!world.isRemote)
 		{
-			super.updateTick(par1World, par2, par3, par4, par5Random);
+			super.updateTick(world, x, y, z, random);
 			
-			if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9 && par5Random.nextInt(7) == 0)
+			if (world.getBlockLightValue(x, y + 1, z) >= 9 && random.nextInt(7) == 0)
 			{
-				this.markOrGrowMarked(par1World, par2, par3, par4, par5Random);
+				this.markOrGrowMarked(world, x, y, z, random);
 			}
 		}
 	}
 	
 	/**
-	 * From the specified side and block metadata retrieves the blocks texture.
-	 * Args: side, metadata
+	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public Icon getIcon(int side, int metadata)
 	{
-		return this.icons[par2 & 3];
+		return this.icons[metadata & 3];
 	}
 	
 	@Override
-	public void markOrGrowMarked(World par1World, int par2, int par3, int par4, Random par5Random)
+	public void markOrGrowMarked(World world, int x, int y, int z, Random random)
 	{
-		int l = par1World.getBlockMetadata(par2, par3, par4);
+		int l = world.getBlockMetadata(x, y, z);
 		
 		if ((l & 8) == 0)
 		{
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, l | 8, 4);
+			world.setBlockMetadataWithNotify(x, y, z, l | 8, 4);
 		}
 		else
 		{
-			this.growTree(par1World, par2, par3, par4, par5Random);
+			this.growTree(world, x, y, z, random);
 		}
 	}
 	
@@ -82,44 +81,44 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	 * Attempts to grow a sapling into a tree
 	 */
 	@Override
-	public void growTree(World par1World, int par2, int par3, int par4, Random par5Random)
+	public void growTree(World world, int x, int y, int z, Random random)
 	{
-		if (par1World.isRemote)
+		if (world.isRemote)
 			return;
 		
-		if (!TerrainGen.saplingGrowTree(par1World, par5Random, par2, par3, par4))
+		if (!TerrainGen.saplingGrowTree(world, random, x, y, z))
 			return;
 		
-		int l = par1World.getBlockMetadata(par2, par3, par4) & 3;
-		WorldGenerator worldgen = getWorldGen(par1World, par2, par3, par4, par5Random);
+		int l = world.getBlockMetadata(x, y, z) & 3;
+		WorldGenerator worldgen = getWorldGen(world, x, y, z, random);
 		int i1 = 0;
 		int j1 = 0;
 		boolean flag = false;
 		
 		if (flag)
 		{
-			par1World.setBlock(par2 + i1, par3, par4 + j1, 0, 0, 4);
-			par1World.setBlock(par2 + i1 + 1, par3, par4 + j1, 0, 0, 4);
-			par1World.setBlock(par2 + i1, par3, par4 + j1 + 1, 0, 0, 4);
-			par1World.setBlock(par2 + i1 + 1, par3, par4 + j1 + 1, 0, 0, 4);
+			world.setBlock(x + i1, y, z + j1, 0, 0, 4);
+			world.setBlock(x + i1 + 1, y, z + j1, 0, 0, 4);
+			world.setBlock(x + i1, y, z + j1 + 1, 0, 0, 4);
+			world.setBlock(x + i1 + 1, y, z + j1 + 1, 0, 0, 4);
 		}
 		else
 		{
-			par1World.setBlock(par2, par3, par4, 0, 0, 4);
+			world.setBlock(x, y, z, 0, 0, 4);
 		}
 		
-		if (!worldgen.generate(par1World, par5Random, par2 + i1, par3, par4 + j1))
+		if (!worldgen.generate(world, random, x + i1, y, z + j1))
 		{
 			if (flag)
 			{
-				par1World.setBlock(par2 + i1, par3, par4 + j1, this.blockID, l, 4);
-				par1World.setBlock(par2 + i1 + 1, par3, par4 + j1, this.blockID, l, 4);
-				par1World.setBlock(par2 + i1, par3, par4 + j1 + 1, this.blockID, l, 4);
-				par1World.setBlock(par2 + i1 + 1, par3, par4 + j1 + 1, this.blockID, l, 4);
+				world.setBlock(x + i1, y, z + j1, this.blockID, l, 4);
+				world.setBlock(x + i1 + 1, y, z + j1, this.blockID, l, 4);
+				world.setBlock(x + i1, y, z + j1 + 1, this.blockID, l, 4);
+				world.setBlock(x + i1 + 1, y, z + j1 + 1, this.blockID, l, 4);
 			}
 			else
 			{
-				par1World.setBlock(par2, par3, par4, this.blockID, l, 4);
+				world.setBlock(x, y, z, this.blockID, l, 4);
 			}
 		}
 	}
@@ -143,36 +142,33 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	 * Determines if the same sapling is present at the given location.
 	 */
 	@Override
-	public boolean isSameSapling(World par1World, int par2, int par3, int par4, int par5)
+	public boolean isSameSapling(World world, int x, int y, int z, int metadata)
 	{
-		return par1World.getBlockId(par2, par3, par4) == this.blockID && (par1World.getBlockMetadata(par2, par3, par4) & 3) == par5;
+		return world.getBlockId(x, y, z) == this.blockID && (world.getBlockMetadata(x, y, z) & 3) == metadata;
 	}
 	
 	/**
-	 * returns a list of blocks with the same ID, but different meta (eg: wood
-	 * returns 4 blocks)
+	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(int blockID, CreativeTabs creativeTab, List list)
 	{
 		for (int i = 0; i < names.length; i++)
-			par3List.add(new ItemStack(this, 1, i));
+			list.add(new ItemStack(this, 1, i));
 	}
 	
 	/**
-	 * When this method is called, your block should register all the icons it
-	 * needs with the given IconRegister. This is the only chance you get to
-	 * register icons.
+	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This is the only chance you get to register icons.
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		this.icons = new Icon[iconNames.length];
 		for (int i = 0; i < iconNames.length; ++i)
 		{
-			this.icons[i] = par1IconRegister.registerIcon(iconNames[i]);
+			this.icons[i] = iconRegister.registerIcon(iconNames[i]);
 		}
 	}
 	

@@ -28,9 +28,9 @@ public class BlockCustomWorkbench extends Block implements ICustomBlock
 	public Icon[]	side2Icons;
 	public Icon[]	bottomIcons;
 	
-	public BlockCustomWorkbench(int par1, String[] names, String[] topIcons, String[] sideIcons, String[] side2Icons, String[] bottomIcons)
+	public BlockCustomWorkbench(int blockID, String[] names, String[] topIcons, String[] sideIcons, String[] side2Icons, String[] bottomIcons)
 	{
-		super(par1, Material.wood);
+		super(blockID, Material.wood);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		
 		this.names = names;
@@ -45,25 +45,25 @@ public class BlockCustomWorkbench extends Block implements ICustomBlock
 	/**
 	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
-	public Icon getIcon(int par1, int par2)
+	public Icon getIcon(int side, int metadata)
 	{
-		if (par1 == 1)
-			return topIcons[par2];
-		else if (par1 == 0)
-			return bottomIcons[par2];
-		else if (par1 == 2 || par1 == 4)
-			return sideIcons[par2];
+		if (side == 1)
+			return topIcons[metadata];
+		else if (side == 0)
+			return bottomIcons[metadata];
+		else if (side == 2 || side == 4)
+			return sideIcons[metadata];
 		else
-			return side2Icons[par2];
+			return side2Icons[metadata];
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
 	/**
 	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This
 	 * is the only chance you get to register icons.
 	 */
-	public void registerIcons(IconRegister par1IconRegister)
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister iconRegister)
 	{
 		this.topIcons = new Icon[topIcons.length];
 		this.sideIcons = new Icon[sideIcons.length];
@@ -72,10 +72,10 @@ public class BlockCustomWorkbench extends Block implements ICustomBlock
 		
 		for (int i = 0; i < topIconNames.length; i++)
 		{
-			topIcons[i] = par1IconRegister.registerIcon(topIconNames[i]);
-			sideIcons[i] = par1IconRegister.registerIcon(sideIconNames[i]);
-			side2Icons[i] = par1IconRegister.registerIcon(side2IconNames[i]);
-			bottomIcons[i] = par1IconRegister.registerIcon(bottomIconNames[i]);
+			topIcons[i] = iconRegister.registerIcon(topIconNames[i]);
+			sideIcons[i] = iconRegister.registerIcon(sideIconNames[i]);
+			side2Icons[i] = iconRegister.registerIcon(side2IconNames[i]);
+			bottomIcons[i] = iconRegister.registerIcon(bottomIconNames[i]);
 		}
 		
 		topIconNames = sideIconNames = side2IconNames = bottomIconNames = null;
@@ -85,15 +85,15 @@ public class BlockCustomWorkbench extends Block implements ICustomBlock
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
-		if (par1World.isRemote)
+		if (world.isRemote)
 		{
 			return true;
 		}
 		else
 		{
-			par5EntityPlayer.displayGUIWorkbench(par2, par3, par4);
+			player.displayGUIWorkbench(x, y, z);
 			return true;
 		}
 	}
@@ -103,11 +103,11 @@ public class BlockCustomWorkbench extends Block implements ICustomBlock
 	 * returns 4 blocks)
 	 */
 	@Override
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(int blockID, CreativeTabs creativeTab, List list)
 	{
 		for (int i = 0; i < names.length; i++)
 		{
-			par3List.add(new ItemStack(this, 1, i));
+			list.add(new ItemStack(this, 1, i));
 		}
 	}
 	

@@ -18,9 +18,9 @@ public class ItemCustomArmor extends ItemArmor
 	}
 	
 	@Override
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		this.itemIcon = par1IconRegister.registerIcon(this.getIconString());
+		this.itemIcon = iconRegister.registerIcon(this.getIconString());
 	}
 	
 	public int getDamageReductionAmount(EnumArmorMaterial material)

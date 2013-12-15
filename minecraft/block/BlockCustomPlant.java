@@ -39,8 +39,7 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	}
 	
 	/**
-	 * From the specified side and block metadata retrieves the blocks texture.
-	 * Args: side, metadata
+	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -50,8 +49,7 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	}
 	
 	/**
-	 * Checks to see if its valid to put this block at the specified
-	 * coordinates. Args: world, x, y, z
+	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
 	 */
 	@Override
 	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side, ItemStack stack)
@@ -67,9 +65,7 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	}
 	
 	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which
-	 * neighbor changed (coordinates passed are their own) Args: x, y, z,
-	 * neighbor blockID
+	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are their own) Args: x, y, z, neighbor blockID
 	 */
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int neighborBlockID)
@@ -82,9 +78,9 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+	public void updateTick(World world, int x, int y, int z, Random random)
 	{
-		this.checkFlowerChange(par1World, par2, par3, par4);
+		this.checkFlowerChange(world, x, y, z);
 	}
 	
 	protected void checkFlowerChange(World world, int x, int y, int z)
@@ -102,8 +98,7 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	}
 	
 	/**
-	 * Can this block stay at this position. Similar to canPlaceBlockAt except
-	 * gets checked often with plants.
+	 * Can this block stay at this position. Similar to canPlaceBlockAt except gets checked often with plants.
 	 */
 	@Override
 	public boolean canBlockStay(World world, int x, int y, int z)
@@ -125,19 +120,16 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	}
 	
 	/**
-	 * Returns a bounding box from the pool of bounding boxes (this means this
-	 * box can change after the pool has been cleared to be reused)
+	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been cleared to be reused)
 	 */
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
 	{
 		return null;
 	}
 	
 	/**
-	 * Is this block (a) opaque and (b) a full 1m cube? This determines whether
-	 * or not to render the shared face of two adjacent blocks and also whether
-	 * the player can attach torches, redstone wire, etc to this block.
+	 * Is this block (a) opaque and (b) a full 1m cube? This determines whether or not to render the shared face of two adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
 	 */
 	@Override
 	public boolean isOpaqueCube()
@@ -146,8 +138,7 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	}
 	
 	/**
-	 * If this block doesn't render as an ordinary block it will return False
-	 * (examples: signs, buttons, stairs, etc)
+	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
 	 */
 	@Override
 	public boolean renderAsNormalBlock()
@@ -210,31 +201,27 @@ public abstract class BlockCustomPlant extends CustomBlock implements ICustomBlo
 	public abstract boolean isValidGround(int metadata, int blockID, int blockMetadata);
 	
 	/**
-	 * Determines the damage on the item the block drops. Used in cloth and
-	 * wood.
+	 * Determines the damage on the item the block drops. Used in cloth and wood.
 	 */
 	@Override
-	public int damageDropped(int par1)
+	public int damageDropped(int metadata)
 	{
-		return par1;
+		return metadata;
 	}
 	
 	/**
-	 * returns a list of blocks with the same ID, but different meta (eg: wood
-	 * returns 4 blocks)
+	 * Returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int blockID, CreativeTabs tab, List itemList)
+	public void getSubBlocks(int blockID, CreativeTabs creativeTab, List itemList)
 	{
 		for (int i = 0; i < names.length; i++)
 			itemList.add(new ItemStack(this, 1, i));
 	}
 	
 	/**
-	 * When this method is called, your block should register all the icons it
-	 * needs with the given IconRegister. This is the only chance you get to
-	 * register icons.
+	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This is the only chance you get to register icons.
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)

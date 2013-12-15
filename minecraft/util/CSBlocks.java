@@ -22,10 +22,10 @@ public class CSBlocks
 	/**
 	 * Registers a Block and its name.
 	 * 
-	 * @param par1Block
-	 *            the par1 block
-	 * @param par2
-	 *            the par2
+	 * @param block
+	 *            the block
+	 * @param name
+	 *            the name
 	 */
 	public static void addBlock(Block block, String name)
 	{
