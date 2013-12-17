@@ -22,7 +22,7 @@ import net.minecraft.util.StatCollector;
  */
 public class CustomItem extends Item
 {
-	public static final String	DISABLED_STRING	= "%&";
+	public static final String	FORCEHIDE	= "%&";
 	
 	/** The display names. */
 	public String[]				names;
@@ -82,7 +82,7 @@ public class CustomItem extends Item
 		
 		this.enabled = new boolean[this.names.length];
 		for (int i = 0; i < this.enabled.length; i++)
-			this.enabled[i] = !iconNames[i].isEmpty() && !displayNames[i].isEmpty() && !displayNames[i].contains(DISABLED_STRING);
+			this.enabled[i] = !iconNames[i].isEmpty() && !displayNames[i].isEmpty() && !displayNames[i].contains(FORCEHIDE);
 		
 		this.setHasSubtypes(displayNames.length > 1);
 	}
@@ -207,7 +207,7 @@ public class CustomItem extends Item
 	public String getItemDisplayName(ItemStack stack)
 	{
 		String ret = this.hasItemMetadataList() ? this.subItemList.get(stack.getItemDamage()).getName() : this.names[stack.getItemDamage()];
-		return StatCollector.translateToLocal(ret.replace(DISABLED_STRING, ""));
+		return StatCollector.translateToLocal(ret.replace(FORCEHIDE, ""));
 	}
 	
 	/*
@@ -236,7 +236,7 @@ public class CustomItem extends Item
 			for (int i = 0; i < this.subItemList.size(); i++)
 			{
 				String iconName = this.subItemList.get(i).getIconName();
-				if (!iconName.contains(DISABLED_STRING))
+				if (!iconName.contains(FORCEHIDE))
 					this.icons[i] = iconRegister.registerIcon(iconName);
 			}
 		}
