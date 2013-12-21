@@ -106,7 +106,7 @@ public class CustomPotion extends Potion
 		return instant;
 	}
 	
-	public boolean getIsBadEffect()
+	public boolean isBadEffect()
 	{
 		return bad;
 	}

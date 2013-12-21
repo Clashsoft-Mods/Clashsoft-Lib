@@ -24,6 +24,8 @@ public class CSString
 	/** The Constant BINEQUAL. */
 	private static final int[]		BINEQUAL				= { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
 	
+	public static final String[]	fastRomanCache			= { "0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX" };
+	
 	/** The Alphabet. */
 	public static final String		ALPHABET				= "abcdefghijklmnopqrstuvwxyz";
 	
@@ -52,10 +54,14 @@ public class CSString
 	 */
 	public static String convertToRoman(int number)
 	{
-		if (number == 0)
-			return "0";
-		else if (number < 0)
+		if (number < 0)
+		{
 			return "-" + convertToRoman(-number);
+		}
+		else if (number < fastRomanCache.length)
+		{
+			return fastRomanCache[number];
+		}
 		else if (number >= 4000)
 		{
 			System.out.println("Exception while converting to Roman: Value outside roman numeral range.");
@@ -76,8 +82,7 @@ public class CSString
 	}
 	
 	/**
-	 * Wraps a string to make multiple lines with a maximum length. It doesn't
-	 * cut words
+	 * Wraps a string to make multiple lines with a maximum length. It doesn't cut words
 	 * 
 	 * @param string
 	 *            the string
@@ -123,8 +128,7 @@ public class CSString
 	 * <p>
 	 * Example:
 	 * <p>
-	 * {@code getInitials("Hello World")} returns "HW";
-	 * {@code getInitials("Half-Life 3")} returns "HL3"
+	 * {@code getInitials("Hello World")} returns "HW"; {@code getInitials("Half-Life 3")} returns "HL3"
 	 * 
 	 * @param string
 	 *            the string
@@ -158,8 +162,7 @@ public class CSString
 	 * <p>
 	 * Modes:
 	 * <p>
-	 * 0: lowercase 1: UPPERCASE 2: lower camelCase 3: Upper CamelCase 4:
-	 * iNVERTED CASE 5: INVERTED LOWER CAMELcASE 6: iNVERTED uPPER cAMELcASE
+	 * 0: lowercase 1: UPPERCASE 2: lower camelCase 3: Upper CamelCase 4: iNVERTED CASE 5: INVERTED LOWER CAMELcASE 6: iNVERTED uPPER cAMELcASE
 	 * 
 	 * @see CSString#firstCharToCase(String, int)
 	 * @param string
@@ -172,42 +175,42 @@ public class CSString
 	{
 		switch (mode)
 		{
-		case LOWERCASE: // lowercase
-			return string.toLowerCase();
-		case UPPERCASE: // UPPERCASE
-			return string.toUpperCase();
-		case LOWER_CAMELCASE: // lower camelCase
-		{
-			String[] array = string.toLowerCase().split(" ");
-			for (int i = 0; i < string.length(); i++)
-				array[i] = firstCharToCase(array[i], LOWERCASE);
-			return unsplit(" ", array);
-		}
-		case UPPER_CAMELCASE: // Upper CamelCase
-		{
-			String[] array = string.toLowerCase().split(" ");
-			for (int i = 0; i < string.length(); i++)
-				array[i] = firstCharToCase(array[i], UPPERCASE);
-			return unsplit(" ", array);
-		}
-		case INVERTED_CASE: // iNVERTED CASE
-		{
-			StringBuilder ret = new StringBuilder(string.length());
-			for (char c : string.toCharArray())
+			case LOWERCASE: // lowercase
+				return string.toLowerCase();
+			case UPPERCASE: // UPPERCASE
+				return string.toUpperCase();
+			case LOWER_CAMELCASE: // lower camelCase
 			{
-				if (Character.isUpperCase(c))
-					ret.append(Character.toLowerCase(c));
-				else
-					ret.append(Character.toUpperCase(c));
+				String[] array = string.toLowerCase().split(" ");
+				for (int i = 0; i < string.length(); i++)
+					array[i] = firstCharToCase(array[i], LOWERCASE);
+				return unsplit(" ", array);
 			}
-			return ret.toString();
-		}
-		case INVERTED_LOWER_CAMELCASE: // INVERTED LOWER CAMELcASE
-			return caseString(caseString(string, 2), 4);
-		case INVERTED_UPPER_CAMELCASE: // iNVERTED uPPER cAMELcASE
-			return caseString(caseString(string, 3), 4);
-		default:
-			return string;
+			case UPPER_CAMELCASE: // Upper CamelCase
+			{
+				String[] array = string.toLowerCase().split(" ");
+				for (int i = 0; i < string.length(); i++)
+					array[i] = firstCharToCase(array[i], UPPERCASE);
+				return unsplit(" ", array);
+			}
+			case INVERTED_CASE: // iNVERTED CASE
+			{
+				StringBuilder ret = new StringBuilder(string.length());
+				for (char c : string.toCharArray())
+				{
+					if (Character.isUpperCase(c))
+						ret.append(Character.toLowerCase(c));
+					else
+						ret.append(Character.toUpperCase(c));
+				}
+				return ret.toString();
+			}
+			case INVERTED_LOWER_CAMELCASE: // INVERTED LOWER CAMELcASE
+				return caseString(caseString(string, 2), 4);
+			case INVERTED_UPPER_CAMELCASE: // iNVERTED uPPER cAMELcASE
+				return caseString(caseString(string, 3), 4);
+			default:
+				return string;
 		}
 	}
 	
@@ -284,12 +287,9 @@ public class CSString
 	/**
 	 * Fastly concats an array of strings.
 	 * <p>
-	 * If {@code strings} is null or {@code strings} has a length of 0, this
-	 * method will return an empty string.
+	 * If {@code strings} is null or {@code strings} has a length of 0, this method will return an empty string.
 	 * <p>
-	 * If {@code strings} has a size less than three, concatening will be done
-	 * using the default {@code +} operator. Otherwise, a new
-	 * {@link StringBuilder} will be created to compute the result.
+	 * If {@code strings} has a size less than three, concatening will be done using the default {@code +} operator. Otherwise, a new {@link StringBuilder} will be created to compute the result.
 	 * 
 	 * @see String
 	 * @see StringBuilder
@@ -334,8 +334,7 @@ public class CSString
 	}
 	
 	/**
-	 * Concats all Strings in {@code array} with the {@code prefix} and the
-	 * {@code postfix}
+	 * Concats all Strings in {@code array} with the {@code prefix} and the {@code postfix}
 	 * 
 	 * @see CSString#concat(String, String, String)
 	 * @param array
@@ -357,8 +356,7 @@ public class CSString
 	}
 	
 	/**
-	 * Concats all Strings in the list {@code list} with the {@code prefix} and
-	 * the {@code postfix}
+	 * Concats all Strings in the list {@code list} with the {@code prefix} and the {@code postfix}
 	 * 
 	 * @see CSString#concat(String, String, String)
 	 * @param list
@@ -438,8 +436,7 @@ public class CSString
 	}
 	
 	/**
-	 * Returns the first index of the any of the {@code regex} in the
-	 * {@code string}
+	 * Returns the first index of the any of the {@code regex} in the {@code string}
 	 * 
 	 * @param string
 	 *            the string
@@ -465,8 +462,7 @@ public class CSString
 	}
 	
 	/**
-	 * Returns the string with the first string being a) a lowercase char or b)
-	 * an uppercase char
+	 * Returns the string with the first string being a) a lowercase char or b) an uppercase char
 	 * <p>
 	 * Modes:
 	 * <p>
@@ -536,8 +532,7 @@ public class CSString
 	}
 	
 	/**
-	 * Returns a new random consonant (b, c, d, f, g, h, j, k, l, m, n, p, q, r,
-	 * s, t, v, w, x, y, z)
+	 * Returns a new random consonant (b, c, d, f, g, h, j, k, l, m, n, p, q, r, s, t, v, w, x, y, z)
 	 * 
 	 * @see CSString#CONSONANTS
 	 * @param random

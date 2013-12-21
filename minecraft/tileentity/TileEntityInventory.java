@@ -90,7 +90,7 @@ public class TileEntityInventory extends TileEntity implements IInventory
 	@Override
 	public String getInvName()
 	{
-		return this.isInvNameLocalized() ? this.name : "tile.damnation_table.name";
+		return this.isInvNameLocalized() ? this.name : "tile.generic.name";
 	}
 	
 	@Override
