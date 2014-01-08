@@ -45,6 +45,62 @@ public class CSString
 	 */
 	public static final int			LOWERCASE				= 0, UPPERCASE = 1, LOWER_CAMELCASE = 2, UPPER_CAMELCASE = 3, INVERTED_CASE = 4, INVERTED_LOWER_CAMELCASE = 5, INVERTED_UPPER_CAMELCASE = 6;
 	
+	public static String format(String format, String... args)
+	{
+		int len = format.length();
+		int len1 = args.length;
+		
+		StringBuilder result = new StringBuilder(len + len1 * 10);
+		int j = 0;
+		for (int i = 0; i < len; i++)
+		{
+			char c = format.charAt(i);
+			if (c == '%')
+			{
+				char c1 = format.charAt(i + 1);
+				if (c1 == '%')
+				{
+					result.append('%');
+					i++;
+				}
+				else if (c1 != '{')
+				{
+					result.append(args[j]);
+					if (j < len1 - 1)
+					{
+						j++;
+					}
+				}
+				else
+				{
+					int k = format.indexOf('}', i + 1);
+					String formatter = format.substring(i + 1, k);
+					
+					i = k;
+				}
+				continue;
+			}
+			else
+			{
+				result.append(c);
+			}
+		}
+		return result.toString();
+	}
+	
+	public static boolean isNumber(String string)
+	{
+		try
+		{
+			Double.parseDouble(string);
+			return true;
+		}
+		catch (Exception ex)
+		{
+			return false;
+		}
+	}
+	
 	/**
 	 * Converts a number to a roman number.
 	 * 
