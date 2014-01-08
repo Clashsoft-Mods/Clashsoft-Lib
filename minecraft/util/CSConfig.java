@@ -23,13 +23,7 @@ public class CSConfig
 	
 	public static void loadConfig(File configFile)
 	{
-		if (config != null)
-		{
-			saveConfig();
-		}
-		
-		System.out.println("[CSCONFIG] Loading configuration file " + configFile.getName());
-		config = new Configuration(configFile);
+		loadConfig(configFile, configFile.getName());
 	}
 	
 	public static void saveConfig()
