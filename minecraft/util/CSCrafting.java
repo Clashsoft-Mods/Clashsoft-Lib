@@ -3,20 +3,23 @@ package clashsoft.cslib.minecraft.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import clashsoft.cslib.minecraft.crafting.ShapedAdvancedRecipe;
 import clashsoft.cslib.minecraft.item.IMetaItemRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * The Class CSCrafting.
  * <p>
- * This class adds several utils for adding crafting and furnace recipes and
- * analyzing them.
+ * This class adds several utils for adding crafting and furnace recipes and analyzing them.
  * 
  * @author Clashsoft
  */
@@ -31,8 +34,14 @@ public class CSCrafting
 	/** The Constant STICK. */
 	public static final ItemStack	STICK	= new ItemStack(Item.stick, 1, 0);
 	
+	public static void registerRecipe(IRecipe recipe)
+	{
+		CraftingManager.getInstance().getRecipeList().add(recipe);
+	}
+	
 	/**
-	 * Adds a new shaped crafting recipe to the game.
+	 * Adds a new shaped crafting recipe to the game.<p>
+	 * Save for adding advanced recipes (bigger than 3x3)
 	 * 
 	 * @param output
 	 *            the output
@@ -42,7 +51,98 @@ public class CSCrafting
 	 */
 	public static void addCrafting(ItemStack output, Object... recipe)
 	{
-		GameRegistry.addRecipe(output, recipe);
+		addRecipe(output, recipe);
+	}
+	
+	/**
+	 * Adds a new shaped crafting recipe to the game.<p>
+	 * Save for adding advanced recipes (bigger than 3x3)
+	 * 
+	 * @param output
+	 *            the output
+	 * @param recipe
+	 *            the recipe
+	 * @return the ShapedRecipe instance created
+	 * @see GameRegistry#addRecipe(ItemStack, Object...)
+	 */
+	public static ShapedRecipes addRecipe(ItemStack output, Object... recipe)
+	{
+		return addAdvancedRecipe(output, recipe);
+	}
+	
+	public static ShapedRecipes addAdvancedRecipe(ItemStack output, Object... recipe)
+	{
+		String s = "";
+		int i = 0;
+		int j = 0;
+		int k = 0;
+		
+		if (recipe[i] instanceof String[])
+		{
+			String[] astring = (String[]) recipe[i++];
+			
+			for (int l = 0; l < astring.length; ++l)
+			{
+				String s1 = astring[l];
+				++k;
+				j = s1.length();
+				s = s + s1;
+			}
+		}
+		else
+		{
+			while (recipe[i] instanceof String)
+			{
+				String s2 = (String) recipe[i++];
+				++k;
+				j = s2.length();
+				s = s + s2;
+			}
+		}
+		
+		HashMap hashmap;
+		
+		for (hashmap = new HashMap(); i < recipe.length; i += 2)
+		{
+			Character character = (Character) recipe[i];
+			ItemStack itemstack1 = null;
+			
+			if (recipe[i + 1] instanceof Item)
+			{
+				itemstack1 = new ItemStack((Item) recipe[i + 1]);
+			}
+			else if (recipe[i + 1] instanceof Block)
+			{
+				itemstack1 = new ItemStack((Block) recipe[i + 1], 1, 32767);
+			}
+			else if (recipe[i + 1] instanceof ItemStack)
+			{
+				itemstack1 = (ItemStack) recipe[i + 1];
+			}
+			
+			hashmap.put(character, itemstack1);
+		}
+		
+		ItemStack[] stacks = new ItemStack[j * k];
+		
+		for (int i1 = 0; i1 < j * k; ++i1)
+		{
+			char c0 = s.charAt(i1);
+			
+			if (hashmap.containsKey(Character.valueOf(c0)))
+			{
+				stacks[i1] = ((ItemStack) hashmap.get(Character.valueOf(c0))).copy();
+			}
+			else
+			{
+				stacks[i1] = null;
+			}
+		}
+		
+		ShapedRecipes shapedrecipes = new ShapedAdvancedRecipe(j, k, stacks, output);
+		
+		registerRecipe(shapedrecipes);
+		return shapedrecipes;
 	}
 	
 	/**
@@ -56,28 +156,21 @@ public class CSCrafting
 	 */
 	public static void addShapelessCrafting(ItemStack output, Object... recipe)
 	{
-		GameRegistry.addShapelessRecipe(output, recipe);
+		addShapelessRecipe(output, recipe);
 	}
 	
 	/**
-	 * Adds a new crafting recipe to the game.
+	 * Adds a new shapeless crafting recipe to the game.
 	 * 
-	 * @param shapeless
-	 *            shapeless or shaped
-	 * @param stack
-	 *            the stack
+	 * @param output
+	 *            the output
 	 * @param recipe
 	 *            the recipe
-	 * @see GameRegistry#addRecipe(ItemStack, Object...)
 	 * @see GameRegistry#addShapelessRecipe(ItemStack, Object...)
 	 */
-	@Deprecated
-	public static void addCrafting(boolean shapeless, ItemStack stack, Object... recipe)
+	public static void addShapelessRecipe(ItemStack output, Object... recipe)
 	{
-		if (shapeless)
-			GameRegistry.addShapelessRecipe(stack, recipe);
-		else
-			GameRegistry.addRecipe(stack, recipe);
+		GameRegistry.addShapelessRecipe(output, recipe);
 	}
 	
 	/**
@@ -157,8 +250,7 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Adds a new armor-shaped recipe to the game. (Type 0 = Helmet, Type 1 =
-	 * Chestplate, Type 2 = Leggings, Type 3 = Boots, Type 4 = Gloves)
+	 * Adds a new armor-shaped recipe to the game. (Type 0 = Helmet, Type 1 = Chestplate, Type 2 = Leggings, Type 3 = Boots, Type 4 = Gloves)
 	 * 
 	 * @param output
 	 *            the output
@@ -196,8 +288,7 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Adds a new tool-shaped recipe to the game. (Type 0 = Sword, Type 1 =
-	 * Spade, Type 2 = Pickaxe, Type 3 = Axe, Type 4 = Hoe)
+	 * Adds a new tool-shaped recipe to the game. (Type 0 = Sword, Type 1 = Spade, Type 2 = Pickaxe, Type 3 = Axe, Type 4 = Hoe)
 	 * 
 	 * @param output
 	 *            the output
@@ -251,8 +342,7 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Analyzes a crafting recipe, mainly used for recipe displays. Depending on
-	 * the recipe type, the output is either
+	 * Analyzes a crafting recipe, mainly used for recipe displays. Depending on the recipe type, the output is either
 	 * <p>
 	 * [1][2][ ] Any shape possible
 	 * <p>
