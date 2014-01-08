@@ -212,7 +212,10 @@ public class CSUpdate
 	 */
 	public static void doClashsoftUpdateCheck(final EntityPlayer player, final String modName, final String modInitials, final String version)
 	{
+		if (player.worldObj.isRemote)
+		{
 		doUpdateCheck(player, modName, modInitials, version, readWebsite(CLASHSOFT_UPDATE_NOTES));
+		}
 	}
 	
 	

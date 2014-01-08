@@ -77,7 +77,7 @@ public class CustomBlock extends Block implements ICustomBlock
 		this.names = displayNames;
 		this.descriptions = new String[displayNames.length];
 		this.textures = iconNames;
-		this.icons = new Icon[this.textures.length][6];
+		
 		this.opaque = opaque;
 		this.renderType = renderType;
 		this.drops = new ItemStack[this.names.length];
@@ -86,7 +86,7 @@ public class CustomBlock extends Block implements ICustomBlock
 		
 		for (int i = 0; i < this.disabled.length; i++)
 		{
-			this.disabled[i] = displayNames[i] == "" || displayNames[i].contains("%&") || (iconNames[i][0] == "" || iconNames[i][1] == "" || iconNames[i][2] == "" || iconNames[i][3] == "" || iconNames[i][4] == "" || iconNames[i][5] == "");
+			this.disabled[i] = displayNames[i] == null || displayNames[i].isEmpty() || displayNames[i].startsWith("%&");
 		}
 		
 		this.tabs = creativeTabs;
@@ -187,6 +187,11 @@ public class CustomBlock extends Block implements ICustomBlock
 	 */
 	private static String[][] iconMetadataToSideArray(String[] metadataArray)
 	{
+		if (metadataArray == null)
+		{
+			return null;
+		}
+		
 		String[][] s = new String[metadataArray.length][6];
 		for (int i = 0; i < metadataArray.length; i++)
 			for (int j = 0; j < 6; j++)
@@ -332,18 +337,22 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * @see net.minecraft.block.Block#getIcon(int, int)
 	 */
 	@Override
-	public Icon getIcon(int par1, int par2)
+	public Icon getIcon(int side, int metadata)
 	{
-		if (par2 < this.icons.length && par1 < this.icons[par2].length)
-			return this.icons[par2][par1];
-		return this.icons[0][0];
+		if (this.icons != null)
+		{
+			if (metadata < this.icons.length && side < this.icons[metadata].length)
+			{
+				return this.icons[metadata][side];
+			}
+			return this.icons[0][0];
+		}
+		return null;
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * net.minecraft.block.Block#getBlockHardness(net.minecraft.world.World,
-	 * int, int, int)
+	 * @see net.minecraft.block.Block#getBlockHardness(net.minecraft.world.World, int, int, int)
 	 */
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z)
@@ -357,27 +366,33 @@ public class CustomBlock extends Block implements ICustomBlock
 	
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * net.minecraft.block.Block#registerIcons(net.minecraft.client.renderer
-	 * .texture.IconRegister)
+	 * @see net.minecraft.block.Block#registerIcons(net.minecraft.client.renderer .texture.IconRegister)
 	 */
 	@Override
 	public void registerIcons(IconRegister iconRegister)
 	{
-		for (int i = 0; i < this.textures.length; i++)
+		if (this.textures != null && this.icons != null)
 		{
-			for (int j = 0; j < this.textures[i].length; j++)
+			this.icons = new Icon[this.textures.length][6];
+			
+			for (int i = 0; i < this.textures.length; i++)
 			{
-				if (!this.textures[i][j].contains("%&"))
-					this.icons[i][j] = iconRegister.registerIcon(this.textures[i][j]);
+				this.icons[i] = new Icon[this.textures[i].length];
+				
+				for (int j = 0; j < this.textures[i].length; j++)
+				{
+					if (!this.textures[i][j].startsWith("%&"))
+					{
+						this.icons[i][j] = iconRegister.registerIcon(this.textures[i][j]);
+					}
+				}
 			}
 		}
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#getSubBlocks(int,
-	 * net.minecraft.creativetab.CreativeTabs, java.util.List)
+	 * @see net.minecraft.block.Block#getSubBlocks(int, net.minecraft.creativetab.CreativeTabs, java.util.List)
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -400,8 +415,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#quantityDropped(int, int,
-	 * java.util.Random)
+	 * @see net.minecraft.block.Block#quantityDropped(int, int, java.util.Random)
 	 */
 	@Override
 	public int quantityDropped(int metadata, int fortune, Random random)
@@ -437,8 +451,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#getDamageValue(net.minecraft.world.World,
-	 * int, int, int)
+	 * @see net.minecraft.block.Block#getDamageValue(net.minecraft.world.World, int, int, int)
 	 */
 	@Override
 	public int getDamageValue(World world, int x, int y, int z)

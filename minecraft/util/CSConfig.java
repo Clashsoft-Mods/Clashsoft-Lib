@@ -6,14 +6,29 @@ import net.minecraftforge.common.Configuration;
 
 public class CSConfig
 {
-	public static Configuration config			= null;
-	public static boolean enableComments = true;
+	public static String		configName		= null;
+	public static Configuration	config			= null;
+	public static boolean		enableComments	= true;
+	
+	public static void loadConfig(File configFile, String configName)
+	{
+		if (config != null)
+		{
+			saveConfig();
+		}
+		
+		System.out.println("[CSCONFIG] Loading configuration file " + configName);
+		config = new Configuration(configFile);
+	}
 	
 	public static void loadConfig(File configFile)
 	{
 		if (config != null)
+		{
 			saveConfig();
+		}
 		
+		System.out.println("[CSCONFIG] Loading configuration file " + configFile.getName());
 		config = new Configuration(configFile);
 	}
 	
@@ -21,6 +36,8 @@ public class CSConfig
 	{
 		config.save();
 		config = null;
+		
+		System.out.println("[CSCONFIG] Saving configuration file " + configName);
 	}
 	
 	public static int getInt(String category, String key, int _default)

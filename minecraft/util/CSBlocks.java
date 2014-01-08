@@ -46,9 +46,13 @@ public class CSBlocks
 	{
 		GameRegistry.registerBlock(block, itemClass, name.replace(" ", ""));
 		if (block instanceof ICustomBlock)
+		{
 			((ICustomBlock) block).addNames();
+		}
 		else
+		{
 			LanguageRegistry.addName(block, name);
+		}
 	}
 	
 	/**
