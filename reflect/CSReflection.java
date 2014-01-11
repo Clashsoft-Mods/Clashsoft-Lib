@@ -5,6 +5,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import clashsoft.cslib.util.CSLog;
+
 /**
  * The class CSReflection.
  * <p>
@@ -24,7 +26,7 @@ public class CSReflection
 		}
 		catch (ClassNotFoundException ex)
 		{
-			ex.printStackTrace();
+			CSLog.error(ex);
 			return null;
 		}
 	}
@@ -65,7 +67,7 @@ public class CSReflection
 					return method;
 			}
 		}
-		new NoSuchFieldException("Field not found! (Class: " + clazz + "; Expected field names: " + Arrays.toString(methodNames)).printStackTrace();
+		CSLog.error(new NoSuchFieldException("Field not found! (Class: " + clazz + "; Expected field names: " + Arrays.toString(methodNames)));
 		return null;
 	}
 	
@@ -91,7 +93,7 @@ public class CSReflection
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			CSLog.error(ex);
 			return null;
 		}
 	}
@@ -110,7 +112,7 @@ public class CSReflection
 					return field;
 			}
 		}
-		new NoSuchFieldException("Field not found! (Class: " + clazz + "; Expected field names: " + Arrays.toString(fieldNames)).printStackTrace();
+		CSLog.error(new NoSuchFieldException("Field not found! (Class: " + clazz + "; Expected field names: " + Arrays.toString(fieldNames)));
 		return null;
 	}
 	
@@ -126,7 +128,7 @@ public class CSReflection
 					return i;
 			}
 		}
-		new NoSuchFieldException("Field not found! (Class: " + clazz + "; Expected field names: " + Arrays.toString(fieldNames)).printStackTrace();
+		CSLog.error(new NoSuchFieldException("Field not found! (Class: " + clazz + "; Expected field names: " + Arrays.toString(fieldNames)));
 		return -1;
 	}
 	
@@ -162,7 +164,7 @@ public class CSReflection
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			CSLog.error(ex);
 			return null;
 		}
 	}
@@ -187,7 +189,7 @@ public class CSReflection
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			CSLog.error(ex);
 			return null;
 		}
 	}
@@ -214,7 +216,7 @@ public class CSReflection
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			CSLog.error(ex);
 		}
 	}
 	
@@ -238,7 +240,7 @@ public class CSReflection
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			CSLog.error(ex);
 		}
 	}
 	

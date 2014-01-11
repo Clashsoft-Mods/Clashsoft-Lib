@@ -1,6 +1,7 @@
 package clashsoft.cslib.minecraft.block;
 
 import clashsoft.cslib.minecraft.CustomBlock;
+import clashsoft.cslib.util.CSLog;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -77,7 +78,7 @@ public class BlockMetaTileEntity extends CustomBlock implements ITileEntityProvi
 			}
 			catch (Exception ex)
 			{
-				ex.printStackTrace();
+				CSLog.error(ex);
 			}
 		}
 		return null;

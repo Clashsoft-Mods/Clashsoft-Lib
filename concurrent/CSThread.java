@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import clashsoft.cslib.util.CSLog;
+
 public class CSThread extends Thread
 {
 	public static boolean DEBUG = true;
@@ -22,23 +24,25 @@ public class CSThread extends Thread
 	@Override
 	public void run()
 	{
-		if (DEBUG)
-		{
-			System.out.println("Starting Thread " + this.name);
-		}
+		info("Starting Thread " + this.name);
 		
 		while (iterator.hasNext())
 		{
 			Task task = iterator.next();
-			System.out.println("  Starting Task " + task.name);
+			info("  Starting Task " + task.name);
 			task.run();
-			System.out.println("  Finished Task " + task.name);
+			info("  Finished Task " + task.name);
 			iterator.remove();
 		}
 		
+		info("Finished Thread " + this.name);
+	}
+	
+	public void info(String string)
+	{
 		if (DEBUG)
 		{
-			System.out.println("Finished Thread " + this.name);
+			CSLog.info(string);
 		}
 	}
 	

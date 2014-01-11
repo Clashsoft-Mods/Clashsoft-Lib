@@ -120,7 +120,7 @@ public class CSString
 		}
 		else if (number >= 4000)
 		{
-			System.out.println("Exception while converting to Roman: Value outside roman numeral range.");
+			CSLog.error("Exception while converting to Roman: Value outside roman numeral range.");
 			return String.valueOf(number);
 		}
 		

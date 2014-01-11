@@ -1,6 +1,5 @@
 package clashsoft.cslib.util;
 
-
 /**
  * The Class CSUtil.
  * This class adds several util methods.
@@ -10,12 +9,15 @@ public class CSUtil
 	/**
 	 * Logs an object.
 	 * 
+	 * @Deprecated Use {@link CSLog#info(Object)}
+	 * 
 	 * @param o
 	 *            the object to log
 	 */
+	@Deprecated
 	public static void log(Object o)
 	{
-		System.out.println(o);
+		CSLog.info(o);
 	}
 	
 	/**

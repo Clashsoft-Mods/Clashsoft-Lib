@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import clashsoft.cslib.util.CSLog;
 import clashsoft.cslib.util.CSSource;
 
 import com.google.common.collect.HashMultimap;
@@ -81,7 +82,7 @@ public class CSAddons
 							}
 							catch (Exception ex)
 							{
-								ex.printStackTrace();
+								CSLog.error(ex);
 							}
 						}
 					}

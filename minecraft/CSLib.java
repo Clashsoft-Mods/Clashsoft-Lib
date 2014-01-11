@@ -1,6 +1,8 @@
 package clashsoft.cslib.minecraft;
 
 import clashsoft.cslib.minecraft.update.CSUpdate;
+import clashsoft.cslib.util.CSLog;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -17,7 +19,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
-@Mod(modid = "ClashsoftAPI", name = "Clashsoft API", version = CSLib.VERSION)
+@Mod(modid = "ClashsoftAPI", name = "Clashsoft Lib", version = CSLib.VERSION)
 public class CSLib
 {
 	public static final int		REVISION	= 7;
@@ -29,6 +31,11 @@ public class CSLib
 	public static boolean		updateCheck	= true;
 	public static boolean		autoUpdate	= true;
 	
+	static
+	{
+		CSLog.logger.setParent(FMLLog.getLogger());
+	}
+	
 	private void test()
 	{
 		
@@ -36,7 +43,7 @@ public class CSLib
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
-	{	
+	{
 		test();
 		
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());

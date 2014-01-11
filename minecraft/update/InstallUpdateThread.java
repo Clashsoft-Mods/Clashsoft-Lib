@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
@@ -86,7 +87,7 @@ public class InstallUpdateThread extends Thread
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			CSLog.error(ex);
 			player.addChatMessage(EnumChatFormatting.RED + "Error while installing update: " + ex.getMessage());
 		}
 	}

@@ -2,6 +2,8 @@ package clashsoft.cslib.minecraft.util;
 
 import java.io.File;
 
+import clashsoft.cslib.util.CSLog;
+
 import net.minecraftforge.common.Configuration;
 
 public class CSConfig
@@ -17,8 +19,9 @@ public class CSConfig
 			saveConfig();
 		}
 		
-		System.out.println("[CSCONFIG] Loading configuration file " + configName);
-		config = new Configuration(configFile);
+		CSLog.info("[CSCONFIG] Loading configuration file " + configName);
+		CSConfig.config = new Configuration(configFile);
+		CSConfig.configName = configName;
 	}
 	
 	public static void loadConfig(File configFile)
@@ -31,7 +34,7 @@ public class CSConfig
 		config.save();
 		config = null;
 		
-		System.out.println("[CSCONFIG] Saving configuration file " + configName);
+		CSLog.info("[CSCONFIG] Saving configuration file " + configName);
 	}
 	
 	public static String getDefaultDesc(String key, Object _default)

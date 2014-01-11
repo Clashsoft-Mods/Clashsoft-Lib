@@ -5,6 +5,7 @@ import java.util.Map;
 
 import clashsoft.cslib.minecraft.crafting.ShapedAdvancedRecipe;
 import clashsoft.cslib.minecraft.item.IMetaItemRecipe;
+import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
@@ -405,7 +406,7 @@ public class CSCrafting
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			CSLog.error(ex);
 		}
 		return new ItemStack[][] { { null, null, null }, { null, null, null }, { null, null, null } };
 	}

@@ -6,6 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
 import clashsoft.cslib.util.CSArrays;
+import clashsoft.cslib.util.CSLog;
 
 /**
  * The class CSCollections.
@@ -71,13 +72,9 @@ public class CSCollections
 			Class tempCollectionClass = (Class) tempCollectionType.getActualTypeArguments()[0];
 			return tempCollectionClass;
 		}
-		catch (NoSuchFieldException ex)
+		catch (NoSuchFieldException | SecurityException ex)
 		{
-			ex.printStackTrace();
-		}
-		catch (SecurityException ex)
-		{
-			ex.printStackTrace();
+			CSLog.error(ex);
 		}
 		return Object.class;
 	}
