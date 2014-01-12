@@ -72,7 +72,7 @@ public class CSCollections
 			Class tempCollectionClass = (Class) tempCollectionType.getActualTypeArguments()[0];
 			return tempCollectionClass;
 		}
-		catch (NoSuchFieldException | SecurityException ex)
+		catch (Exception ex)
 		{
 			CSLog.error(ex);
 		}

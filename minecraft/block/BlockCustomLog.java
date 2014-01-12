@@ -26,6 +26,11 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	@SideOnly(Side.CLIENT)
 	public Icon[]	topIcons;
 	
+	public BlockCustomLog(int blockID, String name, String topIcon, String sideIcon)
+	{
+		this(blockID, new String[] { name }, new String[] { topIcon }, new String[] { sideIcon });
+	}
+	
 	public BlockCustomLog(int blockID, String[] names, String[] topIcons, String[] sideIcons)
 	{
 		super(blockID, Material.wood);
@@ -46,10 +51,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	}
 	
 	/**
-	 * Called on server worlds only when the block has been replaced by a
-	 * different block ID, or the same block with a different metadata value,
-	 * but before the new metadata value is set. Args: World, x, y, z, old block
-	 * ID, old metadata
+	 * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a different metadata value, but before the new metadata value is set. Args: World, x, y, z, old block ID, old metadata
 	 */
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int oldBlockID, int oldBlockMetadata)
@@ -106,8 +108,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	}
 	
 	/**
-	 * returns a list of blocks with the same ID, but different meta (eg: wood
-	 * returns 4 blocks)
+	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -118,9 +119,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	}
 	
 	/**
-	 * When this method is called, your block should register all the icons it
-	 * needs with the given IconRegister. This is the only chance you get to
-	 * register icons.
+	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This is the only chance you get to register icons.
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -149,8 +148,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#getDamageValue(net.minecraft.world.World,
-	 * int, int, int)
+	 * @see net.minecraft.block.Block#getDamageValue(net.minecraft.world.World, int, int, int)
 	 */
 	@Override
 	public int getDamageValue(World world, int x, int y, int z)
@@ -166,7 +164,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 			LanguageRegistry.addName(new ItemStack(this, 1, i), this.names[i]);
 		}
 	}
-
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
 	{

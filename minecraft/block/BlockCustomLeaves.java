@@ -39,6 +39,7 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 		super(blockID, Material.leaves, names, icons, null);
 		this.setTickRandomly(true);
 		this.setStepSound(soundGrassFootstep);
+		this.setLightOpacity(1);
 		
 		this.names = names;
 		this.iconNames = icons;
