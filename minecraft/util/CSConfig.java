@@ -79,7 +79,12 @@ public class CSConfig
 	
 	public static String getString(String category, String key, Object _default)
 	{
-		return getString(category, key, _default.toString());
+		return getString(category, key, getDefaultDesc(key, _default), _default);
+	}
+	
+	public static <T extends IParsable> T getObject(String category, String key, T _default)
+	{
+		return getObject(category, key, getDefaultDesc(key, _default), _default);
 	}
 	
 	// Description getters
@@ -115,6 +120,16 @@ public class CSConfig
 		checkConfig();
 		
 		return config.get(category, key, _default, desc).getString();
+	}
+	
+	public static String getString(String category, String key, String desc, Object _default)
+	{
+		return getString(category, key, desc, _default.toString());
+	}
+	
+	public static <T extends IParsable> T getObject(String category, String key, String desc, T _default)
+	{
+		return (T) _default.parse(getString(category, key, desc, _default.toString()));
 	}
 	
 	public static int getItem(String key, int _default)
