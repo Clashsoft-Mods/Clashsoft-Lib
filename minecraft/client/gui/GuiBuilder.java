@@ -2,20 +2,28 @@ package clashsoft.cslib.minecraft.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiBuilder extends Gui
 {
-	public static final ResourceLocation	slots		= new ResourceLocation("cslib", "textures/gui/container/slots.png");
-	public static final ResourceLocation	progress	= new ResourceLocation("cslib", "textures/gui/container/progress.png");
-	public static final ResourceLocation	window		= new ResourceLocation("cslib", "textures/gui/container/window.png");
-	public static final ResourceLocation	widgets		= new ResourceLocation("cslib", "textures/gui/container/widgets.png");
+	public static final ResourceLocation	slots							= new ResourceLocation("cslib", "textures/gui/container/slots.png");
+	public static final ResourceLocation	progress						= new ResourceLocation("cslib", "textures/gui/container/progress.png");
+	public static final ResourceLocation	window							= new ResourceLocation("cslib", "textures/gui/container/window.png");
+	public static final ResourceLocation	widgets							= new ResourceLocation("cslib", "textures/gui/container/widgets.png");
 	
-	public final GuiScreen					gui;
+	public static final GuiBuilder			global							= new GuiBuilder(null);
+	
+	public static int						hoveringFrameDefaultColor		= 0x5000FF;
+	public static int						hoveringFrameBackgroundColor	= 0x10000F;
+	public static int						hoveringFrameAlpha				= 0x0000B0;
+	
+	public final Gui						gui;
 	public final Minecraft					mc;
 	
-	public GuiBuilder(GuiScreen gui)
+	public int								width;
+	public int								height;
+	
+	public GuiBuilder(Gui gui)
 	{
 		this.gui = gui;
 		this.mc = Minecraft.getMinecraft();
@@ -135,5 +143,44 @@ public class GuiBuilder extends Gui
 	public void drawSlot_(int x, int y, int type, boolean locked)
 	{
 		this.drawTexturedModalRect(x, y, type * 32, locked ? 32 : 0, 32, 32);
+	}
+	
+	public void drawHoveringFrame(int x, int y, int width, int height)
+	{
+		this.drawHoveringFrame(x, y, width, height, hoveringFrameDefaultColor);
+	}
+	
+	public void drawHoveringFrame(int x, int y, int width, int height, int color)
+	{
+		this.drawHoveringFrame(x, y, width, height, color, hoveringFrameBackgroundColor, hoveringFrameAlpha);
+	}
+	
+	public void drawHoveringFrame(int x, int y, int width, int height, int color, int bg, int alpha)
+	{
+		if (width < 2 || height < 2)
+		{
+			return;
+		}
+		
+		color = color & 0xFFFFFF;
+		bg = bg & 0xFFFFFF;
+		alpha = (alpha & 0xFF) << 24;
+		
+		int bgAlpha = bg | alpha;
+		int colorAlpha = color | alpha;
+		int colorGradient = (color & 0xFEFEFE) >> 1 | alpha;
+		
+		// Render gray rects
+		drawRect(x + 1, y, x + width - 1, y + 1, bgAlpha);
+		drawRect(x + 1, y + height - 1, x + width - 1, y + height, bgAlpha);
+		drawRect(x + 2, y + 2, x + width - 2, y + height - 2, bgAlpha);
+		drawRect(x, y + 1, x + 1, y + height - 1, bgAlpha);
+		drawRect(x + width - 1, y + 1, x + width, y + height - 1, bgAlpha);
+		
+		// Render colored rects
+		drawGradientRect(x + 1, y + 2, x + 2, y + height - 2, colorAlpha, colorGradient);
+		drawGradientRect(x + width - 2, y + 2, x + width - 1, y + height - 2, colorAlpha, colorGradient);
+		drawRect(x + 1, y + 1, x + width - 1, y + 2, colorAlpha);
+		drawRect(x + 1, y + height - 2, x + width - 1, y + height - 1, colorGradient);
 	}
 }
