@@ -1,6 +1,5 @@
 package clashsoft.cslib.minecraft;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -474,6 +473,6 @@ public class CustomBlock extends Block implements ICustomBlock
 	{
 		int metadata = stack.getItemDamage();
 		if (descriptions[metadata] != null && !descriptions[metadata].isEmpty())
-			list.addAll(Arrays.asList(CSString.makeLineList(descriptions[metadata])));
+			list.addAll(CSString.lineList(descriptions[metadata]));
 	}
 }
