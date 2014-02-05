@@ -79,14 +79,15 @@ public class CustomPotion extends Potion
 		this.customIconFile = new ResourceLocation(iconFile);
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.minecraft.potion.Potion#getStatusIconIndex()
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getStatusIconIndex()
 	{
-		Minecraft.getMinecraft().renderEngine.bindTexture(customIconFile);
+		Minecraft.getMinecraft().renderEngine.bindTexture(this.customIconFile);
 		return super.getStatusIconIndex();
 	}
 	
@@ -97,18 +98,19 @@ public class CustomPotion extends Potion
 	 */
 	public int getCustomColor()
 	{
-		return customColor;
+		return this.customColor;
 	}
 	
 	@Override
 	public boolean isInstant()
 	{
-		return instant;
+		return this.instant;
 	}
 	
+	@Override
 	public boolean isBadEffect()
 	{
-		return bad;
+		return this.bad;
 	}
 	
 	/**

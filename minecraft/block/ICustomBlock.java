@@ -8,5 +8,6 @@ import net.minecraft.item.ItemStack;
 public interface ICustomBlock
 {
 	public void addNames();
+	
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list);
 }

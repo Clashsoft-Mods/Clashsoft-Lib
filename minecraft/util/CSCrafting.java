@@ -3,12 +3,15 @@ package clashsoft.cslib.minecraft.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import clashsoft.cslib.minecraft.Convenience;
 import clashsoft.cslib.minecraft.crafting.ShapedAdvancedRecipe;
 import clashsoft.cslib.minecraft.item.IMetaItemRecipe;
 import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -26,14 +29,16 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class CSCrafting
 {
+	public static final ItemStack	WILDCARD_STACK	= new ItemStack(Blocks.air);
+	
 	/** The Constant FIRE. */
-	private static final ItemStack	FIRE	= new ItemStack(Block.fire, 1, 0);
+	private static final ItemStack	FIRE			= new ItemStack(Blocks.fire, 1, 0);
 	
 	/** The Constant COAL. */
-	private static final ItemStack	COAL	= new ItemStack(Item.coal, 1, 0);
+	private static final ItemStack	COAL			= new ItemStack(Items.coal, 1, 0);
 	
 	/** The Constant STICK. */
-	public static final ItemStack	STICK	= new ItemStack(Item.stick, 1, 0);
+	public static final ItemStack	STICK			= new ItemStack(Items.stick, 1, 0);
 	
 	public static void registerRecipe(IRecipe recipe)
 	{
@@ -41,7 +46,8 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Adds a new shaped crafting recipe to the game.<p>
+	 * Adds a new shaped crafting recipe to the game.
+	 * <p>
 	 * Save for adding advanced recipes (bigger than 3x3)
 	 * 
 	 * @param output
@@ -56,7 +62,8 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Adds a new shaped crafting recipe to the game.<p>
+	 * Adds a new shaped crafting recipe to the game.
+	 * <p>
 	 * Save for adding advanced recipes (bigger than 3x3)
 	 * 
 	 * @param output
@@ -187,7 +194,7 @@ public class CSCrafting
 	 */
 	public static void addSmelting(ItemStack input, ItemStack output, float experience)
 	{
-		FurnaceRecipes.smelting().addSmelting(input.getItem().itemID, input.getItemDamage(), output, experience);
+		Convenience.addSmelting(FurnaceRecipes.smelting(), input, output, experience);
 	}
 	
 	/**
@@ -322,7 +329,7 @@ public class CSCrafting
 	 */
 	public static void removeRecipe(Object... recipe)
 	{
-		addCrafting(new ItemStack(0, 0, 0), recipe);
+		addCrafting(WILDCARD_STACK, recipe);
 	}
 	
 	/**

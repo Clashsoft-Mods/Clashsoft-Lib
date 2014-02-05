@@ -1,21 +1,16 @@
 package clashsoft.cslib.minecraft;
 
 import clashsoft.cslib.minecraft.update.CSUpdate;
-import clashsoft.cslib.util.CSLog;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.stats.StatList;
-import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
@@ -33,7 +28,7 @@ public class CSLib
 	
 	static
 	{
-		CSLog.logger.setParent(FMLLog.getLogger());
+		// CSLog.logger.setParent(parent);
 	}
 	
 	private void test()
@@ -44,7 +39,7 @@ public class CSLib
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		test();
+		this.test();
 		
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
@@ -61,7 +56,7 @@ public class CSLib
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void playerJoined(EntityJoinWorldEvent event)
 	{
 		if (event.entity instanceof EntityPlayer)
@@ -70,7 +65,7 @@ public class CSLib
 		}
 	}
 	
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void chatMessageSent(ServerChatEvent event)
 	{
 		String message = event.message;
@@ -83,17 +78,7 @@ public class CSLib
 		}
 		if (message.startsWith(">Restart"))
 		{
-			try
-			{
-				Minecraft.getMinecraft().statFileWriter.readStat(StatList.leaveGameStat, 1);
-				Minecraft.getMinecraft().theWorld.sendQuittingDisconnectingPacket();
-				Minecraft.getMinecraft().loadWorld((WorldClient) null);
-				
-				Minecraft.getMinecraft().shutdown();
-			}
-			catch (Exception ex)
-			{
-			}
+			Convenience.shutdown();
 		}
 	}
 }

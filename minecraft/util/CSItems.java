@@ -1,20 +1,19 @@
 package clashsoft.cslib.minecraft.util;
 
-import clashsoft.cslib.minecraft.item.datatools.*;
+import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
-import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.EnumHelper;
+import net.minecraftforge.common.util.EnumHelper;
 
 /**
  * The Class CSItems.
  * <p>
  * This class adds several utils for adding items.
  * 
- *  @author Clashsoft
+ * @author Clashsoft
  */
 public class CSItems
 {
@@ -30,7 +29,7 @@ public class CSItems
 	public static void addItem(Item item, String name)
 	{
 		GameRegistry.registerItem(item, name.replace(" ", ""));
-		LanguageRegistry.addName(item, name);
+		CSLang.addName(item, name);
 	}
 	
 	/**
@@ -73,7 +72,6 @@ public class CSItems
 	 * Adds an armor item with a shaped recipe.
 	 * 
 	 * @see CSCrafting#addArmorRecipe(ItemStack, ItemStack, int)
-	 * 
 	 * @param item
 	 *            the item
 	 * @param name
@@ -95,7 +93,6 @@ public class CSItems
 	 * Adds a tool with automatic shaped recipe.
 	 * 
 	 * @see CSItems#addTool(Item, String, ItemStack, ItemStack, int)
-	 * 
 	 * @param item
 	 *            the item
 	 * @param name
@@ -114,7 +111,6 @@ public class CSItems
 	 * Adds a tool with automatic shaped recipe.
 	 * 
 	 * @see CSCrafting#addToolRecipe(ItemStack, ItemStack, int)
-	 * 
 	 * @param item
 	 *            the item
 	 * @param name
@@ -155,73 +151,13 @@ public class CSItems
 	 *            the data tool set
 	 * @return the enum tool material
 	 */
-	public static EnumToolMaterial addToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, float damage, int enchantability, int color, ItemStack recipe, DataToolSet dataToolSet)
+	public static ToolMaterial addToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, float damage, int enchantability, int color, ItemStack recipe, DataToolSet dataToolSet)
 	{
-		EnumToolMaterial var1 = EnumHelper.addToolMaterial(name, harvestLevel, maxUses, efficiency, damage, enchantability);
+		ToolMaterial var1 = EnumHelper.addToolMaterial(name, harvestLevel, maxUses, efficiency, damage, enchantability);
 		if (dataToolSet != null)
+		{
 			dataToolSet.registerToolMaterial(var1, name);
+		}
 		return var1;
-	}
-	
-	/**
-	 * The Class DataToolSet.
-	 */
-	public static class DataToolSet
-	{
-		
-		/** The sword. */
-		public ItemDataSword sword;
-		
-		/** The shovel. */
-		public ItemDataSpade shovel;
-		
-		/** The pickaxe. */
-		public ItemDataPickaxe pickaxe;
-		
-		/** The axe. */
-		public ItemDataAxe axe;
-		
-		/** The hoe. */
-		public ItemDataHoe hoe;
-		
-		/**
-		 * Instantiates a new data tool set.
-		 * 
-		 * @param sword
-		 *            the sword
-		 * @param shovel
-		 *            the shovel
-		 * @param pickaxe
-		 *            the pickaxe
-		 * @param axe
-		 *            the axe
-		 * @param hoe
-		 *            the hoe
-		 */
-		public DataToolSet(ItemDataSword sword, ItemDataSpade shovel, ItemDataPickaxe pickaxe, ItemDataAxe axe, ItemDataHoe hoe)
-		{
-			this.sword = sword;
-			this.shovel = shovel;
-			this.pickaxe = pickaxe;
-			this.axe = axe;
-			this.hoe = hoe;
-		}
-		
-		/**
-		 * Register tool material.
-		 * 
-		 * @param material
-		 *            the material
-		 * @param name
-		 *            the name
-		 */
-		public void registerToolMaterial(EnumToolMaterial material, String name)
-		{
-			this.sword.registerMaterial(material, name);
-			this.shovel.registerMaterial(material, name);
-			this.pickaxe.registerMaterial(material, name);
-			this.axe.registerMaterial(material, name);
-			this.hoe.registerMaterial(material, name);
-		}
 	}
 }

@@ -14,8 +14,7 @@ public class CSString extends clashsoft.cslib.util.CSString
 	/**
 	 * Trims a string to the given render width.
 	 * <p>
-	 * If the renderer string length is longer than the maximum render width
-	 * given, the last chars will be replaced with "...".
+	 * If the renderer string length is longer than the maximum render width given, the last chars will be replaced with "...".
 	 * 
 	 * @param string
 	 *            the string

@@ -4,18 +4,19 @@ import java.util.List;
 import java.util.Random;
 
 import clashsoft.cslib.minecraft.block.ICustomBlock;
+import clashsoft.cslib.minecraft.util.CSLang;
 import clashsoft.cslib.util.CSString;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 /**
@@ -23,7 +24,6 @@ import net.minecraft.world.World;
  */
 public class CustomBlock extends Block implements ICustomBlock
 {
-	
 	/** The names. */
 	public String[]			names, descriptions;
 	
@@ -31,7 +31,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	public String[][]		textures;
 	
 	/** The icons. */
-	public Icon[][]			icons;
+	public IIcon[][]		icons;
 	
 	/** The opaque. */
 	public boolean			opaque;
@@ -48,14 +48,12 @@ public class CustomBlock extends Block implements ICustomBlock
 	/** The tabs. */
 	public CreativeTabs[]	tabs;
 	
-	/** The disabled. */
+	/** Checks if the metadata shows up in the creative inventory. */
 	public boolean[]		disabled;
 	
 	/**
 	 * Instantiates a new custom block.
 	 * 
-	 * @param blockID
-	 *            the block id
 	 * @param material
 	 *            the material
 	 * @param displayNames
@@ -69,9 +67,9 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * @param creativeTabs
 	 *            the creative tabs
 	 */
-	public CustomBlock(int blockID, Material material, String[] displayNames, String[][] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
+	public CustomBlock(Material material, String[] displayNames, String[][] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
 	{
-		super(blockID, material);
+		super(material);
 		
 		this.names = displayNames;
 		this.descriptions = new String[displayNames.length];
@@ -89,15 +87,13 @@ public class CustomBlock extends Block implements ICustomBlock
 		}
 		
 		this.tabs = creativeTabs;
-		if (tabs != null)
+		if (this.tabs != null)
 			this.setCreativeTab(creativeTabs[0]);
 	}
 	
 	/**
 	 * Instantiates a new custom block.
 	 * 
-	 * @param blockID
-	 *            the block id
 	 * @param material
 	 *            the material
 	 * @param displayNames
@@ -111,16 +107,14 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * @param creativeTabs
 	 *            the creative tabs
 	 */
-	public CustomBlock(int blockID, Material material, String[] displayNames, String[] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
+	public CustomBlock(Material material, String[] displayNames, String[] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
 	{
-		this(blockID, material, displayNames, iconMetadataToSideArray(iconNames), opaque, renderType, creativeTabs);
+		this(material, displayNames, iconMetadataToSideArray(iconNames), opaque, renderType, creativeTabs);
 	}
 	
 	/**
 	 * Instantiates a new custom block.
 	 * 
-	 * @param blockID
-	 *            the block id
 	 * @param material
 	 *            the material
 	 * @param displayName
@@ -134,16 +128,14 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * @param creativeTabs
 	 *            the creative tabs
 	 */
-	public CustomBlock(int blockID, Material material, String displayName, String iconNames, boolean opaque, int renderType, CreativeTabs creativeTabs)
+	public CustomBlock(Material material, String displayName, String iconNames, boolean opaque, int renderType, CreativeTabs creativeTabs)
 	{
-		this(blockID, material, new String[] { displayName }, new String[][] { { iconNames, iconNames, iconNames, iconNames, iconNames, iconNames } }, opaque, renderType, new CreativeTabs[] { creativeTabs });
+		this(material, new String[] { displayName }, new String[][] { { iconNames, iconNames, iconNames, iconNames, iconNames, iconNames } }, opaque, renderType, new CreativeTabs[] { creativeTabs });
 	}
 	
 	/**
 	 * Instantiates a new custom block.
 	 * 
-	 * @param blockID
-	 *            the block id
 	 * @param material
 	 *            the material
 	 * @param displayNames
@@ -153,16 +145,14 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * @param creativeTabs
 	 *            the creative tabs
 	 */
-	public CustomBlock(int blockID, Material material, String[] displayNames, String[] iconNames, CreativeTabs[] creativeTabs)
+	public CustomBlock(Material material, String[] displayNames, String[] iconNames, CreativeTabs[] creativeTabs)
 	{
-		this(blockID, material, displayNames, iconMetadataToSideArray(iconNames), true, 0, creativeTabs);
+		this(material, displayNames, iconMetadataToSideArray(iconNames), true, 0, creativeTabs);
 	}
 	
 	/**
 	 * Instantiates a new custom block.
 	 * 
-	 * @param blockID
-	 *            the block id
 	 * @param material
 	 *            the material
 	 * @param displayName
@@ -172,9 +162,9 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * @param creativeTab
 	 *            the creative tab
 	 */
-	public CustomBlock(int blockID, Material material, String displayName, String iconName, CreativeTabs creativeTab)
+	public CustomBlock(Material material, String displayName, String iconName, CreativeTabs creativeTab)
 	{
-		this(blockID, material, new String[] { displayName }, new String[][] { { iconName, iconName, iconName, iconName, iconName, iconName } }, true, 0, new CreativeTabs[] { creativeTab });
+		this(material, new String[] { displayName }, new String[][] { { iconName, iconName, iconName, iconName, iconName, iconName } }, true, 0, new CreativeTabs[] { creativeTab });
 	}
 	
 	/**
@@ -218,6 +208,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	 *            the hardness
 	 * @return the custom block
 	 */
+	@Override
 	public CustomBlock setHardness(float hardness)
 	{
 		return this.setHardness(0, hardness);
@@ -301,42 +292,26 @@ public class CustomBlock extends Block implements ICustomBlock
 		return this.names;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#isOpaqueCube()
-	 */
 	@Override
 	public boolean isOpaqueCube()
 	{
 		return this.opaque;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#renderAsNormalBlock()
-	 */
 	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return this.renderType == 0;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#getRenderType()
-	 */
 	@Override
 	public int getRenderType()
 	{
 		return this.renderType;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#getIcon(int, int)
-	 */
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		if (this.icons != null)
 		{
@@ -349,10 +324,6 @@ public class CustomBlock extends Block implements ICustomBlock
 		return null;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#getBlockHardness(net.minecraft.world.World, int, int, int)
-	 */
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z)
 	{
@@ -363,20 +334,16 @@ public class CustomBlock extends Block implements ICustomBlock
 		return this.blockHardness;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#registerIcons(net.minecraft.client.renderer .texture.IconRegister)
-	 */
 	@Override
-	public void registerIcons(IconRegister iconRegister)
+	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		if (this.textures != null && this.icons != null)
 		{
-			this.icons = new Icon[this.textures.length][6];
+			this.icons = new IIcon[this.textures.length][6];
 			
 			for (int i = 0; i < this.textures.length; i++)
 			{
-				this.icons[i] = new Icon[this.textures[i].length];
+				this.icons[i] = new IIcon[this.textures[i].length];
 				
 				for (int j = 0; j < this.textures[i].length; j++)
 				{
@@ -389,57 +356,53 @@ public class CustomBlock extends Block implements ICustomBlock
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#getSubBlocks(int, net.minecraft.creativetab.CreativeTabs, java.util.List)
-	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int blockID, CreativeTabs creativeTab, List list)
+	public void getSubBlocks(Item item, CreativeTabs creativeTab, List list)
 	{
 		for (int i = 0; i < this.names.length; i++)
 		{
 			if (!this.disabled[i])
+			{
 				if (this.tabs == null)
 				{
 					if (creativeTab == super.getCreativeTabToDisplayOn())
+					{
 						list.add(new ItemStack(this, 1, i));
+					}
 				}
 				else if (i < this.tabs.length && creativeTab == this.tabs[i])
+				{
 					list.add(new ItemStack(this, 1, i));
+				}
 				else if (creativeTab == this.tabs[this.tabs.length - 1])
+				{
 					list.add(new ItemStack(this, 1, i));
+				}
+			}
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#quantityDropped(int, int, java.util.Random)
-	 */
 	@Override
 	public int quantityDropped(int metadata, int fortune, Random random)
 	{
 		if (this.drops[metadata] != null)
+		{
 			return this.drops[metadata].stackSize;
+		}
 		return 1;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#idDropped(int, java.util.Random, int)
-	 */
 	@Override
-	public int idDropped(int metadata, Random random, int fortune)
+	public Item getItemDropped(int metadata, Random random, int fortune)
 	{
 		if (this.drops[metadata] != null)
-			return this.drops[metadata].itemID;
-		return this.blockID;
+		{
+			return this.drops[metadata].getItem();
+		}
+		return super.getItemDropped(metadata, random, fortune);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#damageDropped(int)
-	 */
 	@Override
 	public int damageDropped(int metadata)
 	{
@@ -448,31 +411,26 @@ public class CustomBlock extends Block implements ICustomBlock
 		return metadata;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.block.Block#getDamageValue(net.minecraft.world.World, int, int, int)
-	 */
 	@Override
 	public int getDamageValue(World world, int x, int y, int z)
 	{
 		return world.getBlockMetadata(x, y, z);
 	}
 	
-	/**
-	 * Adds the names.
-	 */
 	@Override
 	public void addNames()
 	{
 		for (int i = 0; i < this.names.length; i++)
-			LanguageRegistry.addName(new ItemStack(this, 1, i), this.names[i]);
+		{
+			CSLang.addName(new ItemStack(this, 1, i), this.names[i]);
+		}
 	}
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
 	{
 		int metadata = stack.getItemDamage();
-		if (descriptions[metadata] != null && !descriptions[metadata].isEmpty())
-			list.addAll(CSString.lineList(descriptions[metadata]));
+		if (this.descriptions[metadata] != null && !this.descriptions[metadata].isEmpty())
+			list.addAll(CSString.lineList(this.descriptions[metadata]));
 	}
 }

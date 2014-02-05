@@ -17,5 +17,6 @@ import java.lang.annotation.Target;
 public @interface Addon
 {
 	public String modName() default "Clashsoft API";
+	
 	public String addonName();
 }

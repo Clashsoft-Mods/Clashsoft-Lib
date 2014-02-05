@@ -63,7 +63,7 @@ public class ModUpdate
 	 */
 	public boolean isValid()
 	{
-		return CSUpdate.compareVersion(version, newVersion) == -1 && newVersion.startsWith(CSUpdate.CURRENT_VERSION);
+		return CSUpdate.compareVersion(this.version, this.newVersion) == -1 && this.newVersion.startsWith(CSUpdate.CURRENT_VERSION);
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public class ModUpdate
 	 */
 	public void install(final EntityPlayer player)
 	{
-		if (isValid() && !updateUrl.isEmpty())
+		if (this.isValid() && !this.updateUrl.isEmpty())
 		{
 			new InstallUpdateThread(this, player).start();
 		}

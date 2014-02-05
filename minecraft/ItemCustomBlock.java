@@ -11,7 +11,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 /**
@@ -30,25 +30,27 @@ public class ItemCustomBlock extends ItemBlock
 	 * @param block
 	 *            the block
 	 */
-	public ItemCustomBlock(int itemID, Block block)
+	public ItemCustomBlock(Block block)
 	{
-		super(itemID);
+		super(block);
 		this.theBlock = block;
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.minecraft.item.ItemBlock#getIconFromDamage(int)
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int damage)
+	public IIcon getIconFromDamage(int damage)
 	{
 		return this.theBlock.getIcon(2, damage);
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.minecraft.item.Item#getMetadata(int)
 	 */
 	@Override
@@ -57,7 +59,8 @@ public class ItemCustomBlock extends ItemBlock
 		return damage;
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.minecraft.item.Item#getItemStackDisplayName(net.minecraft.item.ItemStack)
 	 */
 	@Override
@@ -66,7 +69,8 @@ public class ItemCustomBlock extends ItemBlock
 		return StatCollector.translateToLocal(this.getUnlocalizedName() + ".name");
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.minecraft.item.ItemBlock#getUnlocalizedName(net.minecraft.item.ItemStack)
 	 */
 	@Override
@@ -75,34 +79,37 @@ public class ItemCustomBlock extends ItemBlock
 		return this.theBlock instanceof ICustomBlock ? this.theBlock.getUnlocalizedName() + "." + stack.getItemDamage() : this.theBlock.getUnlocalizedName();
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.minecraft.item.ItemBlock#getUnlocalizedName()
 	 */
 	@Override
 	public String getUnlocalizedName()
 	{
-		return this.theBlock instanceof ICustomBlock ? this.theBlock.getUnlocalizedName() : theBlock.getUnlocalizedName() + ".0";
+		return this.theBlock instanceof ICustomBlock ? this.theBlock.getUnlocalizedName() : this.theBlock.getUnlocalizedName() + ".0";
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.minecraft.item.Item#addInformation(net.minecraft.item.ItemStack, net.minecraft.entity.player.EntityPlayer, java.util.List, boolean)
 	 */
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag)
 	{
-		if (theBlock instanceof ICustomBlock)
-			((ICustomBlock)theBlock).addInformation(stack, player, list);
+		if (this.theBlock instanceof ICustomBlock)
+			((ICustomBlock) this.theBlock).addInformation(stack, player, list);
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see net.minecraft.item.Item#getCreativeTabs()
 	 */
 	@Override
 	public CreativeTabs[] getCreativeTabs()
 	{
-		if (theBlock instanceof CustomBlock)
+		if (this.theBlock instanceof CustomBlock)
 		{
-			CreativeTabs[] tabs = ((CustomBlock)theBlock).tabs;
+			CreativeTabs[] tabs = ((CustomBlock) this.theBlock).tabs;
 			if (tabs != null)
 				return tabs;
 		}

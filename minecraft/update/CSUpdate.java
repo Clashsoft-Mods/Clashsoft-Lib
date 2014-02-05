@@ -10,6 +10,7 @@ import clashsoft.cslib.minecraft.CSLib;
 import clashsoft.cslib.util.CSString;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
 /**
@@ -200,7 +201,6 @@ public class CSUpdate
 	 * Does an update check and notification for Clashsoft mods.
 	 * 
 	 * @see CSUpdate#doUpdateCheck(EntityPlayer, String, String, String, String[])
-	 * 
 	 * @param player
 	 *            the player
 	 * @param modName
@@ -214,18 +214,15 @@ public class CSUpdate
 	{
 		if (player.worldObj.isRemote)
 		{
-		doUpdateCheck(player, modName, modInitials, version, readWebsite(CLASHSOFT_UPDATE_NOTES));
+			doUpdateCheck(player, modName, modInitials, version, readWebsite(CLASHSOFT_UPDATE_NOTES));
 		}
 	}
 	
-	
 	/**
-	 * Does an update check and notification for mods.
-	 * This uses threading to check for updates.
+	 * Does an update check and notification for mods. This uses threading to check for updates.
 	 * 
 	 * @see CSUpdate#checkForUpdate(String, String, String, String[])
 	 * @see CSUpdate#notifyUpdate(EntityPlayer, String, ModUpdate)
-	 * 
 	 * @param player
 	 *            the player (used for chat notifations)
 	 * @param modName
@@ -242,6 +239,7 @@ public class CSUpdate
 		if (player.worldObj.isRemote)
 			new Thread(new Runnable()
 			{
+				@Override
 				public void run()
 				{
 					ModUpdate update = checkForUpdate(modName, modInitials, version, updateFile);
@@ -251,8 +249,7 @@ public class CSUpdate
 	}
 	
 	/**
-	 * Notifies a player about an update and installs it if
-	 * {@link CSLib.autoUpdate} is enabled.
+	 * Notifies a player about an update and installs it if {@link CSLib.autoUpdate} is enabled.
 	 * 
 	 * @param player
 	 *            the player
@@ -265,20 +262,26 @@ public class CSUpdate
 	{
 		if (CSLib.updateCheck && update != null && update.isValid() && player.worldObj.isRemote)
 		{
-			player.addChatMessage("A new " + modName + " version is available: " + EnumChatFormatting.GREEN + update.newVersion + EnumChatFormatting.RESET + ". You are using " + EnumChatFormatting.RED + update.version);
+			player.addChatMessage(new ChatComponentText("A new " + modName + " version is available: " + EnumChatFormatting.GREEN + update.newVersion + EnumChatFormatting.RESET + ". You are using " + EnumChatFormatting.RED + update.version));
 			
 			if (!update.updateNotes.isEmpty())
 			{
-				player.addChatMessage("Update Notes: ");
+				player.addChatMessage(new ChatComponentText("Update Notes: "));
 				
 				for (String line : update.updateNotes.split("\n"))
-					player.addChatMessage(" " + EnumChatFormatting.ITALIC + line + EnumChatFormatting.RESET);
+				{
+					player.addChatMessage(new ChatComponentText(" " + EnumChatFormatting.ITALIC + line + EnumChatFormatting.RESET));
+				}
 			}
 			
 			if (CSLib.autoUpdate)
+			{
 				update.install(player);
+			}
 			else
-				player.addChatMessage(EnumChatFormatting.RED + "Automatic updates disabled. Type \">Update " + modName + "\" to manually install the update.");
+			{
+				player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Automatic updates disabled. Type \">Update " + modName + "\" to manually install the update."));
+			}
 		}
 	}
 	
@@ -296,7 +299,7 @@ public class CSUpdate
 		if (update != null)
 			update.install(player);
 		else
-			player.addChatMessage(EnumChatFormatting.RED + "No updates found for '" + modName + "'.");
+			player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "No updates found for '" + modName + "'."));
 	}
 	
 	/**

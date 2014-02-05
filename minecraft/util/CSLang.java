@@ -16,12 +16,23 @@ import net.minecraft.stats.Achievement;
  */
 public class CSLang extends LanguageRegistry
 {
+	@SuppressWarnings("deprecation")
+	public static void addName(Object key, String value)
+	{
+		try
+		{
+			LanguageRegistry.addName(key, value);
+		}
+		catch (IllegalArgumentException ex)
+		{
+			addLocalizationUS(key.toString(), value);
+		}
+	}
 	
 	/**
 	 * Adds a localization.
 	 * 
 	 * @see LanguageRegistry.addLocalization(String, String, String)
-	 * 
 	 * @param key
 	 *            the key
 	 * @param lang
@@ -29,6 +40,7 @@ public class CSLang extends LanguageRegistry
 	 * @param value
 	 *            the value
 	 */
+	@SuppressWarnings("deprecation")
 	public static void addLocalization(String key, String lang, String value)
 	{
 		LanguageRegistry.instance().addStringLocalization(key, lang, value);
@@ -63,6 +75,7 @@ public class CSLang extends LanguageRegistry
 	/**
 	 * Adds an achievement.
 	 * 
+	 * @deprecated
 	 * @param achievement
 	 *            the achievement
 	 * @param lang
@@ -72,12 +85,11 @@ public class CSLang extends LanguageRegistry
 	 * @param description
 	 *            the description
 	 */
+	@Deprecated
 	@SideOnly(Side.CLIENT)
 	public static void addAchievement(Achievement achievement, String lang, String name, String description)
 	{
-		String achName = achievement.getName();
-		addLocalization(achName, lang, name);
-		addLocalization(achName + ".desc", lang, description);
+		// TODO
 	}
 	
 	/**

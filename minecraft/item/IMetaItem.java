@@ -10,7 +10,7 @@ import net.minecraft.potion.PotionEffect;
  * The Interface IItemMetadataList.
  */
 public interface IMetaItem
-{	
+{
 	/**
 	 * As stack.
 	 * 
@@ -89,7 +89,8 @@ public interface IMetaItem
 	
 	/**
 	 * Register.
-	 * @return 
+	 * 
+	 * @return
 	 */
 	public IMetaItem register();
 	
@@ -150,7 +151,7 @@ public interface IMetaItem
 	 *            the name to set
 	 */
 	public void setName(String name);
-
+	
 	IMetaItemRecipe getRecipe();
 	
 }

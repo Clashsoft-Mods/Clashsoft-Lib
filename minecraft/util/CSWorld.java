@@ -1,5 +1,6 @@
 package clashsoft.cslib.minecraft.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -9,7 +10,7 @@ import net.minecraft.world.World;
  * <p>
  * This class adds several utils for world editing.
  * 
- *  @author Clashsoft
+ * @author Clashsoft
  */
 public class CSWorld
 {
@@ -20,9 +21,9 @@ public class CSWorld
 	public static final int[]	oppositeSideMap	= new int[] { 1, 0, 3, 2, 5, 4 };
 	
 	/**
-	 * Gets the block id at the given coordinates.
+	 * Gets the block at the given coordinates.
 	 * 
-	 * @see World#getBlockId(int, int, int)
+	 * @see World#getBlock(int, int, int)
 	 * @param world
 	 *            the world
 	 * @param x
@@ -33,9 +34,9 @@ public class CSWorld
 	 *            the z
 	 * @return the block
 	 */
-	public static int getBlock(IBlockAccess world, int x, int y, int z)
+	public static Block getBlock(IBlockAccess world, int x, int y, int z)
 	{
-		return world.getBlockId(x, y, z);
+		return world.getBlock(x, y, z);
 	}
 	
 	/**
@@ -75,7 +76,7 @@ public class CSWorld
 	 */
 	public static <T extends TileEntity> T getBlockTileEntity(IBlockAccess world, int x, int y, int z)
 	{
-		return (T) world.getBlockTileEntity(x, y, z);
+		return (T) world.getTileEntity(x, y, z);
 	}
 	
 	/**
@@ -94,24 +95,24 @@ public class CSWorld
 	 *            the side
 	 * @return the block at side
 	 */
-	public static int getBlockAtSide(IBlockAccess world, int x, int y, int z, int side)
+	public static Block getBlockAtSide(IBlockAccess world, int x, int y, int z, int side)
 	{
 		switch (side)
 		{
-		case 0:
-			return getBlock(world, x, y - 1, z);
-		case 1:
-			return getBlock(world, x, y + 1, z);
-		case 2:
-			return getBlock(world, x, y, z - 1);
-		case 3:
-			return getBlock(world, x, y, z + 1);
-		case 4:
-			return getBlock(world, x - 1, y, z);
-		case 5:
-			return getBlock(world, x + 1, y, z);
-		default:
-			return getBlock(world, x, y, z);
+			case 0:
+				return getBlock(world, x, y - 1, z);
+			case 1:
+				return getBlock(world, x, y + 1, z);
+			case 2:
+				return getBlock(world, x, y, z - 1);
+			case 3:
+				return getBlock(world, x, y, z + 1);
+			case 4:
+				return getBlock(world, x - 1, y, z);
+			case 5:
+				return getBlock(world, x + 1, y, z);
+			default:
+				return getBlock(world, x, y, z);
 		}
 	}
 	
@@ -135,20 +136,20 @@ public class CSWorld
 	{
 		switch (side)
 		{
-		case 0:
-			return getBlockMetadata(world, x, y - 1, z);
-		case 1:
-			return getBlockMetadata(world, x, y + 1, z);
-		case 2:
-			return getBlockMetadata(world, x, y, z - 1);
-		case 3:
-			return getBlockMetadata(world, x, y, z + 1);
-		case 4:
-			return getBlockMetadata(world, x - 1, y, z);
-		case 5:
-			return getBlockMetadata(world, x + 1, y, z);
-		default:
-			return getBlockMetadata(world, x, y, z);
+			case 0:
+				return getBlockMetadata(world, x, y - 1, z);
+			case 1:
+				return getBlockMetadata(world, x, y + 1, z);
+			case 2:
+				return getBlockMetadata(world, x, y, z - 1);
+			case 3:
+				return getBlockMetadata(world, x, y, z + 1);
+			case 4:
+				return getBlockMetadata(world, x - 1, y, z);
+			case 5:
+				return getBlockMetadata(world, x + 1, y, z);
+			default:
+				return getBlockMetadata(world, x, y, z);
 		}
 	}
 	
@@ -174,20 +175,20 @@ public class CSWorld
 	{
 		switch (side)
 		{
-		case 0:
-			return getBlockTileEntity(world, x, y - 1, z);
-		case 1:
-			return getBlockTileEntity(world, x, y + 1, z);
-		case 2:
-			return getBlockTileEntity(world, x, y, z - 1);
-		case 3:
-			return getBlockTileEntity(world, x, y, z + 1);
-		case 4:
-			return getBlockTileEntity(world, x - 1, y, z);
-		case 5:
-			return getBlockTileEntity(world, x + 1, y, z);
-		default:
-			return getBlockTileEntity(world, x, y, z);
+			case 0:
+				return getBlockTileEntity(world, x, y - 1, z);
+			case 1:
+				return getBlockTileEntity(world, x, y + 1, z);
+			case 2:
+				return getBlockTileEntity(world, x, y, z - 1);
+			case 3:
+				return getBlockTileEntity(world, x, y, z + 1);
+			case 4:
+				return getBlockTileEntity(world, x - 1, y, z);
+			case 5:
+				return getBlockTileEntity(world, x + 1, y, z);
+			default:
+				return getBlockTileEntity(world, x, y, z);
 		}
 	}
 	
@@ -207,7 +208,7 @@ public class CSWorld
 	 * @param meta
 	 *            the meta
 	 */
-	public static void setBlock(World world, int x, int y, int z, int block, int meta)
+	public static void setBlock(World world, int x, int y, int z, Block block, int meta)
 	{
 		world.setBlock(x, y, z, block, meta, 0x02);
 	}
@@ -228,12 +229,11 @@ public class CSWorld
 	 */
 	public static void setBlockTileEntity(World world, int x, int y, int z, TileEntity tileentity)
 	{
-		world.setBlockTileEntity(x, y, z, tileentity);
+		world.setTileEntity(x, y, z, tileentity);
 	}
 	
 	/**
-	 * Sets the block with the given metadata at the given side of the given
-	 * coordinates.
+	 * Sets the block with the given metadata at the given side of the given coordinates.
 	 * 
 	 * @param world
 	 *            the world
@@ -250,7 +250,7 @@ public class CSWorld
 	 * @param meta
 	 *            the meta
 	 */
-	public static void setBlockAtSide(World world, int x, int y, int z, int side, int block, int meta)
+	public static void setBlockAtSide(World world, int x, int y, int z, int side, Block block, int meta)
 	{
 		setBlock(world, x + sideMap[side][0], y + sideMap[side][1], z + sideMap[side][2], block, meta);
 	}
@@ -298,7 +298,7 @@ public class CSWorld
 	 * @param meta
 	 *            the meta
 	 */
-	public static void setCube(World world, int x1, int y1, int z1, int x2, int y2, int z2, int block, int meta)
+	public static void setCube(World world, int x1, int y1, int z1, int x2, int y2, int z2, Block block, int meta)
 	{
 		for (int x = x1; x <= x2; x++)
 		{
@@ -313,8 +313,7 @@ public class CSWorld
 	}
 	
 	/**
-	 * Generates the wireframe of a cube made of the given block with the given
-	 * metadata.
+	 * Generates the wireframe of a cube made of the given block with the given metadata.
 	 * 
 	 * @param world
 	 *            the world
@@ -335,7 +334,7 @@ public class CSWorld
 	 * @param meta
 	 *            the meta
 	 */
-	public static void setFrame(World world, int x1, int y1, int z1, int x2, int y2, int z2, int block, int meta)
+	public static void setFrame(World world, int x1, int y1, int z1, int x2, int y2, int z2, Block block, int meta)
 	{
 		// Lower 2D-Frame
 		setCube(world, x1, y1, z1, x2, y1, z1, block, meta);

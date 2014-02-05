@@ -67,7 +67,7 @@ public class CustomEnchantment extends Enchantment
 	@Override
 	public int getMinLevel()
 	{
-		return maxLevel;
+		return this.maxLevel;
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class CustomEnchantment extends Enchantment
 	@Override
 	public int getMaxLevel()
 	{
-		return minLevel;
+		return this.minLevel;
 	}
 	
 	/**

@@ -3,7 +3,6 @@ package clashsoft.cslib.minecraft.util;
 import clashsoft.cslib.minecraft.ItemCustomBlock;
 import clashsoft.cslib.minecraft.block.ICustomBlock;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -51,7 +50,7 @@ public class CSBlocks
 		}
 		else
 		{
-			LanguageRegistry.addName(block, name);
+			CSLang.addName(block, name);
 		}
 	}
 	

@@ -11,20 +11,20 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.resources.ReloadableResourceManager;
-import net.minecraft.client.resources.ResourceManager;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class CSFontRenderer extends FontRenderer
@@ -34,7 +34,8 @@ public class CSFontRenderer extends FontRenderer
 	public static final CSFontRenderer		instance			= new CSFontRenderer(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().renderEngine, false);
 	static
 	{
-		((ReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(instance);
+		IReloadableResourceManager manager = (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager();
+		manager.registerReloadListener(instance);
 		
 		if (Minecraft.getMinecraft().gameSettings.language != null)
 		{
@@ -51,14 +52,12 @@ public class CSFontRenderer extends FontRenderer
 	public Random							fontRandom			= new Random();
 	
 	/**
-	 * Array of the start/end column (in upper/lower nibble) for every glyph in
-	 * the /font directory.
+	 * Array of the start/end column (in upper/lower nibble) for every glyph in the /font directory.
 	 */
 	private final byte[]					glyphWidth			= new byte[65536];
 	
 	/**
-	 * Array of RGB triplets defining the 16 standard chat colors followed by 16
-	 * darker version of the same colors for drop shadows.
+	 * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of the same colors for drop shadows.
 	 */
 	public int[]							colorCode			= new int[32];
 	private final ResourceLocation			locationFontTexture;
@@ -70,14 +69,12 @@ public class CSFontRenderer extends FontRenderer
 	private float							posY;
 	
 	/**
-	 * If true, strings should be rendered with Unicode fonts instead of the
-	 * default.png font
+	 * If true, strings should be rendered with Unicode fonts instead of the default.png font
 	 */
 	private boolean							unicodeFlag;
 	
 	/**
-	 * If true, the Unicode Bidirectional Algorithm should be run before
-	 * rendering any string.
+	 * If true, the Unicode Bidirectional Algorithm should be run before rendering any string.
 	 */
 	private boolean							bidiFlag;
 	
@@ -111,8 +108,7 @@ public class CSFontRenderer extends FontRenderer
 	private boolean							underlineStyle		= false;
 	
 	/**
-	 * Set if the "m" style (strikethrough) is active in currently rendering
-	 * string
+	 * Set if the "m" style (strikethrough) is active in currently rendering string
 	 */
 	private boolean							strikethroughStyle	= false;
 	
@@ -162,7 +158,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	@Override
-	public void onResourceManagerReload(ResourceManager resourceManager)
+	public void onResourceManagerReload(IResourceManager resourceManager)
 	{
 		this.readFontTexture();
 	}
@@ -261,8 +257,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Render a single character with the default.png font at current
-	 * (posX,posY) location...
+	 * Render a single character with the default.png font at current (posX,posY) location...
 	 */
 	private float renderDefaultChar(int i, boolean italic)
 	{
@@ -289,8 +284,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Load one of the /font/glyph_XX.png into a new GL texture and store the
-	 * texture ID in glyphTextureName array.
+	 * Load one of the /font/glyph_XX.png into a new GL texture and store the texture ID in glyphTextureName array.
 	 */
 	private void loadGlyphTexture(int i)
 	{
@@ -308,8 +302,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Render a single Unicode character at current (posX,posY) location using
-	 * one of the /font/glyph_XX.png files...
+	 * Render a single Unicode character at current (posX,posY) location using one of the /font/glyph_XX.png files...
 	 */
 	private float renderUnicodeChar(char c, boolean italic)
 	{
@@ -390,8 +383,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Apply Unicode Bidirectional Algorithm to string and return a new possibly
-	 * reordered string for visual rendering.
+	 * Apply Unicode Bidirectional Algorithm to string and return a new possibly reordered string for visual rendering.
 	 */
 	private String bidiReorder(String string)
 	{
@@ -472,8 +464,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Reset all style flag fields in the class to false; called at the start of
-	 * string rendering
+	 * Reset all style flag fields in the class to false; called at the start of string rendering
 	 */
 	private void resetStyles()
 	{
@@ -531,16 +522,16 @@ public class CSFontRenderer extends FontRenderer
 	protected void updateColor(boolean shadow)
 	{
 		if (shadow)
-			GL11.glColor4f(red / 4, green / 4, blue / 4, alpha);
+			GL11.glColor4f(this.red / 4, this.green / 4, this.blue / 4, this.alpha);
 		else
-			GL11.glColor4f(red, green, blue, alpha);
+			GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
 	}
 	
 	/**
 	 * Render a single line string at the current (posX,posY) and update posX
 	 */
 	private void renderStringAtPos(String text, boolean shadow)
-	{	
+	{
 		for (int i = 0; i < text.length(); ++i)
 		{
 			char c = text.charAt(i);
@@ -591,13 +582,13 @@ public class CSFontRenderer extends FontRenderer
 			}
 			else
 			{
-				j = ChatAllowedCharacters.allowedCharacters.indexOf(c);
+				j = Arrays.binarySearch(ChatAllowedCharacters.allowedCharacters, c);
 				
 				if (this.randomStyle && j > 0)
 				{
 					do
 					{
-						k = this.fontRandom.nextInt(ChatAllowedCharacters.allowedCharacters.length());
+						k = this.fontRandom.nextInt(ChatAllowedCharacters.allowedCharacters.length);
 					}
 					while (this.charWidth[j + 32] != this.charWidth[k + 32]);
 					
@@ -693,8 +684,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Render single line string by setting GL color, current (posX,posY), and
-	 * calling renderStringAtPos()
+	 * Render single line string by setting GL color, current (posX,posY), and calling renderStringAtPos()
 	 */
 	private int renderString(String string, int x, int y, int color, boolean shadow)
 	{
@@ -727,8 +717,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Returns the width of this string. Equivalent of
-	 * FontMetrics.stringWidth(String s).
+	 * Returns the width of this string. Equivalent of FontMetrics.stringWidth(String s).
 	 */
 	@Override
 	public int getStringWidth(String string)
@@ -804,7 +793,7 @@ public class CSFontRenderer extends FontRenderer
 		}
 		else
 		{
-			int i = ChatAllowedCharacters.allowedCharacters.indexOf(c);
+			int i = Arrays.binarySearch(ChatAllowedCharacters.allowedCharacters, c);
 			
 			if (i >= 0 && !this.unicodeFlag)
 			{
@@ -932,8 +921,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Perform actual work of rendering a multi-line string with wordwrap and
-	 * with darker drop shadow color if flag is set
+	 * Perform actual work of rendering a multi-line string with wordwrap and with darker drop shadow color if flag is set
 	 */
 	private void renderSplitString(String string, int x, int y, int width, boolean shadow)
 	{
@@ -947,8 +935,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Returns the width of the wordwrapped String (maximum length is parameter
-	 * k)
+	 * Returns the width of the wordwrapped String (maximum length is parameter k)
 	 */
 	@Override
 	public int splitStringWidth(String string, int width)
@@ -957,8 +944,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Set unicodeFlag controlling whether strings should be rendered with
-	 * Unicode fonts instead of the default.png font.
+	 * Set unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png font.
 	 */
 	@Override
 	public void setUnicodeFlag(boolean unicodeFlag)
@@ -967,8 +953,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Get unicodeFlag controlling whether strings should be rendered with
-	 * Unicode fonts instead of the default.png font.
+	 * Get unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png font.
 	 */
 	@Override
 	public boolean getUnicodeFlag()
@@ -977,8 +962,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be
-	 * run before rendering any string.
+	 * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be run before rendering any string.
 	 */
 	@Override
 	public void setBidiFlag(boolean bidiFlag)
@@ -996,8 +980,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Inserts newline and formatting into a string to wrap it within the
-	 * specified width.
+	 * Inserts newline and formatting into a string to wrap it within the specified width.
 	 */
 	public String wrapFormattedStringToWidth(String string, int width)
 	{
@@ -1018,8 +1001,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Determines how many characters from the string will fit into the
-	 * specified width.
+	 * Determines how many characters from the string will fit into the specified width.
 	 */
 	private int sizeStringToWidth(String string, int width)
 	{
@@ -1034,38 +1016,38 @@ public class CSFontRenderer extends FontRenderer
 			
 			switch (c0)
 			{
-			case 10:
-				--l;
-				break;
-			case 167:
-				if (l < j - 1)
-				{
-					++l;
-					char c1 = string.charAt(l);
-					
-					if (c1 != 108 && c1 != 76)
+				case 10:
+					--l;
+					break;
+				case 167:
+					if (l < j - 1)
 					{
-						if (c1 == 114 || c1 == 82 || isFormatColor(c1))
+						++l;
+						char c1 = string.charAt(l);
+						
+						if (c1 != 108 && c1 != 76)
 						{
-							flag = false;
+							if (c1 == 114 || c1 == 82 || isFormatColor(c1))
+							{
+								flag = false;
+							}
+						}
+						else
+						{
+							flag = true;
 						}
 					}
-					else
+					
+					break;
+				case 32:
+					i1 = l;
+				default:
+					k += this.getCharWidth(c0);
+					
+					if (flag)
 					{
-						flag = true;
+						++k;
 					}
-				}
-				
-				break;
-			case 32:
-				i1 = l;
-			default:
-				k += this.getCharWidth(c0);
-				
-				if (flag)
-				{
-					++k;
-				}
 			}
 			
 			if (c0 == 10)
@@ -1093,8 +1075,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Checks if the char code is O-K...lLrRk-o... used to set special
-	 * formatting.
+	 * Checks if the char code is O-K...lLrRk-o... used to set special formatting.
 	 */
 	private static boolean isFormatSpecial(char c)
 	{
@@ -1102,8 +1083,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Digests a string for nonprinting formatting characters then returns a
-	 * string containing only that formatting.
+	 * Digests a string for nonprinting formatting characters then returns a string containing only that formatting.
 	 */
 	private static String getFormatFromString(String string)
 	{
@@ -1132,8 +1112,7 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should
-	 * be run before rendering any string
+	 * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should be run before rendering any string
 	 */
 	@Override
 	public boolean getBidiFlag()
