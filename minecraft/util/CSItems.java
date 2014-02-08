@@ -44,7 +44,7 @@ public class CSItems
 	 */
 	public static void addItem(Item item, String name)
 	{
-		GameRegistry.registerItem(item, name.replace(" ", ""));
+		GameRegistry.registerItem(item, CSString.identifier(name));
 		CSLang.addName(item, name);
 	}
 	

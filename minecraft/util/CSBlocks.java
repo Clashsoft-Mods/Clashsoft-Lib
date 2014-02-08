@@ -73,7 +73,7 @@ public class CSBlocks
 	 */
 	public static void addBlock(Block block, Class<? extends ItemBlock> itemClass, String name)
 	{
-		GameRegistry.registerBlock(block, itemClass, name.replace(" ", ""));
+		GameRegistry.registerBlock(block, itemClass, CSString.identifier(name));
 		if (block instanceof ICustomBlock)
 		{
 			((ICustomBlock) block).addNames();

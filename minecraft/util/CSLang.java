@@ -1,5 +1,7 @@
 package clashsoft.cslib.minecraft.util;
 
+import java.util.Properties;
+
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,9 +16,9 @@ import net.minecraft.stats.Achievement;
  * 
  * @author Clashsoft
  */
+@SuppressWarnings("deprecation")
 public class CSLang extends LanguageRegistry
 {
-	@SuppressWarnings("deprecation")
 	public static void addName(Object key, String value)
 	{
 		try
@@ -27,6 +29,11 @@ public class CSLang extends LanguageRegistry
 		{
 			addLocalizationUS(key.toString(), value);
 		}
+	}
+	
+	public static void addLangPack(Properties pack, String lang)
+	{
+		LanguageRegistry.instance().addStringLocalization(pack, lang);
 	}
 	
 	public static void add(String key, String value)
@@ -45,7 +52,6 @@ public class CSLang extends LanguageRegistry
 	 * @param value
 	 *            the value
 	 */
-	@SuppressWarnings("deprecation")
 	public static void addLocalization(String key, String lang, String value)
 	{
 		LanguageRegistry.instance().addStringLocalization(key, lang, value);

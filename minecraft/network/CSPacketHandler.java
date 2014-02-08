@@ -40,6 +40,16 @@ public abstract class CSPacketHandler
 		clientChannel.pipeline().addAfter(codec, "ClientHandler", this.messageHandler);
 	}
 	
+	public void sendPacketToServer(CSPacket packet)
+	{
+		this.getServerChannel().generatePacketFrom(packet);
+	}
+	
+	public void sendPacketToClient(CSPacket packet)
+	{
+		this.getClientChannel().generatePacketFrom(packet);
+	}
+	
 	public FMLEmbeddedChannel getClientChannel()
 	{
 		return this.channels.get(Side.CLIENT);

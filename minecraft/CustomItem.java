@@ -150,7 +150,9 @@ public class CustomItem extends Item
 		{
 			this.subItemList.add(metaItem);
 			if (metaItem.isEnabled())
+			{
 				this.subItemDisplayList.add(metaItem);
+			}
 		}
 		return this;
 	}
@@ -181,8 +183,12 @@ public class CustomItem extends Item
 	public CustomItem setMetadataEnabled(boolean enabled, int... metadata)
 	{
 		if (metadata != null)
+		{
 			for (int i : metadata)
+			{
 				this.enabled[i] = enabled;
+			}
+		}
 		return this;
 	}
 	
@@ -209,7 +215,8 @@ public class CustomItem extends Item
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.minecraft.item.Item#registerIcons(net.minecraft.client.renderer.texture .IconRegister)
+	 * @see net.minecraft.item.Item#registerIcons(net.minecraft.client.renderer.texture
+	 * .IconRegister)
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -237,7 +244,8 @@ public class CustomItem extends Item
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.minecraft.item.Item#addInformation(net.minecraft.item.ItemStack, net.minecraft.entity.player.EntityPlayer, java.util.List, boolean)
+	 * @see net.minecraft.item.Item#addInformation(net.minecraft.item.ItemStack,
+	 * net.minecraft.entity.player.EntityPlayer, java.util.List, boolean)
 	 */
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag)
@@ -251,14 +259,17 @@ public class CustomItem extends Item
 		{
 			String s = this.descriptions[stack.getItemDamage()];
 			if (s == null || s.isEmpty())
+			{
 				return;
+			}
 			list.addAll(Arrays.asList(s.split("\n")));
 		}
 	}
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.minecraft.item.Item#getSubItems(int, net.minecraft.creativetab.CreativeTabs, java.util.List)
+	 * @see net.minecraft.item.Item#getSubItems(int, net.minecraft.creativetab.CreativeTabs,
+	 * java.util.List)
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -279,8 +290,10 @@ public class CustomItem extends Item
 				{
 					if (this.tabs == null)
 					{
-						if (tab == super.getCreativeTab())
+						if (tab == this.getCreativeTab())
+						{
 							subItems.add(new ItemStack(this, 1, i));
+						}
 					}
 					else if (i < this.tabs.length && tab == this.tabs[i])
 					{
