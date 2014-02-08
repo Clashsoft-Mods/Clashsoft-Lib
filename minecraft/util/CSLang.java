@@ -29,6 +29,11 @@ public class CSLang extends LanguageRegistry
 		}
 	}
 	
+	public static void add(String key, String value)
+	{
+		addLocalizationUS(key, value);
+	}
+	
 	/**
 	 * Adds a localization.
 	 * 

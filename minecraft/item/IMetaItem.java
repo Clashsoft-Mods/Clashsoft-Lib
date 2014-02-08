@@ -2,6 +2,7 @@ package clashsoft.cslib.minecraft.item;
 
 import java.util.Collection;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -39,7 +40,7 @@ public interface IMetaItem
 	 * 
 	 * @return the blockPlaced
 	 */
-	public int getBlockPlaced();
+	public Block getBlockPlaced();
 	
 	public int getMetadataPlaced();
 	
@@ -97,10 +98,10 @@ public interface IMetaItem
 	/**
 	 * Sets the block placed.
 	 * 
-	 * @param blockPlaced
-	 *            the blockPlaced to set
+	 * @param block
+	 *            the block to set
 	 */
-	public void setBlockPlaced(int blockPlaced);
+	public void setBlockPlaced(Block block);
 	
 	/**
 	 * Sets the effects.

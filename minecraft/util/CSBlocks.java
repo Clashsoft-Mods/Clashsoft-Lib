@@ -17,9 +17,39 @@ import net.minecraft.item.ItemStack;
  */
 public class CSBlocks
 {
+	/**
+	 * Overrides a vanilla block by registering it with the mod id "minecraft". This calls
+	 * {@link CSBlocks#addBlock(Block, Class, String)} with {@link ItemCustomBlock}.{@code class} as
+	 * the {@code itemClass} argument.
+	 * 
+	 * @param block
+	 *            the new block
+	 * @param name
+	 *            the name
+	 */
+	public static void overrideBlock(Block block, String name)
+	{
+		overrideBlock(block, ItemCustomBlock.class, name);
+	}
 	
 	/**
-	 * Registers a Block and its name.
+	 * Overrides a vanilla block by registering it with the mod id "minecraft".
+	 * 
+	 * @param block
+	 *            the new block
+	 * @param itemClass
+	 *            the item class
+	 * @param name
+	 *            the name
+	 */
+	public static void overrideBlock(Block block, Class<? extends ItemBlock> itemClass, String name)
+	{
+		GameRegistry.registerBlock(block, itemClass, name, "minecraft", new Object[0]);
+	}
+	
+	/**
+	 * Registers a Block and its name. This calls {@link CSBlocks#addBlock(Block, Class, String)}
+	 * with {@link ItemCustomBlock}.{@code class} as the {@code itemClass} argument.
 	 * 
 	 * @param block
 	 *            the block

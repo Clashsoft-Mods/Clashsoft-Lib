@@ -17,6 +17,22 @@ import net.minecraftforge.common.util.EnumHelper;
  */
 public class CSItems
 {
+	/**
+	 * Overrides a vanilla item by registering it with the mod id "minecraft".
+	 * 
+	 * @param item
+	 *            the new item
+	 * @param name
+	 *            the name
+	 */
+	public static void overrideItem(Item item, String name)
+	{
+		if (!name.startsWith("minecraft:"))
+		{
+			name = "minecraft:" + name;
+		}
+		GameRegistry.registerItem(item, name, "minecraft");
+	}
 	
 	/**
 	 * Adds an Item without recipe.
