@@ -26,7 +26,7 @@ public class CSUpdate
 	protected static Map<String, ModUpdate>	foundUpdates			= new HashMap();
 	
 	/** The Constant CURRENT_VERSION. */
-	public static final String				CURRENT_VERSION			= "1.6.4";
+	public static final String				CURRENT_VERSION			= "1.7.2";
 	
 	/** The Constant CLASHSOFT_ADFLY. */
 	public static final String				CLASHSOFT_ADFLY			= "http://adf.ly/2175784/";
