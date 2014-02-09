@@ -277,9 +277,9 @@ public class CustomItem extends Item
 	{
 		if (this.hasItemMetadataList())
 		{
-			for (IMetaItem mi : this.subItemDisplayList)
+			for (IMetaItem subitem : this.subItemDisplayList)
 			{
-				subItems.add(mi.asStack());
+				subItems.add(subitem.asStack());
 			}
 		}
 		else
@@ -295,11 +295,7 @@ public class CustomItem extends Item
 							subItems.add(new ItemStack(this, 1, i));
 						}
 					}
-					else if (i < this.tabs.length && tab == this.tabs[i])
-					{
-						subItems.add(new ItemStack(this, 1, i));
-					}
-					else if (tab == this.tabs[this.tabs.length - 1])
+					else if (tab == this.tabs[i % this.tabs.length])
 					{
 						subItems.add(new ItemStack(this, 1, i));
 					}

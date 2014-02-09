@@ -1,6 +1,8 @@
 package clashsoft.cslib.minecraft.util;
 
 import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.item.Item;
@@ -35,7 +37,9 @@ public class CSItems
 	}
 	
 	/**
-	 * Adds an Item without recipe.
+	 * Adds an Item without a recipe. Internally calls {@link CSItems#addItem(Item, String, String)}
+	 * and uses the current mod id as the {@code modid} parameter. The current mod id is received
+	 * using {@link Loader#activeModContainer()}.{@link ModContainer#getModId()}.
 	 * 
 	 * @param item
 	 *            the item
@@ -44,7 +48,21 @@ public class CSItems
 	 */
 	public static void addItem(Item item, String name)
 	{
-		GameRegistry.registerItem(item, CSString.identifier(name));
+		String activeModID = Loader.instance().activeModContainer().getModId();
+		addItem(item, name, activeModID.toLowerCase());
+	}
+	
+	/**
+	 * Adds an Item without a recipe. The item is registered with the specified modid as a domain.
+	 * 
+	 * @param item
+	 * @param name
+	 * @param modid
+	 */
+	public static void addItem(Item item, String name, String modid)
+	{
+		String identifier = CSString.identifier(name);
+		GameRegistry.registerItem(item, identifier, modid);
 		CSLang.addName(item, name);
 	}
 	
@@ -169,11 +187,11 @@ public class CSItems
 	 */
 	public static ToolMaterial addToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, float damage, int enchantability, int color, ItemStack recipe, DataToolSet dataToolSet)
 	{
-		ToolMaterial var1 = EnumHelper.addToolMaterial(name, harvestLevel, maxUses, efficiency, damage, enchantability);
+		ToolMaterial toolMaterial = EnumHelper.addToolMaterial(name, harvestLevel, maxUses, efficiency, damage, enchantability);
 		if (dataToolSet != null)
 		{
-			dataToolSet.registerToolMaterial(var1, name);
+			dataToolSet.registerToolMaterial(toolMaterial, name);
 		}
-		return var1;
+		return toolMaterial;
 	}
 }

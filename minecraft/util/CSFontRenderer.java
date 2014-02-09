@@ -829,9 +829,6 @@ public class CSFontRenderer extends FontRenderer
 		return this.trimStringToWidth(string, width, false);
 	}
 	
-	/**
-	 * Trims a string to a specified width, and will reverse it if par3 is set.
-	 */
 	@Override
 	public String trimStringToWidth(String string, int width, boolean reverse)
 	{
