@@ -1,6 +1,7 @@
 package clashsoft.cslib.minecraft.util;
 
 import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
+import clashsoft.cslib.reflect.CSReflection;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -29,11 +30,17 @@ public class CSItems
 	 */
 	public static void overrideItem(Item item, String name)
 	{
-		if (!name.startsWith("minecraft:"))
-		{
-			name = "minecraft:" + name;
-		}
 		GameRegistry.registerItem(item, name, "minecraft");
+	}
+	
+	public static void addAllItems(Class mod)
+	{
+		Item[] items = CSReflection.getStaticObjects(mod, Item.class, true);
+		
+		for (Item item : items)
+		{
+			addItem(item, item.getUnlocalizedName());
+		}
 	}
 	
 	/**

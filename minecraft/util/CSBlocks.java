@@ -2,6 +2,7 @@ package clashsoft.cslib.minecraft.util;
 
 import clashsoft.cslib.minecraft.ItemCustomBlock;
 import clashsoft.cslib.minecraft.block.ICustomBlock;
+import clashsoft.cslib.reflect.CSReflection;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
@@ -45,6 +46,16 @@ public class CSBlocks
 	public static void overrideBlock(Block block, Class<? extends ItemBlock> itemClass, String name)
 	{
 		GameRegistry.registerBlock(block, itemClass, name, "minecraft", new Object[0]);
+	}
+	
+	public static void addAllBlocks(Class mod)
+	{
+		Block[] blocks = CSReflection.getStaticObjects(mod, Block.class, true);
+		
+		for (Block block : blocks)
+		{
+			addBlock(block, block.getUnlocalizedName());
+		}
 	}
 	
 	/**
