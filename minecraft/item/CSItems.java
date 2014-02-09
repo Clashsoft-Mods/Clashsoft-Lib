@@ -1,6 +1,9 @@
-package clashsoft.cslib.minecraft.util;
+package clashsoft.cslib.minecraft.item;
 
+import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
+import clashsoft.cslib.minecraft.util.CSLang;
+import clashsoft.cslib.minecraft.util.CSString;
 import clashsoft.cslib.reflect.CSReflection;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;

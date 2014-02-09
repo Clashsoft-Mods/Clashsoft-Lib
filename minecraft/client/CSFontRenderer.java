@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft.util;
+package clashsoft.cslib.minecraft.client;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

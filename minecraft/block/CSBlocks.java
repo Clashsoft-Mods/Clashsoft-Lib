@@ -1,7 +1,9 @@
-package clashsoft.cslib.minecraft.util;
+package clashsoft.cslib.minecraft.block;
 
 import clashsoft.cslib.minecraft.ItemCustomBlock;
-import clashsoft.cslib.minecraft.block.ICustomBlock;
+import clashsoft.cslib.minecraft.crafting.CSCrafting;
+import clashsoft.cslib.minecraft.util.CSLang;
+import clashsoft.cslib.minecraft.util.CSString;
 import clashsoft.cslib.reflect.CSReflection;
 import cpw.mods.fml.common.registry.GameRegistry;
 

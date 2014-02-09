@@ -1,6 +1,6 @@
 package clashsoft.cslib.minecraft;
 
-import clashsoft.cslib.minecraft.util.CSCrafting;
+import clashsoft.cslib.minecraft.crafting.CSCrafting;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

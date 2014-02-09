@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft.util;
+package clashsoft.cslib.minecraft.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;

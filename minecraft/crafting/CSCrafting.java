@@ -1,10 +1,9 @@
-package clashsoft.cslib.minecraft.util;
+package clashsoft.cslib.minecraft.crafting;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import clashsoft.cslib.minecraft.Convenience;
-import clashsoft.cslib.minecraft.crafting.ShapedAdvancedRecipe;
 import clashsoft.cslib.minecraft.item.IMetaItemRecipe;
 import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.registry.GameRegistry;
