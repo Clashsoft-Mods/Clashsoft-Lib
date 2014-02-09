@@ -57,7 +57,8 @@ public class CSFontRenderer extends FontRenderer
 	private final byte[]					glyphWidth			= new byte[65536];
 	
 	/**
-	 * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of the same colors for drop shadows.
+	 * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of
+	 * the same colors for drop shadows.
 	 */
 	public int[]							colorCode			= new int[32];
 	private final ResourceLocation			locationFontTexture;
@@ -284,7 +285,8 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Load one of the /font/glyph_XX.png into a new GL texture and store the texture ID in glyphTextureName array.
+	 * Load one of the /font/glyph_XX.png into a new GL texture and store the texture ID in
+	 * glyphTextureName array.
 	 */
 	private void loadGlyphTexture(int i)
 	{
@@ -302,7 +304,8 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Render a single Unicode character at current (posX,posY) location using one of the /font/glyph_XX.png files...
+	 * Render a single Unicode character at current (posX,posY) location using one of the
+	 * /font/glyph_XX.png files...
 	 */
 	private float renderUnicodeChar(char c, boolean italic)
 	{
@@ -383,7 +386,8 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Apply Unicode Bidirectional Algorithm to string and return a new possibly reordered string for visual rendering.
+	 * Apply Unicode Bidirectional Algorithm to string and return a new possibly reordered string
+	 * for visual rendering.
 	 */
 	private String bidiReorder(String string)
 	{
@@ -684,7 +688,8 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Render single line string by setting GL color, current (posX,posY), and calling renderStringAtPos()
+	 * Render single line string by setting GL color, current (posX,posY), and calling
+	 * renderStringAtPos()
 	 */
 	private int renderString(String string, int x, int y, int color, boolean shadow)
 	{
@@ -918,7 +923,8 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Perform actual work of rendering a multi-line string with wordwrap and with darker drop shadow color if flag is set
+	 * Perform actual work of rendering a multi-line string with wordwrap and with darker drop
+	 * shadow color if flag is set
 	 */
 	private void renderSplitString(String string, int x, int y, int width, boolean shadow)
 	{
@@ -941,7 +947,8 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Set unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png font.
+	 * Set unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of
+	 * the default.png font.
 	 */
 	@Override
 	public void setUnicodeFlag(boolean unicodeFlag)
@@ -950,7 +957,8 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Get unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png font.
+	 * Get unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of
+	 * the default.png font.
 	 */
 	@Override
 	public boolean getUnicodeFlag()
@@ -959,7 +967,8 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be run before rendering any string.
+	 * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be run before rendering
+	 * any string.
 	 */
 	@Override
 	public void setBidiFlag(boolean bidiFlag)
@@ -1080,7 +1089,8 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Digests a string for nonprinting formatting characters then returns a string containing only that formatting.
+	 * Digests a string for nonprinting formatting characters then returns a string containing only
+	 * that formatting.
 	 */
 	private static String getFormatFromString(String string)
 	{
@@ -1109,7 +1119,8 @@ public class CSFontRenderer extends FontRenderer
 	}
 	
 	/**
-	 * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should be run before rendering any string
+	 * Get bidiFlag that controls if the Unicode Bidirectional Algorithm should be run before
+	 * rendering any string
 	 */
 	@Override
 	public boolean getBidiFlag()

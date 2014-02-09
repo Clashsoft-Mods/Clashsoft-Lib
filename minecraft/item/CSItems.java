@@ -3,7 +3,6 @@ package clashsoft.cslib.minecraft.item;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
 import clashsoft.cslib.minecraft.lang.CSLang;
-import clashsoft.cslib.minecraft.util.CSString;
 import clashsoft.cslib.reflect.CSReflection;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -71,7 +70,7 @@ public class CSItems
 	 */
 	public static void addItem(Item item, String name, String modid)
 	{
-		String identifier = CSString.identifier(name);
+		String identifier = clashsoft.cslib.util.CSString.identifier(name);
 		GameRegistry.registerItem(item, identifier, modid);
 		CSLang.addName(item, name);
 	}

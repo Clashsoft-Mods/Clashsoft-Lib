@@ -15,7 +15,13 @@ import net.minecraft.world.World;
 public class CSWorld
 {
 	/** The Constant sideMap. */
-	public static final int[][]	sideMap			= new int[][] { { 0, -1, 0 }, { 0, 1, 0 }, { 0, 0, -1 }, { 0, 0, 1 }, { -1, 0, 0 }, { 1, 0, 0 } };
+	public static final int[][]	sideMap			= new int[][] {
+			{ 0, -1, 0 },
+			{ 0, 1, 0 },
+			{ 0, 0, -1 },
+			{ 0, 0, 1 },
+			{ -1, 0, 0 },
+			{ 1, 0, 0 }						};
 	
 	/** The Constant oppositeSideMap. */
 	public static final int[]	oppositeSideMap	= new int[] { 1, 0, 3, 2, 5, 4 };

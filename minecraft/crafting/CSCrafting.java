@@ -257,7 +257,8 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Adds a new armor-shaped recipe to the game. (Type 0 = Helmet, Type 1 = Chestplate, Type 2 = Leggings, Type 3 = Boots, Type 4 = Gloves)
+	 * Adds a new armor-shaped recipe to the game. (Type 0 = Helmet, Type 1 = Chestplate, Type 2 =
+	 * Leggings, Type 3 = Boots, Type 4 = Gloves)
 	 * 
 	 * @param output
 	 *            the output
@@ -269,13 +270,31 @@ public class CSCrafting
 	public static void addArmorRecipe(ItemStack output, ItemStack input, int type)
 	{
 		if (type == 0)
-			addCrafting(output, new Object[] { "XXX", "X X", Character.valueOf('X'), input });
+			addCrafting(output, new Object[] {
+					"XXX",
+					"X X",
+					Character.valueOf('X'),
+					input });
 		else if (type == 1)
-			addCrafting(output, new Object[] { "X X", "XXX", "XXX", Character.valueOf('X'), input });
+			addCrafting(output, new Object[] {
+					"X X",
+					"XXX",
+					"XXX",
+					Character.valueOf('X'),
+					input });
 		else if (type == 2)
-			addCrafting(output, new Object[] { "XXX", "X X", "X X", Character.valueOf('X'), input });
+			addCrafting(output, new Object[] {
+					"XXX",
+					"X X",
+					"X X",
+					Character.valueOf('X'),
+					input });
 		else if (type == 3)
-			addCrafting(output, new Object[] { "X X", "X X", Character.valueOf('X'), input });
+			addCrafting(output, new Object[] {
+					"X X",
+					"X X",
+					Character.valueOf('X'),
+					input });
 		else if (type == 4)
 			addCrafting(output, new Object[] { "X X", 'X', input });
 	}
@@ -295,7 +314,8 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Adds a new tool-shaped recipe to the game. (Type 0 = Sword, Type 1 = Spade, Type 2 = Pickaxe, Type 3 = Axe, Type 4 = Hoe)
+	 * Adds a new tool-shaped recipe to the game. (Type 0 = Sword, Type 1 = Spade, Type 2 = Pickaxe,
+	 * Type 3 = Axe, Type 4 = Hoe)
 	 * 
 	 * @param output
 	 *            the output
@@ -309,7 +329,14 @@ public class CSCrafting
 	public static void addToolRecipe(ItemStack output, ItemStack material, ItemStack stick, int type)
 	{
 		if (type == 0)
-			addCrafting(output, new Object[] { "X", "X", "|", 'X', material, '|', stick });
+			addCrafting(output, new Object[] {
+					"X",
+					"X",
+					"|",
+					'X',
+					material,
+					'|',
+					stick });
 		else if (type == 1)
 			addCrafting(output, "X", "|", "|", 'X', material, '|', stick);
 		else if (type == 2)
@@ -349,7 +376,8 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Analyzes a crafting recipe, mainly used for recipe displays. Depending on the recipe type, the output is either
+	 * Analyzes a crafting recipe, mainly used for recipe displays. Depending on the recipe type,
+	 * the output is either
 	 * <p>
 	 * [1][2][ ] Any shape possible
 	 * <p>
@@ -390,7 +418,10 @@ public class CSCrafting
 		{
 			if (recipe.getCraftingType() == IMetaItemRecipe.FURNACE)
 			{
-				return new ItemStack[][] { { null, (ItemStack) recipe.getData()[0], null }, { null, FIRE, null }, { null, COAL, null } };
+				return new ItemStack[][] {
+						{ null, (ItemStack) recipe.getData()[0], null },
+						{ null, FIRE, null },
+						{ null, COAL, null } };
 			}
 			else if (recipe.getCraftingType() == IMetaItemRecipe.CRAFTING_SHAPELESS)
 			{
@@ -414,7 +445,10 @@ public class CSCrafting
 		{
 			CSLog.error(ex);
 		}
-		return new ItemStack[][] { { null, null, null }, { null, null, null }, { null, null, null } };
+		return new ItemStack[][] {
+				{ null, null, null },
+				{ null, null, null },
+				{ null, null, null } };
 	}
 	
 	/**

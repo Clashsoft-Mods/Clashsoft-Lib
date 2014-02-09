@@ -3,7 +3,6 @@ package clashsoft.cslib.minecraft.block;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.block.ItemCustomBlock;
 import clashsoft.cslib.minecraft.lang.CSLang;
-import clashsoft.cslib.minecraft.util.CSString;
 import clashsoft.cslib.reflect.CSReflection;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -86,7 +85,7 @@ public class CSBlocks
 	 */
 	public static void addBlock(Block block, Class<? extends ItemBlock> itemClass, String name)
 	{
-		GameRegistry.registerBlock(block, itemClass, CSString.identifier(name));
+		GameRegistry.registerBlock(block, itemClass, clashsoft.cslib.util.CSString.identifier(name));
 		if (block instanceof ICustomBlock)
 		{
 			((ICustomBlock) block).addNames();

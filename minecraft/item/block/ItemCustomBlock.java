@@ -92,7 +92,8 @@ public class ItemCustomBlock extends ItemBlock
 	
 	/*
 	 * (non-Javadoc)
-	 * @see net.minecraft.item.Item#addInformation(net.minecraft.item.ItemStack, net.minecraft.entity.player.EntityPlayer, java.util.List, boolean)
+	 * @see net.minecraft.item.Item#addInformation(net.minecraft.item.ItemStack,
+	 * net.minecraft.entity.player.EntityPlayer, java.util.List, boolean)
 	 */
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag)

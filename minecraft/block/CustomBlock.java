@@ -129,7 +129,13 @@ public class CustomBlock extends Block implements ICustomBlock
 	 */
 	public CustomBlock(Material material, String displayName, String iconNames, boolean opaque, int renderType, CreativeTabs creativeTabs)
 	{
-		this(material, new String[] { displayName }, new String[][] { { iconNames, iconNames, iconNames, iconNames, iconNames, iconNames } }, opaque, renderType, new CreativeTabs[] { creativeTabs });
+		this(material, new String[] { displayName }, new String[][] { {
+				iconNames,
+				iconNames,
+				iconNames,
+				iconNames,
+				iconNames,
+				iconNames } }, opaque, renderType, new CreativeTabs[] { creativeTabs });
 	}
 	
 	/**
@@ -163,7 +169,13 @@ public class CustomBlock extends Block implements ICustomBlock
 	 */
 	public CustomBlock(Material material, String displayName, String iconName, CreativeTabs creativeTab)
 	{
-		this(material, new String[] { displayName }, new String[][] { { iconName, iconName, iconName, iconName, iconName, iconName } }, true, 0, new CreativeTabs[] { creativeTab });
+		this(material, new String[] { displayName }, new String[][] { {
+				iconName,
+				iconName,
+				iconName,
+				iconName,
+				iconName,
+				iconName } }, true, 0, new CreativeTabs[] { creativeTab });
 	}
 	
 	/**

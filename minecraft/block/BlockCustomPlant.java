@@ -1,6 +1,6 @@
 package clashsoft.cslib.minecraft.block;
 
-import static net.minecraftforge.common.EnumPlantType.*;
+import static net.minecraftforge.common.EnumPlantType.Plains;
 
 import java.util.List;
 import java.util.Random;

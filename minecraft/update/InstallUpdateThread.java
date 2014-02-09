@@ -42,7 +42,8 @@ public class InstallUpdateThread extends Thread
 	}
 	
 	/**
-	 * Installs the mod update by downloading the file from {@link ModUpdate#updateUrl} and deleting old mod versions.
+	 * Installs the mod update by downloading the file from {@link ModUpdate#updateUrl} and deleting
+	 * old mod versions.
 	 */
 	@Override
 	public void run()

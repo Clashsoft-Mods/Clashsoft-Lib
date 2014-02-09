@@ -59,7 +59,8 @@ public class ModUpdate
 	/**
 	 * Checks if this is a valid update (New version and same Minecraft version).
 	 * 
-	 * @return true, if the new version is higher than the current version and the Minecraft version is the same, false otherwise.
+	 * @return true, if the new version is higher than the current version and the Minecraft version
+	 *         is the same, false otherwise.
 	 */
 	public boolean isValid()
 	{

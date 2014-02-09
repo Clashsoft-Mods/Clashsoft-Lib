@@ -22,7 +22,7 @@ public abstract class CSPacketHandler
 		this.channels = NetworkRegistry.INSTANCE.newChannel(name, this.codec);
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
 		{
-			addClientHandler();
+			this.addClientHandler();
 		}
 	}
 	
