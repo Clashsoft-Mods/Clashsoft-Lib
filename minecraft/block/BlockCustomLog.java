@@ -3,7 +3,7 @@ package clashsoft.cslib.minecraft.block;
 import java.util.List;
 import java.util.Random;
 
-import clashsoft.cslib.minecraft.util.CSLang;
+import clashsoft.cslib.minecraft.lang.CSLang;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

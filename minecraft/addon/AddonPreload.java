@@ -1,4 +1,4 @@
-package clashsoft.cslib.addon;
+package clashsoft.cslib.minecraft.addon;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -2,6 +2,7 @@ package clashsoft.cslib.minecraft;
 
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.util.CSConfig;
+import clashsoft.cslib.minecraft.util.Convenience;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;

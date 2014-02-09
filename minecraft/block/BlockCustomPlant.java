@@ -5,7 +5,6 @@ import static net.minecraftforge.common.EnumPlantType.*;
 import java.util.List;
 import java.util.Random;
 
-import clashsoft.cslib.minecraft.CustomBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

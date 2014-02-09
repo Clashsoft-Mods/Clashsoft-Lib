@@ -1,10 +1,10 @@
-package clashsoft.cslib.minecraft;
+package clashsoft.cslib.minecraft.block;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import clashsoft.cslib.minecraft.item.IMetaItem;
+import clashsoft.cslib.minecraft.item.meta.IMetaItem;
 import clashsoft.cslib.util.CSArrays;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft;
+package clashsoft.cslib.minecraft.enchantment;
 
 import clashsoft.cslib.util.CSArrays;
 

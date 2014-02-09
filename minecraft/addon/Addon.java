@@ -1,4 +1,4 @@
-package clashsoft.cslib.addon;
+package clashsoft.cslib.minecraft.addon;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,15 +6,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The class AddonPostload
+ * The clas Addon.
  * <p>
- * Marks the {@code postLoad()} method in an {@link Addon} class
+ * An annotation that marks mod parts / mod extensions.
  * 
  * @author Clashsoft
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface AddonPostload
+@Target(ElementType.TYPE)
+public @interface Addon
 {
+	public String modName() default "Clashsoft API";
 	
+	public String addonName();
 }

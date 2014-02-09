@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft;
+package clashsoft.cslib.minecraft.potion;
 
 import clashsoft.cslib.util.CSArrays;
 import cpw.mods.fml.relauncher.Side;

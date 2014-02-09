@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft;
+package clashsoft.cslib.minecraft.lang;
 
 import net.minecraft.util.StatCollector;
 

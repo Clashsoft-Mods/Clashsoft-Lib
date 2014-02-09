@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft.item;
+package clashsoft.cslib.minecraft.item.meta;
 
 /**
  * The Interface IItemMetadataRecipe.

@@ -1,6 +1,5 @@
 package clashsoft.cslib.minecraft.block;
 
-import clashsoft.cslib.minecraft.CustomBlock;
 import clashsoft.cslib.util.CSLog;
 
 import net.minecraft.block.ITileEntityProvider;

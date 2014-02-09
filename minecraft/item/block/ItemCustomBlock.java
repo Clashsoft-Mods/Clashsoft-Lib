@@ -1,7 +1,8 @@
-package clashsoft.cslib.minecraft;
+package clashsoft.cslib.minecraft.item.block;
 
 import java.util.List;
 
+import clashsoft.cslib.minecraft.block.CustomBlock;
 import clashsoft.cslib.minecraft.block.ICustomBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

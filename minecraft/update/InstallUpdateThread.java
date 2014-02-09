@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import clashsoft.cslib.minecraft.Convenience;
+import clashsoft.cslib.minecraft.util.Convenience;
 import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;

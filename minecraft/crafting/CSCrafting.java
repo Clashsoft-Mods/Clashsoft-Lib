@@ -3,8 +3,8 @@ package clashsoft.cslib.minecraft.crafting;
 import java.util.HashMap;
 import java.util.Map;
 
-import clashsoft.cslib.minecraft.Convenience;
-import clashsoft.cslib.minecraft.item.IMetaItemRecipe;
+import clashsoft.cslib.minecraft.item.meta.IMetaItemRecipe;
+import clashsoft.cslib.minecraft.util.Convenience;
 import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 

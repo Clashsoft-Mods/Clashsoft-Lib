@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft;
+package clashsoft.cslib.minecraft.creativetab;
 
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 

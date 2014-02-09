@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft;
+package clashsoft.cslib.minecraft.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
