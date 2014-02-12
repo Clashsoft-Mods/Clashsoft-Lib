@@ -210,7 +210,7 @@ public class CSUpdate
 	 * @param version
 	 *            the version
 	 */
-	public static void doClashsoftUpdateCheck(final EntityPlayer player, final String modName, final String modInitials, final String version)
+	public static void csUpdateCheck(final EntityPlayer player, final String modName, final String modInitials, final String version)
 	{
 		if (player.worldObj.isRemote)
 		{

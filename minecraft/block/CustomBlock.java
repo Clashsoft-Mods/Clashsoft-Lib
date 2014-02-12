@@ -350,20 +350,17 @@ public class CustomBlock extends Block implements ICustomBlock
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		if (this.textures != null && this.icons != null)
+		this.icons = new IIcon[this.textures.length][6];
+		if (this.textures != null)
 		{
-			this.icons = new IIcon[this.textures.length][6];
-			
 			for (int i = 0; i < this.textures.length; i++)
 			{
-				this.icons[i] = new IIcon[this.textures[i].length];
+				String[] textures = this.textures[i];
+				this.icons[i] = new IIcon[textures.length];
 				
-				for (int j = 0; j < this.textures[i].length; j++)
+				for (int j = 0; j < textures.length; j++)
 				{
-					if (!this.textures[i][j].startsWith("%&"))
-					{
-						this.icons[i][j] = iconRegister.registerIcon(this.textures[i][j]);
-					}
+					this.icons[i][j] = iconRegister.registerIcon(textures[j]);
 				}
 			}
 		}
@@ -435,7 +432,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
-		return this.names[stack.getItemDamage()];
+		return this.getUnlocalizedName() + "." + this.names[stack.getItemDamage()];
 	}
 	
 	@Override

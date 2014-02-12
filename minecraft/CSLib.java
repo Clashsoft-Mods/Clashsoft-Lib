@@ -51,7 +51,7 @@ public class CSLib
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			CSUpdate.doClashsoftUpdateCheck((EntityPlayer) event.entity, "Clashsoft API", "csapi", CSLib.VERSION);
+			CSUpdate.csUpdateCheck((EntityPlayer) event.entity, "Clashsoft API", "csapi", CSLib.VERSION);
 		}
 	}
 	
