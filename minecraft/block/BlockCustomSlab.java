@@ -3,7 +3,6 @@ package clashsoft.cslib.minecraft.block;
 import java.util.List;
 import java.util.Random;
 
-import clashsoft.cslib.minecraft.lang.CSLang;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -93,15 +92,6 @@ public class BlockCustomSlab extends BlockStoneSlab implements ICustomBlock
 		}
 	}
 	
-	@Override
-	public void addNames()
-	{
-		for (int i = 0; i < this.names.length; i++)
-		{
-			CSLang.addName(new ItemStack(this, 1, i), this.names[i]);
-		}
-	}
-	
 	public String getFullSlabName(int metadata)
 	{
 		return this.func_150002_b(metadata);
@@ -114,6 +104,12 @@ public class BlockCustomSlab extends BlockStoneSlab implements ICustomBlock
 	public String func_150002_b(int metadata)
 	{
 		return this.names[metadata];
+	}
+	
+	@Override
+	public String getUnlocalizedName(ItemStack stack)
+	{
+		return this.names[stack.getItemDamage()];
 	}
 	
 	@Override

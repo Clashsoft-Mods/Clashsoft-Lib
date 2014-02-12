@@ -2,7 +2,6 @@ package clashsoft.cslib.minecraft.item;
 
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
-import clashsoft.cslib.minecraft.lang.CSLang;
 import clashsoft.cslib.reflect.CSReflection;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -20,7 +19,7 @@ import net.minecraftforge.common.util.EnumHelper;
  * 
  * @author Clashsoft
  */
-public class CSItems
+public class CSItems implements CSStacks
 {
 	/**
 	 * Overrides a vanilla item by registering it with the mod id "minecraft".
@@ -70,9 +69,8 @@ public class CSItems
 	 */
 	public static void addItem(Item item, String name, String modid)
 	{
-		String identifier = clashsoft.cslib.util.CSString.identifier(name);
-		GameRegistry.registerItem(item, identifier, modid);
-		CSLang.addName(item, name);
+		name = clashsoft.cslib.util.CSString.identifier(name);
+		GameRegistry.registerItem(item, name, modid);
 	}
 	
 	/**
@@ -147,7 +145,7 @@ public class CSItems
 	 */
 	public static void addTool(Item item, String name, ItemStack material, int type)
 	{
-		addTool(item, name, material, CSCrafting.STICK, type);
+		addTool(item, name, material, stick, type);
 	}
 	
 	/**

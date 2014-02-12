@@ -2,7 +2,6 @@ package clashsoft.cslib.minecraft.block;
 
 import java.util.List;
 
-import clashsoft.cslib.minecraft.lang.CSLang;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -107,12 +106,9 @@ public class BlockCustomWorkbench extends Block implements ICustomBlock
 	}
 	
 	@Override
-	public void addNames()
+	public String getUnlocalizedName(ItemStack stack)
 	{
-		for (int i = 0; i < this.names.length; i++)
-		{
-			CSLang.addName(new ItemStack(this, 1, i), this.names[i]);
-		}
+		return this.names[stack.getItemDamage()];
 	}
 	
 	@Override

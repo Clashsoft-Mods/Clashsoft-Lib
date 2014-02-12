@@ -98,7 +98,7 @@ public class CSUpdate
 	}
 	
 	/**
-	 * Creates a CLASHSOFT UNIQUE VERSION (e.g. v1.6.4-4)
+	 * Creates a Clashsoft Unique Version (e.g. v1.6.4-4)
 	 * 
 	 * @param rev
 	 *            the rev
@@ -237,15 +237,9 @@ public class CSUpdate
 	public static void doUpdateCheck(final EntityPlayer player, final String modName, final String modInitials, final String version, final String[] updateFile)
 	{
 		if (player.worldObj.isRemote)
-			new Thread(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					ModUpdate update = checkForUpdate(modName, modInitials, version, updateFile);
-					notifyUpdate(player, modName, update);
-				}
-			}).start();
+		{
+			new UpdateThread(player, modInitials, updateFile, version, modName).start();
+		}
 	}
 	
 	/**

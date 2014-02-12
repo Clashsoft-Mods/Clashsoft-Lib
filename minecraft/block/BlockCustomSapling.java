@@ -3,7 +3,6 @@ package clashsoft.cslib.minecraft.block;
 import java.util.List;
 import java.util.Random;
 
-import clashsoft.cslib.minecraft.lang.CSLang;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -23,19 +22,20 @@ import net.minecraftforge.event.terraingen.TerrainGen;
 
 public abstract class BlockCustomSapling extends BlockSapling implements ICustomBlock, IGrowable
 {
-	public String[]	names, iconNames;
+	public String[]	names;
+	public String[] iconNames;
 	
 	@SideOnly(Side.CLIENT)
 	public IIcon[]	icons;
 	
-	public BlockCustomSapling(String[] names, String[] icons)
+	public BlockCustomSapling(String[] names, String[] iconNames)
 	{
 		this.setBlockBounds(0.1F, 0.0F, 0.1F, 0.9F, 0.8F, 0.9F);
 		this.setHardness(0F);
 		this.setStepSound(Block.soundTypeGrass);
 		
 		this.names = names;
-		this.iconNames = icons;
+		this.iconNames = iconNames;
 	}
 	
 	@Override
@@ -146,22 +146,19 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.icons = new IIcon[this.iconNames.length];
-		for (int i = 0; i < this.iconNames.length; ++i)
+		int len = this.iconNames.length;
+		
+		this.icons = new IIcon[len];
+		for (int i = 0; i < len; ++i)
 		{
 			this.icons[i] = iconRegister.registerIcon(this.iconNames[i]);
 		}
-		
-		this.iconNames = null;
 	}
 	
 	@Override
-	public void addNames()
+	public String getUnlocalizedName(ItemStack stack)
 	{
-		for (int i = 0; i < this.names.length; i++)
-		{
-			CSLang.addName(new ItemStack(this, 1, i), this.names[i]);
-		}
+		return this.names[stack.getItemDamage()];
 	}
 	
 	@Override

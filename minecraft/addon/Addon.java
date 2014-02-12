@@ -19,4 +19,6 @@ public @interface Addon
 	public String modName() default "Clashsoft API";
 	
 	public String addonName();
+	
+	public boolean enable() default true;
 }

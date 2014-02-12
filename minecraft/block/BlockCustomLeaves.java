@@ -384,16 +384,16 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.icons = new IIcon[this.iconNames.length];
-		this.opaqueIcons = new IIcon[this.iconNames.length];
+		int len = this.iconNames.length;
 		
-		for (int i = 0; i < this.iconNames.length; ++i)
+		this.icons = new IIcon[len];
+		this.opaqueIcons = new IIcon[len];
+		
+		for (int i = 0; i < len; ++i)
 		{
 			this.icons[i] = iconRegister.registerIcon(this.iconNames[i]);
 			this.opaqueIcons[i] = iconRegister.registerIcon(this.iconNames[i] + "_opaque");
 		}
-		
-		this.iconNames = null;
 	}
 	
 	@Override

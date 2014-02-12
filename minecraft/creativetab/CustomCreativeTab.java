@@ -1,6 +1,6 @@
 package clashsoft.cslib.minecraft.creativetab;
 
-import clashsoft.cslib.minecraft.crafting.CSCrafting;
+import clashsoft.cslib.minecraft.item.CSStacks;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -15,7 +15,7 @@ public class CustomCreativeTab extends CreativeTabs
 	
 	public CustomCreativeTab(String label)
 	{
-		this(label, CSCrafting.WILDCARD_STACK);
+		this(label, CSStacks.air);
 	}
 	
 	public CustomCreativeTab(String label, ItemStack stack)

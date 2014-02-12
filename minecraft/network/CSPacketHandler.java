@@ -2,6 +2,7 @@ package clashsoft.cslib.minecraft.network;
 
 import java.util.EnumMap;
 
+import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -42,11 +43,13 @@ public abstract class CSPacketHandler
 	
 	public void sendPacketToServer(CSPacket packet)
 	{
+		CSLog.info("Sending Packet to Server");
 		this.getServerChannel().generatePacketFrom(packet);
 	}
 	
 	public void sendPacketToClient(CSPacket packet)
 	{
+		CSLog.info("Sending Packet to Client");
 		this.getClientChannel().generatePacketFrom(packet);
 	}
 	

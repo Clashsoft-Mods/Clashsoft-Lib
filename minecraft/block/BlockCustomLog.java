@@ -3,7 +3,6 @@ package clashsoft.cslib.minecraft.block;
 import java.util.List;
 import java.util.Random;
 
-import clashsoft.cslib.minecraft.lang.CSLang;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -104,19 +103,20 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.topIcons = new IIcon[this.topIconNames.length];
-		this.sideIcons = new IIcon[this.sideIconNames.length];
+		int len1 = this.topIconNames.length;
+		int len2 = this.sideIconNames.length;
 		
-		for (int i = 0; i < this.topIconNames.length; ++i)
+		this.topIcons = new IIcon[len1];
+		this.sideIcons = new IIcon[len2];
+		
+		for (int i = 0; i < len1; ++i)
 		{
 			this.topIcons[i] = iconRegister.registerIcon(this.topIconNames[i]);
 		}
-		for (int i = 0; i < this.sideIconNames.length; ++i)
+		for (int i = 0; i < len2; ++i)
 		{
 			this.sideIcons[i] = iconRegister.registerIcon(this.sideIconNames[i]);
 		}
-		
-		this.topIconNames = this.sideIconNames = null;
 	}
 	
 	@Override
@@ -138,12 +138,9 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	}
 	
 	@Override
-	public void addNames()
+	public String getUnlocalizedName(ItemStack stack)
 	{
-		for (int i = 0; i < this.names.length; i++)
-		{
-			CSLang.addName(new ItemStack(this, 1, i), this.names[i]);
-		}
+		return this.names[stack.getItemDamage()];
 	}
 	
 	@Override

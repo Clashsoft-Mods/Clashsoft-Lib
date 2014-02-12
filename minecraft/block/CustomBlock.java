@@ -3,7 +3,6 @@ package clashsoft.cslib.minecraft.block;
 import java.util.List;
 import java.util.Random;
 
-import clashsoft.cslib.minecraft.lang.CSLang;
 import clashsoft.cslib.util.CSString;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,7 +23,10 @@ import net.minecraft.world.World;
 public class CustomBlock extends Block implements ICustomBlock
 {
 	/** The names. */
-	public String[]			names, descriptions;
+	public String[]			names;
+	
+	/** The descriptions */
+	public String[]			descriptions;
 	
 	/** The textures. */
 	public String[][]		textures;
@@ -418,7 +420,9 @@ public class CustomBlock extends Block implements ICustomBlock
 	public int damageDropped(int metadata)
 	{
 		if (this.drops[metadata] != null)
+		{
 			return this.drops[metadata].getItemDamage();
+		}
 		return metadata;
 	}
 	
@@ -429,12 +433,9 @@ public class CustomBlock extends Block implements ICustomBlock
 	}
 	
 	@Override
-	public void addNames()
+	public String getUnlocalizedName(ItemStack stack)
 	{
-		for (int i = 0; i < this.names.length; i++)
-		{
-			CSLang.addName(new ItemStack(this, 1, i), this.names[i]);
-		}
+		return this.names[stack.getItemDamage()];
 	}
 	
 	@Override
@@ -442,6 +443,8 @@ public class CustomBlock extends Block implements ICustomBlock
 	{
 		int metadata = stack.getItemDamage();
 		if (this.descriptions[metadata] != null && !this.descriptions[metadata].isEmpty())
+		{
 			list.addAll(CSString.lineList(this.descriptions[metadata]));
+		}
 	}
 }

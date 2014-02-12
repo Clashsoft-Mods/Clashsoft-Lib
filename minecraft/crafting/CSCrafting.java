@@ -3,14 +3,13 @@ package clashsoft.cslib.minecraft.crafting;
 import java.util.HashMap;
 import java.util.Map;
 
+import clashsoft.cslib.minecraft.item.CSStacks;
 import clashsoft.cslib.minecraft.item.meta.IMetaItemRecipe;
 import clashsoft.cslib.minecraft.util.Convenience;
 import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -26,19 +25,8 @@ import net.minecraftforge.oredict.OreDictionary;
  * 
  * @author Clashsoft
  */
-public class CSCrafting
+public class CSCrafting implements CSStacks
 {
-	public static final ItemStack	WILDCARD_STACK	= new ItemStack(Blocks.air);
-	
-	/** The Constant FIRE. */
-	private static final ItemStack	FIRE			= new ItemStack(Blocks.fire, 1, 0);
-	
-	/** The Constant COAL. */
-	private static final ItemStack	COAL			= new ItemStack(Items.coal, 1, 0);
-	
-	/** The Constant STICK. */
-	public static final ItemStack	STICK			= new ItemStack(Items.stick, 1, 0);
-	
 	public static void registerRecipe(IRecipe recipe)
 	{
 		CraftingManager.getInstance().getRecipeList().add(recipe);
@@ -199,17 +187,18 @@ public class CSCrafting
 	/**
 	 * Adds a recipe for a storage block. The size can be
 	 * <p>
-	 * 1: [I] -> [O]
+	 * 1:<br>
+	 * [X] -> [O]
 	 * <p>
-	 * 2: [I][I]
+	 * 2:<br>
+	 * [X][X]<br>
+	 * [X][X] -> [O]
 	 * <p>
-	 * [I][I] -> [O]
+	 * 3:
 	 * <p>
-	 * 3: [I][I][I]
-	 * <p>
-	 * [I][I][I] -> [O]
-	 * <p>
-	 * [I][I][I]
+	 * [X][X][X]<br>
+	 * [X][X][X] -> [O]<br>
+	 * [X][X][X]
 	 * 
 	 * @param input
 	 *            the input
@@ -310,12 +299,13 @@ public class CSCrafting
 	 */
 	public static void addToolRecipe(ItemStack output, ItemStack material, int type)
 	{
-		addToolRecipe(output, material, STICK, type);
+		addToolRecipe(output, material, stick, type);
 	}
 	
 	/**
-	 * Adds a new tool-shaped recipe to the game. (Type 0 = Sword, Type 1 = Spade, Type 2 = Pickaxe,
-	 * Type 3 = Axe, Type 4 = Hoe)
+	 * Adds a new tool-shaped recipe to the game.
+	 * <p>
+	 * Type 0 = Sword, Type 1 = Spade, Type 2 = Pickaxe, Type 3 = Axe, Type 4 = Hoe
 	 * 
 	 * @param output
 	 *            the output
@@ -329,14 +319,7 @@ public class CSCrafting
 	public static void addToolRecipe(ItemStack output, ItemStack material, ItemStack stick, int type)
 	{
 		if (type == 0)
-			addCrafting(output, new Object[] {
-					"X",
-					"X",
-					"|",
-					'X',
-					material,
-					'|',
-					stick });
+			addCrafting(output, "X", "X", "|", 'X', material, '|', stick);
 		else if (type == 1)
 			addCrafting(output, "X", "|", "|", 'X', material, '|', stick);
 		else if (type == 2)
@@ -355,7 +338,7 @@ public class CSCrafting
 	 */
 	public static void removeRecipe(Object... recipe)
 	{
-		addCrafting(WILDCARD_STACK, recipe);
+		addCrafting(air, recipe);
 	}
 	
 	/**
@@ -420,8 +403,8 @@ public class CSCrafting
 			{
 				return new ItemStack[][] {
 						{ null, (ItemStack) recipe.getData()[0], null },
-						{ null, FIRE, null },
-						{ null, COAL, null } };
+						{ null, fire, null },
+						{ null, coal, null } };
 			}
 			else if (recipe.getCraftingType() == IMetaItemRecipe.CRAFTING_SHAPELESS)
 			{
