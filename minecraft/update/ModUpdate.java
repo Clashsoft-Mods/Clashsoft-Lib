@@ -1,6 +1,5 @@
 package clashsoft.cslib.minecraft.update;
 
-import java.util.Collections;
 import java.util.List;
 
 import clashsoft.cslib.minecraft.lang.I18n;
@@ -40,8 +39,7 @@ public class ModUpdate
 		this.newVersion = newVersion;
 		this.updateNotes = updateNotes;
 		this.updateUrl = updateUrl;
-		
-		Collections.sort(updateNotes);
+		this.validate();
 	}
 	
 	public void validate()
