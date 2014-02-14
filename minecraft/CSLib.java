@@ -53,12 +53,12 @@ public class CSLib
 	{
 		CSUpdate.updateCheck(CSUpdate.CLASHSOFT_UPDATE_NOTES);
 		
-		CSUpdate.addUpdate(new ModUpdate(NAME, ACRONYM, VERSION, "1.7.2-1", CSArrays.asList(new String[] {
+		CSUpdate.addUpdate(new ModUpdate(NAME, VERSION, "1.7.2-1", CSArrays.asList(new String[] {
 				"+ Added stuff",
 				"+ Added more stuff",
 				"* Fixed a bug",
 				"* Fixed another bug",
-				"- Removed Something" }), "clashsoft.weebly.com"));
+				"- Removed Something" }), "http://clashsoft.weebly.com"));
 		
 		MinecraftForge.EVENT_BUS.register(this);
 	}

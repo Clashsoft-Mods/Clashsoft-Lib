@@ -4,7 +4,6 @@ import java.util.*;
 
 import clashsoft.cslib.minecraft.CSLib;
 import clashsoft.cslib.minecraft.util.CSWeb;
-import clashsoft.cslib.util.CSArrays;
 import clashsoft.cslib.util.CSString;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +19,7 @@ import net.minecraft.util.ChatComponentTranslation;
  */
 public class CSUpdate
 {
-	/** The found updates. */
+	/** The updates already found. */
 	public static Map<String, ModUpdate>	updates					= new HashMap();
 	
 	/** The Constant CURRENT_VERSION. */
@@ -57,24 +56,28 @@ public class CSUpdate
 		
 		String key = line.substring(0, i0);
 		
-		if ((modName == null || key.equals(modName)) || (acronym == null || key.equals(acronym)))
+		if (modName == null)
+		{
+			modName = key;
+		}
+		
+		if (key.equals(modName) || key.equals(acronym))
 		{
 			String newVersion = line.substring(i0 + 1, i1);
 			if (version == null || !newVersion.equals(version))
 			{
-				List<String> updateNotes = null;
+				String updateNotes = null;
 				String updateUrl = null;
 				if (i1 != -1)
 				{
-					String s = line.substring(i1 + 1, i2 == -1 ? line.length() : i2);
-					updateNotes = CSArrays.asList(s.split("\\\n"));
+					updateNotes = line.substring(i1 + 1, i2 == -1 ? line.length() : i2);
 				}
 				if (i2 != -1)
 				{
 					updateUrl = line.substring(i2 + 1);
 				}
 				
-				return new ModUpdate(modName, acronym, version, newVersion, updateNotes, updateUrl);
+				return new ModUpdate(modName, version, newVersion, updateNotes, updateUrl);
 			}
 		}
 		return null;
@@ -108,12 +111,22 @@ public class CSUpdate
 		return updates.get(modName);
 	}
 	
-	public static void addUpdate(ModUpdate update)
+	public static ModUpdate addUpdate(ModUpdate update)
 	{
 		if (update != null)
 		{
-			updates.put(update.modName, update);
+			ModUpdate update1 = getUpdate(update.modName);
+			if (update1 != null)
+			{
+				update1.combine(update);
+				return update1;
+			}
+			else
+			{
+				updates.put(update.modName, update);
+			}
 		}
+		return update;
 	}
 	
 	public static ModUpdate getUpdate(String modName, String acronym, String version, String[] updateFile)
@@ -130,8 +143,7 @@ public class CSUpdate
 			update = readUpdateLine(line, modName, acronym, version);
 			if (update != null)
 			{
-				addUpdate(update);
-				return update;
+				return addUpdate(update);
 			}
 		}
 		return null;
@@ -231,16 +243,20 @@ public class CSUpdate
 	
 	public static int compareVersion(String version1, String version2)
 	{
-		int i1 = version1.indexOf('-');
-		int i2 = version2.indexOf('-');
-		int mcv1 = Integer.parseInt(version1.substring(0, i1).replace(".", ""));
-		int mcv2 = Integer.parseInt(version2.substring(0, i2).replace(".", ""));
-		int rev1 = Integer.parseInt(version1.substring(i1 + 1));
-		int rev2 = Integer.parseInt(version2.substring(i2 + 1));
+		if (version1 == null)
+		{
+			return -1;
+		}
+		if (version2 == null)
+		{
+			return 1;
+		}
 		
-		int v1 = mcv1 << 4 | rev1;
-		int v2 = mcv2 << 4 | rev2;
+		String s1 = version1.replace(".", "").replace("-", ".");
+		String s2 = version2.replace(".", "").replace("-", ".");
+		float f1 = Float.parseFloat(s1);
+		float f2 = Float.parseFloat(s2);
 		
-		return Integer.compare(v1, v2);
+		return Float.compare(f1, f2);
 	}
 }

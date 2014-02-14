@@ -54,13 +54,9 @@ public class GuiModUpdatesSlot extends GuiScrollingList
 		if (update != null)
 		{
 			int color = update.isValid() ? 0x00FF00 : 0xFF0000;
-			font.drawStringWithShadow(update.modName, x + 2, y + 2, color);
-			font.drawStringWithShadow(update.version + " ->", x + 2, y + 12, 0xFFFFFF);
-			font.drawStringWithShadow(update.newVersion, x + 2, y + 22, color);
-		}
-		else
-		{
-			font.drawStringWithShadow("NULL", x + 2, y + 2, 0xFFFFFF);
+			font.drawStringWithShadow(update.getName(), x + 2, y + 2, color);
+			font.drawStringWithShadow(update.version, x + 2, y + 12, 0xFFFFFF);
+			font.drawStringWithShadow(update.getStatus(), x + 2, y + 22, 0xFFFFFF);
 		}
 	}
 }

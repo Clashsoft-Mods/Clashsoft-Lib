@@ -26,27 +26,22 @@ public class InstallUpdateThread extends Thread
 	/** The player used for chat message notifications. */
 	private EntityPlayer	player;
 	
-	/**
-	 * Instantiates a new install update thread.
-	 * 
-	 * @param update
-	 *            the update
-	 * @param player
-	 *            the player
-	 */
 	public InstallUpdateThread(ModUpdate update, EntityPlayer player)
 	{
 		this.update = update;
 		this.player = player;
 	}
 	
-	/**
-	 * Installs the mod update by downloading the file from {@link ModUpdate#updateUrl} and deleting
-	 * old mod versions.
-	 */
 	@Override
 	public void run()
 	{
+		if (!this.update.hasDownload())
+		{
+			return;
+		}
+		
+		this.update.installStatus = 1;
+		
 		String modName = this.update.modName;
 		String newVersion = this.update.newVersion;
 		String mod = this.update.getName();
@@ -72,6 +67,7 @@ public class InstallUpdateThread extends Thread
 			if (output.exists())
 			{
 				this.player.addChatMessage(new ChatComponentTranslation("update.install.skipping", mod));
+				this.update.installStatus = 2;
 				return;
 			}
 			
@@ -94,11 +90,15 @@ public class InstallUpdateThread extends Thread
 			out.close();
 			
 			this.player.addChatMessage(new ChatComponentTranslation("update.install.success", mod));
+			
+			this.update.installStatus = 2;
 		}
 		catch (Exception ex)
 		{
 			CSLog.error(ex);
 			this.player.addChatMessage(new ChatComponentTranslation("update.install.failure", mod, ex.getMessage()));
+			
+			this.update.installStatus = -1;
 		}
 	}
 	
