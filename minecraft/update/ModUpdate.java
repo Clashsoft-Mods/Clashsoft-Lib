@@ -1,5 +1,8 @@
 package clashsoft.cslib.minecraft.update;
 
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -11,24 +14,25 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class ModUpdate
 {
-	
 	/** The mod name. */
-	public String	modName;
+	public String		modName;
 	
 	/** The mod initials. */
-	public String	modInitials;
+	public String		modInitials;
 	
 	/** The current mod version. */
-	public String	version;
+	public String		version;
 	
 	/** The new mod version. (May be the same as {@link ModUpdate#version}) */
-	public String	newVersion;
+	public String		newVersion;
 	
 	/** The update notes. (May be empty) */
-	public String	updateNotes;
+	public List<String>		updateNotes;
 	
 	/** The update url. */
-	public String	updateUrl;
+	public String		updateUrl;
+	
+	protected boolean	valid;
 	
 	/**
 	 * Instantiates a new mod update.
@@ -46,7 +50,7 @@ public class ModUpdate
 	 * @param updateUrl
 	 *            the update url
 	 */
-	public ModUpdate(String modName, String modInitials, String version, String newVersion, String updateNotes, String updateUrl)
+	public ModUpdate(String modName, String modInitials, String version, String newVersion, List<String> updateNotes, String updateUrl)
 	{
 		this.modName = modName;
 		this.modInitials = modInitials;
@@ -54,6 +58,27 @@ public class ModUpdate
 		this.newVersion = newVersion;
 		this.updateNotes = updateNotes;
 		this.updateUrl = updateUrl;
+		
+		Collections.sort(updateNotes);
+		
+		this.valid = newVersion.startsWith(CSUpdate.CURRENT_VERSION) && CSUpdate.compareVersion(version, newVersion) == -1;
+	}
+	
+	public String getName()
+	{
+		return this.modName + " " + this.version;
+	}
+	
+	public String getVersionChanges()
+	{
+		if (this.isValid())
+		{
+			return this.version + " -> " + this.newVersion;
+		}
+		else
+		{
+			return this.version;
+		}
 	}
 	
 	/**
@@ -64,7 +89,12 @@ public class ModUpdate
 	 */
 	public boolean isValid()
 	{
-		return CSUpdate.compareVersion(this.version, this.newVersion) == -1 && this.newVersion.startsWith(CSUpdate.CURRENT_VERSION);
+		return this.valid;
+	}
+	
+	public String getDownloadedFileName()
+	{
+		return this.updateUrl.substring(this.updateUrl.lastIndexOf('/')).replace('+', ' ');
 	}
 	
 	/**
@@ -73,7 +103,7 @@ public class ModUpdate
 	 * @param player
 	 *            the player used for chat message notifications
 	 */
-	public void install(final EntityPlayer player)
+	public void install(EntityPlayer player)
 	{
 		if (this.isValid() && !this.updateUrl.isEmpty())
 		{

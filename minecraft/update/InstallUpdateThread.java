@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import clashsoft.cslib.minecraft.util.Convenience;
 import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -12,7 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ChatComponentTranslation;
 
 /**
  * The class InstallUpdateThread.
@@ -48,31 +47,40 @@ public class InstallUpdateThread extends Thread
 	@Override
 	public void run()
 	{
-		Convenience.addChatMessage(this.player, "Installing " + this.update.modName + " version " + this.update.newVersion);
+		String modName = this.update.modName;
+		String newVersion = this.update.newVersion;
+		String mod = this.update.getName();
+		
+		this.player.addChatMessage(new ChatComponentTranslation("update.install", modName, newVersion));
 		
 		File file;
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		{
 			file = Minecraft.getMinecraft().mcDataDir;
+		}
 		else
+		{
 			file = new File(MinecraftServer.getServer().getFolderName());
+		}
 		
 		File mods = new File(file, "mods");
 		
 		try
 		{
-			File output = new File(mods, this.update.updateUrl.substring(this.update.updateUrl.lastIndexOf('/')).replace('+', ' '));
+			File output = new File(mods, this.update.getDownloadedFileName());
 			
 			if (output.exists())
 			{
-				Convenience.addChatMessage(this.player, EnumChatFormatting.GREEN + "Latest Mod version found - Skipping download.");
+				this.player.addChatMessage(new ChatComponentTranslation("update.install.skipping", mod));
 				return;
 			}
 			
 			for (File f : mods.listFiles())
 			{
-				if (f.getName().startsWith(this.update.modName))
+				String fileName = f.getName();
+				if (fileName.startsWith(modName))
 				{
-					Convenience.addChatMessage(this.player, EnumChatFormatting.YELLOW + "Old Mod version detected (" + f.getName() + "). Deleting.");
+					this.player.addChatMessage(new ChatComponentTranslation("update.install.oldversion", modName, fileName));
 					f.delete();
 				}
 			}
@@ -85,12 +93,12 @@ public class InstallUpdateThread extends Thread
 			copy(in, out, 1024);
 			out.close();
 			
-			Convenience.addChatMessage(this.player, EnumChatFormatting.GREEN + "Update installed. Restart the game to apply changes.");
+			this.player.addChatMessage(new ChatComponentTranslation("update.install.success", mod));
 		}
 		catch (Exception ex)
 		{
 			CSLog.error(ex);
-			Convenience.addChatMessage(this.player, EnumChatFormatting.RED + "Error while installing update: " + ex.getMessage());
+			this.player.addChatMessage(new ChatComponentTranslation("update.install.failure", mod, ex.getMessage()));
 		}
 	}
 	
