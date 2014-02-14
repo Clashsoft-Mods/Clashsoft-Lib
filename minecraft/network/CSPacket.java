@@ -1,5 +1,6 @@
 package clashsoft.cslib.minecraft.network;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.World;
@@ -7,9 +8,20 @@ import net.minecraftforge.common.DimensionManager;
 
 public abstract class CSPacket
 {
+	public CSPacket()
+	{
+		
+	}
+	
 	public abstract void write(PacketBuffer buf);
 	
 	public abstract void read(PacketBuffer buf);
+	
+	public abstract void handleClient(EntityPlayer player);
+	
+	public abstract void handleServer(EntityPlayer player);
+	
+	// Helper methods
 	
 	public final void writeWorld(PacketBuffer buf, World world)
 	{
