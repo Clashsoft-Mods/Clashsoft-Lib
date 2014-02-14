@@ -35,70 +35,68 @@ public class InstallUpdateThread extends Thread
 	@Override
 	public void run()
 	{
-		if (!this.update.hasDownload())
+		if (this.update.isValid() && this.update.hasDownload())
 		{
-			return;
-		}
-		
-		this.update.installStatus = 1;
-		
-		String modName = this.update.modName;
-		String newVersion = this.update.newVersion;
-		String mod = this.update.getName();
-		
-		this.player.addChatMessage(new ChatComponentTranslation("update.install", modName, newVersion));
-		
-		File file;
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-		{
-			file = Minecraft.getMinecraft().mcDataDir;
-		}
-		else
-		{
-			file = new File(MinecraftServer.getServer().getFolderName());
-		}
-		
-		File mods = new File(file, "mods");
-		
-		try
-		{
-			File output = new File(mods, this.update.getDownloadedFileName());
+			this.update.installStatus = 1;
 			
-			if (output.exists())
+			String modName = this.update.modName;
+			String newVersion = this.update.newVersion;
+			String mod = this.update.getName();
+			
+			this.player.addChatMessage(new ChatComponentTranslation("update.install", modName, newVersion));
+			
+			File file;
+			if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 			{
-				this.player.addChatMessage(new ChatComponentTranslation("update.install.skipping", mod));
-				this.update.installStatus = 2;
-				return;
+				file = Minecraft.getMinecraft().mcDataDir;
+			}
+			else
+			{
+				file = new File(MinecraftServer.getServer().getFolderName());
 			}
 			
-			for (File f : mods.listFiles())
+			File mods = new File(file, "mods");
+			
+			try
 			{
-				String fileName = f.getName();
-				if (fileName.startsWith(modName))
+				File output = new File(mods, this.update.getDownloadedFileName());
+				
+				if (output.exists())
 				{
-					this.player.addChatMessage(new ChatComponentTranslation("update.install.oldversion", modName, fileName));
-					f.delete();
+					this.player.addChatMessage(new ChatComponentTranslation("update.install.skipping", mod));
+					this.update.installStatus = 2;
+					return;
 				}
+				
+				for (File f : mods.listFiles())
+				{
+					String fileName = f.getName();
+					if (fileName.startsWith(modName))
+					{
+						this.player.addChatMessage(new ChatComponentTranslation("update.install.oldversion", modName, fileName));
+						f.delete();
+					}
+				}
+				
+				URL url = new URL(this.update.updateUrl);
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setRequestMethod("GET");
+				InputStream in = connection.getInputStream();
+				FileOutputStream out = new FileOutputStream(output);
+				copy(in, out, 1024);
+				out.close();
+				
+				this.player.addChatMessage(new ChatComponentTranslation("update.install.success", mod));
+				
+				this.update.installStatus = 2;
 			}
-			
-			URL url = new URL(this.update.updateUrl);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
-			InputStream in = connection.getInputStream();
-			FileOutputStream out = new FileOutputStream(output);
-			copy(in, out, 1024);
-			out.close();
-			
-			this.player.addChatMessage(new ChatComponentTranslation("update.install.success", mod));
-			
-			this.update.installStatus = 2;
-		}
-		catch (Exception ex)
-		{
-			CSLog.error(ex);
-			this.player.addChatMessage(new ChatComponentTranslation("update.install.failure", mod, ex.getMessage()));
-			
-			this.update.installStatus = -1;
+			catch (Exception ex)
+			{
+				CSLog.error(ex);
+				this.player.addChatMessage(new ChatComponentTranslation("update.install.failure", mod, ex.getMessage()));
+				
+				this.update.installStatus = -1;
+			}
 		}
 	}
 	

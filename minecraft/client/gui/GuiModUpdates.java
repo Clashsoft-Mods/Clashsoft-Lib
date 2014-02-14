@@ -1,5 +1,6 @@
 package clashsoft.cslib.minecraft.client.gui;
 
+import java.net.URI;
 import java.util.List;
 
 import clashsoft.cslib.minecraft.lang.I18n;
@@ -7,6 +8,7 @@ import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.update.ModUpdate;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiScreen;
 
 public class GuiModUpdates extends GuiScreen
@@ -41,11 +43,12 @@ public class GuiModUpdates extends GuiScreen
 	@Override
 	public void initGui()
 	{
-		this.buttonShowInvalidUpdates = new GuiButton(2, 10, this.height - 38, 140, 20, getShowInvalidUpdates());
+		this.buttonShowInvalidUpdates = new GuiButton(10, 10, this.height - 38, 140, 20, getShowInvalidUpdates());
 		
 		this.buttonList.add(new GuiButton(0, this.width / 2, this.height - 38, 140, 20, I18n.getString("gui.done")));
 		this.buttonList.add(new GuiButton(1, this.width - 90, 35, 80, 20, I18n.getString("update.list.install")));
 		this.buttonList.add(this.buttonShowInvalidUpdates);
+		this.buttonList.add(new GuiButton(2, 10, this.height - 60, 140, 20, I18n.getString("update.list.installall")));
 		this.slots = new GuiModUpdatesSlot(this);
 	}
 	
@@ -93,6 +96,20 @@ public class GuiModUpdates extends GuiScreen
 		super.drawScreen(mouseX, mouseY, partialTickTime);
 	}
 	
+	@Override
+	protected void mouseClicked(int x, int y, int which)
+	{
+		super.mouseClicked(x, y, which);
+		
+		String url = this.update.updateUrl;
+		int i = this.fontRendererObj.getStringWidth(url);
+		
+		if (x >= 260 && x <= 260 + i && y >= 80 && y < 90)
+		{
+			this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
+		}
+	}
+	
 	public int getDiffColor(String line)
 	{
 		switch (line.charAt(0))
@@ -126,10 +143,43 @@ public class GuiModUpdates extends GuiScreen
 		}
 		else if (button.id == 2)
 		{
+			for (ModUpdate update : this.updates)
+			{
+				if (update != null)
+				{
+					update.install(this.mc.thePlayer);
+				}
+			}
+		}
+		else if (button.id == 10)
+		{
 			this.showInvalidUpdates = !this.showInvalidUpdates;
 			button.displayString = getShowInvalidUpdates();
 			
 			this.updateList();
+		}
+	}
+	
+	@Override
+	public void confirmClicked(boolean flag, int id)
+	{
+		if (flag && id == 0)
+		{
+			URI uri = URI.create(this.update.updateUrl);
+			try
+			{
+				Class oclass = Class.forName("java.awt.Desktop");
+				Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object) null, new Object[0]);
+				oclass.getMethod("browse", new Class[] { URI.class }).invoke(object, new Object[] { uri });
+			}
+			catch (Throwable throwable)
+			{
+				throwable.printStackTrace();
+			}
+		}
+		else
+		{
+			this.mc.displayGuiScreen(this);
 		}
 	}
 	

@@ -73,7 +73,7 @@ public class CSLib
 			proxy.displayUpdatesGUI();
 			event.setCanceled(true);
 		}
-		else if (message.startsWith(">update"))
+		else if (message.startsWith(">update "))
 		{
 			String modName = message.substring(8);
 			CSUpdate.update(event.player, modName);
