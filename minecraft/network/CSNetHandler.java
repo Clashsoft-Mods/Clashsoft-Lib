@@ -8,6 +8,7 @@ import io.netty.handler.codec.MessageToMessageCodec;
 
 import java.util.*;
 
+import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
@@ -31,7 +32,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	
 	protected EnumMap<Side, FMLEmbeddedChannel>	channels;
 	protected List<Class<? extends CSPacket>>	packets				= new ArrayList();
-	protected boolean								isPostInitialised	= false;
+	protected boolean							isPostInitialised	= false;
 	
 	public CSNetHandler(String name)
 	{
@@ -175,8 +176,15 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	public void sendToAll(CSPacket message)
 	{
 		FMLEmbeddedChannel channel = this.channels.get(Side.SERVER);
-		channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
-		channel.writeAndFlush(message);
+		if (channel != null)
+		{
+			channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
+			channel.writeAndFlush(message);
+		}
+		else
+		{
+			CSLog.error("Unable to send packet to players: No Server Channel!");
+		}
 	}
 	
 	/**
@@ -192,9 +200,16 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	public void sendTo(CSPacket message, EntityPlayerMP player)
 	{
 		FMLEmbeddedChannel channel = this.channels.get(Side.SERVER);
-		channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
-		channel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);
-		channel.writeAndFlush(message);
+		if (channel != null)
+		{
+			channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
+			channel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);
+			channel.writeAndFlush(message);
+		}
+		else
+		{
+			CSLog.error("Unable to send packet to player: No Server Channel!");
+		}
 	}
 	
 	/**
@@ -211,9 +226,16 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	public void sendToAllAround(CSPacket message, NetworkRegistry.TargetPoint point)
 	{
 		FMLEmbeddedChannel channel = this.channels.get(Side.SERVER);
-		channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
-		channel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(point);
-		channel.writeAndFlush(message);
+		if (channel != null)
+		{
+			channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
+			channel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(point);
+			channel.writeAndFlush(message);
+		}
+		else
+		{
+			CSLog.error("Unable to send packet to players around point: No Server Channel!");
+		}
 	}
 	
 	/**
@@ -229,9 +251,16 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	public void sendToDimension(CSPacket message, int dimensionId)
 	{
 		FMLEmbeddedChannel channel = this.channels.get(Side.SERVER);
-		channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
-		channel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(dimensionId);
-		channel.writeAndFlush(message);
+		if (channel != null)
+		{
+			channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
+			channel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(dimensionId);
+			channel.writeAndFlush(message);
+		}
+		else
+		{
+			CSLog.error("Unable to send packet to players in dimension: No Server Channel!");
+		}
 	}
 	
 	/**
@@ -245,7 +274,14 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	public void sendToServer(CSPacket message)
 	{
 		FMLEmbeddedChannel channel = this.channels.get(Side.CLIENT);
-		channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
-		channel.writeAndFlush(message);
+		if (channel != null)
+		{
+			channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
+			channel.writeAndFlush(message);
+		}
+		else
+		{
+			CSLog.error("Unable to send packet to server: No Client Channel!");
+		}
 	}
 }
