@@ -54,13 +54,18 @@ public class CSBlocks
 		
 		for (Block block : blocks)
 		{
-			addBlock(block, block.getUnlocalizedName());
+			addBlock(block);
 		}
 	}
 	
 	public static void addBlock(Block block)
 	{
-		addBlock(block, block.getUnlocalizedName());
+		String name = block.getUnlocalizedName();
+		if (name.startsWith("tile."))
+		{
+			name = name.substring(5);
+		}
+		addBlock(block, name);
 	}
 	
 	/**

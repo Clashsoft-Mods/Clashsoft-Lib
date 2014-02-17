@@ -1,6 +1,5 @@
-package clashsoft.cslib.minecraft.block;
+package clashsoft.cslib.minecraft.item;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -200,7 +199,7 @@ public class CustomItem extends Item
 		String desc = I18n.getString(key);
 		if (desc != key)
 		{
-			list.addAll(Arrays.asList(desc.split("\n")));
+			list.addAll(CSString.lineList(desc));
 		}
 	}
 	

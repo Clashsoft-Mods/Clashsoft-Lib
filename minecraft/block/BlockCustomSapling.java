@@ -23,7 +23,7 @@ import net.minecraftforge.event.terraingen.TerrainGen;
 public abstract class BlockCustomSapling extends BlockSapling implements ICustomBlock, IGrowable
 {
 	public String[]	names;
-	public String[] iconNames;
+	public String[]	iconNames;
 	
 	@SideOnly(Side.CLIENT)
 	public IIcon[]	icons;
@@ -158,7 +158,12 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
-		return this.names[stack.getItemDamage()];
+		int metadata = stack.getItemDamage();
+		if (metadata < this.names.length)
+		{
+			return this.getUnlocalizedName() + "." + this.names[metadata];
+		}
+		return this.getUnlocalizedName();
 	}
 	
 	@Override

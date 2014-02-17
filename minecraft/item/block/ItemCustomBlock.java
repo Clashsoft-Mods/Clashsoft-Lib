@@ -4,6 +4,7 @@ import java.util.List;
 
 import clashsoft.cslib.minecraft.block.CustomBlock;
 import clashsoft.cslib.minecraft.block.ICustomBlock;
+import clashsoft.cslib.minecraft.lang.I18n;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -13,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 
 /**
  * The Class ItemCustomBlock.
@@ -61,13 +61,13 @@ public class ItemCustomBlock extends ItemBlock
 	@Override
 	public String getItemStackDisplayName(ItemStack stack)
 	{
-		return StatCollector.translateToLocal(this.getUnlocalizedName(stack) + ".name");
+		return I18n.getString(this.getUnlocalizedName(stack) + ".name");
 	}
 	
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
-		return this.customBlock != null ? this.customBlock.getUnlocalizedName(stack) : this.theBlock.getUnlocalizedName();
+		return this.customBlock != null ? this.customBlock.getUnlocalizedName(stack) : this.getUnlocalizedName();
 	}
 	
 	@Override

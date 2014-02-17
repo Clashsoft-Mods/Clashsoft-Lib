@@ -140,7 +140,12 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
-		return this.names[stack.getItemDamage()];
+		int metadata = stack.getItemDamage();
+		if (metadata < this.names.length)
+		{
+			return this.getUnlocalizedName() + "." + this.names[metadata];
+		}
+		return this.getUnlocalizedName();
 	}
 	
 	@Override

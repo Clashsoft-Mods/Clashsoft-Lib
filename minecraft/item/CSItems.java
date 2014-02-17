@@ -40,8 +40,18 @@ public class CSItems implements CSStacks
 		
 		for (Item item : items)
 		{
-			addItem(item, item.getUnlocalizedName());
+			addItem(item);
 		}
+	}
+	
+	public static void addItem(Item item)
+	{
+		String name = item.getUnlocalizedName();
+		if (name.startsWith("item."))
+		{
+			name = name.substring(5);
+		}
+		addItem(item, name);
 	}
 	
 	/**

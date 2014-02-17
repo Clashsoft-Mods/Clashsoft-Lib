@@ -3,6 +3,7 @@ package clashsoft.cslib.minecraft.block;
 import java.util.List;
 import java.util.Random;
 
+import clashsoft.cslib.minecraft.lang.I18n;
 import clashsoft.cslib.util.CSString;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,9 +25,6 @@ public class CustomBlock extends Block implements ICustomBlock
 {
 	/** The names. */
 	public String[]			names;
-	
-	/** The descriptions */
-	public String[]			descriptions;
 	
 	/** The textures. */
 	public String[][]		textures;
@@ -57,7 +55,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * 
 	 * @param material
 	 *            the material
-	 * @param displayNames
+	 * @param names
 	 *            the display names
 	 * @param iconNames
 	 *            the icon names
@@ -68,12 +66,11 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * @param creativeTabs
 	 *            the creative tabs
 	 */
-	public CustomBlock(Material material, String[] displayNames, String[][] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
+	public CustomBlock(Material material, String[] names, String[][] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
 	{
 		super(material);
 		
-		this.names = displayNames;
-		this.descriptions = new String[displayNames.length];
+		this.names = names;
 		this.textures = iconNames;
 		
 		this.opaque = opaque;
@@ -84,12 +81,14 @@ public class CustomBlock extends Block implements ICustomBlock
 		
 		for (int i = 0; i < this.disabled.length; i++)
 		{
-			this.disabled[i] = displayNames[i] == null || displayNames[i].isEmpty() || displayNames[i].startsWith("%&");
+			this.disabled[i] = names[i] == null || names[i].isEmpty() || names[i].startsWith("%&");
 		}
 		
 		this.tabs = creativeTabs;
 		if (this.tabs != null)
+		{
 			this.setCreativeTab(creativeTabs[0]);
+		}
 	}
 	
 	/**
@@ -97,7 +96,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * 
 	 * @param material
 	 *            the material
-	 * @param displayNames
+	 * @param names
 	 *            the display names
 	 * @param iconNames
 	 *            the icon names
@@ -108,9 +107,9 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * @param creativeTabs
 	 *            the creative tabs
 	 */
-	public CustomBlock(Material material, String[] displayNames, String[] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
+	public CustomBlock(Material material, String[] names, String[] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
 	{
-		this(material, displayNames, iconMetadataToSideArray(iconNames), opaque, renderType, creativeTabs);
+		this(material, names, iconMetadataToSideArray(iconNames), opaque, renderType, creativeTabs);
 	}
 	
 	/**
@@ -118,7 +117,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * 
 	 * @param material
 	 *            the material
-	 * @param displayName
+	 * @param name
 	 *            the display name
 	 * @param iconNames
 	 *            the icon names
@@ -129,9 +128,9 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * @param creativeTabs
 	 *            the creative tabs
 	 */
-	public CustomBlock(Material material, String displayName, String iconNames, boolean opaque, int renderType, CreativeTabs creativeTabs)
+	public CustomBlock(Material material, String name, String iconNames, boolean opaque, int renderType, CreativeTabs creativeTabs)
 	{
-		this(material, new String[] { displayName }, new String[][] { {
+		this(material, new String[] { name }, new String[][] { {
 				iconNames,
 				iconNames,
 				iconNames,
@@ -145,16 +144,16 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * 
 	 * @param material
 	 *            the material
-	 * @param displayNames
+	 * @param names
 	 *            the display names
 	 * @param iconNames
 	 *            the icon names
 	 * @param creativeTabs
 	 *            the creative tabs
 	 */
-	public CustomBlock(Material material, String[] displayNames, String[] iconNames, CreativeTabs[] creativeTabs)
+	public CustomBlock(Material material, String[] names, String[] iconNames, CreativeTabs[] creativeTabs)
 	{
-		this(material, displayNames, iconMetadataToSideArray(iconNames), true, 0, creativeTabs);
+		this(material, names, iconMetadataToSideArray(iconNames), true, 0, creativeTabs);
 	}
 	
 	/**
@@ -162,16 +161,16 @@ public class CustomBlock extends Block implements ICustomBlock
 	 * 
 	 * @param material
 	 *            the material
-	 * @param displayName
+	 * @param name
 	 *            the display name
 	 * @param iconName
 	 *            the icon name
 	 * @param creativeTab
 	 *            the creative tab
 	 */
-	public CustomBlock(Material material, String displayName, String iconName, CreativeTabs creativeTab)
+	public CustomBlock(Material material, String name, String iconName, CreativeTabs creativeTab)
 	{
-		this(material, new String[] { displayName }, new String[][] { {
+		this(material, new String[] { name }, new String[][] { {
 				iconName,
 				iconName,
 				iconName,
@@ -432,16 +431,22 @@ public class CustomBlock extends Block implements ICustomBlock
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
-		return this.getUnlocalizedName() + "." + this.names[stack.getItemDamage()];
+		int metadata = stack.getItemDamage();
+		if (metadata < this.names.length)
+		{
+			return this.getUnlocalizedName() + "." + this.names[metadata];
+		}
+		return this.getUnlocalizedName();
 	}
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
 	{
-		int metadata = stack.getItemDamage();
-		if (this.descriptions[metadata] != null && !this.descriptions[metadata].isEmpty())
+		String key = this.getUnlocalizedName(stack) + ".desc";
+		String desc = I18n.getString(key);
+		if (desc != key)
 		{
-			list.addAll(CSString.lineList(this.descriptions[metadata]));
+			list.addAll(CSString.lineList(desc));
 		}
 	}
 }
