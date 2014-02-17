@@ -58,6 +58,11 @@ public class CSBlocks
 		}
 	}
 	
+	public static void addBlock(Block block)
+	{
+		addBlock(block, block.getUnlocalizedName());
+	}
+	
 	/**
 	 * Registers a Block and its name. This calls {@link CSBlocks#addBlock(Block, Class, String)}
 	 * with {@link ItemCustomBlock}.{@code class} as the {@code itemClass} argument.
