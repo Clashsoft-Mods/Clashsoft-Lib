@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.List;
 
 import clashsoft.cslib.minecraft.item.meta.IMetaItem;
+import clashsoft.cslib.minecraft.lang.I18n;
 import clashsoft.cslib.util.CSArrays;
+import clashsoft.cslib.util.CSString;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -15,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 
 /**
  * The Class CustomItem.
@@ -24,22 +25,15 @@ public class CustomItem extends Item
 {
 	public static final String	FORCEHIDE	= "%&";
 	
-	/** The display names. */
 	public String[]				names;
-	/** The icon names. */
 	public String[]				iconNames;
-	/** The descriptions. */
-	public String[]				descriptions;
 	
 	public CreativeTabs[]		tabs;
 	
-	/** The icons. */
 	public IIcon[]				icons;
 	
-	/** The enabled values. */
 	public boolean[]			enabled;
 	
-	/** The ItemMeta list. */
 	public List<IMetaItem>		subItemList;
 	public List<IMetaItem>		subItemDisplayList;
 	
@@ -60,88 +54,46 @@ public class CustomItem extends Item
 	/**
 	 * Instantiates a new custom item.
 	 * 
-	 * @param displayNames
-	 *            the display names
+	 * @param names
+	 *            the names
 	 * @param iconNames
 	 *            the icon names
 	 * @param descriptions
 	 *            the descriptions
 	 */
-	public CustomItem(String[] displayNames, String[] iconNames, String[] descriptions, CreativeTabs[] tabs)
+	public CustomItem(String[] names, String[] iconNames, CreativeTabs[] tabs)
 	{
-		this.names = displayNames;
+		this.names = names;
 		this.iconNames = iconNames;
-		this.descriptions = descriptions;
 		this.tabs = tabs;
-		
 		this.enabled = new boolean[this.names.length];
-		for (int i = 0; i < this.enabled.length; i++)
-		{
-			this.enabled[i] = !iconNames[i].isEmpty() && !displayNames[i].isEmpty() && !displayNames[i].contains(FORCEHIDE);
-		}
 		
-		this.setHasSubtypes(displayNames.length > 1);
+		this.setHasSubtypes(names.length > 1);
 	}
 	
-	public CustomItem(String[] displayNames, String[] iconNames, String[] descriptions)
+	public CustomItem(String[] names, String[] iconNames)
 	{
-		this(displayNames, iconNames, descriptions, null);
+		this(names, iconNames, null);
 	}
 	
-	/**
-	 * Instantiates a new custom item.
-	 * 
-	 * @param displayNames
-	 *            the display names
-	 * @param iconNames
-	 *            the icon names
-	 */
-	public CustomItem(String[] displayNames, String[] iconNames, CreativeTabs[] tabs)
+	public CustomItem(String[] names, String domain, CreativeTabs[] tabs)
 	{
-		this(displayNames, iconNames, null, tabs);
+		this(names, CSString.concatAll(names, domain + ":", ""), tabs);
 	}
 	
-	/**
-	 * Instantiates a new custom item.
-	 * 
-	 * @param displayNames
-	 *            the display names
-	 * @param iconNames
-	 *            the icon names
-	 */
-	public CustomItem(String[] displayNames, String[] iconNames)
+	public CustomItem(String[] names, String domain)
 	{
-		this(displayNames, iconNames, (CreativeTabs[]) null);
+		this(names, domain, null);
 	}
 	
-	/**
-	 * Instantiates a new custom item.
-	 * 
-	 * @param displayName
-	 *            the display name
-	 * @param iconName
-	 *            the icon name
-	 * @param description
-	 *            the description
-	 */
-	public CustomItem(String displayName, String iconName, String description, CreativeTabs tab)
+	public CustomItem(String names, String iconName, CreativeTabs tab)
 	{
-		this(CSArrays.create(displayName), CSArrays.create(iconName), CSArrays.create(description), CSArrays.create(tab));
+		this(CSArrays.create(names), CSArrays.create(iconName), CSArrays.create(tab));
 	}
 	
-	/**
-	 * Instantiates a new custom item.
-	 * 
-	 * @param itemID
-	 *            the item id
-	 * @param displayName
-	 *            the display name
-	 * @param iconName
-	 *            the icon name
-	 */
-	public CustomItem(String displayName, String iconName, CreativeTabs tab)
+	public CustomItem(String name, String iconName)
 	{
-		this(CSArrays.create(displayName), CSArrays.create(iconName), CSArrays.create(tab));
+		this(CSArrays.create(name), CSArrays.create(iconName));
 	}
 	
 	public CustomItem addSubItem(IMetaItem metaItem)
@@ -192,32 +144,25 @@ public class CustomItem extends Item
 		return this;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.item.Item#getItemDisplayName(net.minecraft.item.ItemStack)
-	 */
 	@Override
-	public String getItemStackDisplayName(ItemStack stack)
+	public String getUnlocalizedName(ItemStack stack)
 	{
-		String ret = this.hasItemMetadataList() ? this.subItemList.get(stack.getItemDamage()).getName() : this.names[stack.getItemDamage()];
-		return StatCollector.translateToLocal(ret.replace(FORCEHIDE, ""));
+		if (this.hasItemMetadataList())
+		{
+			return this.subItemList.get(stack.getItemDamage()).getName();
+		}
+		else
+		{
+			return this.getUnlocalizedName() + "." + this.names[stack.getItemDamage()];
+		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.item.Item#getIconFromDamage(int)
-	 */
 	@Override
 	public IIcon getIconFromDamage(int damage)
 	{
 		return this.icons[damage];
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.item.Item#registerIcons(net.minecraft.client.renderer.texture
-	 * .IconRegister)
-	 */
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister)
@@ -242,11 +187,6 @@ public class CustomItem extends Item
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.item.Item#addInformation(net.minecraft.item.ItemStack,
-	 * net.minecraft.entity.player.EntityPlayer, java.util.List, boolean)
-	 */
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag)
 	{
@@ -255,22 +195,15 @@ public class CustomItem extends Item
 			Collection<String> s = this.subItemList.get(stack.getItemDamage()).getDescription();
 			list.addAll(s);
 		}
-		else if (this.descriptions != null)
+		
+		String key = this.getUnlocalizedName(stack) + ".desc";
+		String desc = I18n.getString(key);
+		if (desc != key)
 		{
-			String s = this.descriptions[stack.getItemDamage()];
-			if (s == null || s.isEmpty())
-			{
-				return;
-			}
-			list.addAll(Arrays.asList(s.split("\n")));
+			list.addAll(Arrays.asList(desc.split("\n")));
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.item.Item#getSubItems(int, net.minecraft.creativetab.CreativeTabs,
-	 * java.util.List)
-	 */
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List subItems)
