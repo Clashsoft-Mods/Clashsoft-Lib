@@ -12,29 +12,29 @@ public class BlockMetaTileEntity extends CustomBlock implements ITileEntityProvi
 {
 	public Class[]	tileEntities;
 	
-	public BlockMetaTileEntity(Material material, String displayName, String iconNames, boolean opaque, int renderType, CreativeTabs creativeTabs)
+	public BlockMetaTileEntity(Material material, String name, String iconName, boolean opaque, int renderType, CreativeTabs creativeTabs)
 	{
-		super(material, displayName, iconNames, opaque, renderType, creativeTabs);
+		super(material, name, iconName, opaque, renderType, creativeTabs);
 	}
 	
-	public BlockMetaTileEntity(Material material, String displayName, String iconName, CreativeTabs creativeTab)
+	public BlockMetaTileEntity(Material material, String name, String iconName, CreativeTabs creativeTab)
 	{
-		super(material, displayName, iconName, creativeTab);
+		super(material, name, iconName, creativeTab);
 	}
 	
-	public BlockMetaTileEntity(Material material, String[] displayNames, String[] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
+	public BlockMetaTileEntity(Material material, String[] names, String[] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
 	{
-		super(material, displayNames, iconNames, opaque, renderType, creativeTabs);
+		super(material, names, iconNames, opaque, renderType, creativeTabs);
 	}
 	
-	public BlockMetaTileEntity(Material material, String[] displayNames, String[] iconNames, CreativeTabs[] creativeTabs)
+	public BlockMetaTileEntity(Material material, String[] names, String[] iconNames, CreativeTabs[] creativeTabs)
 	{
-		super(material, displayNames, iconNames, creativeTabs);
+		super(material, names, iconNames, creativeTabs);
 	}
 	
-	public BlockMetaTileEntity(Material material, String[] displayNames, String[][] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
+	public BlockMetaTileEntity(Material material, String[] names, String[][] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
 	{
-		super(material, displayNames, iconNames, opaque, renderType, creativeTabs);
+		super(material, names, iconNames, opaque, renderType, creativeTabs);
 	}
 	
 	public BlockMetaTileEntity setTileEntityClasses(Class<? extends TileEntity>... tileEntityClasses)

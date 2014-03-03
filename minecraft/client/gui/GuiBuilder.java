@@ -137,7 +137,7 @@ public class GuiBuilder extends Gui
 	public void drawSlot(int x, int y, int type, boolean locked)
 	{
 		this.bind(slots);
-		this.drawSlot_(x - 4, y - 4, type, locked);
+		this.drawSlot_(x - 5, y - 5, type, locked);
 	}
 	
 	public void drawSlot_(int x, int y, int type, boolean locked)

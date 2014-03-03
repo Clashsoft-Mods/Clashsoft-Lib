@@ -2,14 +2,12 @@ package clashsoft.cslib.minecraft;
 
 import clashsoft.cslib.minecraft.common.CSLProxy;
 import clashsoft.cslib.minecraft.update.CSUpdate;
-import clashsoft.cslib.minecraft.update.ModUpdate;
 import clashsoft.cslib.minecraft.util.CSConfig;
 import clashsoft.cslib.minecraft.util.Convenience;
-import clashsoft.cslib.util.CSArrays;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -52,13 +50,6 @@ public class CSLib
 	public void init(FMLInitializationEvent event)
 	{
 		CSUpdate.updateCheck(CSUpdate.CLASHSOFT_UPDATE_NOTES);
-		
-		CSUpdate.addUpdate(new ModUpdate(NAME, VERSION, "1.7.2-1", CSArrays.asList(new String[] {
-				"+ Added stuff",
-				"+ Added more stuff",
-				"* Fixed a bug",
-				"* Fixed another bug",
-				"- Removed Something" }), "http://clashsoft.weebly.com"));
 		
 		MinecraftForge.EVENT_BUS.register(this);
 	}
