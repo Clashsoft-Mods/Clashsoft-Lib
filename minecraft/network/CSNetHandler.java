@@ -125,7 +125,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	
 	public void init()
 	{
-		this.channels = NetworkRegistry.INSTANCE.newChannel("TUT", this);
+		this.channels = NetworkRegistry.INSTANCE.newChannel(this.name, this);
 	}
 	
 	/**
