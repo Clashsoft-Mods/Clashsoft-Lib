@@ -39,8 +39,8 @@ public class InstallUpdateThread extends Thread
 		{
 			this.update.installStatus = 1;
 			
-			String modName = this.update.modName;
-			String newVersion = this.update.newVersion;
+			String modName = this.update.getModName();
+			String newVersion = this.update.getNewVersion();
 			String mod = this.update.getName();
 			
 			this.player.addChatMessage(new ChatComponentTranslation("update.install", modName, newVersion));
@@ -78,7 +78,7 @@ public class InstallUpdateThread extends Thread
 					}
 				}
 				
-				URL url = new URL(this.update.updateUrl);
+				URL url = new URL(this.update.getUpdateURL());
 				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 				connection.setRequestMethod("GET");
 				InputStream in = connection.getInputStream();

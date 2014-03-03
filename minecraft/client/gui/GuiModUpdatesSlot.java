@@ -55,7 +55,7 @@ public class GuiModUpdatesSlot extends GuiScrollingList
 		{
 			int color = update.isValid() ? 0x00FF00 : 0xFF0000;
 			font.drawStringWithShadow(update.getName(), x + 2, y + 2, color);
-			font.drawStringWithShadow(update.version, x + 2, y + 12, 0xFFFFFF);
+			font.drawStringWithShadow(update.getVersion(), x + 2, y + 12, 0xFFFFFF);
 			font.drawStringWithShadow(update.getStatus(), x + 2, y + 22, 0xFFFFFF);
 		}
 	}

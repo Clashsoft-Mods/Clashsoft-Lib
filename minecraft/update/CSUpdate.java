@@ -106,16 +106,11 @@ public class CSUpdate
 		return list;
 	}
 	
-	public static ModUpdate getUpdate(String modName)
-	{
-		return updates.get(modName);
-	}
-	
 	public static ModUpdate addUpdate(ModUpdate update)
 	{
 		if (update != null)
 		{
-			ModUpdate update1 = getUpdate(update.modName);
+			ModUpdate update1 = getUpdate(update.getModName());
 			if (update1 != null)
 			{
 				update1.combine(update);
@@ -123,16 +118,30 @@ public class CSUpdate
 			}
 			else
 			{
-				updates.put(update.modName, update);
+				updates.put(update.getModName(), update);
 			}
+		}
+		return update;
+	}
+	
+	public static ModUpdate getUpdate(String modName)
+	{
+		return updates.get(modName);
+	}
+	
+	public static ModUpdate getUpdate(String modName, String version)
+	{
+		ModUpdate update = getUpdate(modName);
+		if (update != null)
+		{
+			update.setMod(modName, version);
 		}
 		return update;
 	}
 	
 	public static ModUpdate getUpdate(String modName, String acronym, String version, String[] updateFile)
 	{
-		ModUpdate update = getUpdate(modName);
-		
+		ModUpdate update = getUpdate(modName, version);
 		if (update != null)
 		{
 			return update;
@@ -143,10 +152,10 @@ public class CSUpdate
 			update = readUpdateLine(line, modName, acronym, version);
 			if (update != null)
 			{
-				return addUpdate(update);
+				addUpdate(update);
 			}
 		}
-		return null;
+		return getUpdate(modName);
 	}
 	
 	public static void updateCheck(String url)
@@ -205,13 +214,13 @@ public class CSUpdate
 	{
 		if (player.worldObj.isRemote && update != null && update.isValid())
 		{
-			player.addChatMessage(new ChatComponentTranslation("update.notification", update.modName, update.newVersion, update.version));
+			player.addChatMessage(new ChatComponentTranslation("update.notification", update.getModName(), update.getNewVersion(), update.getVersion()));
 			
-			if (!update.updateNotes.isEmpty())
+			if (!update.getUpdateNotes().isEmpty())
 			{
 				player.addChatMessage(new ChatComponentTranslation("update.notes"));
 				
-				for (String line : update.updateNotes)
+				for (String line : update.getUpdateNotes())
 				{
 					player.addChatMessage(new ChatComponentText(line));
 				}
@@ -223,7 +232,7 @@ public class CSUpdate
 			}
 			else
 			{
-				player.addChatMessage(new ChatComponentTranslation("update.automatic.disabled", update.modName));
+				player.addChatMessage(new ChatComponentTranslation("update.automatic.disabled", update.getModName()));
 			}
 		}
 	}

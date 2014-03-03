@@ -1,5 +1,6 @@
 package clashsoft.cslib.minecraft.update;
 
+import java.util.Collections;
 import java.util.List;
 
 import clashsoft.cslib.minecraft.lang.I18n;
@@ -16,16 +17,16 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class ModUpdate
 {
-	public String		modName;
+	private String			modName;
 	
-	public String		version;
-	public String		newVersion;
+	private String			version;
+	private String			newVersion;
 	
-	public List<String>	updateNotes;
-	public String		updateUrl;
+	private List<String>	updateNotes;
+	private String			url;
 	
-	protected boolean	valid;
-	protected int		installStatus;
+	private boolean			valid;
+	protected int				installStatus;
 	
 	public ModUpdate(String modName, String version, String newVersion, String updateNotes, String updateUrl)
 	{
@@ -34,12 +35,17 @@ public class ModUpdate
 	
 	public ModUpdate(String modName, String version, String newVersion, List<String> updateNotes, String updateUrl)
 	{
-		this.modName = modName;
-		this.version = version;
+		this.setMod(modName, version);
 		this.newVersion = newVersion;
 		this.updateNotes = updateNotes;
-		this.updateUrl = updateUrl;
+		this.url = updateUrl;
 		this.validate();
+	}
+	
+	public void setMod(String name, String version)
+	{
+		this.modName = name;
+		this.version = version;
 	}
 	
 	public void validate()
@@ -47,9 +53,24 @@ public class ModUpdate
 		this.valid = newVersion.startsWith(CSUpdate.CURRENT_VERSION) && CSUpdate.compareVersion(version, newVersion) == -1;
 	}
 	
+	public String getModName()
+	{
+		return this.modName;
+	}
+	
+	public String getVersion()
+	{
+		return this.version == null ? "" : this.version;
+	}
+	
+	public String getNewVersion()
+	{
+		return this.newVersion == null ? this.getVersion() : this.newVersion;
+	}
+	
 	public String getName()
 	{
-		return this.modName + " " + this.version;
+		return this.getModName() + " " + this.getNewVersion();
 	}
 	
 	public String getVersionChanges()
@@ -64,6 +85,16 @@ public class ModUpdate
 		}
 	}
 	
+	public String getUpdateURL()
+	{
+		return this.url == null ? "[none]" : this.url;
+	}
+	
+	public List<String> getUpdateNotes()
+	{
+		return this.updateNotes == null ? Collections.EMPTY_LIST : this.updateNotes;
+	}
+	
 	public boolean isValid()
 	{
 		return this.valid;
@@ -71,13 +102,13 @@ public class ModUpdate
 	
 	public boolean hasDownload()
 	{
-		return this.updateUrl != null && !this.updateUrl.isEmpty();
+		return this.url != null && !this.url.isEmpty();
 	}
 	
 	public String getDownloadedFileName()
 	{
-		int i = this.updateUrl.lastIndexOf('/');
-		String url = i == -1 ? this.updateUrl : this.updateUrl.substring(i);
+		int i = this.url.lastIndexOf('/');
+		String url = i == -1 ? this.url : this.url.substring(i);
 		return url.replace('+', ' ');
 	}
 	
@@ -112,7 +143,7 @@ public class ModUpdate
 		this.modName = this.modName == null ? update2.modName : this.modName;
 		this.version = this.version == null ? update2.version : this.version;
 		this.newVersion = this.newVersion == null ? update2.newVersion : this.newVersion;
-		this.updateUrl = this.updateUrl == null ? update2.updateUrl : this.updateUrl;
+		this.url = this.url == null ? update2.url : this.url;
 		this.installStatus = Math.max(this.installStatus, update2.installStatus);
 		this.validate();
 	}

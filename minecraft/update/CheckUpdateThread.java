@@ -35,6 +35,12 @@ public class CheckUpdateThread extends Thread
 	@Override
 	public void run()
 	{
+		ModUpdate update = CSUpdate.getUpdate(this.modName, this.version);
+		if (update != null)
+		{
+			return;
+		}
+		
 		if (this.updateFile == null)
 		{
 			this.updateFile = CSWeb.readWebsite(this.updateURL);

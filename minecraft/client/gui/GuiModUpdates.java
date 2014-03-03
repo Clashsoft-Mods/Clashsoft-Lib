@@ -78,14 +78,14 @@ public class GuiModUpdates extends GuiScreen
 			this.drawString(fontRendererObj, install_status, 160, 90, 0xFFFFFF);
 			this.drawString(fontRendererObj, update_notes, 160, 105, 0xFFFFFF);
 			
-			this.drawString(fontRendererObj, update.modName, 260, 50, 0xFFFFFF);
-			this.drawString(fontRendererObj, update.version, 260, 60, color1);
-			this.drawString(fontRendererObj, update.newVersion, 260, 70, color2);
-			this.drawString(fontRendererObj, update.updateUrl, 260, 80, 0xFFFFFF);
+			this.drawString(fontRendererObj, update.getModName(), 260, 50, 0xFFFFFF);
+			this.drawString(fontRendererObj, update.getVersion(), 260, 60, color1);
+			this.drawString(fontRendererObj, update.getNewVersion(), 260, 70, color2);
+			this.drawString(fontRendererObj, update.getUpdateURL(), 260, 80, 0xFFFFFF);
 			this.drawString(fontRendererObj, update.getStatus(), 260, 90, 0xFFFFFF);
 			
 			int i = 117;
-			for (String line : update.updateNotes)
+			for (String line : update.getUpdateNotes())
 			{
 				this.drawString(fontRendererObj, line, 160, i, getDiffColor(line));
 				
@@ -101,7 +101,7 @@ public class GuiModUpdates extends GuiScreen
 	{
 		super.mouseClicked(x, y, which);
 		
-		String url = this.update.updateUrl;
+		String url = this.update.getUpdateURL();
 		int i = this.fontRendererObj.getStringWidth(url);
 		
 		if (x >= 260 && x <= 260 + i && y >= 80 && y < 90)
@@ -165,7 +165,7 @@ public class GuiModUpdates extends GuiScreen
 	{
 		if (flag && id == 0)
 		{
-			URI uri = URI.create(this.update.updateUrl);
+			URI uri = URI.create(this.update.getUpdateURL());
 			try
 			{
 				Class oclass = Class.forName("java.awt.Desktop");
