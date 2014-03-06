@@ -20,6 +20,7 @@ public interface CSStacks
 	public static ItemStack	fire					= new ItemStack(Blocks.fire);
 	
 	public static ItemStack	glass_block				= new ItemStack(Blocks.glass);
+	public static ItemStack	glass_pane				= new ItemStack(Blocks.glass_pane);
 	public static ItemStack	glowstone				= new ItemStack(Blocks.glowstone);
 	public static ItemStack	gold_block				= new ItemStack(Blocks.gold_block);
 	

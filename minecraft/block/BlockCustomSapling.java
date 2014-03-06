@@ -101,10 +101,8 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 		
 		int l = world.getBlockMetadata(x, y, z) & 3;
 		WorldGenerator worldgen = this.getWorldGen(world, x, y, z, random);
-		int i1 = 0;
-		int j1 = 0;
 		
-		if (!worldgen.generate(world, random, x + i1, y, z + j1))
+		if (worldgen != null && !worldgen.generate(world, random, x, y, z))
 		{
 			world.setBlock(x, y, z, this, l, 4);
 		}
