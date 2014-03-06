@@ -1,5 +1,7 @@
 package clashsoft.cslib.minecraft.item;
 
+import java.lang.reflect.Constructor;
+
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
 import clashsoft.cslib.reflect.CSReflection;
@@ -210,5 +212,43 @@ public class CSItems implements CSStacks
 			dataToolSet.registerToolMaterial(toolMaterial, name);
 		}
 		return toolMaterial;
+	}
+	
+	public static <T extends Item> T createItem(Class<T> type, String name, Object... args)
+	{
+		Class[] classes = new Class[args.length + 1];
+		
+		for (int i = 0; i < args.length; i++)
+		{
+			if (args[i] != null)
+			{
+				classes[i] = args[i].getClass();
+			}
+			else
+			{
+				classes[i] = Object.class;
+			}
+		}
+		return createItem(type, name, classes, args);
+	}
+	
+	public static <T extends Item> T createItem(Class<T> type, String name, Class[] argsTypes, Object... args)
+	{
+		T item = null;
+		
+		try
+		{
+			Constructor<T> c = type.getConstructor(argsTypes);
+			if (c != null)
+			{
+				item = c.newInstance(args);
+			}
+		}
+		catch (Throwable ex)
+		{
+			throw new RuntimeException(ex);
+		}
+		
+		return item;
 	}
 }
