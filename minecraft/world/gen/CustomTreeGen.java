@@ -14,7 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * 
  * @author Clashsoft
  */
-public class CustomTreeGenerator extends WorldGenTrees
+public class CustomTreeGen extends WorldGenTrees
 {
 	/** The minimum height of a generated tree. */
 	public int		minTreeHeight	= 4;
@@ -27,29 +27,29 @@ public class CustomTreeGenerator extends WorldGenTrees
 	public Block	vineBlock		= Blocks.vine;
 	
 	/** The metadata value of the wood to use in tree generation. */
-	public int		metaWood		= 0;
+	public int		logMetadata	= 0;
 	
 	/** The metadata value of the leaves to use in tree generation. */
-	public int		metaLeaves		= 0;
+	public int		leafMetadata	= 0;
 	
-	public CustomTreeGenerator(boolean blockUpdates, int minTreeHeight, Block log, Block leaf)
+	public CustomTreeGen(boolean blockUpdates, int minTreeHeight, Block log, Block leaf)
 	{
 		this(blockUpdates, minTreeHeight, log, leaf, 0, 0);
 	}
 	
-	public CustomTreeGenerator(boolean blockUpdates, int minTreeHeight, Block log, Block leaf, int woodMetadata, int leavesMetadata)
+	public CustomTreeGen(boolean blockUpdates, int minTreeHeight, Block log, Block leaf, int woodMetadata, int leavesMetadata)
 	{
 		this(blockUpdates, minTreeHeight, log, leaf, woodMetadata, leavesMetadata, false);
 	}
 	
-	public CustomTreeGenerator(boolean blockUpdates, int minTreeHeight, Block log, Block leaf, int woodMetadata, int leavesMetadata, boolean vinesGrow)
+	public CustomTreeGen(boolean blockUpdates, int minTreeHeight, Block log, Block leaf, int woodMetadata, int leavesMetadata, boolean vinesGrow)
 	{
 		super(blockUpdates);
 		this.minTreeHeight = minTreeHeight;
 		this.logBlock = log;
 		this.leafBlock = leaf;
-		this.metaWood = woodMetadata;
-		this.metaLeaves = leavesMetadata;
+		this.logMetadata = woodMetadata;
+		this.leafMetadata = leavesMetadata;
 		this.vinesGrow = vinesGrow;
 	}
 	
@@ -128,7 +128,7 @@ public class CustomTreeGenerator extends WorldGenTrees
 							
 							if ((!(block1.isAir(world, i2, k1, k2))) && (!(block1.isLeaves(world, i2, k1, k2))))
 								continue;
-							this.setBlockAndNotifyAdequately(world, i2, k1, k2, this.leafBlock, this.metaLeaves);
+							this.setBlockAndNotifyAdequately(world, i2, k1, k2, this.leafBlock, this.leafMetadata);
 						}
 						
 					}
@@ -141,7 +141,7 @@ public class CustomTreeGenerator extends WorldGenTrees
 					
 					if ((!(block.isAir(world, x, y + k1, z))) && (!(block.isLeaves(world, x, y + k1, z))))
 						continue;
-					this.setBlockAndNotifyAdequately(world, x, y + k1, z, this.logBlock, this.metaWood);
+					this.setBlockAndNotifyAdequately(world, x, y + k1, z, this.logBlock, this.logMetadata);
 					
 					if ((!(this.vinesGrow)) || (k1 <= 0))
 						continue;
