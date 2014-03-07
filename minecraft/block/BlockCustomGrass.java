@@ -28,6 +28,10 @@ public class BlockCustomGrass extends CustomBlock
 	public BlockCustomGrass(String[] names, String[] topIcons, String[] sideIcons, String[] bottomIcons)
 	{
 		super(Material.grass, names, sideIcons, null);
+		this.setStepSound(Block.soundTypeGrass);
+		this.setTickRandomly(true);
+		this.setHardness(0.6F);
+		
 		this.names = names;
 		this.topIconNames = topIcons;
 		this.sideIconNames = sideIcons;
@@ -35,9 +39,6 @@ public class BlockCustomGrass extends CustomBlock
 		
 		this.dirtBlocks = new Block[names.length];
 		this.dirtBlockMetadatas = new int[names.length];
-		
-		this.setStepSound(Block.soundTypeGrass);
-		this.setTickRandomly(true);
 	}
 	
 	public BlockCustomGrass setDirtBlocks(Block[] blocks, int[] metadata)

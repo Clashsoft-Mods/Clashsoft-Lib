@@ -36,6 +36,7 @@ public class BlockCustomLog extends BlockRotatedPillar implements ICustomBlock
 	{
 		super(Material.wood);
 		this.setStepSound(Block.soundTypeWood);
+		this.setHardness(2F);
 		
 		this.names = names;
 		this.topIconNames = topIcons;

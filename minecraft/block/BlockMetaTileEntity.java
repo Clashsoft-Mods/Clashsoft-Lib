@@ -12,29 +12,14 @@ public class BlockMetaTileEntity extends CustomBlock implements ITileEntityProvi
 {
 	public Class[]	tileEntities;
 	
-	public BlockMetaTileEntity(Material material, String name, String iconName, boolean opaque, int renderType, CreativeTabs creativeTabs)
-	{
-		super(material, name, iconName, opaque, renderType, creativeTabs);
-	}
-	
 	public BlockMetaTileEntity(Material material, String name, String iconName, CreativeTabs creativeTab)
 	{
 		super(material, name, iconName, creativeTab);
 	}
 	
-	public BlockMetaTileEntity(Material material, String[] names, String[] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
-	{
-		super(material, names, iconNames, opaque, renderType, creativeTabs);
-	}
-	
 	public BlockMetaTileEntity(Material material, String[] names, String[] iconNames, CreativeTabs[] creativeTabs)
 	{
 		super(material, names, iconNames, creativeTabs);
-	}
-	
-	public BlockMetaTileEntity(Material material, String[] names, String[][] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
-	{
-		super(material, names, iconNames, opaque, renderType, creativeTabs);
 	}
 	
 	public BlockMetaTileEntity setTileEntityClasses(Class<? extends TileEntity>... tileEntityClasses)

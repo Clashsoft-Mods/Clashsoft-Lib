@@ -82,6 +82,7 @@ public class CSItems implements CSStacks
 	public static void addItem(Item item, String name, String modid)
 	{
 		name = clashsoft.cslib.util.CSString.identifier(name);
+		item.setUnlocalizedName(name);
 		GameRegistry.registerItem(item, name, modid);
 	}
 	

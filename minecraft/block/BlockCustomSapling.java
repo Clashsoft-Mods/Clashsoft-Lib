@@ -38,6 +38,11 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 		this.iconNames = iconNames;
 	}
 	
+	public BlockCustomSapling(String[] names, String domain)
+	{
+		this(names, CustomBlock.applyDomain(names, domain));
+	}
+	
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random random)
 	{

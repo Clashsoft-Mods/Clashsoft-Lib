@@ -23,65 +23,39 @@ import net.minecraft.world.World;
  */
 public class CustomBlock extends Block implements ICustomBlock
 {
-	/** The names. */
 	public String[]			names;
+	public String[]			iconNames;
+	public String[][]		iconNames2D;
+	public IIcon[]			icons;
+	public IIcon[][]		icons2D;
 	
-	/** The textures. */
-	public String[][]		textures;
-	
-	/** The icons. */
-	public IIcon[][]		icons;
-	
-	/** The opaque. */
 	public boolean			opaque;
-	
-	/** The render type. */
 	public int				renderType;
 	
-	/** The drops. */
 	public ItemStack[]		drops;
-	
-	/** The hardnesses. */
 	public float[]			hardnesses;
-	
-	/** The tabs. */
 	public CreativeTabs[]	tabs;
+	public boolean[]		enabled;
 	
-	/** Checks if the metadata shows up in the creative inventory. */
-	public boolean[]		disabled;
+	public static String[] applyDomain(String[] names, String domain)
+	{
+		return CSString.concatAll(names, domain + ":", "");
+	}
 	
-	/**
-	 * Instantiates a new custom block.
-	 * 
-	 * @param material
-	 *            the material
-	 * @param names
-	 *            the display names
-	 * @param iconNames
-	 *            the icon names
-	 * @param opaque
-	 *            the opaque
-	 * @param renderType
-	 *            the render type
-	 * @param creativeTabs
-	 *            the creative tabs
-	 */
-	public CustomBlock(Material material, String[] names, String[][] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
+	protected CustomBlock(Material material, String[] names, CreativeTabs[] creativeTabs)
 	{
 		super(material);
+		this.setBlockName(names[0]);
 		
 		this.names = names;
-		this.textures = iconNames;
 		
-		this.opaque = opaque;
-		this.renderType = renderType;
 		this.drops = new ItemStack[this.names.length];
 		this.hardnesses = new float[this.names.length];
-		this.disabled = new boolean[this.names.length];
+		this.enabled = new boolean[this.names.length];
 		
-		for (int i = 0; i < this.disabled.length; i++)
+		for (int i = 0; i < this.enabled.length; i++)
 		{
-			this.disabled[i] = names[i] == null || names[i].isEmpty() || names[i].startsWith("%&");
+			this.enabled[i] = !(names[i] == null || names[i].isEmpty() || names[i].startsWith("%&"));
 		}
 		
 		this.tabs = creativeTabs;
@@ -91,84 +65,24 @@ public class CustomBlock extends Block implements ICustomBlock
 		}
 	}
 	
-	/**
-	 * Instantiates a new custom block.
-	 * 
-	 * @param material
-	 *            the material
-	 * @param names
-	 *            the display names
-	 * @param iconNames
-	 *            the icon names
-	 * @param opaque
-	 *            the opaque
-	 * @param renderType
-	 *            the render type
-	 * @param creativeTabs
-	 *            the creative tabs
-	 */
-	public CustomBlock(Material material, String[] names, String[] iconNames, boolean opaque, int renderType, CreativeTabs[] creativeTabs)
+	public CustomBlock(Material material, String[] names, String[][] iconNames, CreativeTabs[] tabs)
 	{
-		this(material, names, iconMetadataToSideArray(iconNames), opaque, renderType, creativeTabs);
+		this(material, names, tabs);
+		this.iconNames2D = iconNames;
 	}
 	
-	/**
-	 * Instantiates a new custom block.
-	 * 
-	 * @param material
-	 *            the material
-	 * @param name
-	 *            the display name
-	 * @param iconNames
-	 *            the icon names
-	 * @param opaque
-	 *            the opaque
-	 * @param renderType
-	 *            the render type
-	 * @param creativeTabs
-	 *            the creative tabs
-	 */
-	public CustomBlock(Material material, String name, String iconNames, boolean opaque, int renderType, CreativeTabs creativeTabs)
+	public CustomBlock(Material material, String[] names, String[] iconNames, CreativeTabs[] tabs)
 	{
-		this(material, new String[] { name }, new String[][] { {
-				iconNames,
-				iconNames,
-				iconNames,
-				iconNames,
-				iconNames,
-				iconNames } }, opaque, renderType, new CreativeTabs[] { creativeTabs });
+		this(material, names, tabs);
+		this.iconNames = iconNames;
 	}
 	
-	/**
-	 * Instantiates a new custom block.
-	 * 
-	 * @param material
-	 *            the material
-	 * @param names
-	 *            the display names
-	 * @param iconNames
-	 *            the icon names
-	 * @param creativeTabs
-	 *            the creative tabs
-	 */
-	public CustomBlock(Material material, String[] names, String[] iconNames, CreativeTabs[] creativeTabs)
+	public CustomBlock(Material material, String[] names, String domain, CreativeTabs[] tabs)
 	{
-		this(material, names, iconMetadataToSideArray(iconNames), true, 0, creativeTabs);
+		this(material, names, applyDomain(names, domain), tabs);
 	}
 	
-	/**
-	 * Instantiates a new custom block.
-	 * 
-	 * @param material
-	 *            the material
-	 * @param name
-	 *            the display name
-	 * @param iconName
-	 *            the icon name
-	 * @param creativeTab
-	 *            the creative tab
-	 */
-	public CustomBlock(Material material, String name, String iconName, CreativeTabs creativeTab)
+	public CustomBlock(Material material, String name, String iconName, CreativeTabs tab)
 	{
 		this(material, new String[] { name }, new String[][] { {
 				iconName,
@@ -176,40 +90,19 @@ public class CustomBlock extends Block implements ICustomBlock
 				iconName,
 				iconName,
 				iconName,
-				iconName } }, true, 0, new CreativeTabs[] { creativeTab });
+				iconName } }, new CreativeTabs[] { tab });
 	}
 	
 	/**
-	 * Icon metadata to side array.
-	 * 
-	 * @param metadataArray
-	 *            the metadata array
-	 * @return the string[][]
-	 */
-	private static String[][] iconMetadataToSideArray(String[] metadataArray)
-	{
-		if (metadataArray == null)
-		{
-			return null;
-		}
-		
-		String[][] s = new String[metadataArray.length][6];
-		for (int i = 0; i < metadataArray.length; i++)
-			for (int j = 0; j < 6; j++)
-				s[i][j] = metadataArray[i];
-		return s;
-	}
-	
-	/**
-	 * Disable metadata.
+	 * Sets the given metadata to be shown in the creative inventory or not.
 	 * 
 	 * @param metadata
 	 *            the metadata
 	 * @return the custom block
 	 */
-	public CustomBlock disableMetadata(int metadata)
+	public CustomBlock setEnabled(int metadata, boolean flag)
 	{
-		this.disabled[metadata] = true;
+		this.enabled[metadata] = flag;
 		return this;
 	}
 	
@@ -325,15 +218,28 @@ public class CustomBlock extends Block implements ICustomBlock
 	@Override
 	public IIcon getIcon(int side, int metadata)
 	{
-		if (this.icons != null)
+		if (this.icons2D != null)
 		{
-			if (metadata < this.icons.length && side < this.icons[metadata].length)
+			try
 			{
-				return this.icons[metadata][side];
+				return this.icons2D[metadata][side];
 			}
-			return this.icons[0][0];
+			catch (ArrayIndexOutOfBoundsException ex)
+			{
+				return this.icons2D[0][side];
+			}
 		}
-		return null;
+		else
+		{
+			try
+			{
+				return this.icons[metadata];
+			}
+			catch (ArrayIndexOutOfBoundsException ex)
+			{
+				return this.icons[0];
+			}
+		}
 	}
 	
 	@Override
@@ -349,18 +255,28 @@ public class CustomBlock extends Block implements ICustomBlock
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.icons = new IIcon[this.textures.length][6];
-		if (this.textures != null)
+		if (this.iconNames2D != null)
 		{
-			for (int i = 0; i < this.textures.length; i++)
+			int len = this.iconNames2D.length;
+			this.icons2D = new IIcon[len][6];
+			
+			for (int i = 0; i < len; i++)
 			{
-				String[] textures = this.textures[i];
-				this.icons[i] = new IIcon[textures.length];
-				
-				for (int j = 0; j < textures.length; j++)
+				String[] sides = this.iconNames2D[i];
+				for (int j = 0; j < sides.length; j++)
 				{
-					this.icons[i][j] = iconRegister.registerIcon(textures[j]);
+					this.icons2D[i][j] = iconRegister.registerIcon(sides[j]);
 				}
+			}
+		}
+		else
+		{
+			int len = this.iconNames.length;
+			this.icons = new IIcon[len];
+			
+			for (int i = 0; i<  len; i++)
+			{
+				this.icons[i] = iconRegister.registerIcon(this.iconNames[i]);
 			}
 		}
 	}
@@ -371,7 +287,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	{
 		for (int i = 0; i < this.names.length; i++)
 		{
-			if (!this.disabled[i])
+			if (this.enabled[i])
 			{
 				if (this.tabs == null)
 				{

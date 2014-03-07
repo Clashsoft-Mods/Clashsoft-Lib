@@ -22,9 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 
 public class BlockCustomLeaves extends CustomBlock implements IShearable
-{
-	public String[]			iconNames;
-	
+{	
 	public ItemStack[]		appleStacks		= new ItemStack[4];
 	public ItemStack[]		saplingStacks	= new ItemStack[4];
 	public boolean[]		isColored		= new boolean[4];
@@ -40,9 +38,11 @@ public class BlockCustomLeaves extends CustomBlock implements IShearable
 		this.setTickRandomly(true);
 		this.setStepSound(Block.soundTypeGrass);
 		this.setLightOpacity(1);
-		
-		this.names = names;
-		this.iconNames = icons;
+	}
+	
+	public BlockCustomLeaves(String[] names, String domain)
+	{
+		this(names, applyDomain(names, domain));
 	}
 	
 	public BlockCustomLeaves setAppleStacks(ItemStack... appleStacks)

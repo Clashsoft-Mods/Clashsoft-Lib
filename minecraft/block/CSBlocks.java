@@ -95,6 +95,7 @@ public class CSBlocks
 	public static void addBlock(Block block, Class<? extends ItemBlock> itemClass, String name)
 	{
 		name = clashsoft.cslib.util.CSString.identifier(name);
+		block.setBlockName(name);
 		GameRegistry.registerBlock(block, itemClass, name);
 	}
 	

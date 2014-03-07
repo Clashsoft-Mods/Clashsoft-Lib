@@ -20,7 +20,7 @@ public class CustomCreativeTab extends CreativeTabs
 	
 	public CustomCreativeTab(String label, ItemStack stack)
 	{
-		this(label, stack.getItem(), stack.getItemDamage());
+		this(label, null, 0);
 		this.stack = stack;
 	}
 	
