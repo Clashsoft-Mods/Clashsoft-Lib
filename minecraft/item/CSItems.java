@@ -1,17 +1,28 @@
 package clashsoft.cslib.minecraft.item;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
 import clashsoft.cslib.reflect.CSReflection;
+import clashsoft.cslib.util.CSLog;
+
+import com.google.common.collect.BiMap;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ObjectIntIdentityMap;
+import net.minecraft.util.RegistryNamespaced;
 import net.minecraftforge.common.util.EnumHelper;
 
 /**
@@ -23,17 +34,57 @@ import net.minecraftforge.common.util.EnumHelper;
  */
 public class CSItems implements CSStacks
 {
-	/**
-	 * Overrides a vanilla item by registering it with the mod id "minecraft".
-	 * 
-	 * @param item
-	 *            the new item
-	 * @param name
-	 *            the name
-	 */
-	public static void overrideItem(Item item, String name)
+	public static boolean replaceItem(Item item, Item newItem)
 	{
-		GameRegistry.registerItem(item, name, "minecraft");
+		try
+		{
+			for (Field field : Items.class.getDeclaredFields())
+			{
+				if (Item.class.isAssignableFrom(field.getType()))
+				{
+					Item item1 = (Item) field.get(null);
+					if (item1 == item)
+					{
+						String registryName = Item.itemRegistry.getNameForObject(item1);
+						int id = Item.getIdFromItem(item1);
+						
+						// Replace Name:Object map entry
+						FMLControlledNamespacedRegistry<Item> registry = GameData.itemRegistry;
+						registry.putObject(registryName, newItem);
+						
+						// Set field
+						CSReflection.setModifier(field, Modifier.FINAL, false);
+						field.set(null, newItem);
+						
+						// Replace Object:ID map entry
+						Field map = RegistryNamespaced.class.getDeclaredFields()[0];
+						map.setAccessible(true);
+						((ObjectIntIdentityMap) map.get(registry)).func_148746_a(newItem, id);
+						
+						// Replace Name:ID map entry
+						map = FMLControlledNamespacedRegistry.class.getDeclaredFields()[3];
+						map.setAccessible(true);
+						((BiMap) map.get(registry)).put(registryName, id);
+						
+						CSLog.info("Replace Item : %s (%s) with %s; Name:Object=%s, ID:Object=%s, Object:Name=%s, Object:ID=%s, Name:ID=%s", new Object[] {
+								field.getName(),
+								item1.getClass().getSimpleName(),
+								newItem.getClass().getSimpleName(),
+								registry.get(registryName).getClass().getSimpleName(),
+								registry.get(id).getClass().getSimpleName(),
+								registry.getNameForObject(newItem),
+								registry.getId(newItem),
+								registry.getId(registryName), });
+					}
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	public static void addAllItems(Class mod)
