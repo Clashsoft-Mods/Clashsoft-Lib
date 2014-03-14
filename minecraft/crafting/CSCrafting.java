@@ -5,7 +5,6 @@ import java.util.Map;
 
 import clashsoft.cslib.minecraft.item.CSStacks;
 import clashsoft.cslib.minecraft.item.meta.IMetaItemRecipe;
-import clashsoft.cslib.minecraft.util.Convenience;
 import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -41,7 +40,8 @@ public class CSCrafting implements CSStacks
 	 *            the output
 	 * @param recipe
 	 *            the recipe
-	 * @see GameRegistry#addRecipe(ItemStack, Object...)
+	 * @see CSCrafting#addRecipe(ItemStack, Object...)
+	 * @deprecated Use addRecipe instead
 	 */
 	public static void addCrafting(ItemStack output, Object... recipe)
 	{
@@ -58,7 +58,7 @@ public class CSCrafting implements CSStacks
 	 * @param recipe
 	 *            the recipe
 	 * @return the ShapedRecipe instance created
-	 * @see GameRegistry#addRecipe(ItemStack, Object...)
+	 * @see CSCrafting#addAdvancedRecipe(ItemStack, Object...)
 	 */
 	public static ShapedRecipes addRecipe(ItemStack output, Object... recipe)
 	{
@@ -147,7 +147,8 @@ public class CSCrafting implements CSStacks
 	 *            the output
 	 * @param recipe
 	 *            the recipe
-	 * @see GameRegistry#addShapelessRecipe(ItemStack, Object...)
+	 * @see CSCrafting#addShapelessRecipe(ItemStack, Object...)
+	 * @deprecated use addShapelessRecipe instead
 	 */
 	public static void addShapelessCrafting(ItemStack output, Object... recipe)
 	{
@@ -177,11 +178,28 @@ public class CSCrafting implements CSStacks
 	 *            the output
 	 * @param experience
 	 *            the experience
-	 * @see FurnaceRecipes.addSmelting(int, int ItemStack, float)
+	 * @see CSCrafting#addFurnaceRecipe(ItemStack, ItemStack, float)
+	 * @deprecated use addFurnaceRecipe instead
 	 */
 	public static void addSmelting(ItemStack input, ItemStack output, float experience)
 	{
-		Convenience.addSmelting(FurnaceRecipes.smelting(), input, output, experience);
+		addSmelting(input, output, experience);
+	}
+	
+	/**
+	 * Adds a new furnace recipe to the game.
+	 * 
+	 * @param input
+	 *            the input
+	 * @param output
+	 *            the output
+	 * @param experience
+	 *            the experience
+	 * @see FurnaceRecipes#addSmelting(int, int ItemStack, float)
+	 */
+	public static void addFurnaceRecipe(ItemStack input, ItemStack output, float experience)
+	{
+		FurnaceRecipes.smelting().func_151394_a(input, output, experience);
 	}
 	
 	/**

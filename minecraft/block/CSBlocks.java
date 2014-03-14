@@ -156,6 +156,6 @@ public class CSBlocks
 	public static void addBlockWithRecipe(Block block, String name, int craftingAmount, Object... recipe)
 	{
 		addBlock(block, name);
-		CSCrafting.addCrafting(new ItemStack(block, craftingAmount), recipe);
+		CSCrafting.addRecipe(new ItemStack(block, craftingAmount), recipe);
 	}
 }

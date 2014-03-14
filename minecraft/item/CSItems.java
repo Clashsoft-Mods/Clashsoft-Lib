@@ -152,7 +152,7 @@ public class CSItems implements CSStacks
 	public static void addItemWithRecipe(Item item, String name, int craftingAmount, Object... recipe)
 	{
 		addItem(item, name);
-		CSCrafting.addCrafting(new ItemStack(item, craftingAmount), recipe);
+		CSCrafting.addRecipe(new ItemStack(item, craftingAmount), recipe);
 	}
 	
 	/**
@@ -170,7 +170,7 @@ public class CSItems implements CSStacks
 	public static void addItemWithShapelessRecipe(Item item, String name, int craftingAmount, Object... recipe)
 	{
 		addItem(item, name);
-		CSCrafting.addShapelessCrafting(new ItemStack(item, craftingAmount), recipe);
+		CSCrafting.addShapelessRecipe(new ItemStack(item, craftingAmount), recipe);
 	}
 	
 	/**
