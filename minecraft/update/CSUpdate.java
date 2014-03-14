@@ -32,7 +32,7 @@ public class CSUpdate
 	public static final String				CLASHSOFT_UPDATE_NOTES	= "https://dl.dropboxusercontent.com/s/pxm1ki6wbtxlvuv/update.txt";
 	
 	/**
-	 * Creates a Clashsoft Unique Version (e.g. v1.6.4-4)
+	 * Creates a version String for Clashsoft mods.
 	 * 
 	 * @param rev
 	 *            the rev
@@ -41,6 +41,16 @@ public class CSUpdate
 	public static String version(int rev)
 	{
 		return CURRENT_VERSION + "-" + rev;
+	}
+	
+	public static String version(int major, int minor, int rev)
+	{
+		return String.format("%s_%d.%d.%d", CURRENT_VERSION, major, minor, rev);
+	}
+	
+	public static String version(String version)
+	{
+		return String.format("%s_%s", CURRENT_VERSION, version);
 	}
 	
 	public static ModUpdate readUpdateLine(String line, String modName, String acronym, String version)
