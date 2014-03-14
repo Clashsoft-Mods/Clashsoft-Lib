@@ -25,50 +25,22 @@ public class CustomPotion extends Potion
 	/** The bad. */
 	private boolean				bad;
 	
-	/**
-	 * Instantiates a new custom potion.
-	 * 
-	 * @param name
-	 *            the name
-	 * @param bad
-	 *            the bad
-	 * @param color
-	 *            the color
-	 * @param instant
-	 *            the instant
-	 * @param iconFile
-	 *            the icon file
-	 * @param iconX
-	 *            the icon x location
-	 * @param iconY
-	 *            the icon y location
-	 */
 	public CustomPotion(String name, boolean bad, int color, boolean instant, String iconFile, int iconX, int iconY)
 	{
 		this(name, bad, color, instant, iconFile, iconX, iconY, -1);
 	}
 	
-	/**
-	 * Instantiates a new custom potion.
-	 * 
-	 * @param name
-	 *            the name
-	 * @param bad
-	 *            the bad
-	 * @param color
-	 *            the color
-	 * @param instant
-	 *            the instant
-	 * @param iconFile
-	 *            the icon file
-	 * @param iconX
-	 *            the icon x location
-	 * @param iconY
-	 *            the icon y location
-	 * @param customColor
-	 *            the custom color
-	 */
+	public CustomPotion(String name, boolean bad, int color, boolean instant, ResourceLocation iconFile, int iconX, int iconY)
+	{
+		this(name, bad, color, instant, iconFile, iconX, iconY, -1);
+	}
+	
 	public CustomPotion(String name, boolean bad, int color, boolean instant, String iconFile, int iconX, int iconY, int customColor)
+	{
+		this(name, bad, color, instant, new ResourceLocation(iconFile), iconX, iconY, customColor);
+	}
+	
+	public CustomPotion(String name, boolean bad, int color, boolean instant, ResourceLocation iconFile, int iconX, int iconY, int customColor)
 	{
 		super(getNextFreeID(), bad, color);
 		this.setPotionName(name);
@@ -76,13 +48,9 @@ public class CustomPotion extends Potion
 		this.setIconIndex(iconX, iconY);
 		this.customColor = customColor;
 		this.bad = bad;
-		this.customIconFile = new ResourceLocation(iconFile);
+		this.customIconFile = iconFile;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraft.potion.Potion#getStatusIconIndex()
-	 */
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getStatusIconIndex()

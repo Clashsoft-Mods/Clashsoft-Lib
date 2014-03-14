@@ -40,8 +40,19 @@ public class CSResourceHelper
 			resources.put(resource, rl);
 		}
 		else
+		{
 			rl = resources.get(resource);
+		}
 		return rl;
+	}
+	
+	public static ResourceLocation getResource(String domain, String resource)
+	{
+		if (domain != null && !domain.isEmpty())
+		{
+			resource = domain + ":" + resource;
+		}
+		return getResource(resource);
 	}
 	
 	/**
