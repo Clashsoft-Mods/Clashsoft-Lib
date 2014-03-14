@@ -1,5 +1,6 @@
 package clashsoft.cslib.minecraft.block;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -52,11 +53,7 @@ public class CustomBlock extends Block implements ICustomBlock
 		this.drops = new ItemStack[this.names.length];
 		this.hardnesses = new float[this.names.length];
 		this.enabled = new boolean[this.names.length];
-		
-		for (int i = 0; i < this.enabled.length; i++)
-		{
-			this.enabled[i] = !(names[i] == null || names[i].isEmpty() || names[i].startsWith("%&"));
-		}
+		Arrays.fill(this.enabled, true);
 		
 		this.tabs = creativeTabs;
 		if (this.tabs != null)
@@ -187,6 +184,15 @@ public class CustomBlock extends Block implements ICustomBlock
 		return this;
 	}
 	
+	public CreativeTabs getCreativeTab(int metadata)
+	{
+		if (this.tabs == null)
+		{
+			return this.getCreativeTabToDisplayOn();
+		}
+		return this.tabs[metadata % this.tabs.length];
+	}
+	
 	/**
 	 * Gets the names.
 	 * 
@@ -274,7 +280,7 @@ public class CustomBlock extends Block implements ICustomBlock
 			int len = this.iconNames.length;
 			this.icons = new IIcon[len];
 			
-			for (int i = 0; i<  len; i++)
+			for (int i = 0; i < len; i++)
 			{
 				this.icons[i] = iconRegister.registerIcon(this.iconNames[i]);
 			}
@@ -283,27 +289,13 @@ public class CustomBlock extends Block implements ICustomBlock
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs creativeTab, List list)
+	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
 		for (int i = 0; i < this.names.length; i++)
 		{
-			if (this.enabled[i])
+			if (this.enabled[i] && tab == this.getCreativeTab(i))
 			{
-				if (this.tabs == null)
-				{
-					if (creativeTab == super.getCreativeTabToDisplayOn())
-					{
-						list.add(new ItemStack(this, 1, i));
-					}
-				}
-				else if (i < this.tabs.length && creativeTab == this.tabs[i])
-				{
-					list.add(new ItemStack(this, 1, i));
-				}
-				else if (creativeTab == this.tabs[this.tabs.length - 1])
-				{
-					list.add(new ItemStack(this, 1, i));
-				}
+				list.add(new ItemStack(this, 1, i));
 			}
 		}
 	}
