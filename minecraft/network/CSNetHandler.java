@@ -49,17 +49,12 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	 */
 	public boolean registerPacket(Class<? extends CSPacket> clazz)
 	{
-		if (this.packets.size() > 256)
-		{
-			return false;
-		}
-		
-		if (this.packets.contains(clazz))
-		{
-			return false;
-		}
-		
 		if (this.isPostInitialised)
+		{
+			return false;
+		}
+		
+		if (this.packets.size() > 256 || this.packets.contains(clazz))
 		{
 			return false;
 		}
@@ -138,8 +133,8 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 		{
 			return;
 		}
-		
 		this.isPostInitialised = true;
+		
 		Collections.sort(this.packets, new Comparator<Class>()
 		{
 			@Override
@@ -266,7 +261,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	/**
 	 * Send this message to the server.
 	 * <p/>
-	 * Adapted from CPW's code in cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper
+	 * Adapted from CPW's code in {@link SimpleNetworkWrapper}
 	 * 
 	 * @param message
 	 *            The message to send
@@ -282,6 +277,18 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 		else
 		{
 			CSLog.error("Unable to send packet to server: No Client Channel!");
+		}
+	}
+	
+	public void send(CSPacket message)
+	{
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+		{
+			this.sendToServer(message);
+		}
+		else
+		{
+			this.sendToAll(message);
 		}
 	}
 }

@@ -9,6 +9,7 @@ import clashsoft.cslib.util.CSString;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * The class CSUpdate.
@@ -23,7 +24,7 @@ public class CSUpdate
 	public static Map<String, ModUpdate>	updates					= new HashMap();
 	
 	/** The Constant CURRENT_VERSION. */
-	public static final String				CURRENT_VERSION			= "1.7.2";
+	public static final String				CURRENT_VERSION			= MinecraftForge.MC_VERSION;
 	
 	/** The Constant CLASHSOFT_ADFLY. */
 	public static final String				CLASHSOFT_ADFLY			= "http://adf.ly/2175784/";

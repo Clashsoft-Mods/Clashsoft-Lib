@@ -159,6 +159,15 @@ public class CSConfig
 		return getInt("block", key, _default);
 	}
 	
+	public static int getTileEntity(String key, int _default)
+	{
+		if (!key.contains("TileEntity ID"))
+		{
+			key += " TileEntity ID";
+		}
+		return getInt("tileentity", key, _default);
+	}
+	
 	public static int getDimension(String key, int _default)
 	{
 		if (!key.contains("Dimension ID"))
