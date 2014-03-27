@@ -94,11 +94,10 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 		}
 		
 		PacketBuffer buffer = new PacketBuffer(payload.slice());
-		
 		CSPacket pkt = clazz.newInstance();
-		pkt.read(buffer);
+		EntityPlayer player;		
 		
-		EntityPlayer player;
+		pkt.read(buffer);
 		switch (FMLCommonHandler.instance().getEffectiveSide())
 		{
 			case CLIENT:
