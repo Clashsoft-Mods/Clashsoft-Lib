@@ -1,8 +1,13 @@
 package clashsoft.cslib.minecraft.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
+import org.apache.commons.io.Charsets;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -98,5 +103,41 @@ public class CSResourceHelper
 	public static IIcon getIcon(String iconName)
 	{
 		return getIcon(iconRegister, iconName);
+	}
+	
+	public static List<String> readAllLines(ResourceLocation rl)
+	{
+		BufferedReader bufferedreader = null;
+		try
+		{
+			bufferedreader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().getResourceManager().getResource(rl).getInputStream(), Charsets.UTF_8));
+			ArrayList arraylist = new ArrayList();
+			String s;
+			
+			while ((s = bufferedreader.readLine()) != null)
+			{
+				arraylist.add(s);
+			}
+			
+			return arraylist;
+			
+		}
+		catch (IOException ioexception)
+		{
+		}
+		finally
+		{
+			if (bufferedreader != null)
+			{
+				try
+				{
+					bufferedreader.close();
+				}
+				catch (IOException ioexception)
+				{
+				}
+			}
+		}
+		return Collections.EMPTY_LIST;
 	}
 }
