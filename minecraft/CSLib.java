@@ -23,8 +23,7 @@ public class CSLib
 	public static final String	MODID		= "cslib";
 	public static final String	NAME		= "Clashsoft Lib";
 	public static final String	ACRONYM		= MODID;
-	public static final int		REVISION	= 0;
-	public static final String	VERSION		= CSUpdate.CURRENT_VERSION + "-" + REVISION;
+	public static final String	VERSION		= CSUpdate.CURRENT_VERSION + "-1.0.0";
 	
 	@Instance(MODID)
 	public static CSLib			instance;

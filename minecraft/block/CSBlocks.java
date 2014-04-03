@@ -30,7 +30,7 @@ import net.minecraft.util.RegistryNamespaced;
  * @author Clashsoft
  */
 public class CSBlocks
-{	
+{
 	public static boolean replaceBlock(Block block, Block newBlock)
 	{
 		try
@@ -65,9 +65,15 @@ public class CSBlocks
 						((BiMap) map.get(registry)).put(registryName, id);
 						
 						// Replace ItemBlock reference
-						map = ItemBlock.class.getDeclaredFields()[0];
-						CSReflection.setModifier(map, Modifier.FINAL, false);
-						map.set(item, newBlock);
+						try
+						{
+							map = ItemBlock.class.getDeclaredFields()[0];
+							CSReflection.setModifier(map, Modifier.FINAL, false);
+							map.set(item, newBlock);
+						}
+						catch (Exception ex)
+						{
+						}
 						
 						CSLog.info("Replace Item : %s (%s) with %s; Name:Object=%s, ID:Object=%s, Object:Name=%s, Object:ID=%s, Name:ID=%s", new Object[] {
 								field.getName(),
