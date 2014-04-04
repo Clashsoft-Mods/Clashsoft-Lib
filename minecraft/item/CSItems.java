@@ -1,5 +1,7 @@
 package clashsoft.cslib.minecraft.item;
 
+import static clashsoft.cslib.minecraft.item.CSStacks.stick;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -32,7 +34,7 @@ import net.minecraftforge.common.util.EnumHelper;
  * 
  * @author Clashsoft
  */
-public class CSItems implements CSStacks
+public class CSItems
 {
 	public static boolean replaceItem(Item item, Item newItem)
 	{

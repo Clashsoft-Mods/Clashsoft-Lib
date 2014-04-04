@@ -1,9 +1,13 @@
 package clashsoft.cslib.minecraft.crafting;
 
+import static clashsoft.cslib.minecraft.item.CSStacks.air;
+import static clashsoft.cslib.minecraft.item.CSStacks.coal;
+import static clashsoft.cslib.minecraft.item.CSStacks.fire;
+import static clashsoft.cslib.minecraft.item.CSStacks.stick;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import clashsoft.cslib.minecraft.item.CSStacks;
 import clashsoft.cslib.minecraft.item.meta.IMetaItemRecipe;
 import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -24,7 +28,7 @@ import net.minecraftforge.oredict.OreDictionary;
  * 
  * @author Clashsoft
  */
-public class CSCrafting implements CSStacks
+public class CSCrafting
 {
 	public static void registerRecipe(IRecipe recipe)
 	{

@@ -1,5 +1,7 @@
 package clashsoft.cslib.minecraft.tileentity;
 
+import clashsoft.cslib.minecraft.item.CSStacks;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -7,21 +9,31 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityInventory extends TileEntity implements IInventory
+public abstract class TileEntityInventory extends TileEntity implements IInventory
 {
 	public String		name;
-	
+	public int			size;
 	public ItemStack[]	itemStacks;
+	
+	public TileEntityInventory()
+	{
+	}
 	
 	public TileEntityInventory(int size)
 	{
+		this.size = size;
 		this.itemStacks = new ItemStack[size];
+	}
+	
+	public void mergeStack(ItemStack stack, int start, int end)
+	{
+		CSStacks.mergeItemStack(this.itemStacks, start, end, stack);
 	}
 	
 	@Override
 	public int getSizeInventory()
 	{
-		return this.itemStacks.length;
+		return this.size;
 	}
 	
 	@Override
@@ -55,10 +67,7 @@ public class TileEntityInventory extends TileEntity implements IInventory
 				return itemstack;
 			}
 		}
-		else
-		{
-			return null;
-		}
+		return null;
 	}
 	
 	@Override
@@ -70,10 +79,7 @@ public class TileEntityInventory extends TileEntity implements IInventory
 			this.itemStacks[slotID] = null;
 			return itemstack;
 		}
-		else
-		{
 			return null;
-		}
 	}
 	
 	@Override
@@ -90,13 +96,13 @@ public class TileEntityInventory extends TileEntity implements IInventory
 	@Override
 	public String getInventoryName()
 	{
-		return this.hasCustomInventoryName() ? this.name : "tile.generic.name";
+		return this.hasCustomInventoryName() ? this.name : this.blockType.getUnlocalizedName();
 	}
 	
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return this.name != null && this.name.length() > 0;
+		return this.name != null && !this.name.isEmpty();
 	}
 	
 	public void setInvName(String name)
@@ -113,7 +119,7 @@ public class TileEntityInventory extends TileEntity implements IInventory
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 	
 	@Override
@@ -127,12 +133,12 @@ public class TileEntityInventory extends TileEntity implements IInventory
 	{
 		super.readFromNBT(nbt);
 		
-		NBTTagList nbttaglist = nbt.getTagList("Items", 10);
+		NBTTagList list = nbt.getTagList("Items", 10);
 		this.itemStacks = new ItemStack[this.getSizeInventory()];
 		
-		for (int i = 0; i < nbttaglist.tagCount(); ++i)
+		for (int i = 0; i < list.tagCount(); ++i)
 		{
-			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+			NBTTagCompound nbttagcompound1 = list.getCompoundTagAt(i);
 			byte b0 = nbttagcompound1.getByte("Slot");
 			
 			if (b0 >= 0 && b0 < this.itemStacks.length)
@@ -150,7 +156,7 @@ public class TileEntityInventory extends TileEntity implements IInventory
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
-		NBTTagList nbttaglist = new NBTTagList();
+		NBTTagList list = new NBTTagList();
 		
 		for (int i = 0; i < this.itemStacks.length; ++i)
 		{
@@ -159,11 +165,11 @@ public class TileEntityInventory extends TileEntity implements IInventory
 				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
 				nbttagcompound1.setByte("Slot", (byte) i);
 				this.itemStacks[i].writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
+				list.appendTag(nbttagcompound1);
 			}
 		}
 		
-		nbt.setTag("Items", nbttaglist);
+		nbt.setTag("Items", list);
 		
 		if (this.hasCustomInventoryName())
 		{
