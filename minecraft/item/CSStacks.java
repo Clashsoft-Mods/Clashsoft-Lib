@@ -128,6 +128,7 @@ public class CSStacks
 		int i = -1;
 		int max = stack.getMaxStackSize();
 		ItemStack stack1;
+		
 		for (int j = start; j < end && stack.isStackable() && stack.stackSize > 0; j++)
 		{
 			stack1 = stacks[j];
@@ -148,6 +149,21 @@ public class CSStacks
 				}
 			}
 		}
+		
+		if (stack.stackSize > 0)
+		{
+			for (int j = start; j < end; j++)
+			{
+				stack1 = stacks[j];
+				if (stack1 == null)
+				{
+					stacks[j] = stack.copy();
+					stack.stackSize = 0;
+					return j;
+				}
+			}
+		}
+		
 		return i;
 	}
 }

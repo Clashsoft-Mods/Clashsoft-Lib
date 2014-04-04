@@ -12,16 +12,15 @@ import net.minecraft.tileentity.TileEntity;
 public abstract class TileEntityInventory extends TileEntity implements IInventory
 {
 	public String		name;
-	public int			size;
 	public ItemStack[]	itemStacks;
 	
 	public TileEntityInventory()
 	{
+		this.itemStacks = new ItemStack[this.getSizeInventory()];
 	}
 	
 	public TileEntityInventory(int size)
 	{
-		this.size = size;
 		this.itemStacks = new ItemStack[size];
 	}
 	
@@ -31,21 +30,27 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 	}
 	
 	@Override
-	public int getSizeInventory()
+	public abstract int getSizeInventory();
+	
+	public boolean rangeCheck(int slotID)
 	{
-		return this.size;
+		return slotID >= 0 && slotID < this.itemStacks.length;
 	}
 	
 	@Override
 	public ItemStack getStackInSlot(int slotID)
 	{
-		return this.itemStacks[slotID];
+		if (rangeCheck(slotID))
+		{
+			return this.itemStacks[slotID];
+		}
+		return null;
 	}
 	
 	@Override
 	public ItemStack decrStackSize(int slotID, int amount)
 	{
-		if (this.itemStacks[slotID] != null)
+		if (this.rangeCheck(slotID) && this.itemStacks[slotID] != null)
 		{
 			ItemStack itemstack;
 			
@@ -73,23 +78,26 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slotID)
 	{
-		if (this.itemStacks[slotID] != null)
+		if (this.rangeCheck(slotID) && this.itemStacks[slotID] != null)
 		{
 			ItemStack itemstack = this.itemStacks[slotID];
 			this.itemStacks[slotID] = null;
 			return itemstack;
 		}
-			return null;
+		return null;
 	}
 	
 	@Override
 	public void setInventorySlotContents(int slotID, ItemStack stack)
 	{
-		this.itemStacks[slotID] = stack;
-		
-		if (stack != null && stack.stackSize > this.getInventoryStackLimit())
+		if (this.rangeCheck(slotID))
 		{
-			stack.stackSize = this.getInventoryStackLimit();
+			this.itemStacks[slotID] = stack;
+			
+			if (stack != null && stack.stackSize > this.getInventoryStackLimit())
+			{
+				stack.stackSize = this.getInventoryStackLimit();
+			}
 		}
 	}
 	
@@ -132,19 +140,14 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		
-		NBTTagList list = nbt.getTagList("Items", 10);
 		this.itemStacks = new ItemStack[this.getSizeInventory()];
 		
+		NBTTagList list = nbt.getTagList("Items", 10);
 		for (int i = 0; i < list.tagCount(); ++i)
 		{
-			NBTTagCompound nbttagcompound1 = list.getCompoundTagAt(i);
-			byte b0 = nbttagcompound1.getByte("Slot");
-			
-			if (b0 >= 0 && b0 < this.itemStacks.length)
-			{
-				this.itemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-			}
+			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
+			byte slot = nbt1.getByte("Slot");
+			this.itemStacks[slot] = ItemStack.loadItemStackFromNBT(nbt1);
 		}
 		
 		if (nbt.hasKey("CustomName"))
@@ -162,10 +165,10 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 		{
 			if (this.itemStacks[i] != null)
 			{
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Slot", (byte) i);
-				this.itemStacks[i].writeToNBT(nbttagcompound1);
-				list.appendTag(nbttagcompound1);
+				NBTTagCompound nbt1 = new NBTTagCompound();
+				nbt1.setByte("Slot", (byte) i);
+				this.itemStacks[i].writeToNBT(nbt1);
+				list.appendTag(nbt1);
 			}
 		}
 		

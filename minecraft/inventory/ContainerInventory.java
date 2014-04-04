@@ -1,6 +1,7 @@
 package clashsoft.cslib.minecraft.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -8,11 +9,13 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerInventory extends Container
 {
-	public IInventory inventory;
+	public final IInventory		inventory;
+	public final EntityPlayer	player;
 	
 	public ContainerInventory(EntityPlayer player, IInventory inventory)
 	{
 		this.inventory = inventory;
+		this.player = player;
 	}
 	
 	public void addInventorySlots()
@@ -23,8 +26,10 @@ public class ContainerInventory extends Container
 	public void addInventorySlots(int xOffset, int yOffset)
 	{
 		int k = 8 + xOffset;
-		int l = 84 + xOffset;
-		int m = 142 + xOffset;
+		int l = 84 + yOffset;
+		int m = 142 + yOffset;
+		
+		InventoryPlayer inventory = this.player.inventory;
 		
 		for (int i = 0; i < 3; ++i)
 		{
@@ -51,48 +56,54 @@ public class ContainerInventory extends Container
 	{
 		int inv_low = this.inventory.getSizeInventory();
 		int inv_high = inv_low + 27;
-		int hotbar_low = inv_low + 36;
-		int hotbar_high = hotbar_low + 9; 
+		int hotbar_low = inv_high;
+		int hotbar_high = hotbar_low + 9;
 		
-		ItemStack itemstack = null;
+		ItemStack theStack = null;
 		Slot slot = (Slot) this.inventorySlots.get(slotID);
 		
 		if (slot != null && slot.getHasStack())
 		{
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
+			ItemStack stack = slot.getStack();
+			theStack = stack.copy();
+			int[] merge;
 			
 			if (slotID < inv_low)
 			{
-				if (!this.mergeItemStack(itemstack1, inv_low, inv_high, false))
+				if (!this.mergeItemStack(stack, inv_low, hotbar_high, false))
 				{
 					return null;
 				}
 			}
-			else if (slotID >= inv_low && slotID < hotbar_high && this.tryMerge(player, slotID, itemstack1))
+			else if (slotID >= inv_low && slotID < hotbar_high && (merge = this.merge(player, slotID, stack)) != null)
 			{
-				return null;
+				int i = merge[0];
+				int j = merge.length > 1 ? merge[1] : i + 1;
+				if (!this.mergeItemStack(stack, i, j, false))
+				{
+					return null;
+				}
 			}
 			else if (slotID >= inv_low && slotID < inv_high)
 			{
-				if (!this.mergeItemStack(itemstack1, hotbar_low, hotbar_high, false))
+				if (!this.mergeItemStack(stack, hotbar_low, hotbar_high, false))
 				{
 					return null;
 				}
 			}
 			else if (slotID >= hotbar_low && slotID < hotbar_high)
 			{
-				if (!this.mergeItemStack(itemstack1, inv_low, inv_high, false))
+				if (!this.mergeItemStack(stack, inv_low, inv_high, false))
 				{
 					return null;
 				}
 			}
-			else if (!this.mergeItemStack(itemstack1, inv_low, hotbar_high, false))
+			else if (!this.mergeItemStack(stack, inv_low, hotbar_high, false))
 			{
 				return null;
 			}
 			
-			if (itemstack1.stackSize == 0)
+			if (stack.stackSize == 0)
 			{
 				slot.putStack((ItemStack) null);
 			}
@@ -101,19 +112,19 @@ public class ContainerInventory extends Container
 				slot.onSlotChanged();
 			}
 			
-			if (itemstack1.stackSize == itemstack.stackSize)
+			if (stack.stackSize == theStack.stackSize)
 			{
 				return null;
 			}
 			
-			slot.onPickupFromSlot(player, itemstack1);
+			slot.onPickupFromSlot(player, stack);
 		}
 		
-		return itemstack;
+		return theStack;
 	}
 	
-	public boolean tryMerge(EntityPlayer player, int slot, ItemStack stack)
+	public int[] merge(EntityPlayer player, int slot, ItemStack stack)
 	{
-		return false;
+		return null;
 	}
 }
