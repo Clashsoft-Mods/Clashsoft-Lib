@@ -13,7 +13,7 @@ public class CustomPotion extends Potion
 {
 	private ResourceLocation	iconFile;
 	private boolean				instant;
-	private int					customColor;
+	private int					customColor	= 15;
 	private boolean				bad;
 	
 	public CustomPotion(String name, int color, boolean bad)
@@ -37,7 +37,10 @@ public class CustomPotion extends Potion
 	
 	public CustomPotion setCustomColor(int color)
 	{
-		this.customColor = color;
+		if (color > 0)
+		{
+			this.customColor = color;
+		}
 		return this;
 	}
 	
