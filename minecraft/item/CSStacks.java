@@ -52,6 +52,7 @@ public class CSStacks
 	public static ItemStack	blaze_powder			= new ItemStack(Items.blaze_powder);
 	public static ItemStack	blaze_rod				= new ItemStack(Items.blaze_rod);
 	public static ItemStack	bone					= new ItemStack(Items.bone);
+	public static ItemStack	bonemeal				= new ItemStack(Items.dye, 1, 15);
 	public static ItemStack	bowl					= new ItemStack(Items.bowl);
 	public static ItemStack	bread					= new ItemStack(Items.bread);
 	public static ItemStack	brick					= new ItemStack(Items.brick);

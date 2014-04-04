@@ -8,11 +8,6 @@ import net.minecraftforge.common.DimensionManager;
 
 public abstract class CSPacket
 {
-	public CSPacket()
-	{
-		
-	}
-	
 	public abstract void write(PacketBuffer buf);
 	
 	public abstract void read(PacketBuffer buf);
