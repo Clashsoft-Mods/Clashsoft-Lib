@@ -95,23 +95,18 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 		
 		PacketBuffer buffer = new PacketBuffer(payload.slice());
 		CSPacket pkt = clazz.newInstance();
-		EntityPlayer player;		
 		
 		pkt.read(buffer);
-		switch (FMLCommonHandler.instance().getEffectiveSide())
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
 		{
-			case CLIENT:
-				player = this.getClientPlayer();
-				pkt.handleClient(player);
-				break;
-			
-			case SERVER:
-				INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
-				player = ((NetHandlerPlayServer) netHandler).playerEntity;
-				pkt.handleServer(player);
-				break;
-			
-			default:
+			INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
+			EntityPlayerMP player = ((NetHandlerPlayServer) netHandler).playerEntity;
+			pkt.handleServer(player);
+		}
+		else
+		{
+			EntityPlayer player = this.getClientPlayer();
+			pkt.handleClient(player);
 		}
 		
 		out.add(pkt);
