@@ -11,6 +11,7 @@ import net.minecraft.block.BlockSapling;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -106,6 +107,7 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 		int l = world.getBlockMetadata(x, y, z) & 3;
 		WorldGenerator worldgen = this.getWorldGen(world, x, y, z, random);
 		
+		world.setBlock(x, y, z, Blocks.air, 0, 0);
 		if (worldgen != null && !worldgen.generate(world, random, x, y, z))
 		{
 			world.setBlock(x, y, z, this, l, 4);
