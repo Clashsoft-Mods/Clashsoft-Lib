@@ -4,7 +4,10 @@ import java.util.*;
 
 import clashsoft.cslib.minecraft.CSLib;
 import clashsoft.cslib.minecraft.util.CSWeb;
+import clashsoft.cslib.util.CSLog;
 import clashsoft.cslib.util.CSString;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
@@ -195,6 +198,11 @@ public class CSUpdate
 	
 	public static void updateCheck(String modName, String acronym, String version, String url)
 	{
+		if (!Loader.instance().hasReachedState(LoaderState.INITIALIZATION))
+		{
+			CSLog.warning("The mod " + modName + " is attempting an update check before the post-init state.");
+		}
+		
 		if (CSLib.updateCheck)
 		{
 			new CheckUpdateThread(modName, acronym, version, url).start();
@@ -209,21 +217,21 @@ public class CSUpdate
 		}
 	}
 	
-	public static void notifyAllUpdates(EntityPlayer player)
+	public static void notifyAll(EntityPlayer player)
 	{
-		if (player.worldObj.isRemote)
+		if (!updates.isEmpty())
 		{
 			player.addChatMessage(new ChatComponentTranslation("update.found"));
 			for (ModUpdate update : updates.values())
 			{
-				notifyUpdate(player, update);
+				notify(player, update);
 			}
 		}
 	}
 	
-	public static void notifyUpdate(EntityPlayer player, ModUpdate update)
+	public static void notify(EntityPlayer player, ModUpdate update)
 	{
-		if (player.worldObj.isRemote && update != null && update.isValid())
+		if (update != null && update.isValid())
 		{
 			player.addChatMessage(new ChatComponentTranslation("update.notification", update.getModName(), update.getNewVersion(), update.getVersion()));
 			
@@ -261,22 +269,53 @@ public class CSUpdate
 		}
 	}
 	
+	public static void updateAll(EntityPlayer player)
+	{
+		if (!updates.isEmpty())
+		{
+			for (ModUpdate update : updates.values())
+			{
+				update.install(player);
+			}
+		}
+	}
+	
 	public static int compareVersion(String version1, String version2)
 	{
 		if (version1 == null)
 		{
-			return -1;
+			return version2 == null ? 0 : -1;
 		}
-		if (version2 == null)
+		else if (version2 == null)
 		{
 			return 1;
 		}
 		
-		String s1 = version1.replace(".", "").replace("-", ".");
-		String s2 = version2.replace(".", "").replace("-", ".");
-		float f1 = Float.parseFloat(s1);
-		float f2 = Float.parseFloat(s2);
+		String[] split1 = version1.split("\\p{Punct}");
+		String[] split2 = version2.split("\\p{Punct}");
 		
-		return Float.compare(f1, f2);
+		int len = Math.max(split1.length, split2.length);
+		int[] ints1 = new int[len];
+		int[] ints2 = new int[len];
+		
+		for (int i = 0; i < split1.length; i++)
+		{
+			ints1[i] = Integer.parseInt(split1[i], 36);
+		}
+		for (int i = 0; i < split2.length; i++)
+		{
+			ints2[i] = Integer.parseInt(split2[i], 36);
+		}
+		
+		for (int i = len - 1; i >= 0; i--)
+		{
+			int compare = Integer.compare(ints1[i], ints2[i]);
+			if (compare != 0)
+			{
+				return compare;
+			}
+		}
+		
+		return 0;
 	}
 }

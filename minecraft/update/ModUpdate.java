@@ -50,7 +50,7 @@ public class ModUpdate
 	
 	public void validate()
 	{
-		this.valid = newVersion.startsWith(CSUpdate.CURRENT_VERSION) && CSUpdate.compareVersion(version, newVersion) == -1;
+		this.valid = newVersion.startsWith(CSUpdate.CURRENT_VERSION) && CSUpdate.compareVersion(version, newVersion) < 0;
 	}
 	
 	public String getModName()
