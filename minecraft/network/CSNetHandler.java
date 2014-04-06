@@ -14,6 +14,7 @@ import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,7 +33,9 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	
 	protected EnumMap<Side, FMLEmbeddedChannel>	channels;
 	protected List<Class<? extends CSPacket>>	packets				= new ArrayList();
-	protected boolean							isPostInitialised	= false;
+	
+	protected boolean 							initiliased = false;
+	protected boolean							postInitialised	= false;
 	
 	public CSNetHandler(String name)
 	{
@@ -40,16 +43,16 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	}
 	
 	/**
-	 * Register your packet with the pipeline. Discriminators are automatically set.
+	 * Register your packet with the pipeline. Discriminators are automatically set. If more than
+	 * 256 packet classes are registered, the packet is not registered.
 	 * 
 	 * @param clazz
 	 *            the class to register
-	 * @return whether registration was successful. Failure may occur if 256 packets have been
-	 *         registered or if the registry already contains this packet
+	 * @return true, if the registration was successful.
 	 */
 	public boolean registerPacket(Class<? extends CSPacket> clazz)
 	{
-		if (this.isPostInitialised)
+		if (this.postInitialised)
 		{
 			return false;
 		}
@@ -63,18 +66,44 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 		return true;
 	}
 	
+	/**
+	 * Returns this discriminator for the registered packet class. If the class is not registered, a
+	 * {@link NullPointerException} is thrown.
+	 */
+	protected byte getDiscriminator(Class<? extends CSPacket> packetClass)
+	{
+		int index = (byte) this.packets.indexOf(packetClass);
+		if (index == -1)
+		{
+			throw new NullPointerException("No Packet Registered for: " + packetClass.getCanonicalName());
+		}
+		return (byte) index;
+	}
+	
+	/**
+	 * Returns the registered packet class for the discriminator. If no registered class was found,
+	 * a {@link NullPointerException} is thrown.
+	 * 
+	 * @param discriminator
+	 * @return the packet class
+	 */
+	protected Class<? extends CSPacket> getClass(byte discriminator)
+	{
+		Class clazz = this.packets.get(discriminator);
+		if (clazz == null)
+		{
+			throw new NullPointerException("No packet registered for discriminator: " + discriminator);
+		}
+		return clazz;
+	}
+	
 	@Override
 	protected void encode(ChannelHandlerContext ctx, CSPacket msg, List<Object> out) throws Exception
 	{
 		PacketBuffer buffer = new PacketBuffer(Unpooled.buffer());
 		Class<? extends CSPacket> clazz = msg.getClass();
+		byte discriminator = this.getDiscriminator(clazz);
 		
-		if (!this.packets.contains(msg.getClass()))
-		{
-			throw new NullPointerException("No Packet Registered for: " + msg.getClass().getCanonicalName());
-		}
-		
-		byte discriminator = (byte) this.packets.indexOf(clazz);
 		buffer.writeByte(discriminator);
 		msg.write(buffer);
 		FMLProxyPacket proxyPacket = new FMLProxyPacket(buffer.copy(), ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get());
@@ -86,12 +115,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	{
 		ByteBuf payload = msg.payload();
 		byte discriminator = payload.readByte();
-		Class<? extends CSPacket> clazz = this.packets.get(discriminator);
-		
-		if (clazz == null)
-		{
-			throw new NullPointerException("No packet registered for discriminator: " + discriminator);
-		}
+		Class<? extends CSPacket> clazz = getClass(discriminator);
 		
 		PacketBuffer buffer = new PacketBuffer(payload.slice());
 		CSPacket pkt = clazz.newInstance();
@@ -112,8 +136,18 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 		out.add(pkt);
 	}
 	
+	/**
+	 * Initializes this net handler by creating a new Channel using
+	 * {@link NetworkRegistry#newChannel(String, ChannelHandler...)}.
+	 */
 	public void init()
 	{
+		if (this.initiliased)
+		{
+			return;
+		}
+		this.initiliased = true;
+		
 		this.channels = NetworkRegistry.INSTANCE.newChannel(this.name, this);
 	}
 	
@@ -123,11 +157,16 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	 */
 	public void postInit()
 	{
-		if (this.isPostInitialised)
+		if (!this.initiliased)
+		{
+			CSLog.warning("The net handler " + this.name + " is attempting to post-init, but it hasn't been initialised yet.");
+		}
+		
+		if (this.postInitialised)
 		{
 			return;
 		}
-		this.isPostInitialised = true;
+		this.postInitialised = true;
 		
 		Collections.sort(this.packets, new Comparator<Class>()
 		{
@@ -148,6 +187,11 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 		});
 	}
 	
+	/**
+	 * Returns the client player from {@link Minecraft#thePlayer}.
+	 * 
+	 * @return the client player
+	 */
 	@SideOnly(Side.CLIENT)
 	private EntityPlayer getClientPlayer()
 	{
@@ -157,7 +201,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	/**
 	 * Send this message to everyone.
 	 * <p>
-	 * Adapted from CPW's code in {@link SimpleNetworkWrapper}
+	 * Adapted from CPW's code in {@link SimpleNetworkWrapper#sendToAll(IMessage)}
 	 * 
 	 * @param message
 	 *            The message to send
@@ -179,7 +223,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	/**
 	 * Send this message to the specified player.
 	 * <p>
-	 * Adapted from CPW's code in {@link SimpleNetworkWrapper}
+	 * Adapted from CPW's code in {@link SimpleNetworkWrapper#sendTo(IMessage, EntityPlayerMP)}
 	 * 
 	 * @param message
 	 *            The message to send
@@ -204,12 +248,13 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	/**
 	 * Send this message to everyone within a certain range of a point.
 	 * <p>
-	 * Adapted from CPW's code in {@link SimpleNetworkWrapper}
+	 * Adapted from CPW's code in
+	 * {@link SimpleNetworkWrapper#sendToAllAround(IMessage, NetworkRegistry.TargetPoint)}
 	 * 
 	 * @param message
 	 *            The message to send
 	 * @param point
-	 *            The {@link cpw.mods.fml.common.network.NetworkRegistry.TargetPoint} around which
+	 *            The {@link NetworkRegistry.TargetPoint} around which
 	 *            to send
 	 */
 	public void sendToAllAround(CSPacket message, NetworkRegistry.TargetPoint point)
@@ -230,7 +275,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	/**
 	 * Send this message to everyone within the supplied dimension.
 	 * <p>
-	 * Adapted from CPW's code in {@link SimpleNetworkWrapper}
+	 * Adapted from CPW's code in {@link SimpleNetworkWrapper#sendToDimension(IMessage, int)}
 	 * 
 	 * @param message
 	 *            The message to send
@@ -255,7 +300,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	/**
 	 * Send this message to the server.
 	 * <p/>
-	 * Adapted from CPW's code in {@link SimpleNetworkWrapper}
+	 * Adapted from CPW's code in {@link SimpleNetworkWrapper#sendToServer(IMessage)}
 	 * 
 	 * @param message
 	 *            The message to send
@@ -274,6 +319,11 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 		}
 	}
 	
+	/**
+	 * Intelligently decides where the message should be sent. If this is called from a client-side
+	 * thread, the message is sent to the server. Otherwise, it is sent to all players on the
+	 * server.
+	 */
 	public void send(CSPacket message)
 	{
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
