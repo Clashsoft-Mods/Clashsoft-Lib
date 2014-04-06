@@ -44,23 +44,6 @@ public class CSCrafting
 	 *            the output
 	 * @param recipe
 	 *            the recipe
-	 * @see CSCrafting#addRecipe(ItemStack, Object...)
-	 * @deprecated Use addRecipe instead
-	 */
-	public static void addCrafting(ItemStack output, Object... recipe)
-	{
-		addRecipe(output, recipe);
-	}
-	
-	/**
-	 * Adds a new shaped crafting recipe to the game.
-	 * <p>
-	 * Save for adding advanced recipes (bigger than 3x3)
-	 * 
-	 * @param output
-	 *            the output
-	 * @param recipe
-	 *            the recipe
 	 * @return the ShapedRecipe instance created
 	 * @see CSCrafting#addAdvancedRecipe(ItemStack, Object...)
 	 */
@@ -151,43 +134,11 @@ public class CSCrafting
 	 *            the output
 	 * @param recipe
 	 *            the recipe
-	 * @see CSCrafting#addShapelessRecipe(ItemStack, Object...)
-	 * @deprecated use addShapelessRecipe instead
-	 */
-	public static void addShapelessCrafting(ItemStack output, Object... recipe)
-	{
-		addShapelessRecipe(output, recipe);
-	}
-	
-	/**
-	 * Adds a new shapeless crafting recipe to the game.
-	 * 
-	 * @param output
-	 *            the output
-	 * @param recipe
-	 *            the recipe
 	 * @see GameRegistry#addShapelessRecipe(ItemStack, Object...)
 	 */
 	public static void addShapelessRecipe(ItemStack output, Object... recipe)
 	{
 		GameRegistry.addShapelessRecipe(output, recipe);
-	}
-	
-	/**
-	 * Adds a new furnace recipe to the game.
-	 * 
-	 * @param input
-	 *            the input
-	 * @param output
-	 *            the output
-	 * @param experience
-	 *            the experience
-	 * @see CSCrafting#addFurnaceRecipe(ItemStack, ItemStack, float)
-	 * @deprecated use addFurnaceRecipe instead
-	 */
-	public static void addSmelting(ItemStack input, ItemStack output, float experience)
-	{
-		addSmelting(input, output, experience);
 	}
 	
 	/**
@@ -232,11 +183,11 @@ public class CSCrafting
 	public static void addStorageBlock(ItemStack input, ItemStack output, int size)
 	{
 		if (size == 1)
-			addShapelessCrafting(output, input);
+			addShapelessRecipe(output, input);
 		else if (size == 2)
-			addCrafting(output, "XX", "XX", 'X', input);
+			addRecipe(output, "XX", "XX", 'X', input);
 		else if (size == 3)
-			addCrafting(output, "XXX", "XXX", "XXX", 'X', input);
+			addRecipe(output, "XXX", "XXX", "XXX", 'X', input);
 		else
 			throw new IllegalArgumentException("The size of a storage block recipe should be either 1, 2 or 3");
 	}
@@ -251,7 +202,7 @@ public class CSCrafting
 	 */
 	public static void addStick(ItemStack output, ItemStack input)
 	{
-		addCrafting(output, "s", "s", 's', input);
+		addRecipe(output, "s", "s", 's', input);
 	}
 	
 	/**
@@ -264,7 +215,7 @@ public class CSCrafting
 	 */
 	public static void addPlanks(ItemStack output, ItemStack input)
 	{
-		addShapelessCrafting(output, input);
+		addShapelessRecipe(output, input);
 	}
 	
 	/**
@@ -281,33 +232,33 @@ public class CSCrafting
 	public static void addArmorRecipe(ItemStack output, ItemStack input, int type)
 	{
 		if (type == 0)
-			addCrafting(output, new Object[] {
+			addRecipe(output, new Object[] {
 					"XXX",
 					"X X",
 					Character.valueOf('X'),
 					input });
 		else if (type == 1)
-			addCrafting(output, new Object[] {
+			addRecipe(output, new Object[] {
 					"X X",
 					"XXX",
 					"XXX",
 					Character.valueOf('X'),
 					input });
 		else if (type == 2)
-			addCrafting(output, new Object[] {
+			addRecipe(output, new Object[] {
 					"XXX",
 					"X X",
 					"X X",
 					Character.valueOf('X'),
 					input });
 		else if (type == 3)
-			addCrafting(output, new Object[] {
+			addRecipe(output, new Object[] {
 					"X X",
 					"X X",
 					Character.valueOf('X'),
 					input });
 		else if (type == 4)
-			addCrafting(output, new Object[] { "X X", 'X', input });
+			addRecipe(output, new Object[] { "X X", 'X', input });
 	}
 	
 	/**
@@ -341,15 +292,15 @@ public class CSCrafting
 	public static void addToolRecipe(ItemStack output, ItemStack material, ItemStack stick, int type)
 	{
 		if (type == 0)
-			addCrafting(output, "X", "X", "|", 'X', material, '|', stick);
+			addRecipe(output, "X", "X", "|", 'X', material, '|', stick);
 		else if (type == 1)
-			addCrafting(output, "X", "|", "|", 'X', material, '|', stick);
+			addRecipe(output, "X", "|", "|", 'X', material, '|', stick);
 		else if (type == 2)
-			addCrafting(output, "XXX", " | ", " | ", 'X', material, '|', stick);
+			addRecipe(output, "XXX", " | ", " | ", 'X', material, '|', stick);
 		else if (type == 3)
-			addCrafting(output, "XX ", "X| ", " | ", 'X', material, '|', stick);
+			addRecipe(output, "XX ", "X| ", " | ", 'X', material, '|', stick);
 		else if (type == 4)
-			addCrafting(output, "XX", " |", " |", 'X', material, '|', stick);
+			addRecipe(output, "XX", " |", " |", 'X', material, '|', stick);
 	}
 	
 	/**
@@ -360,7 +311,7 @@ public class CSCrafting
 	 */
 	public static void removeRecipe(Object... recipe)
 	{
-		addCrafting(air, recipe);
+		addRecipe(air, recipe);
 	}
 	
 	/**
