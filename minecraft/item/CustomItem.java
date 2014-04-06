@@ -100,6 +100,10 @@ public class CustomItem extends Item
 	@Override
 	public CreativeTabs[] getCreativeTabs()
 	{
+		if (this.tabs == null)
+		{
+			this.tabs = new CreativeTabs[] { this.getCreativeTab() };
+		}
 		return this.tabs;
 	}
 	
