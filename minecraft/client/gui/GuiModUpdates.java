@@ -17,6 +17,7 @@ public class GuiModUpdates extends GuiScreen
 	
 	public GuiModUpdatesSlot	slots;
 	public GuiButton			buttonShowInvalidUpdates;
+	public GuiButton 			buttonInstall;
 	
 	public List<ModUpdate>		updates;
 	public ModUpdate			update;
@@ -44,9 +45,10 @@ public class GuiModUpdates extends GuiScreen
 	public void initGui()
 	{
 		this.buttonShowInvalidUpdates = new GuiButton(10, 10, this.height - 38, 140, 20, getShowInvalidUpdates());
+		this.buttonInstall = new GuiButton(1, this.width - 90, 35, 80, 20, I18n.getString("update.list.install"));
 		
 		this.buttonList.add(new GuiButton(0, this.width / 2, this.height - 38, 140, 20, I18n.getString("gui.done")));
-		this.buttonList.add(new GuiButton(1, this.width - 90, 35, 80, 20, I18n.getString("update.list.install")));
+		this.buttonList.add(this.buttonInstall);
 		this.buttonList.add(this.buttonShowInvalidUpdates);
 		this.buttonList.add(new GuiButton(2, 10, this.height - 60, 140, 20, I18n.getString("update.list.installall")));
 		this.slots = new GuiModUpdatesSlot(this);
@@ -76,7 +78,6 @@ public class GuiModUpdates extends GuiScreen
 			this.drawString(fontRendererObj, new_version, 160, 70, 0xFFFFFF);
 			this.drawString(fontRendererObj, url, 160, 80, 0xFFFFFF);
 			this.drawString(fontRendererObj, install_status, 160, 90, 0xFFFFFF);
-			this.drawString(fontRendererObj, update_notes, 160, 105, 0xFFFFFF);
 			
 			this.drawString(fontRendererObj, update.getModName(), 260, 50, 0xFFFFFF);
 			this.drawString(fontRendererObj, update.getVersion(), 260, 60, color1);
@@ -85,11 +86,16 @@ public class GuiModUpdates extends GuiScreen
 			this.drawString(fontRendererObj, update.getStatus(), 260, 90, 0xFFFFFF);
 			
 			int i = 117;
-			for (String line : update.getUpdateNotes())
+			String[] updateNotes = update.getUpdateNotes();
+			if (updateNotes != null && updateNotes.length > 0)
 			{
-				this.drawString(fontRendererObj, line, 160, i, getDiffColor(line));
+				this.drawString(fontRendererObj, update_notes, 160, 105, 0xFFFFFF);
 				
-				i += 10;
+				for (String line : updateNotes)
+				{
+					this.drawString(fontRendererObj, line, 160, i, getDiffColor(line));
+					i += 10;
+				}
 			}
 		}
 		
@@ -112,6 +118,9 @@ public class GuiModUpdates extends GuiScreen
 	
 	public int getDiffColor(String line)
 	{
+		if (line.isEmpty())
+			return 0xFFFFFF;
+		
 		switch (line.charAt(0))
 		{
 			case '+':
@@ -181,6 +190,12 @@ public class GuiModUpdates extends GuiScreen
 		{
 			this.mc.displayGuiScreen(this);
 		}
+	}
+	
+	protected void selectUpdate(int update)
+	{
+		this.update = this.updates.get(update);
+		this.buttonInstall.enabled = this.update.isValid();
 	}
 	
 	protected void updateList()

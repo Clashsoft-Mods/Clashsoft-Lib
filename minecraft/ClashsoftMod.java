@@ -25,6 +25,6 @@ public abstract class ClashsoftMod<N extends CSNetHandler> extends BaseMod<N>
 	@Override
 	public void updateCheck()
 	{
-		CSUpdate.updateCheckCS(this.name, this.acronym, this.version);
+		CSUpdate.updateCheck(this.name, this.acronym, this.version, CSUpdate.CLASHSOFT_UPDATE_NOTES);
 	}
 }

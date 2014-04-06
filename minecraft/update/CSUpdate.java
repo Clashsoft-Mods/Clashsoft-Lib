@@ -4,15 +4,10 @@ import java.util.*;
 
 import clashsoft.cslib.minecraft.CSLib;
 import clashsoft.cslib.minecraft.util.CSWeb;
-import clashsoft.cslib.util.CSLog;
-import clashsoft.cslib.util.CSString;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.LoaderState;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraftforge.common.MinecraftForge;
 
 /**
  * The class CSUpdate.
@@ -26,8 +21,10 @@ public class CSUpdate
 	/** The updates already found. */
 	public static Map<String, ModUpdate>	updates					= new HashMap();
 	
+	public static Map<String, String[]>		updateFiles				= new HashMap();
+	
 	/** The Constant CURRENT_VERSION. */
-	public static final String				CURRENT_VERSION			= MinecraftForge.MC_VERSION;
+	public static final String				CURRENT_VERSION			= "1.7.2";
 	
 	/** The Constant CLASHSOFT_ADFLY. */
 	public static final String				CLASHSOFT_ADFLY			= "http://adf.ly/2175784/";
@@ -59,6 +56,8 @@ public class CSUpdate
 	
 	public static ModUpdate readUpdateLine(String line, String modName, String acronym, String version)
 	{
+		boolean flag = modName == null;
+		
 		int i0 = line.indexOf(':');
 		int i1 = line.indexOf('=');
 		int i2 = line.lastIndexOf('@');
@@ -70,29 +69,21 @@ public class CSUpdate
 		
 		String key = line.substring(0, i0);
 		
-		if (modName == null)
-		{
-			modName = key;
-		}
-		
-		if (key.equals(modName) || key.equals(acronym))
+		if (flag || key.equals(modName) || key.equals(acronym))
 		{
 			String newVersion = line.substring(i0 + 1, i1);
-			if (version == null || !newVersion.equals(version))
+			String updateNotes = null;
+			String updateUrl = null;
+			if (i1 != -1)
 			{
-				String updateNotes = null;
-				String updateUrl = null;
-				if (i1 != -1)
-				{
-					updateNotes = line.substring(i1 + 1, i2 == -1 ? line.length() : i2);
-				}
-				if (i2 != -1)
-				{
-					updateUrl = line.substring(i2 + 1);
-				}
-				
-				return new ModUpdate(modName, version, newVersion, updateNotes, updateUrl);
+				updateNotes = line.substring(i1 + 1, i2 == -1 ? line.length() : i2);
 			}
+			if (i2 != -1)
+			{
+				updateUrl = line.substring(i2 + 1);
+			}
+			
+			return new ModUpdate(flag ? key : modName, version, newVersion, updateNotes, updateUrl);
 		}
 		return null;
 	}
@@ -124,16 +115,7 @@ public class CSUpdate
 	{
 		if (update != null)
 		{
-			ModUpdate update1 = getUpdate(update.getModName());
-			if (update1 != null)
-			{
-				update1.combine(update);
-				return update1;
-			}
-			else
-			{
-				updates.put(update.getModName(), update);
-			}
+			updates.put(update.getModName(), update);
 		}
 		return update;
 	}
@@ -143,86 +125,59 @@ public class CSUpdate
 		return updates.get(modName);
 	}
 	
-	public static ModUpdate getUpdate(String modName, String version)
+	public static ModUpdate getUpdate(String modName, String acronym)
 	{
 		ModUpdate update = getUpdate(modName);
-		if (update != null)
+		if (update == null)
 		{
-			update.setMod(modName, version);
+			update = getUpdate(acronym);
 		}
 		return update;
 	}
 	
-	public static ModUpdate getUpdate(String modName, String acronym, String version, String[] updateFile)
+	public static String[] getUpdateFile(String url)
 	{
-		ModUpdate update = getUpdate(modName, version);
-		if (update != null)
+		String[] updateFile = updateFiles.get(url);
+		if (updateFile == null)
 		{
-			return update;
+			updateFile = CSWeb.readWebsite(url);
+			updateFiles.put(url, updateFile);
 		}
-		
-		for (String line : updateFile)
-		{
-			update = readUpdateLine(line, modName, acronym, version);
-			if (update != null)
-			{
-				addUpdate(update);
-			}
-		}
-		return getUpdate(modName);
+		return updateFile;
 	}
 	
+	/**
+	 * Reads an update file and adds all available updates to the list.
+	 * 
+	 * @param url
+	 */
 	public static void updateCheck(String url)
 	{
-		updateCheck(CSWeb.readWebsite(url));
+		new CheckUpdateThread(url).start();
 	}
 	
 	public static void updateCheck(String[] updateFile)
 	{
-		for (String line : updateFile)
-		{
-			ModUpdate update = readUpdateLine(line, null, null, null);
-			addUpdate(update);
-		}
-	}
-	
-	public static void updateCheckCS(String modName, String acronym, String version)
-	{
-		updateCheck(modName, acronym, version, CLASHSOFT_UPDATE_NOTES);
-	}
-	
-	public static void updateCheck(String modName, String version, String url)
-	{
-		updateCheck(modName, CSString.getAcronym(modName), version, url);
+		new CheckUpdateThread(updateFile).start();
 	}
 	
 	public static void updateCheck(String modName, String acronym, String version, String url)
 	{
-		if (!Loader.instance().hasReachedState(LoaderState.INITIALIZATION))
-		{
-			CSLog.warning("The mod " + modName + " is attempting an update check before the post-init state.");
-		}
-		
-		if (CSLib.updateCheck)
-		{
-			new CheckUpdateThread(modName, acronym, version, url).start();
-		}
+		new CheckUpdateThread(modName, acronym, version, url).start();
 	}
 	
-	public static void updateCheck(String modName, String acronym, String version, String[] updateLines)
+	public static void updateCheck(String modName, String acronym, String version, String[] updateFile)
 	{
-		if (CSLib.updateCheck)
-		{
-			new CheckUpdateThread(modName, acronym, version, updateLines).start();
-		}
+		new CheckUpdateThread(modName, acronym, version, updateFile).start();
 	}
 	
 	public static void notifyAll(EntityPlayer player)
 	{
+		List<ModUpdate> updates = getUpdates(false);
 		if (!updates.isEmpty())
 		{
 			player.addChatMessage(new ChatComponentTranslation("update.found"));
-			for (ModUpdate update : updates.values())
+			for (ModUpdate update : updates)
 			{
 				notify(player, update);
 			}
@@ -235,7 +190,7 @@ public class CSUpdate
 		{
 			player.addChatMessage(new ChatComponentTranslation("update.notification", update.getModName(), update.getNewVersion(), update.getVersion()));
 			
-			if (!update.getUpdateNotes().isEmpty())
+			if (update.getUpdateNotes().length > 0)
 			{
 				player.addChatMessage(new ChatComponentTranslation("update.notes"));
 				
@@ -289,6 +244,10 @@ public class CSUpdate
 		else if (version2 == null)
 		{
 			return 1;
+		}
+		else if (version1.equals(version2))
+		{
+			return 0;
 		}
 		
 		String[] split1 = version1.split("\\p{Punct}");

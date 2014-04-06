@@ -79,6 +79,7 @@ public class CSLib extends ClashsoftMod
 		super.postInit(event);
 	}
 	
+	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event)
 	{
 		ServerCommandManager manager = (ServerCommandManager) MinecraftServer.getServer().getCommandManager();
