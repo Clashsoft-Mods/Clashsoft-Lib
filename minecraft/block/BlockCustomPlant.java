@@ -25,7 +25,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockCustomPlant extends CustomBlock implements ICustomBlock, IPlantable
-{	
+{
 	@SideOnly(Side.CLIENT)
 	public IIcon[]	icons;
 	

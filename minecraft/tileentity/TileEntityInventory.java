@@ -40,7 +40,7 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 	@Override
 	public ItemStack getStackInSlot(int slotID)
 	{
-		if (rangeCheck(slotID))
+		if (this.rangeCheck(slotID))
 		{
 			return this.itemStacks[slotID];
 		}

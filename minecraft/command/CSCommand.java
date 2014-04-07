@@ -7,7 +7,7 @@ import net.minecraft.command.ICommand;
 
 public class CSCommand
 {
-	public static List<ICommand> commands;
+	public static List<ICommand>	commands;
 	
 	public static void registerCommand(ICommand command)
 	{

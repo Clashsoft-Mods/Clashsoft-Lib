@@ -359,13 +359,13 @@ public abstract class BlockCustomPortal extends Block
 					break;
 				}
 				
-				if (!isFrameBlock(x1, y - 1, z1))
+				if (!this.isFrameBlock(x1, y - 1, z1))
 				{
 					break;
 				}
 			}
 			
-			if (isFrameBlock(x1, y, z1))
+			if (this.isFrameBlock(x1, y, z1))
 			{
 				return i;
 			}
@@ -397,14 +397,14 @@ public abstract class BlockCustomPortal extends Block
 					
 					if (j == 0)
 					{
-						if (!isFrameBlock(k + Direction.offsetX[metadataMap[this.metadata][0]], i, l + Direction.offsetZ[metadataMap[this.metadata][0]]))
+						if (!this.isFrameBlock(k + Direction.offsetX[metadataMap[this.metadata][0]], i, l + Direction.offsetZ[metadataMap[this.metadata][0]]))
 						{
 							break;
 						}
 					}
 					if (j == this.width - 1)
 					{
-						if (!isFrameBlock(k + Direction.offsetX[metadataMap[this.metadata][1]], i, l + Direction.offsetZ[metadataMap[this.metadata][1]]))
+						if (!this.isFrameBlock(k + Direction.offsetX[metadataMap[this.metadata][1]], i, l + Direction.offsetZ[metadataMap[this.metadata][1]]))
 						{
 							break;
 						}

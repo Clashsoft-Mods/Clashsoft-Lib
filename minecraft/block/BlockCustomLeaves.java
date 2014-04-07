@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 
 public class BlockCustomLeaves extends CustomBlock implements IShearable
-{	
+{
 	public ItemStack[]		appleStacks		= new ItemStack[4];
 	public ItemStack[]		saplingStacks	= new ItemStack[4];
 	public boolean[]		isColored		= new boolean[4];

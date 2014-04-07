@@ -57,7 +57,7 @@ public class CustomTreeGen extends WorldGenTrees
 	public boolean generate(World world, Random random, int x, int y, int z)
 	{
 		int height = random.nextInt(3) + this.minTreeHeight;
-		int y2 =y + height + 1;
+		int y2 = y + height + 1;
 		boolean flag = true;
 		
 		if (y >= 1 && y + height < 256)

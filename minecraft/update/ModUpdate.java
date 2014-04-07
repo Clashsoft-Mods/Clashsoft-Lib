@@ -13,16 +13,16 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class ModUpdate
 {
-	protected String		modName;
+	protected String	modName;
 	
-	protected String		version;
-	protected String		newVersion;
+	protected String	version;
+	protected String	newVersion;
 	
-	protected String[]		updateNotes;
-	protected String		url;
+	protected String[]	updateNotes;
+	protected String	url;
 	
-	protected Boolean		valid;
-	protected int			installStatus;
+	protected Boolean	valid;
+	protected int		installStatus;
 	
 	public ModUpdate(String modName, String version, String newVersion, String updateNotes, String updateUrl)
 	{
@@ -46,7 +46,7 @@ public class ModUpdate
 	
 	public boolean validate()
 	{
-		boolean b = this.version != null && this.newVersion != null && this.newVersion.startsWith(CSUpdate.CURRENT_VERSION) && CSUpdate.compareVersion(version, newVersion) < 0;
+		boolean b = this.version != null && this.newVersion != null && this.newVersion.startsWith(CSUpdate.CURRENT_VERSION) && CSUpdate.compareVersion(this.version, this.newVersion) < 0;
 		this.valid = Boolean.valueOf(b);
 		return b;
 	}
@@ -128,19 +128,19 @@ public class ModUpdate
 		{
 			return I18n.getString("update.invalid");
 		}
-		else if (installStatus == -1)
+		else if (this.installStatus == -1)
 		{
 			return I18n.getString("update.list.install.error");
 		}
-		else if (installStatus == 0)
+		else if (this.installStatus == 0)
 		{
 			return I18n.getString("update.list.install.notstarted");
 		}
-		else if (installStatus == 1)
+		else if (this.installStatus == 1)
 		{
 			return I18n.getString("update.list.install.installing");
 		}
-		else if (installStatus == 2)
+		else if (this.installStatus == 2)
 		{
 			return I18n.getString("update.list.install.installed");
 		}
