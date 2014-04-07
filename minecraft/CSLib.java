@@ -2,7 +2,7 @@ package clashsoft.cslib.minecraft;
 
 import clashsoft.cslib.minecraft.command.CSCommand;
 import clashsoft.cslib.minecraft.command.CommandModUpdate;
-import clashsoft.cslib.minecraft.common.CSLProxy;
+import clashsoft.cslib.minecraft.common.CSLibProxy;
 import clashsoft.cslib.minecraft.network.CSNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.util.CSConfig;
@@ -20,7 +20,6 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 @Mod(modid = CSLib.MODID, name = CSLib.NAME, version = CSLib.VERSION)
@@ -35,17 +34,18 @@ public class CSLib extends ClashsoftMod
 	@Instance(MODID)
 	public static CSLib			instance;
 	
-	@SidedProxy(clientSide = "clashsoft.cslib.minecraft.client.CSLClientProxy", serverSide = "clashsoft.cslib.minecraft.common.CSLProxy")
-	public static CSLProxy		proxy;
+	@SidedProxy(clientSide = "clashsoft.cslib.minecraft.client.CSLibClientProxy", serverSide = "clashsoft.cslib.minecraft.common.CSLibProxy")
+	public static CSLibProxy	proxy;
 	
 	public static boolean		updateCheck	= true;
 	public static boolean		autoUpdate	= true;
 	
 	public CSLib()
 	{
-		super(MODID, NAME, ACRONYM, VERSION);
+		super(proxy, MODID, NAME, ACRONYM, VERSION);
 		this.hasConfig = true;
 		this.netHandler = new CSNetHandler(NAME);
+		this.eventHandler = this;
 		this.url = "https://github.com/Clashsoft/CSLibMC/wiki/";
 	}
 	
@@ -69,7 +69,6 @@ public class CSLib extends ClashsoftMod
 	{
 		super.init(event);
 		CSUpdate.updateCheck(CSUpdate.CLASHSOFT_UPDATE_NOTES);
-		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
 	@Override
