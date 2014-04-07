@@ -10,9 +10,6 @@ import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
 import clashsoft.cslib.reflect.CSReflection;
 import clashsoft.cslib.util.CSLog;
-
-import com.google.common.collect.BiMap;
-
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
@@ -23,8 +20,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ObjectIntIdentityMap;
-import net.minecraft.util.RegistryNamespaced;
 import net.minecraftforge.common.util.EnumHelper;
 
 /**
@@ -50,30 +45,20 @@ public class CSItems
 						String registryName = Item.itemRegistry.getNameForObject(item1);
 						int id = Item.getIdFromItem(item1);
 						
-						// Replace Name:Object map entry
-						FMLControlledNamespacedRegistry<Item> registry = GameData.itemRegistry;
-						registry.putObject(registryName, newItem);
-						
 						// Set field
 						CSReflection.setModifier(field, Modifier.FINAL, false);
 						field.set(null, newItem);
 						
-						// Replace Object:ID map entry
-						Field map = RegistryNamespaced.class.getDeclaredFields()[0];
-						map.setAccessible(true);
-						((ObjectIntIdentityMap) map.get(registry)).func_148746_a(newItem, id);
-						
-						// Replace Name:ID map entry
-						map = FMLControlledNamespacedRegistry.class.getDeclaredFields()[3];
-						map.setAccessible(true);
-						((BiMap) map.get(registry)).put(registryName, id);
+						// Replace registry entry
+						FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
+						CSReflection.invoke(FMLControlledNamespacedRegistry.class, registry, new Object[] { id, registryName, newItem }, "addObjectRaw");
 						
 						CSLog.info("Replace Item : %s (%s) with %s; Name:Object=%s, ID:Object=%s, Object:Name=%s, Object:ID=%s, Name:ID=%s", new Object[] {
 								field.getName(),
 								item1.getClass().getSimpleName(),
 								newItem.getClass().getSimpleName(),
-								registry.get(registryName).getClass().getSimpleName(),
-								registry.get(id).getClass().getSimpleName(),
+								registry.getObject(registryName).getClass().getSimpleName(),
+								registry.getObject(id).getClass().getSimpleName(),
 								registry.getNameForObject(newItem),
 								registry.getId(newItem),
 								registry.getId(registryName), });

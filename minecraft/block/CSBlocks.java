@@ -7,9 +7,6 @@ import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.block.ItemCustomBlock;
 import clashsoft.cslib.reflect.CSReflection;
 import clashsoft.cslib.util.CSLog;
-
-import com.google.common.collect.BiMap;
-
 import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -19,8 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ObjectIntIdentityMap;
-import net.minecraft.util.RegistryNamespaced;
 
 /**
  * The Class CSBlocks.
@@ -46,41 +41,23 @@ public class CSBlocks
 						int id = Block.getIdFromBlock(block1);
 						ItemBlock item = (ItemBlock) Item.getItemFromBlock(block1);
 						
-						// Replace Name:Object map entry
-						FMLControlledNamespacedRegistry<Block> registry = GameData.blockRegistry;
-						registry.putObject(registryName, newBlock);
-						
 						// Set field
 						CSReflection.setModifier(field, Modifier.FINAL, false);
 						field.set(null, newBlock);
 						
-						// Replace Object:ID map entry
-						Field map = RegistryNamespaced.class.getDeclaredFields()[0];
-						map.setAccessible(true);
-						((ObjectIntIdentityMap) map.get(registry)).func_148746_a(newBlock, id);
-						
-						// Replace Name:ID map entry
-						map = FMLControlledNamespacedRegistry.class.getDeclaredFields()[3];
-						map.setAccessible(true);
-						((BiMap) map.get(registry)).put(registryName, id);
+						// Replace registry entry
+						FMLControlledNamespacedRegistry<Block> registry = GameData.getBlockRegistry();
+						CSReflection.invoke(FMLControlledNamespacedRegistry.class, registry, new Object[] { id, registryName, newBlock }, "addObjectRaw");
 						
 						// Replace ItemBlock reference
-						try
-						{
-							map = ItemBlock.class.getDeclaredFields()[0];
-							CSReflection.setModifier(map, Modifier.FINAL, false);
-							map.set(item, newBlock);
-						}
-						catch (Exception ex)
-						{
-						}
+						CSReflection.setValue(ItemBlock.class, item, newBlock, 0);
 						
 						CSLog.info("Replace Item : %s (%s) with %s; Name:Object=%s, ID:Object=%s, Object:Name=%s, Object:ID=%s, Name:ID=%s", new Object[] {
 								field.getName(),
 								block1.getClass().getSimpleName(),
 								newBlock.getClass().getSimpleName(),
-								registry.get(registryName).getClass().getSimpleName(),
-								registry.get(id).getClass().getSimpleName(),
+								registry.getObject(registryName).getClass().getSimpleName(),
+								registry.getObjectById(id).getClass().getSimpleName(),
 								registry.getNameForObject(newBlock),
 								registry.getId(newBlock),
 								registry.getId(registryName), });
