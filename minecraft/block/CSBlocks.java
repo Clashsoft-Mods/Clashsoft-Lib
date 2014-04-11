@@ -50,17 +50,12 @@ public class CSBlocks
 						CSReflection.invoke(FMLControlledNamespacedRegistry.class, registry, new Object[] { id, registryName, newBlock }, "addObjectRaw");
 						
 						// Replace ItemBlock reference
-						CSReflection.setValue(ItemBlock.class, item, newBlock, 0);
+						if (item != null)
+						{
+							CSReflection.setValue(ItemBlock.class, item, newBlock, 0);
+						}
 						
-						CSLog.info("Replace Item : %s (%s) with %s; Name:Object=%s, ID:Object=%s, Object:Name=%s, Object:ID=%s, Name:ID=%s", new Object[] {
-								field.getName(),
-								block1.getClass().getSimpleName(),
-								newBlock.getClass().getSimpleName(),
-								registry.getObject(registryName).getClass().getSimpleName(),
-								registry.getObjectById(id).getClass().getSimpleName(),
-								registry.getNameForObject(newBlock),
-								registry.getId(newBlock),
-								registry.getId(registryName), });
+						CSLog.info("Replace Item : %s (%s) with %s; Name:Object=%s, ID:Object=%s, Object:Name=%s, Object:ID=%s, Name:ID=%s", new Object[] { field.getName(), block1.getClass().getSimpleName(), newBlock.getClass().getSimpleName(), registry.getObject(registryName).getClass().getSimpleName(), registry.getObjectById(id).getClass().getSimpleName(), registry.getNameForObject(newBlock), registry.getId(newBlock), registry.getId(registryName), });
 					}
 				}
 			}
@@ -94,8 +89,9 @@ public class CSBlocks
 	}
 	
 	/**
-	 * Registers a Block and its name. This calls {@link CSBlocks#addBlock(Block, Class, String)}
-	 * with {@link ItemCustomBlock}.{@code class} as the {@code itemClass} argument.
+	 * Registers a Block and its name. This calls
+	 * {@link CSBlocks#addBlock(Block, Class, String)} with
+	 * {@link ItemCustomBlock}.{@code class} as the {@code itemClass} argument.
 	 * 
 	 * @param block
 	 *            the block

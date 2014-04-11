@@ -58,7 +58,7 @@ public class CSItems
 								item1.getClass().getSimpleName(),
 								newItem.getClass().getSimpleName(),
 								registry.getObject(registryName).getClass().getSimpleName(),
-								registry.getObject(id).getClass().getSimpleName(),
+								registry.getObjectById(id).getClass().getSimpleName(),
 								registry.getNameForObject(newItem),
 								registry.getId(newItem),
 								registry.getId(registryName), });
