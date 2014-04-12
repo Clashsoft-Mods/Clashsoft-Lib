@@ -259,11 +259,11 @@ public class CSUpdate
 		
 		for (int i = 0; i < split1.length; i++)
 		{
-			ints1[i] = Integer.parseInt(split1[i], 36);
+			ints1[i] = versionNumber(split1[i]);
 		}
 		for (int i = 0; i < split2.length; i++)
 		{
-			ints2[i] = Integer.parseInt(split2[i], 36);
+			ints2[i] = versionNumber(split2[i]);
 		}
 		
 		for (int i = len - 1; i >= 0; i--)
@@ -275,6 +275,34 @@ public class CSUpdate
 			}
 		}
 		
+		return 0;
+	}
+	
+	protected static int versionNumber(String s)
+	{
+		try
+		{
+			return Integer.parseInt(s);
+		}
+		catch (NumberFormatException ex)
+		{
+			if ("dev".equalsIgnoreCase(s))
+			{
+				return -4;
+			}
+			else if ("pre".equalsIgnoreCase(s))
+			{
+				return -3;
+			}
+			else if ("alpha".equalsIgnoreCase(s))
+			{
+				return -2;
+			}
+			else if ("beta".equalsIgnoreCase(s))
+			{
+				return -1;
+			}
+		}
 		return 0;
 	}
 }
