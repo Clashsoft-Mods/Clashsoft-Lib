@@ -15,14 +15,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockCustomLeaves extends BlockLeaves implements ICustomBlock
 {
-	public String[] names;
-	public String[] iconNames;
+	public String[]			names;
+	public String[]			iconNames;
 	
 	public ItemStack[]		appleStacks		= new ItemStack[4];
 	public ItemStack[]		saplingStacks	= new ItemStack[4];
@@ -33,12 +32,15 @@ public class BlockCustomLeaves extends BlockLeaves implements ICustomBlock
 	
 	public static boolean	graphicsLevel;
 	
-	public BlockCustomLeaves(String[] names, String[] icons)
+	public BlockCustomLeaves(String[] names, String[] iconNames)
 	{
 		super();
 		this.setTickRandomly(true);
 		this.setStepSound(Block.soundTypeGrass);
 		this.setLightOpacity(1);
+		
+		this.names = names;
+		this.iconNames = iconNames;
 	}
 	
 	public BlockCustomLeaves(String[] names, String domain)
@@ -61,32 +63,19 @@ public class BlockCustomLeaves extends BlockLeaves implements ICustomBlock
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
-		return CustomBlock.getUnlocalizedName(this, stack, this.iconNames);
+		return CustomBlock.getUnlocalizedName(this, stack, this.names);
 	}
-
+	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
 	{
 		CustomBlock.addInformation(this, stack, list);
 	}
-
+	
 	@Override
 	public String[] func_150125_e()
 	{
 		return this.names;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getBlockColor()
-	{
-		if (this.isColored[0])
-		{
-			double d0 = 0.5D;
-			double d1 = 1.0D;
-			return ColorizerFoliage.getFoliageColor(d0, d1);
-		}
-		return super.getBlockColor();
 	}
 	
 	@Override

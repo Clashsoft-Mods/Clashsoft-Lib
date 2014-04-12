@@ -42,6 +42,18 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	{
 		this(names, CustomBlock.applyDomain(names, domain));
 	}
+
+	@Override
+	public String getUnlocalizedName(ItemStack stack)
+	{
+		return CustomBlock.getUnlocalizedName(this, stack, this.names);
+	}
+	
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
+	{
+		CustomBlock.addInformation(this, stack, list);
+	}
 	
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random random)
@@ -157,17 +169,5 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 		{
 			this.icons[i] = iconRegister.registerIcon(this.iconNames[i]);
 		}
-	}
-	
-	@Override
-	public String getUnlocalizedName(ItemStack stack)
-	{
-		return CustomBlock.getUnlocalizedName(this, stack, this.iconNames);
-	}
-	
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
-	{
-		CustomBlock.addInformation(this, stack, list);
 	}
 }
