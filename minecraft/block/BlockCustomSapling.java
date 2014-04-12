@@ -162,16 +162,12 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
-		int metadata = stack.getItemDamage();
-		if (metadata < this.names.length)
-		{
-			return this.getUnlocalizedName() + "." + this.names[metadata];
-		}
-		return this.getUnlocalizedName();
+		return CustomBlock.getUnlocalizedName(this, stack, this.iconNames);
 	}
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list)
 	{
+		CustomBlock.addInformation(this, stack, list);
 	}
 }
