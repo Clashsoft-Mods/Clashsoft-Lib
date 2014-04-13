@@ -6,6 +6,8 @@ import clashsoft.cslib.minecraft.common.CSLibProxy;
 import clashsoft.cslib.minecraft.network.CSNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.util.CSConfig;
+import clashsoft.cslib.minecraft.util.Log4JLogger;
+import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -47,6 +49,8 @@ public class CSLib extends ClashsoftMod
 		this.netHandler = new CSNetHandler(NAME);
 		this.eventHandler = this;
 		this.url = "https://github.com/Clashsoft/CSLibMC/wiki/";
+		
+		CSLog.logger = new Log4JLogger();
 	}
 	
 	@Override
