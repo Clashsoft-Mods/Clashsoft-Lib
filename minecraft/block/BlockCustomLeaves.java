@@ -196,6 +196,6 @@ public class BlockCustomLeaves extends BlockLeaves implements ICustomBlock
 	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
 	{
 		Block block = world.getBlock(x, y, z);
-		return !graphicsLevel && block == this ? false : super.shouldSideBeRendered(world, x, y, z, side);
+		return graphicsLevel || block != this;
 	}
 }
