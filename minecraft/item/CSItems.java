@@ -42,7 +42,8 @@ public class CSItems
 					Item item1 = (Item) field.get(null);
 					if (item1 == item)
 					{
-						String registryName = Item.itemRegistry.getNameForObject(item1);
+						FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
+						String registryName = registry.getNameForObject(item1);
 						int id = Item.getIdFromItem(item1);
 						
 						// Set field
@@ -50,18 +51,9 @@ public class CSItems
 						field.set(null, newItem);
 						
 						// Replace registry entry
-						FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
 						CSReflection.invoke(FMLControlledNamespacedRegistry.class, registry, new Object[] { id, registryName, newItem }, "addObjectRaw");
 						
-						CSLog.info("Replace Item : %s (%s) with %s; Name:Object=%s, ID:Object=%s, Object:Name=%s, Object:ID=%s, Name:ID=%s", new Object[] {
-								field.getName(),
-								item1.getClass().getSimpleName(),
-								newItem.getClass().getSimpleName(),
-								registry.getObject(registryName).getClass().getSimpleName(),
-								registry.getObjectById(id).getClass().getSimpleName(),
-								registry.getNameForObject(newItem),
-								registry.getId(newItem),
-								registry.getId(registryName), });
+						CSLog.info("Replace Item : %s (%s) with %s; Name:Object=%s, ID:Object=%s, Object:Name=%s, Object:ID=%s, Name:ID=%s", new Object[] { field.getName(), item1.getClass().getSimpleName(), newItem.getClass().getSimpleName(), registry.getObject(registryName).getClass().getSimpleName(), registry.getObjectById(id).getClass().getSimpleName(), registry.getNameForObject(newItem), registry.getId(newItem), registry.getId(registryName), });
 					}
 				}
 			}
@@ -95,9 +87,10 @@ public class CSItems
 	}
 	
 	/**
-	 * Adds an Item without a recipe. Internally calls {@link CSItems#addItem(Item, String, String)}
-	 * and uses the current mod id as the {@code modid} parameter. The current mod id is received
-	 * using {@link Loader#activeModContainer()}.{@link ModContainer#getModId()}.
+	 * Adds an Item without a recipe. Internally calls
+	 * {@link CSItems#addItem(Item, String, String)} and uses the current mod id
+	 * as the {@code modid} parameter. The current mod id is received using
+	 * {@link Loader#activeModContainer()}.{@link ModContainer#getModId()}.
 	 * 
 	 * @param item
 	 *            the item
@@ -111,7 +104,8 @@ public class CSItems
 	}
 	
 	/**
-	 * Adds an Item without a recipe. The item is registered with the specified modid as a domain.
+	 * Adds an Item without a recipe. The item is registered with the specified
+	 * modid as a domain.
 	 * 
 	 * @param item
 	 * @param name

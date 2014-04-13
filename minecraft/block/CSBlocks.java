@@ -37,7 +37,8 @@ public class CSBlocks
 					Block block1 = (Block) field.get(null);
 					if (block1 == block)
 					{
-						String registryName = Block.blockRegistry.getNameForObject(block1);
+						FMLControlledNamespacedRegistry<Block> registry = GameData.getBlockRegistry();
+						String registryName = registry.getNameForObject(block1);
 						int id = Block.getIdFromBlock(block1);
 						ItemBlock item = (ItemBlock) Item.getItemFromBlock(block1);
 						
@@ -46,7 +47,6 @@ public class CSBlocks
 						field.set(null, newBlock);
 						
 						// Replace registry entry
-						FMLControlledNamespacedRegistry<Block> registry = GameData.getBlockRegistry();
 						CSReflection.invoke(FMLControlledNamespacedRegistry.class, registry, new Object[] { id, registryName, newBlock }, "addObjectRaw");
 						
 						// Replace ItemBlock reference
