@@ -68,6 +68,7 @@ public class CSLib extends ClashsoftMod
 	public void init(FMLInitializationEvent event)
 	{
 		super.init(event);
+		
 		CSUpdate.updateCheck(CSUpdate.CLASHSOFT_UPDATE_NOTES);
 	}
 	

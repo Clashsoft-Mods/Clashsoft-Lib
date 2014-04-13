@@ -20,6 +20,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatCrafting;
+import net.minecraft.stats.StatList;
 import net.minecraftforge.common.util.EnumHelper;
 
 /**
@@ -33,6 +35,7 @@ public class CSItems
 {
 	public static boolean replaceItem(Item item, Item newItem)
 	{
+		long now = System.currentTimeMillis();
 		try
 		{
 			for (Field field : Items.class.getDeclaredFields())
@@ -41,7 +44,7 @@ public class CSItems
 				{
 					Item item1 = (Item) field.get(null);
 					if (item1 == item)
-					{
+					{	
 						FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
 						String registryName = registry.getNameForObject(item1);
 						int id = Item.getIdFromItem(item1);
@@ -53,17 +56,24 @@ public class CSItems
 						// Replace registry entry
 						CSReflection.invoke(FMLControlledNamespacedRegistry.class, registry, new Object[] { id, registryName, newItem }, "addObjectRaw");
 						
-						CSLog.info("Replace Item : %s (%s) with %s; Name:Object=%s, ID:Object=%s, Object:Name=%s, Object:ID=%s, Name:ID=%s", new Object[] { field.getName(), item1.getClass().getSimpleName(), newItem.getClass().getSimpleName(), registry.getObject(registryName).getClass().getSimpleName(), registry.getObjectById(id).getClass().getSimpleName(), registry.getNameForObject(newItem), registry.getId(newItem), registry.getId(registryName), });
+						// Replace stat list entries
+						CSReflection.setValue(StatCrafting.class, (StatCrafting) StatList.objectCraftStats[id], newItem, 0);
+						CSReflection.setValue(StatCrafting.class, (StatCrafting) StatList.objectUseStats[id], newItem, 0);
+						CSReflection.setValue(StatCrafting.class, (StatCrafting) StatList.objectBreakStats[id], newItem, 0);
+						
+						now = System.currentTimeMillis() - now;
+						CSLog.info("Replace Item : %s (%s) with %s, took %d ms", new Object[] { field.getName(), item1.getClass().getSimpleName(), newItem.getClass().getSimpleName(), now });
+						
+						return true;
 					}
 				}
 			}
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			return false;
+			CSLog.error(e);
 		}
-		return true;
+		return false;
 	}
 	
 	public static void addAllItems(Class mod)
