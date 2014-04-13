@@ -59,7 +59,11 @@ public class CSItems
 						// Replace stat list entries
 						CSReflection.setValue(StatCrafting.class, (StatCrafting) StatList.objectCraftStats[id], newItem, 0);
 						CSReflection.setValue(StatCrafting.class, (StatCrafting) StatList.objectUseStats[id], newItem, 0);
-						CSReflection.setValue(StatCrafting.class, (StatCrafting) StatList.objectBreakStats[id], newItem, 0);
+						StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
+						if (stat != null)
+						{
+							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
+						}
 						
 						now = System.currentTimeMillis() - now;
 						CSLog.info("Replace Item : %s (%s) with %s, took %d ms", new Object[] { field.getName(), item1.getClass().getSimpleName(), newItem.getClass().getSimpleName(), now });
