@@ -1,6 +1,11 @@
 package clashsoft.cslib.minecraft.potion;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
+import clashsoft.cslib.reflect.CSReflection;
 import clashsoft.cslib.util.CSArrays;
+import clashsoft.cslib.util.CSLog;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.potion.Potion;
@@ -82,8 +87,29 @@ public class CustomPotion extends Potion
 		int id = CSArrays.indexOf(potionTypes, null);
 		if (id == -1)
 		{
-			throw new IllegalStateException("No more empty potion IDs!");
+			int len = potionTypes.length;
+			expandPotionList(len * 2);
+			return len;
 		}
 		return id;
+	}
+	
+	public static void expandPotionList(int size)
+	{
+		if (Potion.potionTypes.length < size)
+		{
+			try
+			{
+				Field f = CSReflection.getField(Potion.class, 0);
+				CSReflection.setModifier(f, Modifier.FINAL, false);
+				Potion[] potionTypes = new Potion[size];
+				System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, Potion.potionTypes.length);
+				f.set(null, potionTypes);
+			}
+			catch (Exception e)
+			{
+				CSLog.error(e);
+			}
+		}
 	}
 }
