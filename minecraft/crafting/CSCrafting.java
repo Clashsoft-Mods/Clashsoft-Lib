@@ -24,7 +24,8 @@ import net.minecraftforge.oredict.OreDictionary;
 /**
  * The Class CSCrafting.
  * <p>
- * This class adds several utils for adding crafting and furnace recipes and analyzing them.
+ * This class adds several utils for adding crafting and furnace recipes and
+ * analyzing them.
  * 
  * @author Clashsoft
  */
@@ -63,9 +64,8 @@ public class CSCrafting
 		{
 			String[] astring = (String[]) recipe[i++];
 			
-			for (int l = 0; l < astring.length; ++l)
+			for (String s1 : astring)
 			{
-				String s1 = astring[l];
 				++k;
 				j = s1.length();
 				s = s + s1;
@@ -183,13 +183,21 @@ public class CSCrafting
 	public static void addStorageBlock(ItemStack input, ItemStack output, int size)
 	{
 		if (size == 1)
+		{
 			addShapelessRecipe(output, input);
+		}
 		else if (size == 2)
+		{
 			addRecipe(output, "XX", "XX", 'X', input);
+		}
 		else if (size == 3)
+		{
 			addRecipe(output, "XXX", "XXX", "XXX", 'X', input);
+		}
 		else
+		{
 			throw new IllegalArgumentException("The size of a storage block recipe should be either 1, 2 or 3");
+		}
 	}
 	
 	/**
@@ -219,8 +227,8 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Adds a new armor-shaped recipe to the game. (Type 0 = Helmet, Type 1 = Chestplate, Type 2 =
-	 * Leggings, Type 3 = Boots, Type 4 = Gloves)
+	 * Adds a new armor-shaped recipe to the game. (Type 0 = Helmet, Type 1 =
+	 * Chestplate, Type 2 = Leggings, Type 3 = Boots, Type 4 = Gloves)
 	 * 
 	 * @param output
 	 *            the output
@@ -232,33 +240,25 @@ public class CSCrafting
 	public static void addArmorRecipe(ItemStack output, ItemStack input, int type)
 	{
 		if (type == 0)
-			addRecipe(output, new Object[] {
-					"XXX",
-					"X X",
-					Character.valueOf('X'),
-					input });
+		{
+			addRecipe(output, new Object[] { "XXX", "X X", Character.valueOf('X'), input });
+		}
 		else if (type == 1)
-			addRecipe(output, new Object[] {
-					"X X",
-					"XXX",
-					"XXX",
-					Character.valueOf('X'),
-					input });
+		{
+			addRecipe(output, new Object[] { "X X", "XXX", "XXX", Character.valueOf('X'), input });
+		}
 		else if (type == 2)
-			addRecipe(output, new Object[] {
-					"XXX",
-					"X X",
-					"X X",
-					Character.valueOf('X'),
-					input });
+		{
+			addRecipe(output, new Object[] { "XXX", "X X", "X X", Character.valueOf('X'), input });
+		}
 		else if (type == 3)
-			addRecipe(output, new Object[] {
-					"X X",
-					"X X",
-					Character.valueOf('X'),
-					input });
+		{
+			addRecipe(output, new Object[] { "X X", "X X", Character.valueOf('X'), input });
+		}
 		else if (type == 4)
+		{
 			addRecipe(output, new Object[] { "X X", 'X', input });
+		}
 	}
 	
 	/**
@@ -278,7 +278,8 @@ public class CSCrafting
 	/**
 	 * Adds a new tool-shaped recipe to the game.
 	 * <p>
-	 * Type 0 = Sword, Type 1 = Spade, Type 2 = Pickaxe, Type 3 = Axe, Type 4 = Hoe
+	 * Type 0 = Sword, Type 1 = Spade, Type 2 = Pickaxe, Type 3 = Axe, Type 4 =
+	 * Hoe
 	 * 
 	 * @param output
 	 *            the output
@@ -292,15 +293,25 @@ public class CSCrafting
 	public static void addToolRecipe(ItemStack output, ItemStack material, ItemStack stick, int type)
 	{
 		if (type == 0)
+		{
 			addRecipe(output, "X", "X", "|", 'X', material, '|', stick);
+		}
 		else if (type == 1)
+		{
 			addRecipe(output, "X", "|", "|", 'X', material, '|', stick);
+		}
 		else if (type == 2)
+		{
 			addRecipe(output, "XXX", " | ", " | ", 'X', material, '|', stick);
+		}
 		else if (type == 3)
+		{
 			addRecipe(output, "XX ", "X| ", " | ", 'X', material, '|', stick);
+		}
 		else if (type == 4)
+		{
 			addRecipe(output, "XX", " |", " |", 'X', material, '|', stick);
+		}
 	}
 	
 	/**
@@ -332,8 +343,8 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Analyzes a crafting recipe, mainly used for recipe displays. Depending on the recipe type,
-	 * the output is either
+	 * Analyzes a crafting recipe, mainly used for recipe displays. Depending on
+	 * the recipe type, the output is either
 	 * <p>
 	 * [1][2][ ] Any shape possible
 	 * <p>
@@ -374,10 +385,7 @@ public class CSCrafting
 		{
 			if (recipe.getCraftingType() == IMetaItemRecipe.FURNACE)
 			{
-				return new ItemStack[][] {
-						{ null, (ItemStack) recipe.getData()[0], null },
-						{ null, fire, null },
-						{ null, coal, null } };
+				return new ItemStack[][] { { null, (ItemStack) recipe.getData()[0], null }, { null, fire, null }, { null, coal, null } };
 			}
 			else if (recipe.getCraftingType() == IMetaItemRecipe.CRAFTING_SHAPELESS)
 			{
@@ -385,7 +393,7 @@ public class CSCrafting
 				
 				for (int i = 0; i < recipe.getData().length; i++)
 				{
-					int x = (i / 3) % 3;
+					int x = i / 3 % 3;
 					int y = i % 3;
 					ret[x][y] = (ItemStack) recipe.getData()[i];
 				}
@@ -401,10 +409,7 @@ public class CSCrafting
 		{
 			CSLog.error(ex);
 		}
-		return new ItemStack[][] {
-				{ null, null, null },
-				{ null, null, null },
-				{ null, null, null } };
+		return new ItemStack[][] { { null, null, null }, { null, null, null }, { null, null, null } };
 	}
 	
 	/**
@@ -423,12 +428,11 @@ public class CSCrafting
 		
 		if (recipe[i] instanceof String[])
 		{
-			String[] astring = ((String[]) recipe[i++]);
+			String[] astring = (String[]) recipe[i++];
 			
 			k = astring.length;
-			for (int l = 0; l < astring.length; ++l)
+			for (String s1 : astring)
 			{
-				String s1 = astring[l];
 				j = s1.length();
 				s = s + s1;
 			}
@@ -473,13 +477,17 @@ public class CSCrafting
 		{
 			for (int k1 = 0; k1 < k; ++k1)
 			{
-				int i1 = (k1 * j) + j1;
+				int i1 = k1 * j + j1;
 				char c0 = s.charAt(i1 % s.length());
 				
 				if (hashmap.containsKey(c0))
+				{
 					ret[k1 % 3][j1 % 3] = hashmap.get(c0).copy();
+				}
 				else
+				{
 					ret[k1 % 3][j1 % 3] = null;
+				}
 			}
 		}
 		return ret;

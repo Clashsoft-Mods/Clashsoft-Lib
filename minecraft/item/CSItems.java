@@ -44,7 +44,7 @@ public class CSItems
 				{
 					Item item1 = (Item) field.get(null);
 					if (item1 == item)
-					{	
+					{
 						FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
 						String registryName = registry.getNameForObject(item1);
 						int id = Item.getIdFromItem(item1);

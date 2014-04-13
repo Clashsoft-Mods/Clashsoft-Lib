@@ -81,7 +81,9 @@ public class CustomPotion extends Potion
 	{
 		int id = CSArrays.indexOf(potionTypes, null);
 		if (id == -1)
+		{
 			throw new IllegalStateException("No more empty potion IDs!");
+		}
 		return id;
 	}
 }

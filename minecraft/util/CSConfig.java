@@ -39,7 +39,7 @@ public class CSConfig
 	
 	public static String getDefaultDesc(String key, Object _default)
 	{
-		return enableComments ? (key + ". Default: " + _default) : null;
+		return enableComments ? key + ". Default: " + _default : null;
 	}
 	
 	public static void checkConfig()

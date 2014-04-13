@@ -42,7 +42,7 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	{
 		this(names, CustomBlock.applyDomain(names, domain));
 	}
-
+	
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
@@ -111,10 +111,14 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	public void func_149878_d(World world, int x, int y, int z, Random random)
 	{
 		if (world.isRemote)
+		{
 			return;
+		}
 		
 		if (!TerrainGen.saplingGrowTree(world, random, x, y, z))
+		{
 			return;
+		}
 		
 		int l = world.getBlockMetadata(x, y, z) & 3;
 		WorldGenerator worldgen = this.getWorldGen(world, x, y, z, random);
@@ -133,7 +137,9 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 		Block soil = world.getBlock(x, y - 1, z);
 		
 		if (soil == null)
+		{
 			return false;
+		}
 		
 		boolean validLight = world.getFullBlockLightValue(x, y, z) >= 8 || world.canBlockSeeTheSky(x, y, z);
 		boolean validSoil = soil.canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, this);

@@ -61,8 +61,8 @@ public class CSResourceHelper
 	}
 	
 	/**
-	 * Returns a new icon with the given icon name, if no stored icon is found a new one is
-	 * registered and stored using the given icon register.
+	 * Returns a new icon with the given icon name, if no stored icon is found a
+	 * new one is registered and stored using the given icon register.
 	 * 
 	 * @param iconRegister
 	 *            the icon register
@@ -88,13 +88,14 @@ public class CSResourceHelper
 	}
 	
 	/**
-	 * Returns a new icon with the given icon name, if no stored icon is found a new one is
-	 * registered and stored using the stored icon register.
+	 * Returns a new icon with the given icon name, if no stored icon is found a
+	 * new one is registered and stored using the stored icon register.
 	 * <p>
 	 * <b>Warning!</b>
 	 * <p>
-	 * If you call this method before an icon register is stored, it will cause a crash! Make sure
-	 * to use {@link CSResourceHelper#getIcon(IconRegister, String)} at least once!
+	 * If you call this method before an icon register is stored, it will cause
+	 * a crash! Make sure to use
+	 * {@link CSResourceHelper#getIcon(IconRegister, String)} at least once!
 	 * 
 	 * @param iconName
 	 *            the icon name

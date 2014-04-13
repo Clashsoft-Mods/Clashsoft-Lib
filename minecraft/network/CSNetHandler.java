@@ -43,8 +43,9 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	}
 	
 	/**
-	 * Register your packet with the pipeline. Discriminators are automatically set. If more than
-	 * 256 packet classes are registered, the packet is not registered.
+	 * Register your packet with the pipeline. Discriminators are automatically
+	 * set. If more than 256 packet classes are registered, the packet is not
+	 * registered.
 	 * 
 	 * @param clazz
 	 *            the class to register
@@ -67,8 +68,8 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	}
 	
 	/**
-	 * Returns this discriminator for the registered packet class. If the class is not registered, a
-	 * {@link NullPointerException} is thrown.
+	 * Returns this discriminator for the registered packet class. If the class
+	 * is not registered, a {@link NullPointerException} is thrown.
 	 */
 	protected byte getDiscriminator(Class<? extends CSPacket> packetClass)
 	{
@@ -81,8 +82,8 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	}
 	
 	/**
-	 * Returns the registered packet class for the discriminator. If no registered class was found,
-	 * a {@link NullPointerException} is thrown.
+	 * Returns the registered packet class for the discriminator. If no
+	 * registered class was found, a {@link NullPointerException} is thrown.
 	 * 
 	 * @param discriminator
 	 * @return the packet class
@@ -152,8 +153,8 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	}
 	
 	/**
-	 * Ensures that packet discriminators are common between server and client by using logical
-	 * sorting
+	 * Ensures that packet discriminators are common between server and client
+	 * by using logical sorting
 	 */
 	public void postInit()
 	{
@@ -201,7 +202,8 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	/**
 	 * Send this message to everyone.
 	 * <p>
-	 * Adapted from CPW's code in {@link SimpleNetworkWrapper#sendToAll(IMessage)}
+	 * Adapted from CPW's code in
+	 * {@link SimpleNetworkWrapper#sendToAll(IMessage)}
 	 * 
 	 * @param message
 	 *            The message to send
@@ -223,7 +225,8 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	/**
 	 * Send this message to the specified player.
 	 * <p>
-	 * Adapted from CPW's code in {@link SimpleNetworkWrapper#sendTo(IMessage, EntityPlayerMP)}
+	 * Adapted from CPW's code in
+	 * {@link SimpleNetworkWrapper#sendTo(IMessage, EntityPlayerMP)}
 	 * 
 	 * @param message
 	 *            The message to send
@@ -254,8 +257,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	 * @param message
 	 *            The message to send
 	 * @param point
-	 *            The {@link NetworkRegistry.TargetPoint} around which
-	 *            to send
+	 *            The {@link NetworkRegistry.TargetPoint} around which to send
 	 */
 	public void sendToAllAround(CSPacket message, NetworkRegistry.TargetPoint point)
 	{
@@ -275,7 +277,8 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	/**
 	 * Send this message to everyone within the supplied dimension.
 	 * <p>
-	 * Adapted from CPW's code in {@link SimpleNetworkWrapper#sendToDimension(IMessage, int)}
+	 * Adapted from CPW's code in
+	 * {@link SimpleNetworkWrapper#sendToDimension(IMessage, int)}
 	 * 
 	 * @param message
 	 *            The message to send
@@ -300,7 +303,8 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	/**
 	 * Send this message to the server.
 	 * <p/>
-	 * Adapted from CPW's code in {@link SimpleNetworkWrapper#sendToServer(IMessage)}
+	 * Adapted from CPW's code in
+	 * {@link SimpleNetworkWrapper#sendToServer(IMessage)}
 	 * 
 	 * @param message
 	 *            The message to send
@@ -320,9 +324,9 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	}
 	
 	/**
-	 * Intelligently decides where the message should be sent. If this is called from a client-side
-	 * thread, the message is sent to the server. Otherwise, it is sent to all players on the
-	 * server.
+	 * Intelligently decides where the message should be sent. If this is called
+	 * from a client-side thread, the message is sent to the server. Otherwise,
+	 * it is sent to all players on the server.
 	 */
 	public void send(CSPacket message)
 	{

@@ -130,7 +130,8 @@ public class CustomItem extends Item
 	}
 	
 	/**
-	 * Checks if this CustomItem defines its meta-item properties with a MetaItem object.
+	 * Checks if this CustomItem defines its meta-item properties with a
+	 * MetaItem object.
 	 * 
 	 * @return true, if successful
 	 */
@@ -140,7 +141,8 @@ public class CustomItem extends Item
 	}
 	
 	/**
-	 * Sets the <code>metadata</code> values to be shown in the creative inventory or not.
+	 * Sets the <code>metadata</code> values to be shown in the creative
+	 * inventory or not.
 	 * 
 	 * @param metadata
 	 *            the metadata

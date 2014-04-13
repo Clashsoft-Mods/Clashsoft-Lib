@@ -32,7 +32,8 @@ import net.minecraftforge.common.MinecraftForge;
  * 
  * @author Clashsoft
  * @version %I%
- * @param <N> the type of the net handler.
+ * @param <N>
+ *            the type of the net handler.
  */
 public abstract class BaseMod<N extends CSNetHandler>
 {
