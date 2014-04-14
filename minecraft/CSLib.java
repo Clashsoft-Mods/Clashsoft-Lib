@@ -87,9 +87,12 @@ public class CSLib extends ClashsoftMod
 	public void serverStarted(FMLServerStartedEvent event)
 	{
 		ServerCommandManager manager = (ServerCommandManager) MinecraftServer.getServer().getCommandManager();
-		for (ICommand cmd : CSCommand.commands)
+		if (CSCommand.commands != null)
 		{
-			manager.registerCommand(cmd);
+			for (ICommand cmd : CSCommand.commands)
+			{
+				manager.registerCommand(cmd);
+			}
 		}
 		
 		manager.registerCommand(new CommandModUpdate());
