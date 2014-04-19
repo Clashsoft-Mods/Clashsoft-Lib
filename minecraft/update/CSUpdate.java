@@ -23,13 +23,13 @@ public class CSUpdate
 	
 	public static Map<String, String[]>		updateFiles				= new HashMap();
 	
-	/** The Constant CURRENT_VERSION. */
+	/** The Constant CURRENT_VERSION. Value: {@value} */
 	public static final String				CURRENT_VERSION			= "1.7.2";
 	
-	/** The Constant CLASHSOFT_ADFLY. */
+	/** The Constant CLASHSOFT_ADFLY. Value: {@value} */
 	public static final String				CLASHSOFT_ADFLY			= "http://adf.ly/2175784/";
 	
-	/** The Constant CLASHSOFT_UPDATE_NOTES. */
+	/** The Constant CLASHSOFT_UPDATE_NOTES. Value: {@value} */
 	public static final String				CLASHSOFT_UPDATE_NOTES	= "https://dl.dropboxusercontent.com/s/pxm1ki6wbtxlvuv/update.txt";
 	
 	/**

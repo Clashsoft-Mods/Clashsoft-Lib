@@ -73,7 +73,7 @@ public abstract class BaseMod<N extends CSNetHandler>
 	}
 	
 	/**
-	 * Reads this mods config file. It is recommended to {@link CSConfig} to
+	 * Reads this mods config file. It is recommended to use {@link CSConfig} to
 	 * read the config, since it is already initialised with this mod's config
 	 * file.
 	 * 
