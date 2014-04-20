@@ -48,7 +48,7 @@ public class CSLib extends ClashsoftMod
 		this.hasConfig = true;
 		this.netHandler = new CSNetHandler(NAME);
 		this.eventHandler = this;
-		this.url = "https://github.com/Clashsoft/CSLibMC/wiki/";
+		this.url = "https://github.com/Clashsoft/CSLib-Minecraft/wiki/";
 		
 		CSLog.logger = new Log4JLogger();
 	}
