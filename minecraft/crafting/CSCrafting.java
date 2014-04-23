@@ -173,26 +173,33 @@ public class CSCrafting
 	 * [X][X][X] -> [O]<br>
 	 * [X][X][X]
 	 * 
-	 * @param input
+	 * @param material
 	 *            the input
-	 * @param output
+	 * @param block
 	 *            the output
 	 * @param size
 	 *            the size of the recipe
 	 */
-	public static void addStorageBlock(ItemStack input, ItemStack output, int size)
+	public static void addStorageBlock(ItemStack material, ItemStack block, int size)
 	{
 		if (size == 1)
 		{
-			addShapelessRecipe(output, input);
+			addShapelessRecipe(block, material);
+			addShapelessRecipe(material, block);
 		}
 		else if (size == 2)
 		{
-			addRecipe(output, "XX", "XX", 'X', input);
+			ItemStack copy = material.copy();
+			copy.stackSize = 4;
+			addShapelessRecipe(copy, block);
+			addRecipe(block, "XX", "XX", 'X', material);
 		}
 		else if (size == 3)
 		{
-			addRecipe(output, "XXX", "XXX", "XXX", 'X', input);
+			ItemStack copy = material.copy();
+			copy.stackSize = 9;
+			addShapelessRecipe(copy, block);
+			addRecipe(block, "XXX", "XXX", "XXX", 'X', material);
 		}
 		else
 		{
