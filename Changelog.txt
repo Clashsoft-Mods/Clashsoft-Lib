@@ -1,0 +1,52 @@
+1.7.2-1.0.1
+
+* Fixed crash if no mods register a command with CSCommands
+* Fixed crash if there are no more empty potion list entrys
+
+1.7.2-1.0.1
+
+! Update to 1.7.2
++ Added MANY new classes and utilities
++ Added Mod Updates GUI and commands (/mu)
+* Improved Mod Updates
+* Major structure changes
+* Performance improvements
+* Fixed MANY bugfixes
+
+1.6.4-8
+
+* Many internal changes
+* Fixed many bugs
+
+1.6.4-7
+
+* Renamed to "Clashsoft Lib"
+* Structure changes
+
+1.6.4-6
+
++ Added thread update notifications (faster world loading)
++ Added string utilities
+* Fixed update crash
+
+1.6.4-5
+
++ Added ">Restart" command
++ Added string utilities
++ Added Javadoc
+
+1.6.4-4
+
++ Added ">Update [modname]" command
+
+1.6.4-3
+
++ Automatic update downloading
+
+1.6.4-2
+
++ Added Update Checking
+
+1.6.4-1
+
++ Seperated Clashsoft API from other Clashsoft mods
