@@ -125,7 +125,7 @@ public abstract class BlockCustomPortal extends Block
 		int src = entity.dimension;
 		int dest = this.getDestination(entity);
 		
-		if (entity instanceof EntityPlayer)
+		if (entity instanceof EntityPlayerMP)
 		{
 			manager.transferPlayerToDimension((EntityPlayerMP) entity, this.dimensionID, teleporter);
 		}
@@ -242,7 +242,7 @@ public abstract class BlockCustomPortal extends Block
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
 	{
-		if (entity.ridingEntity == null && entity.riddenByEntity == null)
+		if (!world.isRemote && entity.ridingEntity == null && entity.riddenByEntity == null)
 		{
 			entity.setInPortal();
 			if (entity.getPortalCooldown() >= entity.getMaxInPortalTime())
