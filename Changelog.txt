@@ -1,3 +1,11 @@
+1.7.2-1.0.2
+
++ Added CSEntities
+* Fixed CSCrafting.addStorageBlock not working correctly
+* Fixed CustomPortal crash
+* Fixed crash when switching / reloading resource packs
+* Improved BaseMod
+
 1.7.2-1.0.1
 
 * Fixed crash if no mods register a command with CSCommands
