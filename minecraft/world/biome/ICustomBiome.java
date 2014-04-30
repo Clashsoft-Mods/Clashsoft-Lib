@@ -10,9 +10,9 @@ public interface ICustomBiome
 	
 	public Block getStoneBlock(int x, int y, int z);
 	
-	public int getTopMetadata(int x, int y, int z);
+	public byte getTopMetadata(int x, int y, int z);
 	
-	public int getFillerMetadata(int x, int y, int z);
+	public byte getFillerMetadata(int x, int y, int z);
 	
-	public int getStoneMetadata(int x, int y, int z);
+	public byte getStoneMetadata(int x, int y, int z);
 }
