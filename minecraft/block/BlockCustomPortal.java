@@ -183,57 +183,15 @@ public abstract class BlockCustomPortal extends BlockImpl
 	}
 	
 	@Override
-	public boolean renderAsNormalBlock()
+	public boolean isOpaqueCube()
 	{
 		return false;
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
+	public boolean renderAsNormalBlock()
 	{
-		int i = 0;
-		
-		if (world.getBlock(x, y, z) == this)
-		{
-			i = limitToValidMetadata(world.getBlockMetadata(x, y, z));
-			
-			if (i == 0)
-			{
-				return false;
-			}
-			if (i == 2 && side != 5 && side != 4)
-			{
-				return false;
-			}
-			if (i == 1 && side != 3 && side != 2)
-			{
-				return false;
-			}
-		}
-		
-		int j = world.getBlock(x - 1, y, z) == this && world.getBlock(x - 2, y, z) != this ? 1 : 0;
-		int k = world.getBlock(x + 1, y, z) == this && world.getBlock(x + 2, y, z) != this ? 1 : 0;
-		
-		int l = world.getBlock(x, y, z - 1) == this && world.getBlock(x, y, z - 2) != this ? 1 : 0;
-		int i1 = world.getBlock(x, y, z + 1) == this && world.getBlock(x, y, z + 2) != this ? 1 : 0;
-		
-		int i2 = j != 0 || k != 0 || i == 1 ? 1 : 0;
-		int i3 = l != 0 || i1 != 0 || i == 2 ? 1 : 0;
-		
-		if (i2 != 0 && side == 4)
-		{
-			return true;
-		}
-		if (i2 != 0 && side == 5)
-		{
-			return true;
-		}
-		if (i3 != 0 && side == 2)
-		{
-			return true;
-		}
-		return i3 != 0 && side == 3;
+		return false;
 	}
 	
 	@Override
@@ -247,13 +205,6 @@ public abstract class BlockCustomPortal extends BlockImpl
 				this.transferEntity(entity);
 			}
 		}
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderBlockPass()
-	{
-		return 1;
 	}
 	
 	@Override
