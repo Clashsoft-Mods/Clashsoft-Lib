@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-import clashsoft.brewingapi.common.BAPIProxy;
 import clashsoft.cslib.minecraft.common.BaseProxy;
 import clashsoft.cslib.minecraft.network.CSNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;

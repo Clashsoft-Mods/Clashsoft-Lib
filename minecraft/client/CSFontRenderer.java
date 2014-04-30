@@ -267,7 +267,6 @@ public class CSFontRenderer extends FontRenderer
 	 */
 	private float renderDefaultChar(int i, boolean italic)
 	{
-		float scale = 2F;
 		float f = i % 16 * 8;
 		float f1 = i / 16 * 8;
 		float f2 = italic ? 1.0F : 0.0F;
