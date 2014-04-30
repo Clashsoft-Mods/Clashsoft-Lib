@@ -8,7 +8,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -24,7 +23,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
-public abstract class BlockCustomPortal extends Block
+public abstract class BlockCustomPortal extends BlockImpl
 {
 	public static final int[][]	metadataMap	= { { 3, 1 }, { 2, 0 } };
 	
@@ -32,9 +31,7 @@ public abstract class BlockCustomPortal extends Block
 	
 	public BlockCustomPortal(String name, String iconName, int dimensionID)
 	{
-		super(Material.portal);
-		this.setBlockName(name);
-		this.setBlockTextureName(iconName);
+		super(Material.portal, name, iconName);
 		this.setHardness(-1F);
 		this.setLightLevel(1F);
 		this.setTickRandomly(true);
