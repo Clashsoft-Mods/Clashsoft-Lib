@@ -11,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.AxisAlignedBB;
@@ -44,35 +43,6 @@ public abstract class BlockCustomPortal extends BlockImpl
 	public int getFrameMetadata()
 	{
 		return 0;
-	}
-	
-	@Override
-	public void updateTick(World world, int x, int y, int z, Random random)
-	{
-		super.updateTick(world, x, y, z, random);
-		
-		if (!world.provider.isSurfaceWorld() || !world.getGameRules().getGameRuleBooleanValue("doMobSpawning"))
-		{
-			return;
-		}
-		
-		if (random.nextInt(2000) >= world.difficultySetting.getDifficultyId())
-		{
-			int i = y;
-			while (!World.doesBlockHaveSolidTopSurface(world, x, i, z) && i > 0)
-			{
-				--i;
-			}
-			if (i <= 0 || world.getBlock(x, i + 1, z).isNormalCube())
-			{
-				return;
-			}
-			Entity localEntity = ItemMonsterPlacer.spawnCreature(world, 57, x + 0.5D, i + 1.1D, z + 0.5D);
-			if (localEntity != null)
-			{
-				localEntity.timeUntilPortal = localEntity.getPortalCooldown();
-			}
-		}
 	}
 	
 	@Override
@@ -114,30 +84,6 @@ public abstract class BlockCustomPortal extends BlockImpl
 		
 		return false;
 	}
-	
-	public void transferEntity(Entity entity)
-	{
-		ServerConfigurationManager manager = MinecraftServer.getServer().getConfigurationManager();
-		Teleporter teleporter = this.createTeleporter((WorldServer) entity.worldObj);
-		int src = entity.dimension;
-		int dest = this.getDestination(entity);
-		
-		if (entity instanceof EntityPlayerMP)
-		{
-			manager.transferPlayerToDimension((EntityPlayerMP) entity, this.dimensionID, teleporter);
-		}
-		else
-		{
-			manager.transferEntityToWorld(entity, this.dimensionID, DimensionManager.getWorld(src), DimensionManager.getWorld(dest));
-		}
-	}
-	
-	public int getDestination(Entity entity)
-	{
-		return entity.dimension != 0 ? 0 : this.dimensionID;
-	}
-	
-	public abstract Teleporter createTeleporter(WorldServer world);
 	
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
@@ -191,7 +137,7 @@ public abstract class BlockCustomPortal extends BlockImpl
 	@Override
 	public boolean renderAsNormalBlock()
 	{
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -206,6 +152,31 @@ public abstract class BlockCustomPortal extends BlockImpl
 			}
 		}
 	}
+	
+	public void transferEntity(Entity entity)
+	{
+		ServerConfigurationManager manager = MinecraftServer.getServer().getConfigurationManager();
+		int src = entity.dimension;
+		int dest = this.getDestination(entity);
+		WorldServer destWorld = manager.getServerInstance().worldServerForDimension(dest);
+		Teleporter teleporter = this.createTeleporter(destWorld);
+		
+		if (entity instanceof EntityPlayerMP)
+		{
+			manager.transferPlayerToDimension((EntityPlayerMP) entity, dest, teleporter);
+		}
+		else
+		{
+			manager.transferEntityToWorld(entity, dest, DimensionManager.getWorld(src), destWorld, teleporter);
+		}
+	}
+	
+	public int getDestination(Entity entity)
+	{
+		return entity.dimension == 0 ? this.dimensionID : 0;
+	}
+	
+	public abstract Teleporter createTeleporter(WorldServer world);
 	
 	@Override
 	@SideOnly(Side.CLIENT)
