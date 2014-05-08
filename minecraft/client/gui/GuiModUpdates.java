@@ -86,8 +86,8 @@ public class GuiModUpdates extends GuiScreen
 			this.drawString(this.fontRendererObj, update.getStatus(), 260, 90, 0xFFFFFF);
 			
 			int i = 117;
-			String[] updateNotes = update.getUpdateNotes();
-			if (updateNotes != null && updateNotes.length > 0)
+			List<String> updateNotes = update.getUpdateNotes();
+			if (!updateNotes.isEmpty())
 			{
 				this.drawString(this.fontRendererObj, this.update_notes, 160, 105, 0xFFFFFF);
 				

@@ -1,5 +1,9 @@
 package clashsoft.cslib.minecraft.update;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import clashsoft.cslib.minecraft.update.updater.IUpdater;
 
 
@@ -45,8 +49,9 @@ public class UpdateFileReader
 			{
 				updateUrl = line.substring(i2 + 1);
 			}
+			List<String> notes = updateNotes == null ? Collections.EMPTY_LIST : Arrays.asList(updateNotes.split("\\\\n|\\n|\n"));
 			
-			return updater.newUpdate(newVersion, updateNotes, updateUrl);
+			return updater.newUpdate(newVersion, notes, updateUrl);
 		}
 		return null;
 	}

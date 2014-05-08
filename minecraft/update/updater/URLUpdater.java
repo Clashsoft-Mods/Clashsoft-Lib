@@ -1,6 +1,7 @@
 package clashsoft.cslib.minecraft.update.updater;
 
 import java.util.Arrays;
+import java.util.List;
 
 import clashsoft.cslib.minecraft.update.Update;
 import clashsoft.cslib.minecraft.update.UpdateFileReader;
@@ -48,7 +49,7 @@ public class URLUpdater implements IUpdater
 	}
 	
 	@Override
-	public Update newUpdate(String newVersion, String notes, String updateURL)
+	public Update newUpdate(String newVersion, List<String> notes, String updateURL)
 	{
 		return new Update(null, null, newVersion, notes, updateURL);
 	}
