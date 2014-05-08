@@ -11,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
  * 
  * @author Clashsoft
  */
-public class ModUpdate
+public class Update
 {
 	protected String	modName;
 	
@@ -24,12 +24,12 @@ public class ModUpdate
 	protected Boolean	valid;
 	protected int		installStatus;
 	
-	public ModUpdate(String modName, String version, String newVersion, String updateNotes, String updateUrl)
+	public Update(String modName, String version, String newVersion, String updateNotes, String updateUrl)
 	{
 		this(modName, version, newVersion, updateNotes == null ? null : updateNotes.split("\\\\n|\\n|\n"), updateUrl);
 	}
 	
-	public ModUpdate(String modName, String version, String newVersion, String[] updateNotes, String updateUrl)
+	public Update(String modName, String version, String newVersion, String[] updateNotes, String updateUrl)
 	{
 		this.modName = modName;
 		this.version = version;
