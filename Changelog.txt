@@ -1,3 +1,12 @@
+1.7.2-1.1.0
+
++ Added recipe managers
++ Added new custom block classes
++ Added abstract world management classes
+* Made the update system more customizable
+* Bugfixes
+- Removed addon system
+
 1.7.2-1.0.2
 
 + Added CSEntities
@@ -11,7 +20,7 @@
 * Fixed crash if no mods register a command with CSCommands
 * Fixed crash if there are no more empty potion list entrys
 
-1.7.2-1.0.1
+1.7.2-1.0.0
 
 ! Update to 1.7.2
 + Added MANY new classes and utilities
