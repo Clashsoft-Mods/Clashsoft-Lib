@@ -7,8 +7,8 @@ import net.minecraft.client.Minecraft;
 /**
  * The class CSString
  * <p>
- * Extension for {@link CSString} adding String utils only
- * usable with Minecraft.
+ * Extension for {@link CSString} adding String utils only usable with
+ * Minecraft.
  * 
  * @author Clashsoft
  */

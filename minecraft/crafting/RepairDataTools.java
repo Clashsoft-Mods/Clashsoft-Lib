@@ -23,18 +23,24 @@ public class RepairDataTools implements IRecipe
 			
 			if (stack != null && stack.getItem() instanceof ItemDataTool)
 			{
-				if (toolType == null || (toolType == stack && ItemDataTool.getToolMaterial(stack) == ItemDataTool.getToolMaterial(toolType)))
+				if (toolType == null || toolType == stack && ItemDataTool.getToolMaterial(stack) == ItemDataTool.getToolMaterial(toolType))
 				{
 					toolType = stack;
 					itemsOfType++;
 					
 					if (itemsOfType == 2)
+					{
 						return true;
+					}
 					else if (itemsOfType > 2)
+					{
 						return false;
+					}
 				}
 				else
+				{
 					return false;
+				}
 			}
 		}
 		return false;
@@ -70,7 +76,7 @@ public class RepairDataTools implements IRecipe
 					}
 					else
 					{
-						resultdamage = (int) Math.min((float) maxDamage, (float) (MathHelper.floor_float(damage1 + damage2 + (maxDamage / 10F))));
+						resultdamage = (int) Math.min((float) maxDamage, (float) MathHelper.floor_float(damage1 + damage2 + maxDamage / 10F));
 						break;
 					}
 				}

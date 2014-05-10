@@ -41,7 +41,8 @@ public class CSBlocks
 	 * unlocalized name of the block to compute a registry name and then class
 	 * {@link CSBlocks#addBlock(Block, String)}.
 	 * 
-	 * @param block the block
+	 * @param block
+	 *            the block
 	 */
 	public static void addBlock(Block block)
 	{

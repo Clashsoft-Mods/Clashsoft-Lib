@@ -15,16 +15,16 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class Update
 {
-	protected String	modName;
+	protected String		modName;
 	
-	protected String	version;
-	protected String	newVersion;
+	protected String		version;
+	protected String		newVersion;
 	
 	protected List<String>	updateNotes;
-	protected String	url;
+	protected String		url;
 	
-	protected Boolean	valid;
-	protected int		installStatus;
+	protected Boolean		valid;
+	protected int			installStatus;
 	
 	public Update(String modName, String version, String newVersion, List<String> updateNotes, String updateUrl)
 	{

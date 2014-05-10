@@ -19,8 +19,8 @@ public class GuiModUpdates extends GuiScreen
 	public GuiButton			buttonShowInvalidUpdates;
 	public GuiButton			buttonInstall;
 	
-	public List<Update>		updates;
-	public Update			update;
+	public List<Update>			updates;
+	public Update				update;
 	public boolean				showInvalidUpdates;
 	
 	private String				title				= I18n.getString("update.list.title");
@@ -119,20 +119,22 @@ public class GuiModUpdates extends GuiScreen
 	public int getDiffColor(String line)
 	{
 		if (line.isEmpty())
+		{
 			return 0xFFFFFF;
+		}
 		
 		switch (line.charAt(0))
 		{
-			case '+':
-				return 0x00FF00;
-			case '-':
-				return 0xFF0000;
-			case '*':
-				return 0xFFFF00;
-			case '!':
-				return 0x007FFF;
-			default:
-				return 0xFFFFFF;
+		case '+':
+			return 0x00FF00;
+		case '-':
+			return 0xFF0000;
+		case '*':
+			return 0xFFFF00;
+		case '!':
+			return 0x007FFF;
+		default:
+			return 0xFFFFFF;
 		}
 	}
 	
