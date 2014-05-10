@@ -245,9 +245,10 @@ public class CustomBlock extends Block implements ICustomBlock
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z)
 	{
-		if (world.getBlockMetadata(x, y, z) < this.hardnesses.length && this.hardnesses[world.getBlockMetadata(x, y, z)] > 0)
+		int metadata = world.getBlockMetadata(x, y, z);
+		if (metadata < this.hardnesses.length)
 		{
-			return this.hardnesses[world.getBlockMetadata(x, y, z)];
+			return this.hardnesses[metadata];
 		}
 		return this.blockHardness;
 	}
@@ -289,7 +290,7 @@ public class CustomBlock extends Block implements ICustomBlock
 		{
 			if (this.enabled[i] && tab == this.getCreativeTab(i))
 			{
-				list.add(new ItemStack(this, 1, i));
+				list.add(new ItemStack(item, 1, i));
 			}
 		}
 	}
