@@ -13,8 +13,10 @@ public class CheckUpdateThread extends Thread
 	
 	public CheckUpdateThread(IUpdater updater)
 	{
+		this.updater = updater;
 		this.modName = updater.getName();
 		this.version = updater.getVersion();
+		this.setName("UpdateChecker-" + this.modName);
 	}
 	
 	@Override
