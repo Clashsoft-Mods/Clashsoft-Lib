@@ -14,9 +14,10 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public class DataToolSet
 {
+	public static Map<String, ToolMaterial>	nameToMaterial	= new HashMap();
+	public static Map<ToolMaterial, String>	materialToName	= new HashMap();
+	
 	public List<ToolMaterial>			materials		= new ArrayList();
-	public Map<String, ToolMaterial>	nameToMaterial	= new HashMap();
-	public Map<ToolMaterial, String>	materialToName	= new HashMap();
 	
 	/** The sword. */
 	public ItemDataSword				sword;
@@ -71,12 +72,12 @@ public class DataToolSet
 		this.nameToMaterial.put(name, material);
 	}
 	
-	public ToolMaterial getToolMaterial(ItemStack stack)
+	public static ToolMaterial getToolMaterial(ItemStack stack)
 	{
-		return this.nameToMaterial.get(this.getMaterialName(stack));
+		return nameToMaterial.get(getMaterialName(stack));
 	}
 	
-	public String getMaterialName(ItemStack stack)
+	public static String getMaterialName(ItemStack stack)
 	{
 		if (stack != null)
 		{
@@ -86,12 +87,12 @@ public class DataToolSet
 		return null;
 	}
 	
-	public ItemStack setToolMaterial(ItemStack stack, ToolMaterial material)
+	public static ItemStack setToolMaterial(ItemStack stack, ToolMaterial material)
 	{
-		return this.setMaterialName(stack, this.materialToName.get(material));
+		return setMaterialName(stack, materialToName.get(material));
 	}
 	
-	public ItemStack setMaterialName(ItemStack stack, String name)
+	public static ItemStack setMaterialName(ItemStack stack, String name)
 	{
 		if (stack != null)
 		{

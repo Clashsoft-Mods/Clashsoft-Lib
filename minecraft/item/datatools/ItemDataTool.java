@@ -58,8 +58,7 @@ public class ItemDataTool extends ItemTool
 	{
 		if (stack != null)
 		{
-			ItemDataTool item = (ItemDataTool) stack.getItem();
-			return item.toolSet.setToolMaterial(stack, toolMaterial);
+			return DataToolSet.setToolMaterial(stack, toolMaterial);
 		}
 		return stack;
 	}
