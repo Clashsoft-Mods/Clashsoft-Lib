@@ -12,7 +12,7 @@ import net.minecraft.client.Minecraft;
  * 
  * @author Clashsoft
  */
-public class CSStringMC extends CSString
+public class CSStringMC
 {
 	/**
 	 * Trims a string to the given render width.
