@@ -1,4 +1,6 @@
-package clashsoft.cslib.minecraft.item.datatools;
+package clashsoft.cslib.minecraft.crafting;
+
+import clashsoft.cslib.minecraft.item.datatools.ItemDataTool;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
