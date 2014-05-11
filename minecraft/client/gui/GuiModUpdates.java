@@ -107,12 +107,15 @@ public class GuiModUpdates extends GuiScreen
 	{
 		super.mouseClicked(x, y, which);
 		
-		String url = this.update.getUpdateURL();
-		int i = this.fontRendererObj.getStringWidth(url);
-		
-		if (x >= 260 && x <= 260 + i && y >= 80 && y < 90)
+		if (this.update != null)
 		{
-			this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
+			String url = this.update.getUpdateURL();
+			int i = this.fontRendererObj.getStringWidth(url);
+			
+			if (x >= 260 && x <= 260 + i && y >= 80 && y < 90)
+			{
+				this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
+			}
 		}
 	}
 	

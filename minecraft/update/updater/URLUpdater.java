@@ -88,4 +88,10 @@ public class URLUpdater implements IUpdater
 	{
 		return "URLUpdater [url=" + this.getURL() + "; file=" + Arrays.toString(this.getUpdateFile()) + "]";
 	}
+	
+	@Override
+	public boolean reCheck()
+	{
+		return true;
+	}
 }
