@@ -15,6 +15,9 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class Update
 {
+	private static final int INVALID = -2;
+	private static final int NOT_CHECKED = -999;
+	
 	protected String		modName;
 	
 	protected String		version;
@@ -23,7 +26,7 @@ public class Update
 	protected List<String>	updateNotes;
 	protected String		url;
 	
-	protected int			compare	= -999;
+	protected int			compare	= NOT_CHECKED;
 	protected int			installStatus;
 	
 	public Update(String modName, String version, String newVersion, List<String> updateNotes, String updateUrl)
@@ -43,9 +46,16 @@ public class Update
 	
 	public int validate()
 	{
-		if (this.compare == -999 && this.version != null && this.newVersion != null && this.newVersion.startsWith(CSUpdate.CURRENT_VERSION))
+		if (this.compare == NOT_CHECKED)
 		{
+			if (this.version != null && this.newVersion != null && this.newVersion.startsWith(CSUpdate.CURRENT_VERSION))
+			{
 			this.compare = CSUpdate.compareVersion(this.version, this.newVersion);
+			}
+			else
+			{
+				this.compare = INVALID;
+			}
 		}
 		return this.compare;
 	}
@@ -91,7 +101,8 @@ public class Update
 	
 	public boolean isValid()
 	{
-		return this.validate() < 0;
+		int compare = this.validate();
+		return compare != INVALID && compare < 0;
 	}
 	
 	public boolean isCurrent()
