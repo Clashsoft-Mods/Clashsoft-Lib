@@ -3,9 +3,9 @@ package clashsoft.cslib.minecraft.update.updater;
 import java.util.Arrays;
 import java.util.List;
 
-import clashsoft.cslib.minecraft.update.IUpdateReader;
 import clashsoft.cslib.minecraft.update.Update;
 import clashsoft.cslib.minecraft.update.reader.FileUpdateReader;
+import clashsoft.cslib.minecraft.update.reader.IUpdateReader;
 
 public class ModUpdater extends URLUpdater
 {

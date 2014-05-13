@@ -7,7 +7,7 @@ import clashsoft.cslib.minecraft.lang.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
- * The class ModUpdate.
+ * The class Update.
  * <p>
  * This class stores mod update data and installs updates.
  * 

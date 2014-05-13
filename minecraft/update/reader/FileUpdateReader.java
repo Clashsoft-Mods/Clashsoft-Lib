@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import clashsoft.cslib.minecraft.update.CSUpdate;
-import clashsoft.cslib.minecraft.update.IUpdateReader;
 import clashsoft.cslib.minecraft.update.Update;
 import clashsoft.cslib.minecraft.update.updater.IUpdater;
 
