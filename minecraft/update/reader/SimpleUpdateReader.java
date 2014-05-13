@@ -1,11 +1,14 @@
-package clashsoft.cslib.minecraft.update;
+package clashsoft.cslib.minecraft.update.reader;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import clashsoft.cslib.minecraft.update.CSUpdate;
+import clashsoft.cslib.minecraft.update.IUpdateReader;
+import clashsoft.cslib.minecraft.update.Update;
 import clashsoft.cslib.minecraft.update.updater.IUpdater;
 
-public class SimpleUpdateReader extends UpdateFileReader
+public class SimpleUpdateReader implements IUpdateReader
 {
 	public static final SimpleUpdateReader	instance	= new SimpleUpdateReader();
 	

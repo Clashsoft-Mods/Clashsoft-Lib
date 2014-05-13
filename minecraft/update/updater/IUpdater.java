@@ -2,8 +2,8 @@ package clashsoft.cslib.minecraft.update.updater;
 
 import java.util.List;
 
+import clashsoft.cslib.minecraft.update.IUpdateReader;
 import clashsoft.cslib.minecraft.update.Update;
-import clashsoft.cslib.minecraft.update.UpdateFileReader;
 
 public interface IUpdater
 {
@@ -17,7 +17,7 @@ public interface IUpdater
 	
 	public String[] getUpdateFile();
 	
-	public UpdateFileReader getFileReader();
+	public IUpdateReader getUpdateReader();
 	
 	public void checkUpdate();
 	

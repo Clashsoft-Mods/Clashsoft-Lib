@@ -3,8 +3,9 @@ package clashsoft.cslib.minecraft.update.updater;
 import java.util.Arrays;
 import java.util.List;
 
+import clashsoft.cslib.minecraft.update.IUpdateReader;
 import clashsoft.cslib.minecraft.update.Update;
-import clashsoft.cslib.minecraft.update.UpdateFileReader;
+import clashsoft.cslib.minecraft.update.reader.FileUpdateReader;
 
 public class ModUpdater extends URLUpdater
 {
@@ -14,10 +15,10 @@ public class ModUpdater extends URLUpdater
 	
 	public ModUpdater(String name, String acronym, String version, String url)
 	{
-		this(name, acronym, version, url, UpdateFileReader.instance);
+		this(name, acronym, version, url, FileUpdateReader.instance);
 	}
 	
-	public ModUpdater(String name, String acronym, String version, String url, UpdateFileReader reader)
+	public ModUpdater(String name, String acronym, String version, String url, IUpdateReader reader)
 	{
 		super(url, reader);
 		this.name = name;

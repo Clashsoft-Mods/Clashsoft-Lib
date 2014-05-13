@@ -3,22 +3,23 @@ package clashsoft.cslib.minecraft.update.updater;
 import java.util.Arrays;
 import java.util.List;
 
+import clashsoft.cslib.minecraft.update.IUpdateReader;
 import clashsoft.cslib.minecraft.update.Update;
-import clashsoft.cslib.minecraft.update.UpdateFileReader;
+import clashsoft.cslib.minecraft.update.reader.FileUpdateReader;
 import clashsoft.cslib.minecraft.util.CSWeb;
 
 public class URLUpdater implements IUpdater
 {
 	protected String		url;
 	protected String[]		updateFile;
-	public UpdateFileReader	reader;
+	public IUpdateReader	reader;
 	
 	public URLUpdater(String url)
 	{
-		this(url, UpdateFileReader.instance);
+		this(url, FileUpdateReader.instance);
 	}
 	
-	public URLUpdater(String url, UpdateFileReader reader)
+	public URLUpdater(String url, IUpdateReader reader)
 	{
 		this.url = url;
 		this.reader = reader;
@@ -57,7 +58,7 @@ public class URLUpdater implements IUpdater
 	@Override
 	public void checkUpdate()
 	{
-		this.getFileReader().readFile(this, this.getUpdateFile());
+		this.getUpdateReader().readFile(this, this.getUpdateFile());
 	}
 	
 	@Override
@@ -78,7 +79,7 @@ public class URLUpdater implements IUpdater
 	}
 	
 	@Override
-	public UpdateFileReader getFileReader()
+	public IUpdateReader getUpdateReader()
 	{
 		return this.reader;
 	}

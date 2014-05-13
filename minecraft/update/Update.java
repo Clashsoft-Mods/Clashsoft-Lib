@@ -15,19 +15,19 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class Update
 {
-	private static final int INVALID = -2;
-	private static final int NOT_CHECKED = -999;
+	private static final int	INVALID		= -2;
+	private static final int	NOT_CHECKED	= -999;
 	
-	protected String		modName;
+	public String				modName;
 	
-	protected String		version;
-	protected String		newVersion;
+	protected String			version;
+	protected String			newVersion;
 	
-	protected List<String>	updateNotes;
-	protected String		url;
+	protected List<String>		updateNotes;
+	protected String			url;
 	
-	protected int			compare	= NOT_CHECKED;
-	protected int			installStatus;
+	protected int				compare		= NOT_CHECKED;
+	protected int				installStatus;
 	
 	public Update(String modName, String version, String newVersion, List<String> updateNotes, String updateUrl)
 	{
@@ -50,7 +50,7 @@ public class Update
 		{
 			if (this.version != null && this.newVersion != null && this.newVersion.startsWith(CSUpdate.CURRENT_VERSION))
 			{
-			this.compare = CSUpdate.compareVersion(this.version, this.newVersion);
+				this.compare = CSUpdate.compareVersion(this.version, this.newVersion);
 			}
 			else
 			{
@@ -86,7 +86,7 @@ public class Update
 		{
 			return this.version + " -> " + this.newVersion;
 		}
-			return this.version;
+		return this.version;
 	}
 	
 	public String getUpdateURL()
