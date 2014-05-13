@@ -62,12 +62,12 @@ public class Update
 	
 	public String getModName()
 	{
-		return this.modName;
+		return this.modName == null ? "[unknown]" : this.modName;
 	}
 	
 	public String getVersion()
 	{
-		return this.version == null ? "" : this.version;
+		return this.version == null ? "[unknown]" : this.version;
 	}
 	
 	public String getNewVersion()
@@ -77,16 +77,15 @@ public class Update
 	
 	public String getName()
 	{
-		return this.getModName() + " " + this.getNewVersion();
+		String modName = this.modName == null ? "Unknown Mod" : this.modName;
+		return modName + " " + this.getNewVersion();
 	}
 	
 	public String getVersionChanges()
 	{
-		if (this.isValid())
-		{
-			return this.version + " -> " + this.newVersion;
-		}
-		return this.version;
+		if (this.compare == 0)
+			return this.getVersion();
+		return this.getVersion() + " -> " + this.getNewVersion();
 	}
 	
 	public String getUpdateURL()

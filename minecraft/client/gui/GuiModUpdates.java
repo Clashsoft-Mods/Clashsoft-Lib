@@ -10,6 +10,7 @@ import clashsoft.cslib.minecraft.update.Update;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GuiModUpdates extends GuiScreen
 {
@@ -28,11 +29,11 @@ public class GuiModUpdates extends GuiScreen
 	private String				options_on			= I18n.getString("options.on");
 	private String				options_off			= I18n.getString("options.off");
 	
-	private String				mod_name			= I18n.getString("update.list.modname");
-	private String				current_version		= I18n.getString("update.list.version");
-	private String				new_version			= I18n.getString("update.list.newversion");
-	private String				install_status		= I18n.getString("update.list.install.status");
-	private String				url					= I18n.getString("update.list.url");
+	private String				mod_name			= EnumChatFormatting.GRAY + I18n.getString("update.list.modname");
+	private String				current_version		= EnumChatFormatting.GRAY + I18n.getString("update.list.version");
+	private String				new_version			= EnumChatFormatting.GRAY + I18n.getString("update.list.newversion");
+	private String				install_status		= EnumChatFormatting.GRAY + I18n.getString("update.list.install.status");
+	private String				url					= EnumChatFormatting.GRAY + I18n.getString("update.list.url");
 	private String				update_notes		= I18n.getString("update.list.notes");
 	
 	public GuiModUpdates(GuiScreen parent)
@@ -45,7 +46,7 @@ public class GuiModUpdates extends GuiScreen
 	public void initGui()
 	{
 		this.buttonShowInvalidUpdates = new GuiButton(10, 10, this.height - 38, 140, 20, this.getShowInvalidUpdates());
-		this.buttonInstall = new GuiButton(1, this.width - 90, 35, 80, 20, I18n.getString("update.list.install"));
+		this.buttonInstall = new GuiButton(1, this.width - 90, 32, 80, 20, I18n.getString("update.list.install"));
 		
 		this.buttonList.add(new GuiButton(0, this.width / 2, this.height - 38, 140, 20, I18n.getString("gui.done")));
 		this.buttonList.add(this.buttonInstall);
@@ -72,24 +73,24 @@ public class GuiModUpdates extends GuiScreen
 			int color1 = valid ? 0xFF0000 : 0x00FF00;
 			int color2 = valid ? 0x00FF00 : 0xFF0000;
 			
-			this.drawString(this.fontRendererObj, "\u00a7n" + update.getName(), 160, 38, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, this.mod_name, 160, 50, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, this.current_version, 160, 60, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, this.new_version, 160, 70, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, this.url, 160, 80, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, this.install_status, 160, 90, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, "\u00a7n" + update.getName(), 160, 37, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, this.mod_name, 160, 55, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, this.current_version, 160, 65, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, this.new_version, 160, 75, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, this.url, 160, 85, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, this.install_status, 160, 95, 0xFFFFFF);
 			
-			this.drawString(this.fontRendererObj, update.getModName(), 260, 50, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, update.getVersion(), 260, 60, color1);
-			this.drawString(this.fontRendererObj, update.getNewVersion(), 260, 70, color2);
-			this.drawString(this.fontRendererObj, update.getUpdateURL(), 260, 80, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, update.getStatus(), 260, 90, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, update.getModName(), 260, 55, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, update.getVersion(), 260, 65, color1);
+			this.drawString(this.fontRendererObj, update.getNewVersion(), 260, 75, color2);
+			this.drawString(this.fontRendererObj, update.getUpdateURL(), 260, 85, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, update.getStatus(), 260, 95, 0xFFFFFF);
 			
-			int i = 117;
+			int i = 125;
 			List<String> updateNotes = update.getUpdateNotes();
 			if (!updateNotes.isEmpty())
 			{
-				this.drawString(this.fontRendererObj, this.update_notes, 160, 105, 0xFFFFFF);
+				this.drawString(this.fontRendererObj, this.update_notes, 160, 110, 0xFFFFFF);
 				
 				for (String line : updateNotes)
 				{
