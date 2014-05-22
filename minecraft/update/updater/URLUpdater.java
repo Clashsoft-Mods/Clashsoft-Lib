@@ -8,11 +8,15 @@ import clashsoft.cslib.minecraft.update.reader.FileUpdateReader;
 import clashsoft.cslib.minecraft.update.reader.IUpdateReader;
 import clashsoft.cslib.minecraft.util.CSWeb;
 
+import net.minecraft.util.IChatComponent;
+
 public class URLUpdater implements IUpdater
 {
-	protected String		url;
-	protected String[]		updateFile;
-	public IUpdateReader	reader;
+	protected String			url;
+	protected String[]			updateFile;
+	public IUpdateReader		reader;
+	
+	protected IChatComponent	motd;
 	
 	public URLUpdater(String url)
 	{
@@ -44,6 +48,19 @@ public class URLUpdater implements IUpdater
 	}
 	
 	@Override
+	public IChatComponent getMOTD()
+	{
+		return this.motd;
+	}
+	
+	@Override
+	public URLUpdater setMOTD(IChatComponent motd)
+	{
+		this.motd = motd;
+		return this;
+	}
+	
+	@Override
 	public boolean keyMatches(String key)
 	{
 		return true;
@@ -52,7 +69,7 @@ public class URLUpdater implements IUpdater
 	@Override
 	public Update newUpdate(String newVersion, List<String> notes, String updateURL)
 	{
-		return new Update(null, null, newVersion, notes, updateURL);
+		return new Update(this, null, null, newVersion, notes, updateURL);
 	}
 	
 	@Override
@@ -88,11 +105,5 @@ public class URLUpdater implements IUpdater
 	public String toString()
 	{
 		return "URLUpdater [url=" + this.getURL() + "; file=" + Arrays.toString(this.getUpdateFile()) + "]";
-	}
-	
-	@Override
-	public boolean reCheck()
-	{
-		return true;
 	}
 }

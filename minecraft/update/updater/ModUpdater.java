@@ -56,7 +56,7 @@ public class ModUpdater extends URLUpdater
 	@Override
 	public Update newUpdate(String newVersion, List<String> notes, String updateURL)
 	{
-		return new Update(this.name, this.version, newVersion, notes, updateURL);
+		return new Update(this, this.name, this.version, newVersion, notes, updateURL);
 	}
 	
 	@Override

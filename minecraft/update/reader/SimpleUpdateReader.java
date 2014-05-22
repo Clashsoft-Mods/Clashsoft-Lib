@@ -7,6 +7,10 @@ import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.update.Update;
 import clashsoft.cslib.minecraft.update.updater.IUpdater;
 
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+
 public class SimpleUpdateReader implements IUpdateReader
 {
 	public static final SimpleUpdateReader	instance	= new SimpleUpdateReader();
@@ -18,6 +22,8 @@ public class SimpleUpdateReader implements IUpdateReader
 		String version = null;
 		String url = null;
 		List<String> notes = new ArrayList(lines.length);
+		
+		IChatComponent motd = null;
 		
 		for (String line : lines)
 		{
@@ -33,6 +39,32 @@ public class SimpleUpdateReader implements IUpdateReader
 			{
 				url = line.substring(4);
 			}
+			else if (line.startsWith("motd="))
+			{
+				String s = line.substring(5);
+				if (motd == null)
+					motd = new ChatComponentText(s);
+				else
+					motd.appendText(s);
+			}
+			else if (line.startsWith("motdcolor="))
+			{
+				EnumChatFormatting color = EnumChatFormatting.getValueByName(line.substring(10));
+				if (motd == null)
+					motd = new ChatComponentText("");
+				motd.getChatStyle().setColor(color);
+			}
+			else if (line.startsWith("motdjson="))
+			{
+				String s = line.substring(9);
+				try
+				{
+					motd = IChatComponent.Serializer.func_150699_a(s);
+				}
+				catch (Exception ex)
+				{
+				}
+			}
 			else
 			{
 				notes.add(line);
@@ -41,6 +73,8 @@ public class SimpleUpdateReader implements IUpdateReader
 		
 		if (version != null)
 		{
+			updater.setMOTD(motd);
+			
 			Update update = updater.newUpdate(version, notes, url);
 			if (modName != null && update.modName == null)
 			{

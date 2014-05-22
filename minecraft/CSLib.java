@@ -27,11 +27,11 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 @Mod(modid = CSLib.MODID, name = CSLib.NAME, version = CSLib.VERSION)
 public class CSLib extends ClashsoftMod
 {
-	public static final String	MODID		= "cslib";
-	public static final String	NAME		= "Clashsoft Lib";
-	public static final String	ACRONYM		= "cslib";
-	public static final String	VERSION		= CSUpdate.CURRENT_VERSION + "-1.1.0";
-	public static final String	DEPENDENCY	= "required-after:" + MODID;
+	public static final String	MODID				= "cslib";
+	public static final String	NAME				= "Clashsoft Lib";
+	public static final String	ACRONYM				= "cslib";
+	public static final String	VERSION				= CSUpdate.CURRENT_VERSION + "-1.1.0";
+	public static final String	DEPENDENCY			= "required-after:" + MODID;
 	
 	@Instance(MODID)
 	public static CSLib			instance;
@@ -39,8 +39,10 @@ public class CSLib extends ClashsoftMod
 	@SidedProxy(clientSide = "clashsoft.cslib.minecraft.client.CSLibClientProxy", serverSide = "clashsoft.cslib.minecraft.common.CSLibProxy")
 	public static CSLibProxy	proxy;
 	
-	public static boolean		updateCheck	= true;
-	public static boolean		autoUpdate	= true;
+	public static boolean		printUpdateNotes	= false;
+	public static boolean		updateCheck			= true;
+	public static boolean		autoUpdate			= true;
+	public static boolean		enableMOTD			= true;
 	
 	public CSLib()
 	{
@@ -56,8 +58,10 @@ public class CSLib extends ClashsoftMod
 	@Override
 	public void readConfig()
 	{
-		autoUpdate = CSConfig.getBool("updates", "Auto Updates", "Disables automatic updates", true);
-		updateCheck = CSConfig.getBool("updates", "Update Check", "Disables update checks for ALL mods", true);
+		printUpdateNotes = CSConfig.getBool("updates", "Print Update Notes", printUpdateNotes);
+		updateCheck = CSConfig.getBool("updates", "Update Check", "Disables update checks for ALL mods", updateCheck);
+		autoUpdate = CSConfig.getBool("updates", "Auto Updates", "Disables automatic updates", autoUpdate);
+		enableMOTD = CSConfig.getBool("updates", "Enable MOTD", enableMOTD);
 	}
 	
 	@Override

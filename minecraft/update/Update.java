@@ -3,6 +3,7 @@ package clashsoft.cslib.minecraft.update;
 import java.util.List;
 
 import clashsoft.cslib.minecraft.lang.I18n;
+import clashsoft.cslib.minecraft.update.updater.IUpdater;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -18,6 +19,8 @@ public class Update
 	private static final int	INVALID		= -2;
 	private static final int	NOT_CHECKED	= -999;
 	
+	public final IUpdater updater;
+	
 	public String				modName;
 	
 	protected String			version;
@@ -29,8 +32,9 @@ public class Update
 	protected int				compare		= NOT_CHECKED;
 	protected int				installStatus;
 	
-	public Update(String modName, String version, String newVersion, List<String> updateNotes, String updateUrl)
+	public Update(IUpdater updater, String modName, String version, String newVersion, List<String> updateNotes, String updateUrl)
 	{
+		this.updater = updater;
 		this.modName = modName;
 		this.version = version;
 		this.newVersion = newVersion;
