@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import clashsoft.cslib.minecraft.item.CSStacks;
+
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -96,7 +98,7 @@ public class DataToolSet
 	{
 		if (stack != null)
 		{
-			NBTTagCompound nbt = stack.getTagCompound();
+			NBTTagCompound nbt = CSStacks.getNBT(stack);
 			nbt.setString("ToolMaterial", name);
 		}
 		return stack;

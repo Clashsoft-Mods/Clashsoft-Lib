@@ -3,6 +3,7 @@ package clashsoft.cslib.minecraft.item;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class CSStacks
@@ -167,5 +168,16 @@ public class CSStacks
 		}
 		
 		return i;
+	}
+	
+	public static NBTTagCompound getNBT(ItemStack stack)
+	{
+		NBTTagCompound nbt = stack.stackTagCompound;
+		if (nbt == null)
+		{
+			nbt = new NBTTagCompound();
+			stack.stackTagCompound = nbt;
+		}
+		return nbt;
 	}
 }

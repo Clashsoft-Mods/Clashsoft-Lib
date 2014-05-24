@@ -181,11 +181,17 @@ public class CustomItem extends Item
 	@Override
 	public IIcon getIconFromDamage(int damage)
 	{
+		if (this.icons == null)
+			return this.itemIcon;
+		
+		if (damage >= this.icons.length)
+			damage = this.icons.length - 1;
+		if (damage < 0)
+			damage = 0;
 		return this.icons[damage];
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister)
 	{
 		if (this.hasItemMetadataList())
