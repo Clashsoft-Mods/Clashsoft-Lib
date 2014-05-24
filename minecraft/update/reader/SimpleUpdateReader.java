@@ -71,10 +71,13 @@ public class SimpleUpdateReader implements IUpdateReader
 			}
 		}
 		
-		if (version != null)
+		if (motd != null)
 		{
 			updater.setMOTD(motd);
-			
+		}
+		
+		if (version != null)
+		{
 			Update update = updater.newUpdate(version, notes, url);
 			if (modName != null && update.modName == null)
 			{

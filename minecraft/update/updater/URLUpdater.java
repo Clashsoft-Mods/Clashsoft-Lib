@@ -79,6 +79,12 @@ public class URLUpdater implements IUpdater
 	}
 	
 	@Override
+	public boolean reCheck()
+	{
+		return true;
+	}
+	
+	@Override
 	public IUpdater setUpdateFile(String[] updateFile)
 	{
 		this.updateFile = updateFile;

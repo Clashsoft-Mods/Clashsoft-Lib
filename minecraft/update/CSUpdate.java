@@ -10,6 +10,7 @@ import clashsoft.cslib.minecraft.update.updater.URLUpdater;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 
 /**
  * The class CSUpdate.
@@ -23,7 +24,7 @@ public class CSUpdate
 	/** The updates already found. */
 	public static Map<String, Update>	updates					= new HashMap();
 	
-	public static Map<String, IUpdater>	updaters				= new HashMap();
+	public static List<IUpdater>		updaters				= new ArrayList();
 	
 	/** The Constant CURRENT_VERSION. Value: {@value} */
 	public static final String			CURRENT_VERSION			= "1.7.2";
@@ -93,11 +94,6 @@ public class CSUpdate
 		return updates.get(modName);
 	}
 	
-	public static IUpdater getUpdater(String modName)
-	{
-		return updaters.get(modName);
-	}
-	
 	public static void updateCheck(String url)
 	{
 		updateCheck(new URLUpdater(url));
@@ -124,12 +120,32 @@ public class CSUpdate
 	
 	public static void updateCheck(IUpdater updater)
 	{
-		updaters.put(updater.getName(), updater);
+		updaters.add(updater);
+		doUpdateCheck(updater);
+	}
+	
+	private static void doUpdateCheck(IUpdater updater)
+	{
 		new CheckUpdateThread(updater).start();
 	}
 	
 	public static void notifyAll(EntityPlayer player)
 	{
+		for (IUpdater updater : updaters)
+		{
+			if (updater.reCheck())
+			{
+				doUpdateCheck(updater);
+			}
+			
+			IChatComponent motd = updater.getMOTD();
+			if (motd != null)
+			{
+				player.addChatMessage(new ChatComponentTranslation("motd.message", updater.getName()));
+				player.addChatMessage(motd);
+			}
+		}
+		
 		List<Update> updates = getUpdates(false);
 		if (!updates.isEmpty())
 		{

@@ -27,6 +27,8 @@ public interface IUpdater
 	
 	public void checkUpdate();
 	
+	public boolean reCheck();
+	
 	public boolean keyMatches(String key);
 	
 	public Update newUpdate(String newVersion, List<String> notes, String downloadURL);	
