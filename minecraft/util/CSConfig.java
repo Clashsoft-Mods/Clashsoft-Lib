@@ -3,6 +3,7 @@ package clashsoft.cslib.minecraft.util;
 import java.io.File;
 
 import clashsoft.cslib.util.CSLog;
+import clashsoft.cslib.util.IParsable;
 
 import net.minecraftforge.common.config.Configuration;
 
@@ -135,6 +136,7 @@ public class CSConfig
 		return (T) _default.parse(getString(category, key, desc, _default.toString()));
 	}
 	
+	@Deprecated
 	public static int getItem(String key, int _default)
 	{
 		if (!key.contains("Item ID"))
@@ -144,6 +146,7 @@ public class CSConfig
 		return getInt("item", key, _default);
 	}
 	
+	@Deprecated
 	public static int getTerrainBlock(String key, int _default)
 	{
 		if (!key.contains("Block ID"))
@@ -153,6 +156,7 @@ public class CSConfig
 		return getInt("terrainblock", key, _default);
 	}
 	
+	@Deprecated
 	public static int getBlock(String key, int _default)
 	{
 		if (!key.contains("Block ID"))

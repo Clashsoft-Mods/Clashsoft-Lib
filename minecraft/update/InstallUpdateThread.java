@@ -2,8 +2,8 @@ package clashsoft.cslib.minecraft.update;
 
 import java.io.File;
 
-import clashsoft.cslib.minecraft.util.CSWeb;
 import clashsoft.cslib.util.CSLog;
+import clashsoft.cslib.util.CSWeb;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 

@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class CommandModUpdate extends CommandBase
 {
-	
 	@Override
 	public String getCommandName()
 	{

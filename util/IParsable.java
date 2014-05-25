@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft.util;
+package clashsoft.cslib.util;
 
 public interface IParsable
 {

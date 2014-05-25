@@ -26,6 +26,12 @@ import net.minecraft.item.ItemStack;
  */
 public class CSBlocks
 {
+	/**
+	 * Registers all {@link Block}s from the given {@link Class} {@code mod}.
+	 * 
+	 * @param mod
+	 *            the mod class
+	 */
 	public static void addAllBlocks(Class mod)
 	{
 		Block[] blocks = CSReflection.getStaticObjects(mod, Block.class, true);
@@ -57,7 +63,7 @@ public class CSBlocks
 	/**
 	 * Registers a Block and its name. This calls
 	 * {@link CSBlocks#addBlock(Block, Class, String)} with
-	 * {@link ItemCustomBlock}.{@code class} as the {@code itemClass} argument.
+	 * {@link ItemCustomBlock}{@code .class} as the {@code itemClass} argument.
 	 * 
 	 * @param block
 	 *            the block

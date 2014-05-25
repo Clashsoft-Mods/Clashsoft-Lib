@@ -1,13 +1,15 @@
 package clashsoft.cslib.minecraft.crafting;
 
-import static clashsoft.cslib.minecraft.item.CSStacks.air;
 import static clashsoft.cslib.minecraft.item.CSStacks.coal;
 import static clashsoft.cslib.minecraft.item.CSStacks.fire;
 import static clashsoft.cslib.minecraft.item.CSStacks.stick;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import clashsoft.cslib.minecraft.item.CSStacks;
 import clashsoft.cslib.minecraft.item.meta.ISubItemRecipe;
 import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -31,9 +33,17 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class CSCrafting
 {
+	private static final List<IRecipe>	RECIPES	= CraftingManager.getInstance().getRecipeList();
+	
+	/**
+	 * Registers the given {@link IRecipe} {@code recipe}.
+	 * 
+	 * @param recipe
+	 *            the recipe
+	 */
 	public static void registerRecipe(IRecipe recipe)
 	{
-		CraftingManager.getInstance().getRecipeList().add(recipe);
+		RECIPES.add(recipe);
 	}
 	
 	/**
@@ -45,7 +55,7 @@ public class CSCrafting
 	 *            the output
 	 * @param recipe
 	 *            the recipe
-	 * @return the ShapedRecipe instance created
+	 * @return the {@link ShapedRecipes} instance
 	 * @see CSCrafting#addAdvancedRecipe(ItemStack, Object...)
 	 */
 	public static ShapedRecipes addRecipe(ItemStack output, Object... recipe)
@@ -53,7 +63,16 @@ public class CSCrafting
 		return addAdvancedRecipe(output, recipe);
 	}
 	
-	public static ShapedRecipes addAdvancedRecipe(ItemStack output, Object... recipe)
+	/**
+	 * Adds a new advanced recipe (bigger than 3x3) to the game.
+	 * 
+	 * @param output
+	 *            the output
+	 * @param recipe
+	 *            the recipe
+	 * @return the {@link ShapedAdvancedRecipe} instance.
+	 */
+	public static ShapedAdvancedRecipe addAdvancedRecipe(ItemStack output, Object... recipe)
 	{
 		String s = "";
 		int i = 0;
@@ -121,7 +140,7 @@ public class CSCrafting
 			}
 		}
 		
-		ShapedRecipes shapedrecipes = new ShapedAdvancedRecipe(j, k, stacks, output);
+		ShapedAdvancedRecipe shapedrecipes = new ShapedAdvancedRecipe(j, k, stacks, output);
 		
 		registerRecipe(shapedrecipes);
 		return shapedrecipes;
@@ -322,14 +341,26 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Removes a recipe from the game.
+	 * Removes all recipes for the given {@link ItemStack} {@code output} from
+	 * the game.
 	 * 
-	 * @param recipe
-	 *            Recipe to remove
+	 * @param output
+	 *            the output of the recipe
 	 */
-	public static void removeRecipe(Object... recipe)
+	public static void removeRecipe(ItemStack output)
 	{
-		addRecipe(air, recipe);
+		Iterator<IRecipe> iterator = RECIPES.iterator();
+		IRecipe recipe;
+		
+		while (iterator.hasNext())
+		{
+			recipe = iterator.next();
+			ItemStack stack = recipe.getRecipeOutput();
+			if (CSStacks.equals(output, stack))
+			{
+				iterator.remove();
+			}
+		}
 	}
 	
 	/**

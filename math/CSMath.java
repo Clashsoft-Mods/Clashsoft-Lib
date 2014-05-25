@@ -4,14 +4,32 @@ import java.util.Random;
 
 public class CSMath
 {
+	/**
+	 * Used to calculate the index of a sin value in the {@link #sinTable}.
+	 * <p>
+	 * Value:<br>
+	 * <b>3.141592653589793D * 2.0D / 65536.0D</b>
+	 */
+	private static double	sinFactor	= 0.00009587379924285257;
+	
+	/**
+	 * Used to calculate the index of a sin value in the {@link #sinTable}.
+	 * <p>
+	 * Value:<br>
+	 * <b>1 / sinFactor<br>
+	 * 65536.0D / 3.141592653589793D * 2.0D</b>
+	 */
+	private static double	sinFactor2	= 10430.378350470453;
+	
 	private static float[]	sinTable	= new float[65536];
+	
 	private static int[]	multiplyDeBruijnBitPosition;
 	
 	static
 	{
 		for (int i = 0; i < 65536; ++i)
 		{
-			sinTable[i] = (float) Math.sin(i * 3.141592653589793D * 2.0D / 65536.0D);
+			sinTable[i] = (float) Math.sin(i * sinFactor);
 		}
 		
 		multiplyDeBruijnBitPosition = new int[] { 0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9 };
@@ -68,7 +86,7 @@ public class CSMath
 		return f > i ? i + 1 : i;
 	}
 	
-	public static int ceiling_double_int(double d)
+	public static int ceiling_double(double d)
 	{
 		int i = (int) d;
 		return d > i ? i + 1 : i;
@@ -76,7 +94,7 @@ public class CSMath
 	
 	public static float sin(float f)
 	{
-		return sinTable[(int) (f * 10430.378F) & 0xFFFF];
+		return sinTable[(int) (f * sinFactor2) & 0xFFFF];
 	}
 	
 	public static float cos(float f)
@@ -89,9 +107,9 @@ public class CSMath
 		return (float) Math.sqrt(f);
 	}
 	
-	public static float sqrt_double(double d)
+	public static double sqrt_double(double d)
 	{
-		return (float) Math.sqrt(d);
+		return Math.sqrt(d);
 	}
 	
 	public static int truncateDoubleToInt(double d)
@@ -103,7 +121,7 @@ public class CSMath
 	{
 		if (i < 0)
 		{
-			return -((-i - 1) / factor) - 1;
+			return ~(~i / factor);
 		}
 		return i / factor;
 	}
@@ -224,16 +242,16 @@ public class CSMath
 		return l1 / longs.length;
 	}
 	
-	public static double average(float[] doubles)
+	public static double average(float[] floats)
 	{
 		float f1 = 0L;
 		
-		for (float f2 : doubles)
+		for (float f2 : floats)
 		{
 			f1 += f2;
 		}
 		
-		return f1 / doubles.length;
+		return f1 / floats.length;
 	}
 	
 	public static double average(double[] doubles)
@@ -276,12 +294,12 @@ public class CSMath
 		return d;
 	}
 	
-	public static int parseInt(String str, int _default)
+	public static int parseInt(String string, int _default)
 	{
 		int i = _default;
 		try
 		{
-			i = Integer.parseInt(str);
+			i = Integer.parseInt(string);
 		}
 		catch (Throwable t)
 		{
@@ -289,12 +307,12 @@ public class CSMath
 		return i;
 	}
 	
-	public static int parseInt(String str, int _default, int max)
+	public static int parseInt(String string, int _default, int max)
 	{
 		int i = _default;
 		try
 		{
-			i = Integer.parseInt(str);
+			i = Integer.parseInt(string);
 		}
 		catch (Throwable t)
 		{
@@ -306,12 +324,12 @@ public class CSMath
 		return i;
 	}
 	
-	public static double parseDoubleWithDefault(String str, double _default)
+	public static double parseDouble(String string, double _default)
 	{
 		double d = _default;
 		try
 		{
-			d = Double.parseDouble(str);
+			d = Double.parseDouble(string);
 		}
 		catch (Throwable t)
 		{
@@ -319,12 +337,12 @@ public class CSMath
 		return d;
 	}
 	
-	public static double parseDoubleWithDefaultAndMax(String str, double _default, double max)
+	public static double parseDouble(String string, double _default, double max)
 	{
 		double d = _default;
 		try
 		{
-			d = Double.parseDouble(str);
+			d = Double.parseDouble(string);
 		}
 		catch (Throwable t)
 		{
@@ -352,14 +370,11 @@ public class CSMath
 		return (i & -i) != 0;
 	}
 	
-	private static int calculateLogBaseTwoDeBruijn(int i)
-	{
-		i = isPowerOfTwo(i) ? i : powerOfTwo(i);
-		return multiplyDeBruijnBitPosition[(int) (i * 125613361L >> 27) & 0x1F];
-	}
-	
 	public static int calculateLogBaseTwo(int i)
 	{
-		return calculateLogBaseTwoDeBruijn(i) - (isPowerOfTwo(i) ? 0 : 1);
+		if (isPowerOfTwo(i))
+			return multiplyDeBruijnBitPosition[(int) (i * 125613361L >> 27) & 0x1F];
+		else
+			return multiplyDeBruijnBitPosition[(int) (powerOfTwo(i) * 125613361L >> 27) & 0x1F] - 1;
 	}
 }

@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft.util;
+package clashsoft.cslib.util;
 
 import java.io.*;
 import java.net.HttpURLConnection;

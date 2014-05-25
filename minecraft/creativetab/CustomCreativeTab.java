@@ -45,7 +45,10 @@ public class CustomCreativeTab extends CreativeTabs
 			{
 				this.stack = new ItemStack(this.item, 1, this.metadata);
 			}
-			return CSStacks.air;
+			else
+			{
+				this.stack = CSStacks.air;
+			}
 		}
 		return this.stack;
 	}
@@ -54,5 +57,11 @@ public class CustomCreativeTab extends CreativeTabs
 	public Item getTabIconItem()
 	{
 		return this.item;
+	}
+	
+	@Override
+	public int func_151243_f()
+	{
+		return this.metadata;
 	}
 }

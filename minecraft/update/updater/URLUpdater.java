@@ -6,7 +6,7 @@ import java.util.List;
 import clashsoft.cslib.minecraft.update.Update;
 import clashsoft.cslib.minecraft.update.reader.FileUpdateReader;
 import clashsoft.cslib.minecraft.update.reader.IUpdateReader;
-import clashsoft.cslib.minecraft.util.CSWeb;
+import clashsoft.cslib.util.CSWeb;
 
 import net.minecraft.util.IChatComponent;
 
