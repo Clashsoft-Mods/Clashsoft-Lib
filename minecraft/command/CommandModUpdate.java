@@ -1,6 +1,6 @@
 package clashsoft.cslib.minecraft.command;
 
-import clashsoft.cslib.minecraft.CSLib;
+import clashsoft.cslib.minecraft.init.CSLib;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 
 import net.minecraft.command.CommandBase;

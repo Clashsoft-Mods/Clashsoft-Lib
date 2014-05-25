@@ -1,5 +1,6 @@
 package clashsoft.cslib.minecraft;
 
+import clashsoft.cslib.minecraft.init.CSLib;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;

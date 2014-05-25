@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft;
+package clashsoft.cslib.minecraft.init;
 
 import java.io.File;
 import java.util.Collections;

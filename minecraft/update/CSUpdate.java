@@ -2,7 +2,7 @@ package clashsoft.cslib.minecraft.update;
 
 import java.util.*;
 
-import clashsoft.cslib.minecraft.CSLib;
+import clashsoft.cslib.minecraft.init.CSLib;
 import clashsoft.cslib.minecraft.update.updater.IUpdater;
 import clashsoft.cslib.minecraft.update.updater.ModUpdater;
 import clashsoft.cslib.minecraft.update.updater.URLUpdater;

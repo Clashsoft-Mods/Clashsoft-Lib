@@ -5,10 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import clashsoft.cslib.minecraft.CSLib;
+import clashsoft.cslib.minecraft.init.CSLib;
 
 /**
- * The clas Addon.
+ * The class Addon.
  * <p>
  * An annotation that marks mod parts / mod extensions.
  * 

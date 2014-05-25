@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft;
+package clashsoft.cslib.minecraft.init;
 
 import java.util.Arrays;
 import java.util.List;
