@@ -134,28 +134,4 @@ public class CSUtil
 		}
 		return System.getProperty("user.dir");
 	}
-	
-	public static int tryParse(String text, int _default)
-	{
-		try
-		{
-			return Integer.parseInt(text);
-		}
-		catch (NumberFormatException ex)
-		{
-			return _default;
-		}
-	}
-	
-	public static int tryParse(String text, int radix, int _default)
-	{
-		try
-		{
-			return Integer.parseInt(text, radix);
-		}
-		catch (NumberFormatException ex)
-		{
-			return _default;
-		}
-	}
 }

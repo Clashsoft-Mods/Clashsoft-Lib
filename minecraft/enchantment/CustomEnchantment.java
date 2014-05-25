@@ -1,7 +1,5 @@
 package clashsoft.cslib.minecraft.enchantment;
 
-import clashsoft.cslib.util.CSArrays;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 
