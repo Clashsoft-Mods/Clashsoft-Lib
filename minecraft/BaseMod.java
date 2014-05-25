@@ -38,6 +38,8 @@ import net.minecraftforge.common.MinecraftForge;
  */
 public abstract class BaseMod<N extends CSNetHandler>
 {
+	public static final boolean clientSide = FMLCommonHandler.instance().getSide().isClient();
+	
 	public String		modID;
 	public String		name;
 	public String		acronym;
@@ -71,12 +73,12 @@ public abstract class BaseMod<N extends CSNetHandler>
 		this.version = version;
 		
 		this.logoFile = "/" + this.modID + "/logo.png";
-		this.isClient = proxy == null ? FMLCommonHandler.instance().getSide().isClient() : proxy.isClient();
+		this.isClient = proxy == null ? clientSide : proxy.isClient();
 	}
 	
 	public static <T extends BaseProxy> T createProxy(String clientClass, String serverClass)
 	{
-		if (FMLCommonHandler.instance().getSide().isClient())
+		if (clientSide)
 		{
 			return CSReflection.createInstance(clientClass);
 		}

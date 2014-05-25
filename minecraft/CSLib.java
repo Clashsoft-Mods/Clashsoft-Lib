@@ -10,10 +10,6 @@ import clashsoft.cslib.minecraft.update.updater.ModUpdater;
 import clashsoft.cslib.minecraft.util.CSConfig;
 import clashsoft.cslib.minecraft.util.Log4JLogger;
 import clashsoft.cslib.util.CSLog;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -26,7 +22,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
-@Mod(modid = CSLib.MODID, name = CSLib.NAME, version = CSLib.VERSION)
 public class CSLib extends ClashsoftMod
 {
 	public static final String	MODID				= "cslib";
@@ -35,10 +30,7 @@ public class CSLib extends ClashsoftMod
 	public static final String	VERSION				= CSUpdate.CURRENT_VERSION + "-1.1.0";
 	public static final String	DEPENDENCY			= "required-after:" + MODID;
 	
-	@Instance(MODID)
 	public static CSLib			instance;
-	
-	@SidedProxy(clientSide = "clashsoft.cslib.minecraft.client.CSLibClientProxy", serverSide = "clashsoft.cslib.minecraft.common.CSLibProxy")
 	public static CSLibProxy	proxy;
 	
 	public static boolean		printUpdateNotes	= false;
@@ -46,15 +38,42 @@ public class CSLib extends ClashsoftMod
 	public static boolean		autoUpdate			= true;
 	public static boolean		enableMOTD			= true;
 	
+	static
+	{
+		instance = new CSLib();
+		proxy = createProxy("clashsoft.cslib.minecraft.client.CSLibClientProxy", "clashsoft.cslib.minecraft.common.CSLibProxy");
+	}
+	
 	public CSLib()
 	{
 		super(proxy, MODID, NAME, ACRONYM, VERSION);
+		
 		this.hasConfig = true;
 		this.netHandler = new CSNetHandler(NAME);
 		this.eventHandler = this;
 		this.url = "https://github.com/Clashsoft/CSLib-Minecraft/wiki/";
 		
 		CSLog.logger = new Log4JLogger();
+	}
+	
+	public static void libPreInit(FMLPreInitializationEvent event)
+	{
+		instance.preInit(event);
+	}
+	
+	public static void libInit(FMLInitializationEvent event)
+	{
+		instance.init(event);
+	}
+	
+	public static void libPostInit(FMLPostInitializationEvent event)
+	{
+		instance.postInit(event);
+	}
+	
+	public static void libServerStart(FMLServerStartedEvent event)
+	{
+		instance.serverStarted(event);
 	}
 	
 	@Override
@@ -67,14 +86,12 @@ public class CSLib extends ClashsoftMod
 	}
 	
 	@Override
-	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		super.preInit(event);
 	}
 	
 	@Override
-	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
 		super.init(event);
@@ -83,7 +100,6 @@ public class CSLib extends ClashsoftMod
 	}
 	
 	@Override
-	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		super.postInit(event);
@@ -91,7 +107,6 @@ public class CSLib extends ClashsoftMod
 		CSUpdate.updateCheck(new ModUpdater("MinestrappolationCore", "MAPI", "2.0", "https://raw.githubusercontent.com/SoBiohazardous/Minestrappolation-Recode/master/version.txt", SimpleUpdateReader.instance));
 	}
 	
-	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event)
 	{
 		ServerCommandManager manager = (ServerCommandManager) MinecraftServer.getServer().getCommandManager();
