@@ -35,6 +35,7 @@ public class CustomEnchantment extends Enchantment
 	public CustomEnchantment(int id, int weigth, int minLevel, int maxLevel, EnumEnchantmentType type, String name)
 	{
 		super(id, weigth, type);
+		EnchantmentRegistry.add(this, id, name);
 		this.minLevel = minLevel;
 		this.maxLevel = maxLevel;
 		this.name = name;
@@ -56,44 +57,18 @@ public class CustomEnchantment extends Enchantment
 	 */
 	public CustomEnchantment(int weigth, int minLevel, int maxLevel, EnumEnchantmentType type, String name)
 	{
-		this(getNextFreeID(), weigth, minLevel, maxLevel, type, name);
+		this(EnchantmentRegistry.getID(name), weigth, minLevel, maxLevel, type, name);
 	}
 	
-	/**
-	 * Returns the minimum level that the enchantment can have.
-	 * 
-	 * @return the min level
-	 */
 	@Override
 	public int getMinLevel()
 	{
 		return this.maxLevel;
 	}
 	
-	/**
-	 * Returns the maximum level that the enchantment can have.
-	 * 
-	 * @return the max level
-	 */
 	@Override
 	public int getMaxLevel()
 	{
 		return this.minLevel;
 	}
-	
-	/**
-	 * Gets the next free enchantment id.
-	 * 
-	 * @return the next free enchantment id
-	 */
-	private static int getNextFreeID()
-	{
-		int id = CSArrays.indexOf(enchantmentsList, null);
-		if (id == -1)
-		{
-			throw new IllegalStateException("No more empty enchantment IDs!");
-		}
-		return id;
-	}
-	
 }
