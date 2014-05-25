@@ -168,17 +168,10 @@ public class CSString
 		return Arrays.asList(lineArray(string));
 	}
 	
-	@Deprecated
-	public static String[] makeLineList(String string)
-	{
-		return lineArray(string);
-	}
-	
 	/**
 	 * Returns the acronym of a string.
 	 * <p>
-	 * Example:
-	 * <p>
+	 * Example:<br>
 	 * {@code getAcronym("Hello World")} returns "HW";
 	 * {@code getAcronym("Half-Life 3")} returns "HL3"
 	 * 
@@ -188,12 +181,45 @@ public class CSString
 	 */
 	public static String getAcronym(String string)
 	{
-		StringBuilder builder = new StringBuilder(string.length());
+		StringBuilder builder = new StringBuilder(string.length() >> 2);
 		String[] strings = string.split("\\p{Punct}");
 		for (String s : strings)
 		{
 			char c = s.charAt(0);
 			builder.append(c);
+		}
+		return builder.toString();
+	}
+	
+	/**
+	 * Returns a shortened acronym version of a string.
+	 * <p>
+	 * Example:<br>
+	 * {@code getAcronym2("Hello World") returns "Hllo Wrld"
+	 * {@code getAcronym2("Clashsoft") returns "Clshsft"
+	 * @param string
+	 * @return
+	 */
+	public static String getAcronym2(String string)
+	{
+		if (string == null || string.isEmpty())
+			return "";
+		
+		int len = string.length();
+		StringBuilder builder = new StringBuilder(len);
+		
+		char prev = 0;
+		char curr = 0;
+		char next = string.charAt(0);
+		for (int i = 1; i < len; i++)
+		{
+			prev = curr;
+			curr = next;
+			next = string.charAt(i);
+			
+			if (isVowel(curr) && isConsonant(prev) && isConsonant(next))
+				continue;
+			builder.append(curr);
 		}
 		return builder.toString();
 	}
