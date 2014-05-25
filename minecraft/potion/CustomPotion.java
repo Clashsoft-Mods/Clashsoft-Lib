@@ -1,12 +1,5 @@
 package clashsoft.cslib.minecraft.potion;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-
-import clashsoft.cslib.reflect.CSReflection;
-import clashsoft.cslib.util.CSArrays;
-import clashsoft.cslib.util.CSLog;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
@@ -23,12 +16,13 @@ public class CustomPotion extends Potion
 	
 	public CustomPotion(String name, int color, boolean bad)
 	{
-		this(getNextFreeID(), name, color, bad);
+		this(PotionRegistry.getID(name), name, color, bad);
 	}
 	
 	public CustomPotion(int id, String name, int color, boolean bad)
 	{
 		super(id, bad, color);
+		PotionRegistry.add(this, id, name);
 		this.setPotionName(name);
 		this.bad = bad;
 	}
@@ -82,34 +76,9 @@ public class CustomPotion extends Potion
 		return this.bad;
 	}
 	
-	public static int getNextFreeID()
-	{
-		int id = CSArrays.indexOf(potionTypes, null);
-		if (id == -1)
-		{
-			int len = potionTypes.length;
-			expandPotionList(len * 2);
-			return len;
-		}
-		return id;
-	}
-	
+	@Deprecated
 	public static void expandPotionList(int size)
 	{
-		if (Potion.potionTypes.length < size)
-		{
-			try
-			{
-				Field f = CSReflection.getField(Potion.class, 0);
-				CSReflection.setModifier(f, Modifier.FINAL, false);
-				Potion[] potionTypes = new Potion[size];
-				System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, Potion.potionTypes.length);
-				f.set(null, potionTypes);
-			}
-			catch (Exception e)
-			{
-				CSLog.error(e);
-			}
-		}
+		PotionRegistry.expandPotionList(size);
 	}
 }
