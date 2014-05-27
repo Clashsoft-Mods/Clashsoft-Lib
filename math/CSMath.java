@@ -218,7 +218,86 @@ public class CSMath
 		return rand.nextDouble() * (max - min) + min;
 	}
 	
-	public static double average(int[] ints)
+	public static int factorial(int i)
+	{
+		if (i <= 1)
+			return 1;
+		
+		int j = i;
+		while (i > 1)
+		{
+			j *= --i;
+		}
+		return j;
+	}
+	
+	public static long factorial(long l)
+	{
+		if (l <= 1)
+			return 1;
+		
+		long j = l;
+		while (l > 1)
+		{
+			j *= --l;
+		}
+		return j;
+	}
+	
+	public static int permutations(int n)
+	{
+		return factorial(n);
+	}
+	
+	/**
+	 * Returns the number of permutations of {@code n} objects when picking
+	 * {@code k} at a time. The result is equal to
+	 * <p>
+	 * n! / (n-k)!
+	 * 
+	 * @param n
+	 *            the total number of objects
+	 * @param k
+	 *            the number of objects to pick
+	 * @return the number of combinations
+	 */
+	public static int permutations(int n, int k)
+	{
+		return factorial(n) / factorial(n - k);
+	}
+	
+	/**
+	 * Returns the number of combinations of {@code n} objects. This doesn't
+	 * regard the order of the elements, so the result is always 1.
+	 * 
+	 * @param n
+	 *            the number of objects
+	 * @return the number of combinations
+	 */
+	public static int combinations(int n)
+	{
+		return 1;
+	}
+	
+	/**
+	 * Returns the number of combinations of {@code n} objects when picking
+	 * {@code k} at a time. This doesn't regard the order of the elements. The
+	 * result is equal to
+	 * <p>
+	 * n! / (k! * (n-k)!)
+	 * 
+	 * @param n
+	 *            the total number of objects
+	 * @param k
+	 *            the number of objects to pick
+	 * @return the number of combinations
+	 */
+	public static int combinations(int n, int k)
+	{
+		return factorial(n) / (factorial(k) * factorial(n - k));
+	}
+	
+	public static float average(int[] ints)
 	{
 		int i = 0;
 		
@@ -242,7 +321,7 @@ public class CSMath
 		return l1 / longs.length;
 	}
 	
-	public static double average(float[] floats)
+	public static float average(float[] floats)
 	{
 		float f1 = 0L;
 		
@@ -307,21 +386,56 @@ public class CSMath
 		return i;
 	}
 	
-	public static int parseInt(String string, int _default, int max)
+	public static int parseInt(String string, int radix, int _default)
 	{
 		int i = _default;
 		try
 		{
-			i = Integer.parseInt(string);
+			i = Integer.parseInt(string, radix);
 		}
 		catch (Throwable t)
 		{
 		}
-		if (i < max)
-		{
-			i = max;
-		}
 		return i;
+	}
+	
+	public static long parseLong(String string, long _default)
+	{
+		long l = _default;
+		try
+		{
+			l = Long.parseLong(string);
+		}
+		catch (Throwable t)
+		{
+		}
+		return l;
+	}
+	
+	public static long parseLong(String string, int radix, long _default)
+	{
+		long l = _default;
+		try
+		{
+			l = Long.parseLong(string, radix);
+		}
+		catch (Throwable t)
+		{
+		}
+		return l;
+	}
+	
+	public static float parseFloat(String string, float _default)
+	{
+		float f = _default;
+		try
+		{
+			f = Float.parseFloat(string);
+		}
+		catch (Throwable t)
+		{
+		}
+		return f;
 	}
 	
 	public static double parseDouble(String string, double _default)
@@ -333,23 +447,6 @@ public class CSMath
 		}
 		catch (Throwable t)
 		{
-		}
-		return d;
-	}
-	
-	public static double parseDouble(String string, double _default, double max)
-	{
-		double d = _default;
-		try
-		{
-			d = Double.parseDouble(string);
-		}
-		catch (Throwable t)
-		{
-		}
-		if (d < max)
-		{
-			d = max;
 		}
 		return d;
 	}
