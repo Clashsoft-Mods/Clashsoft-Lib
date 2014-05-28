@@ -1,31 +1,35 @@
-package clashsoft.cslib.minecraft.util;
+package clashsoft.cslib.config;
 
 import java.io.File;
 
-import clashsoft.cslib.util.CSLog;
+import clashsoft.cslib.logging.CSLog;
+import clashsoft.cslib.util.CSString;
 import clashsoft.cslib.util.IParsable;
 
-import net.minecraftforge.common.config.Configuration;
-
 /**
+ * The global class for loading configuration files.
+ * 
  * @author Clashsoft
  */
 public class CSConfig
 {
-	public static String		configName		= null;
-	public static Configuration	config			= null;
-	public static boolean		enableComments	= true;
+	public static File				configFile;
+	public static String			configName;
+	public static boolean			enableComments	= true;
+	
+	private static ConfigCategory	rootCategory;
 	
 	public static void loadConfig(File configFile, String configName)
 	{
-		if (config != null)
-		{
-			saveConfig();
-		}
+		CSLog.info("[Config] Loading config file " + configName + "...");
 		
-		CSLog.info("[CSCONFIG] Loading configuration file " + configName);
-		CSConfig.config = new Configuration(configFile);
+		CSConfig.configFile = configFile;
 		CSConfig.configName = configName;
+		rootCategory = new ConfigCategory(configName);
+		rootCategory.setComment(configName + " configuration file.");
+		rootCategory.load(configFile);
+		
+		CSLog.info("[Config] Loaded config file " + configName);
 	}
 	
 	public static void loadConfig(File configFile)
@@ -35,20 +39,21 @@ public class CSConfig
 	
 	public static void saveConfig()
 	{
-		config.save();
-		config = null;
-		
-		CSLog.info("[CSCONFIG] Saving configuration file " + configName);
+		CSLog.info("[Config] Saving config file " + configName + "...");
+		rootCategory.save(configFile);
+		CSLog.info("[Config] Saved config file " +  configName);
 	}
 	
 	public static String getDefaultDesc(String key, Object _default)
 	{
-		return enableComments ? key + ". Default: " + _default : null;
+		if (enableComments)
+			return key + ". Default: " + _default;
+		return null;
 	}
 	
 	public static void checkConfig()
 	{
-		if (config == null)
+		if (rootCategory == null)
 		{
 			throw new IllegalStateException("No config loaded!");
 		}
@@ -83,7 +88,7 @@ public class CSConfig
 	
 	public static String getString(String category, String key, Object _default)
 	{
-		return getString(category, key, getDefaultDesc(key, _default), _default);
+		return getString(category, key, String.valueOf(_default));
 	}
 	
 	public static <T extends IParsable> T getObject(String category, String key, T _default)
@@ -96,39 +101,31 @@ public class CSConfig
 	public static int getInt(String category, String key, String desc, int _default)
 	{
 		checkConfig();
-		
-		return config.get(category, key, _default, desc).getInt(_default);
+		return rootCategory.getOption(CSString.identifier(key), category, desc, _default).intValue();
 	}
 	
 	public static float getFloat(String category, String key, String desc, float _default)
 	{
-		return (float) getDouble(category, key, desc, _default);
+		checkConfig();
+		return rootCategory.getOption(CSString.identifier(key), category, desc, _default).floatValue();
 	}
 	
 	public static double getDouble(String category, String key, String desc, double _default)
 	{
 		checkConfig();
-		
-		return config.get(category, key, _default, desc).getDouble(_default);
+		return rootCategory.getOption(CSString.identifier(key), category, desc, _default).doubleValue();
 	}
 	
 	public static boolean getBool(String category, String key, String desc, boolean _default)
 	{
 		checkConfig();
-		
-		return config.get(category, key, _default, desc).getBoolean(_default);
+		return rootCategory.getOption(CSString.identifier(key), category, desc, _default).booleanValue();
 	}
 	
 	public static String getString(String category, String key, String desc, String _default)
 	{
 		checkConfig();
-		
-		return config.get(category, key, _default, desc).getString();
-	}
-	
-	public static String getString(String category, String key, String desc, Object _default)
-	{
-		return getString(category, key, desc, _default.toString());
+		return rootCategory.getOption(CSString.identifier(key), category, desc, _default);
 	}
 	
 	public static <T extends IParsable> T getObject(String category, String key, String desc, T _default)
