@@ -3,7 +3,7 @@ package clashsoft.cslib.minecraft.util;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
-import clashsoft.cslib.util.CSLogger;
+import clashsoft.cslib.logging.CSLogger;
 
 public class Log4JLogger extends CSLogger
 {

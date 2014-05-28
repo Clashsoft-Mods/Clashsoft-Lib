@@ -1,7 +1,7 @@
 package clashsoft.cslib.minecraft.update;
 
+import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.update.updater.IUpdater;
-import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
 

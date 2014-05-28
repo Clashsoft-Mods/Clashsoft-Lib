@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import clashsoft.cslib.util.CSLog;
+import clashsoft.cslib.logging.CSLog;
 
 public class CSThread extends Thread
 {

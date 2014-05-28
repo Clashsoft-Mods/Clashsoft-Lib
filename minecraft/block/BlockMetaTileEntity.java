@@ -1,6 +1,6 @@
 package clashsoft.cslib.minecraft.block;
 
-import clashsoft.cslib.util.CSLog;
+import clashsoft.cslib.logging.CSLog;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;

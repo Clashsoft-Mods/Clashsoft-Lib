@@ -7,6 +7,8 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import clashsoft.cslib.logging.CSLog;
+
 /**
  * The Class CSString.
  * <p>
@@ -71,11 +73,15 @@ public class CSString
 		
 		for (int i = 0; i < len; i++)
 		{
-			char c = Character.toLowerCase(string.charAt(i));
+			char c = string.charAt(i);
 			
 			if (Character.isWhitespace(c))
 			{
 				c = '_';
+			}
+			else
+			{
+				c = Character.toLowerCase(c);
 			}
 			
 			result.append(c);

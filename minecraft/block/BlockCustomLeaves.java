@@ -108,7 +108,7 @@ public class BlockCustomLeaves extends BlockLeaves implements ICustomBlock
 	@Override
 	public Item getItemDropped(int metadata, Random random, int fortune)
 	{
-		ItemStack stack = this.saplingStacks[metadata];
+		ItemStack stack = this.saplingStacks[metadata & 3];
 		return stack != null ? stack.getItem() : null;
 	}
 	

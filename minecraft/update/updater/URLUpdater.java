@@ -3,10 +3,10 @@ package clashsoft.cslib.minecraft.update.updater;
 import java.util.Arrays;
 import java.util.List;
 
+import clashsoft.cslib.io.CSWeb;
 import clashsoft.cslib.minecraft.update.Update;
 import clashsoft.cslib.minecraft.update.reader.FileUpdateReader;
 import clashsoft.cslib.minecraft.update.reader.IUpdateReader;
-import clashsoft.cslib.util.CSWeb;
 
 import net.minecraft.util.IChatComponent;
 

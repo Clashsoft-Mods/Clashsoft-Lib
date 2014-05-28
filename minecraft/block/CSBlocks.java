@@ -3,10 +3,10 @@ package clashsoft.cslib.minecraft.block;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.block.ItemCustomBlock;
 import clashsoft.cslib.reflect.CSReflection;
-import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;

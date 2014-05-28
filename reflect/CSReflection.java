@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import clashsoft.cslib.util.CSLog;
+import clashsoft.cslib.logging.CSLog;
 
 /**
  * The class CSReflection.

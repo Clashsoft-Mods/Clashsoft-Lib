@@ -8,7 +8,7 @@ import io.netty.handler.codec.MessageToMessageCodec;
 
 import java.util.*;
 
-import clashsoft.cslib.util.CSLog;
+import clashsoft.cslib.logging.CSLog;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;

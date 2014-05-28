@@ -4,12 +4,12 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
+import clashsoft.cslib.config.CSConfig;
+import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.common.BaseProxy;
 import clashsoft.cslib.minecraft.network.CSNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
-import clashsoft.cslib.minecraft.util.CSConfig;
 import clashsoft.cslib.reflect.CSReflection;
-import clashsoft.cslib.util.CSLog;
 import clashsoft.cslib.util.CSString;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;

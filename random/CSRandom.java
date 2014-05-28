@@ -1,6 +1,8 @@
-package clashsoft.cslib.util;
+package clashsoft.cslib.random;
 
 import java.util.Random;
+
+import clashsoft.cslib.util.CSString;
 
 /**
  * The Class CSRandom.

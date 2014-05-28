@@ -1,5 +1,7 @@
 package clashsoft.cslib.minecraft.init;
 
+import clashsoft.cslib.config.CSConfig;
+import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.command.CSCommand;
 import clashsoft.cslib.minecraft.command.CommandModUpdate;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
@@ -7,9 +9,7 @@ import clashsoft.cslib.minecraft.network.CSNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.update.reader.SimpleUpdateReader;
 import clashsoft.cslib.minecraft.update.updater.ModUpdater;
-import clashsoft.cslib.minecraft.util.CSConfig;
 import clashsoft.cslib.minecraft.util.Log4JLogger;
-import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

@@ -3,9 +3,9 @@ package clashsoft.cslib.minecraft.enchantment;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.util.CSRegistry;
 import clashsoft.cslib.reflect.CSReflection;
-import clashsoft.cslib.util.CSLog;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.potion.Potion;

@@ -9,9 +9,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.item.CSStacks;
 import clashsoft.cslib.minecraft.item.meta.ISubItemRecipe;
-import clashsoft.cslib.util.CSLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;

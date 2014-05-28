@@ -1,4 +1,4 @@
-package clashsoft.cslib.util;
+package clashsoft.cslib.io;
 
 import java.io.*;
 import java.net.HttpURLConnection;
