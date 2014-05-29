@@ -1,7 +1,8 @@
-package clashsoft.cslib.util;
+package clashsoft.cslib.src;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,129 +11,94 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import clashsoft.cslib.src.parser.Token;
+import clashsoft.cslib.util.CSString;
+
 public class CSSource extends CSString
 {
-	public static boolean isQuoted(String string, int pos)
+	public static boolean isClass(String token)
 	{
-		return isQuoted(analyseSource(string, pos));
+		return "class".equals(token) || "interface".equals(token) || "enum".equals(token) || "@interface".equals(token);
 	}
 	
-	public static boolean isQuoted(int[] data)
+	public static boolean isPrimitiveType(String token)
 	{
-		return (data[4] & 1) != 0;
+		return "void".equals(token) || "boolean".equals(token) || "byte".equals(token) || "short".equals(token) || "char".equals(token) || //
+				"int".equals(token) || "long".equals(token) || "float".equals(token) || "double".equals(token);
 	}
 	
-	public static boolean isCharQuoted(String string, int pos)
+	public static int parseModifier(String s)
 	{
-		return isCharQuoted(analyseSource(string, pos));
+		switch (s)
+		{
+		case "public":
+			return Modifier.PUBLIC;
+		case "protected":
+			return Modifier.PROTECTED;
+		case "private":
+			return Modifier.PRIVATE;
+		case "abstract":
+			return Modifier.ABSTRACT;
+		case "static":
+			return Modifier.STATIC;
+		case "final":
+			return Modifier.FINAL;
+		case "transient":
+			return Modifier.TRANSIENT;
+		case "volatile":
+			return Modifier.VOLATILE;
+		case "synchronized":
+			return Modifier.SYNCHRONIZED;
+		case "native":
+			return Modifier.NATIVE;
+		case "strictfp":
+			return Modifier.STRICT;
+		}
+		return 0;
 	}
 	
-	public static boolean isCharQuoted(int[] data)
+	public static final Token tokenize(String code)
 	{
-		return (data[4] & 2) != 0;
-	}
-	
-	public static boolean isLiteral(String string, int pos)
-	{
-		return isLiteral(analyseSource(string, pos));
-	}
-	
-	public static boolean isLiteral(int[] data)
-	{
-		return (data[4] & 4) != 0;
-	}
-	
-	public static int getParenthesisDepth(String string, int pos)
-	{
-		return getParenthesisDepth(analyseSource(string, pos));
-	}
-	
-	public static int getParenthesisDepth(int[] data)
-	{
-		return data[0];
-	}
-	
-	public static int getSquareBracketDepth(String string, int pos)
-	{
-		return getSquareBracketDepth(analyseSource(string, pos));
-	}
-	
-	public static int getSquareBracketDepth(int[] data)
-	{
-		return data[1];
-	}
-	
-	public static int getCurlyBracketDepth(String string, int pos)
-	{
-		return getCurlyBracketDepth(analyseSource(string, pos));
-	}
-	
-	public static int getCurlyBracketDepth(int[] data)
-	{
-		return data[2];
-	}
-	
-	public static int getAngleBracketDepth(String string, int pos)
-	{
-		return getAngleBracketDepth(analyseSource(string, pos));
-	}
-	
-	public static int getAngleBracketDepth(int[] data)
-	{
-		return data[3];
-	}
-	
-	public static int[] analyseSource(String string, int pos)
-	{
-		int depth1 = 0;
-		int depth2 = 0;
-		int depth3 = 0;
-		int depth4 = 0;
-		int other = 0;
+		int len = code.length();
+		StringBuilder buf = new StringBuilder(20);
+		Token first = new Token(-1, "", 0, 0);
+		
+		char current = 0;
+		char last = 0;
+		
+		int index = 0;
+		int i = 0;
+		int j = 0;
+		
 		boolean quote = false;
 		boolean charQuote = false;
 		boolean literal = false;
 		
-		for (int i = 0; i < pos && i < string.length(); i++)
+		for (i = 0; i < len; i++)
 		{
-			char c = string.charAt(i);
+			current = code.charAt(i);
 			
 			if (!literal)
 			{
-				if (c == '"')
+				if (current == '"')
 				{
 					quote = !quote;
 				}
-				else if (c == '\'')
+				else if (current == '\'')
 				{
 					charQuote = !charQuote;
 				}
-				else if (c == '\\')
+				else if (current == '\\')
 				{
 					literal = true;
 				}
 				else if (!quote && !charQuote)
 				{
-					switch (c)
+					if (!Character.isWhitespace(current) && !isSameType(current, last))
 					{
-					case '(':
-						depth1++;
-					case ')':
-						depth1--;
-					case '[':
-						depth2++;
-					case ']':
-						depth2--;
-					case '{':
-						depth3++;
-					case '}':
-						depth3--;
-					case '<':
-						depth4++;
-					case '>':
-						depth4--;
-					default:
-						continue;
+						addToken(first, buf, index, j, i);
+						index++;
+						j = i;
 					}
 				}
 			}
@@ -140,11 +106,30 @@ public class CSSource extends CSString
 			{
 				literal = false;
 			}
+			
+			buf.append(current);
+			
+			last = current;
 		}
 		
-		other = (literal ? 4 : 0) | (charQuote ? 2 : 0) | (quote ? 1 : 0);
-		
-		return new int[] { depth1, depth2, depth3, depth4, other };
+		return first.next();
+	}
+	
+	private static void addToken(Token token, StringBuilder buf, int index, int start, int end)
+	{
+		Token t = new Token(index, buf.toString(), start, end);
+		token.setNext(t);
+		t.setPrev(token);
+		buf.delete(0, buf.length());
+	}
+	
+	private static boolean isSameType(char c1, char c2)
+	{
+		if (c1 == '_' || c2 == '_')
+		{
+			return true;
+		}
+		return Character.isJavaIdentifierPart(c1) == Character.isJavaIdentifierPart(c2);
 	}
 	
 	public static List<String> codeSplit(String text, char split)
