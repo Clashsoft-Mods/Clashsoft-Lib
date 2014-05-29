@@ -58,18 +58,24 @@ public class ParserManager
 	public void pushParser(Parser parser, IToken token) throws SyntaxException
 	{
 		this.pushParser(parser);
-		parser.parse(this, token.value(), token);
+		this.currentParser.parse(this, token.value(), token);
 	}
 	
-	public Parser popParser() throws SyntaxException
+	public void popParser() throws SyntaxException
 	{
 		if (this.currentParser != null)
 		{
-			Parser parser = this.currentParser;
-			parser.end(this);
-			this.currentParser = parser.getParent();
-			return parser;
+			this.currentParser.end(this);
+			this.currentParser = this.currentParser.getParent();
 		}
-		return null;
+	}
+	
+	public void popParser(Token token) throws SyntaxException
+	{
+		this.popParser();
+		if (this.currentParser != null)
+		{
+			this.currentParser.parse(this, token.value(), token);
+		}
 	}
 }
