@@ -62,6 +62,7 @@ public class CSSource extends CSString
 		int len = code.length();
 		StringBuilder buf = new StringBuilder(20);
 		Token first = new Token(-1, "", 0, 0);
+		Token prev = first;
 		
 		char current = 0;
 		char last = 0;
@@ -94,9 +95,9 @@ public class CSSource extends CSString
 				}
 				else if (!quote && !charQuote)
 				{
-					if (!Character.isWhitespace(current) && !isSameType(current, last))
+					if (!isWhitespace(current) && !isSameType(current, last))
 					{
-						addToken(first, buf, index, j, i);
+						prev = addToken(prev, buf, index, j, i);
 						index++;
 						j = i;
 					}
@@ -112,20 +113,30 @@ public class CSSource extends CSString
 			last = current;
 		}
 		
-		return first.next();
+		return (Token) first.next();
 	}
 	
-	private static void addToken(Token token, StringBuilder buf, int index, int start, int end)
+	private static Token addToken(Token prev, StringBuilder buf, int index, int start, int end)
 	{
 		Token t = new Token(index, buf.toString(), start, end);
-		token.setNext(t);
-		t.setPrev(token);
+		prev.setNext(t);
+		t.setPrev(prev);
 		buf.delete(0, buf.length());
+		return t;
+	}
+	
+	private static boolean isWhitespace(char c)
+	{
+		return c == ' ' || c == '\t' || c == '\r';
 	}
 	
 	private static boolean isSameType(char c1, char c2)
 	{
 		if (c1 == '_' || c2 == '_')
+		{
+			return true;
+		}
+		else if (c1 == c2)
 		{
 			return true;
 		}
