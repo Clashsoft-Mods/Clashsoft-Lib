@@ -3,7 +3,7 @@ package clashsoft.cslib.src.parser;
 import clashsoft.cslib.src.CSSource;
 import clashsoft.cslib.src.SyntaxException;
 
-public abstract class Parser
+public abstract class Parser<T>
 {
 	private Parser	parent;
 	protected int	modifiers;
@@ -50,13 +50,13 @@ public abstract class Parser
 		return false;
 	}
 	
-	public void begin(ParserManager jcp) throws SyntaxException
+	public void begin(ParserManager pm)
 	{
 	}
 	
-	public abstract void parse(ParserManager jcp, String value, Token token) throws SyntaxException;
+	public abstract void parse(ParserManager pm, String value, IToken token) throws SyntaxException;
 	
-	public void end(ParserManager jcp) throws SyntaxException
+	public void end(ParserManager pm)
 	{
 	}
 }

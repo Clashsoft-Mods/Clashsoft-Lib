@@ -1,14 +1,15 @@
 package clashsoft.cslib.src.parser;
 
-public class Token
+
+public class Token implements IToken
 {
-	private Token		next;
-	private Token		prev;
+	private IToken			prev;
+	private IToken			next;
 	
-	public final int	index;
-	public final String	value;
-	public final int	start;
-	public final int	end;
+	private final int		index;
+	private final String	value;
+	private final int		start;
+	private final int		end;
 	
 	public Token(int index, String value, String code)
 	{
@@ -26,34 +27,72 @@ public class Token
 		this.end = end;
 	}
 	
-	public void setPrev(Token prev)
+	@Override
+	public void setPrev(IToken prev)
 	{
 		this.prev = prev;
 	}
 	
-	public void setNext(Token next)
+	@Override
+	public void setNext(IToken next)
 	{
 		this.next = next;
 	}
 	
-	public String get()
+	@Override
+	public String value()
 	{
 		return this.value;
 	}
 	
-	public Token next()
+	@Override
+	public int index()
 	{
+		return this.index;
+	}
+	
+	@Override
+	public int start()
+	{
+		return this.start;
+	}
+	
+	@Override
+	public int end()
+	{
+		return this.end;
+	}
+	
+	@Override
+	public IToken next()
+	{
+		if (this.next == null)
+		{
+			this.next = new FakeToken();
+			this.next.setPrev(this);
+		}
 		return this.next;
 	}
 	
-	public Token prev()
+	@Override
+	public IToken prev()
 	{
+		if (this.prev == null)
+		{
+			this.prev = new FakeToken();
+			this.prev.setNext(this);
+		}
 		return this.prev;
+	}
+	
+	public boolean equals(String value)
+	{
+		return value.equals(this.value);
 	}
 	
 	@Override
 	public String toString()
 	{
-		return "\"" + this.value + "\" (pos " + this.start + ")";
+		return "Token #" + this.index + "\"" + this.value + "\" (" + this.start + "-" + this.end + ")";
 	}
 }

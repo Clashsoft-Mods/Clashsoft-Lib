@@ -7,21 +7,34 @@ public class ParserManager
 {
 	protected Parser	currentParser;
 	
+	public ParserManager(Parser parser)
+	{
+		this.currentParser = parser;
+		this.currentParser.begin(this);
+	}
+	
 	public final void parse(String code)
 	{
 		// Create a list of raw tokens
-		Token token = CSSource.tokenize(code);
-		while (token.next() != null)
+		IToken token = CSSource.tokenize(code);
+		try
 		{
-			try
+			while (token.next() != null)
 			{
-				this.currentParser.parse(this, token.value, token);
+				try
+				{
+					this.currentParser.parse(this, token.value(), token);
+				}
+				catch (SyntaxException ex)
+				{
+					ex.print(System.err, code, token);
+				}
+				token = token.next();
 			}
-			catch (SyntaxException ex)
-			{
-				ex.print(System.err, code, token);
-			}
-			token = token.next();
+		}
+		catch (SyntaxException ex)
+		{
+			ex.print(System.err, code, token);
 		}
 	}
 	
@@ -42,10 +55,10 @@ public class ParserManager
 		parser.begin(this);
 	}
 	
-	public void pushParser(Parser parser, Token token) throws SyntaxException
+	public void pushParser(Parser parser, IToken token) throws SyntaxException
 	{
 		this.pushParser(parser);
-		parser.parse(this, token.value, token);
+		parser.parse(this, token.value(), token);
 	}
 	
 	public Parser popParser() throws SyntaxException

@@ -3,17 +3,17 @@ package clashsoft.cslib.src;
 import java.io.PrintStream;
 import java.util.Arrays;
 
-import clashsoft.cslib.src.parser.Token;
+import clashsoft.cslib.src.parser.IToken;
 
 public class SyntaxException extends Exception
 {
 	private static final long	serialVersionUID	= -2234451954260010124L;
-
+	
 	public SyntaxException()
 	{
 		super();
 	}
-
+	
 	public SyntaxException(String message)
 	{
 		super(message);
@@ -23,35 +23,42 @@ public class SyntaxException extends Exception
 	{
 		this(message);
 	}
-
+	
 	public SyntaxException(Throwable cause)
 	{
 		super(cause);
 	}
 	
-	public void print(PrintStream out, String code, Token token)
+	public void print(PrintStream out, String code, IToken token)
 	{
 		out.println("Syntax error at token " + token);
 		
-		int prevNL = code.lastIndexOf('\n', token.start) + 1;
-		int nextNL = code.indexOf('\n', token.end);
-		
-		if (prevNL < 0)
+		try
 		{
-			prevNL = 0;
+			int prevNL = code.lastIndexOf('\n', token.start()) + 1;
+			int nextNL = code.indexOf('\n', token.end());
+			
+			if (prevNL < 0)
+			{
+				prevNL = 0;
+			}
+			if (nextNL < 0)
+			{
+				nextNL = code.length();
+			}
+			
+			String line = code.substring(prevNL, nextNL);
+			
+			out.println(line);
+			
+			char[] chars = new char[token.start()];
+			Arrays.fill(chars, ' ');
+			out.print(chars);
+			out.print('^');
 		}
-		if (nextNL < 0)
+		catch (SyntaxException ex)
 		{
-			nextNL = code.length();
+			out.println("Invalid Token!");
 		}
-		
-		String line = code.substring(prevNL, nextNL);
-		
-		out.println(line);
-		
-		char[] chars = new char[token.start];
-		Arrays.fill(chars, ' ');
-		out.print(chars);
-		out.print('^');
 	}
 }
