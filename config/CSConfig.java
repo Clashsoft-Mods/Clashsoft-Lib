@@ -2,6 +2,8 @@ package clashsoft.cslib.config;
 
 import java.io.File;
 
+import net.minecraftforge.common.config.Configuration;
+
 import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.util.CSString;
 import clashsoft.cslib.util.IParsable;
@@ -17,7 +19,7 @@ public class CSConfig
 	public static String			configName;
 	public static boolean			enableComments	= true;
 	
-	private static ConfigCategory	rootCategory;
+	private static Configuration	config;
 	
 	public static void loadConfig(File configFile, String configName)
 	{
@@ -25,9 +27,7 @@ public class CSConfig
 		
 		CSConfig.configFile = configFile;
 		CSConfig.configName = configName;
-		rootCategory = new ConfigCategory(configName);
-		rootCategory.setComment(configName + " configuration file.");
-		rootCategory.load(configFile);
+		config = new Configuration(configFile);
 		
 		CSLog.info("[Config] Loaded config file " + configName);
 	}
@@ -40,7 +40,7 @@ public class CSConfig
 	public static void saveConfig()
 	{
 		CSLog.info("[Config] Saving config file " + configName + "...");
-		rootCategory.save(configFile);
+		config.save();
 		CSLog.info("[Config] Saved config file " +  configName);
 	}
 	
@@ -53,7 +53,7 @@ public class CSConfig
 	
 	public static void checkConfig()
 	{
-		if (rootCategory == null)
+		if (config == null)
 		{
 			throw new IllegalStateException("No config loaded!");
 		}
@@ -101,31 +101,31 @@ public class CSConfig
 	public static int getInt(String category, String key, String desc, int _default)
 	{
 		checkConfig();
-		return rootCategory.getOption(CSString.identifier(key), category, desc, _default).intValue();
+		return config.get(CSString.identifier(key), category, _default, desc).getInt(_default);
 	}
 	
 	public static float getFloat(String category, String key, String desc, float _default)
 	{
 		checkConfig();
-		return rootCategory.getOption(CSString.identifier(key), category, desc, _default).floatValue();
+		return (float) config.get(CSString.identifier(key), category, _default, desc).getDouble(_default);
 	}
 	
 	public static double getDouble(String category, String key, String desc, double _default)
 	{
 		checkConfig();
-		return rootCategory.getOption(CSString.identifier(key), category, desc, _default).doubleValue();
+		return config.get(CSString.identifier(key), category, _default, desc).getDouble(_default);
 	}
 	
 	public static boolean getBool(String category, String key, String desc, boolean _default)
 	{
 		checkConfig();
-		return rootCategory.getOption(CSString.identifier(key), category, desc, _default).booleanValue();
+		return config.get(CSString.identifier(key), category, _default, desc).getBoolean(_default);
 	}
 	
 	public static String getString(String category, String key, String desc, String _default)
 	{
 		checkConfig();
-		return rootCategory.getOption(CSString.identifier(key), category, desc, _default);
+		return config.get(CSString.identifier(key), category, _default, desc).getString();
 	}
 	
 	public static <T extends IParsable> T getObject(String category, String key, String desc, T _default)
