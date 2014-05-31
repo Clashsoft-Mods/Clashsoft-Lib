@@ -1,3 +1,17 @@
+1.7.2-2.0.0
+
++ Added Parser system
++ Added CSFiles
++ Added MaxRandom and MinRandom implementations of Random
++ Added Enchantment Registry
++ Added Potion Registry
++ Added MOTD system
+* Seperated mod loader from actual mod
+* Made the update system even more customizable
+* Many internal changes
+* Structure changes
+* Cleanup
+
 1.7.2-1.1.0
 
 + Added recipe managers
