@@ -6,6 +6,8 @@ public interface IToken
 {
 	public String value() throws SyntaxException;
 	
+	public boolean equals(String value) throws SyntaxException;
+	
 	public int index() throws SyntaxException;
 	
 	public int start() throws SyntaxException;
@@ -15,6 +17,10 @@ public interface IToken
 	public IToken prev() throws SyntaxException;
 	
 	public IToken next() throws SyntaxException;
+	
+	public boolean hasPrev();
+	
+	public boolean hasNext();
 	
 	public void setPrev(IToken prev);
 	

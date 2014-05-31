@@ -5,11 +5,20 @@ import clashsoft.cslib.src.SyntaxException;
 
 public abstract class Parser<T>
 {
-	private Parser	parent;
-	protected int	modifiers;
+	public static final Parser	rootParser	= new Parser()
+											{
+												@Override
+												public void parse(ParserManager pm, String value, IToken token) throws SyntaxException
+												{
+												}
+											};
+	
+	private Parser				parent;
+	protected int				modifiers;
 	
 	public Parser()
 	{
+		this.parent = rootParser;
 	}
 	
 	public Parser(Parser parent)
@@ -24,7 +33,10 @@ public abstract class Parser<T>
 	
 	public void setParent(Parser parent)
 	{
-		this.parent = parent;
+		if (parent != null)
+		{
+			this.parent = parent;
+		}
 	}
 	
 	public int addModifier(int mod)

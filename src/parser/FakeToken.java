@@ -8,19 +8,13 @@ public class FakeToken implements IToken
 	private IToken next;
 	
 	@Override
-	public void setPrev(IToken token)
-	{
-		this.prev = token;
-	}
-	
-	@Override
-	public void setNext(IToken token)
-	{
-		this.next = token;
-	}
-	
-	@Override
 	public String value() throws SyntaxException
+	{
+		throw new SyntaxException("No token!");
+	}
+	
+	@Override
+	public boolean equals(String value) throws SyntaxException
 	{
 		throw new SyntaxException("No token!");
 	}
@@ -57,5 +51,29 @@ public class FakeToken implements IToken
 		if (this.prev == null)
 			throw new SyntaxException("No prev token!");
 		return this.prev;
+	}
+	
+	@Override
+	public void setPrev(IToken token)
+	{
+		this.prev = token;
+	}
+	
+	@Override
+	public void setNext(IToken token)
+	{
+		this.next = token;
+	}
+	
+	@Override
+	public boolean hasNext()
+	{
+		return this.next != null;
+	}
+	
+	@Override
+	public boolean hasPrev()
+	{
+		return this.prev != null;
 	}
 }

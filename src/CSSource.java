@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import clashsoft.cslib.src.parser.IToken;
 import clashsoft.cslib.src.parser.Token;
 import clashsoft.cslib.util.CSString;
 
@@ -57,72 +58,87 @@ public class CSSource extends CSString
 		return 0;
 	}
 	
-	public static final Token tokenize(String code)
+	public static final IToken tokenize(String code)
 	{
 		int len = code.length();
 		StringBuilder buf = new StringBuilder(20);
 		Token first = new Token(-1, "", 0, 0);
 		Token prev = first;
-		
-		char current = 0;
-		char last = 0;
-		
 		int index = 0;
-		int i = 0;
-		int j = 0;
+		int start = 0;
 		
+		char c = 0;
+		char l = code.charAt(0);
 		boolean quote = false;
-		boolean charQuote = false;
-		boolean literal = false;
-		
-		for (i = 0; i < len; i++)
+		boolean quote2 = false;
+		for (int i = 1; i < len; ++i)
 		{
-			current = code.charAt(i);
+			c = code.charAt(i);
 			
-			if (!literal)
+			if (l != '\\')
 			{
-				if (current == '"')
+				if (c == '"')
 				{
+					buf.append(c);
+					if (quote)
+					{
+						addToken(prev, buf, index++, start, i);
+						start = i + 1;
+					}
 					quote = !quote;
 				}
-				else if (current == '\'')
+				else if (c == '\'')
 				{
-					charQuote = !charQuote;
-				}
-				else if (current == '\\')
-				{
-					literal = true;
-				}
-				else if (!quote && !charQuote)
-				{
-					if (!isWhitespace(current) && !isSameType(current, last))
+					buf.append(c);
+					if (quote2)
 					{
-						prev = addToken(prev, buf, index, j, i);
-						index++;
-						j = i;
+						addToken(prev, buf, index++, start, i);
+						start = i + 1;
+					}
+					quote2 = !quote2;
+				}
+				else if (quote || quote2)
+				{
+					buf.append(c);
+				}
+				else
+				{
+					if (!isWhitespace(c))
+					{
+						if (!isSameType(c, l) && buf.length() > 0)
+						{
+							prev = addToken(prev, buf, index++, start, i);
+							start = i + 1;
+						}
+						buf.append(c);
+					}
+					else if (buf.length() > 0)
+					{
+						prev = addToken(prev, buf, index++, start, i);
+						start = i + 1;
 					}
 				}
 			}
-			else
-			{
-				literal = false;
-			}
 			
-			buf.append(current);
-			
-			last = current;
+			l = c;
 		}
 		
-		return (Token) first.next();
+		return first.next();
 	}
 	
-	private static Token addToken(Token prev, StringBuilder buf, int index, int start, int end)
+	private static Token addToken(IToken prev, String s, int index, int start, int end)
 	{
-		Token t = new Token(index, buf.toString(), start, end);
+		Token t = new Token(index, s, start, end);
 		prev.setNext(t);
 		t.setPrev(prev);
-		buf.delete(0, buf.length());
 		return t;
+	}
+	
+	private static Token addToken(IToken prev, StringBuilder buf, int index, int start, int end)
+	{
+		String s = buf.toString();
+		buf.delete(0, buf.length());
+		return addToken(prev, s, index, start, end);
 	}
 	
 	private static boolean isWhitespace(char c)
@@ -132,14 +148,12 @@ public class CSSource extends CSString
 	
 	private static boolean isSameType(char c1, char c2)
 	{
-		if (c1 == '_' || c2 == '_')
-		{
+		if (c1 == c2)
 			return true;
-		}
-		else if (c1 == c2)
-		{
-			return true;
-		}
+		if ((c1 == '\n') ^ (c2 == '\n'))
+			return false;
+		if ((c1 == '.') ^ (c2 == '.'))
+			return false;
 		return Character.isJavaIdentifierPart(c1) == Character.isJavaIdentifierPart(c2);
 	}
 	

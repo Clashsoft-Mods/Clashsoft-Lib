@@ -1,5 +1,7 @@
 package clashsoft.cslib.src.parser;
 
+import java.io.PrintStream;
+
 import clashsoft.cslib.src.CSSource;
 import clashsoft.cslib.src.SyntaxException;
 
@@ -7,23 +9,63 @@ public class ParserManager
 {
 	protected Parser	currentParser;
 	
+	/**
+	 * Creates a new {@link ParserManager} with the given {@link Parser}
+	 * {@code parser} as the current parser, and calls the parser's
+	 * {@link Parser#begin(ParserManager) begin} method.
+	 * 
+	 * @see Parser#begin(ParserManager)
+	 * @param parser
+	 *            the parser
+	 */
 	public ParserManager(Parser parser)
 	{
 		this.currentParser = parser;
 		this.currentParser.begin(this);
 	}
 	
+	/**
+	 * Sets the current parser to the given {@link Parser} {@code parser} and
+	 * starts parsing the {@link String Code} {@code code}.
+	 * 
+	 * @see Parser#begin(ParserManager)
+	 * @see #parse(String)
+	 * @param parser
+	 *            the parser
+	 * @param code
+	 *            the code
+	 */
+	public final void parse(Parser parser, String code)
+	{
+		this.currentParser = parser;
+		parser.begin(this);
+		this.parse(code);
+	}
+	
+	/**
+	 * Starts parsing the given {@link String Code} {@code code}. The code is
+	 * tokenized using {@link CSSource#tokenize(String)} and then
+	 * {@link #parse(IToken)} is called on each token. When a
+	 * {@link SyntaxException} occurs, it gets printed to the standart error
+	 * output {@link System#err} using
+	 * {@link SyntaxException#print(PrintStream, String, IToken)}
+	 * 
+	 * @see Token
+	 * @see CSSource#tokenize(String)
+	 * @see #parse(IToken)
+	 * @param code
+	 *            the code.
+	 */
 	public final void parse(String code)
 	{
-		// Create a list of raw tokens
 		IToken token = CSSource.tokenize(code);
 		try
 		{
-			while (token.next() != null)
+			while (token.hasNext())
 			{
 				try
 				{
-					this.currentParser.parse(this, token.value(), token);
+					this.parse(token.value(), token);
 				}
 				catch (SyntaxException ex)
 				{
@@ -38,13 +80,32 @@ public class ParserManager
 		}
 	}
 	
-	public void parse(Parser parser, String code) throws SyntaxException
+	/**
+	 * Parses the given {@link IToken} {@code token}. You can override this
+	 * method to sort out comments.
+	 * 
+	 * @see Parser#parse(ParserManager, String, IToken)
+	 * @param value
+	 *            the value of the token
+	 * @param token
+	 *            the token
+	 * @throws SyntaxException
+	 *             syntax errors
+	 */
+	public void parse(String value, IToken token) throws SyntaxException
 	{
-		this.currentParser = parser;
-		parser.begin(this);
-		this.parse(code);
+		this.currentParser.parse(this, value, token);
 	}
 	
+	/**
+	 * Adds the given {@link Parser} {@code parser} to the stack.
+	 * 
+	 * @see Parser#parse(ParserManager, String, IToken)
+	 * @param parser
+	 *            the parser
+	 * @throws SyntaxException
+	 *             syntax errors
+	 */
 	public void pushParser(Parser parser) throws SyntaxException
 	{
 		if (this.currentParser != null)
@@ -55,6 +116,17 @@ public class ParserManager
 		parser.begin(this);
 	}
 	
+	/**
+	 * Adds the given {@link Parser} {@code parser} to the stack and makes it
+	 * parse the given {@link IToken} {@code token}.
+	 * 
+	 * @see #pushParser(Parser)
+	 * @see Parser#parse(ParserManager, String, IToken)
+	 * @param parser
+	 *            the parser
+	 * @throws SyntaxException
+	 *             syntax errors
+	 */
 	public void pushParser(Parser parser, IToken token) throws SyntaxException
 	{
 		this.pushParser(parser);
