@@ -26,7 +26,7 @@ public class ThreadManager
 	public void addTask(Runnable runnable)
 	{
 		CSThread thread = this.getLeastOccupiedThread();
-		String name = thread.name + ":" + thread.getTaskCount();
+		String name = thread.getName() + ":" + thread.getTaskCount();
 		thread.addTask(new Task(name, runnable));
 	}
 	
@@ -40,24 +40,17 @@ public class ThreadManager
 	{
 		CSThread[] threads = this.threads;
 		int cores = this.cores;
-		int min = -1;
+		int min = Integer.MAX_VALUE;
 		int thread = 0;
 		
 		for (int i = 0; i < cores; i++)
 		{
 			CSThread t = threads[i];
 			int taskCount = t.getTaskCount();
-			if (min == -1)
+			if (taskCount < min)
 			{
 				min = taskCount;
-			}
-			else
-			{
-				if (taskCount < min)
-				{
-					min = taskCount;
-					thread = i;
-				}
+				thread = i;
 			}
 		}
 		

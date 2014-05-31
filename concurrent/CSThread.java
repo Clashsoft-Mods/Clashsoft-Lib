@@ -10,21 +10,18 @@ public class CSThread extends Thread
 {
 	public static boolean		DEBUG		= true;
 	
-	public final String			name;
-	
 	private List<Task>			tasks		= new ArrayList();
 	private ListIterator<Task>	iterator	= this.tasks.listIterator();
 	
 	public CSThread(String name)
 	{
-		this.name = name;
 		this.setName(name);
 	}
 	
 	@Override
 	public void run()
 	{
-		this.info("Starting Thread " + this.name);
+		this.info("Starting Thread " + this.getName());
 		
 		while (this.iterator.hasNext())
 		{
@@ -35,7 +32,7 @@ public class CSThread extends Thread
 			this.iterator.remove();
 		}
 		
-		this.info("Finished Thread " + this.name);
+		this.info("Finished Thread " + this.getName());
 	}
 	
 	public void info(String string)
@@ -49,11 +46,6 @@ public class CSThread extends Thread
 	public void addTask(Task task)
 	{
 		this.iterator.add(task);
-		
-		if (!this.isAlive())
-		{
-			this.start();
-		}
 	}
 	
 	public int getTaskCount()

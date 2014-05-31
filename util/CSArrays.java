@@ -75,7 +75,7 @@ public class CSArrays
 	}
 	
 	/**
-	 * Returns the component tyoe of a multi-dimensional array
+	 * Returns the component type of a multi-dimensional array
 	 * 
 	 * @param array
 	 *            the array
@@ -117,9 +117,10 @@ public class CSArrays
 		for (int i = 0; i < ret.length; i++)
 		{
 			ret[i] = (T[]) Array.newInstance(clazz, maxLength);
-			for (int j = 0; j < maxLength && j + i * maxLength < array.length; j++)
+			int len1 = i * maxLength;
+			for (int j = 0; j < maxLength && j + len1 < array.length; j++)
 			{
-				ret[i][j] = array[j + i * maxLength];
+				ret[i][j] = array[j + len1];
 			}
 		}
 		return ret;
@@ -134,7 +135,7 @@ public class CSArrays
 	 */
 	public static <T> T[] concat(T[]... arrays)
 	{
-		List<T> list = new ArrayList<T>(arrays.length);
+		List<T> list = new ArrayList(arrays.length);
 		for (T[] array : arrays)
 		{
 			for (int j = 0; j < array.length; j++)

@@ -101,19 +101,18 @@ public class CSRandom
 	 */
 	public static String getNextRandomName(Random random, int minLength, int maxLength)
 	{
-		int length = nextInt(random, minLength, maxLength);
-		// Faster than concatening
-		StringBuilder result = new StringBuilder(length);
+		int len = nextInt(random, minLength, maxLength);
+		StringBuilder buf = new StringBuilder(len);
 		
-		for (int i = 0; i < length; i++)
+		for (int i = 0; i < len; i++)
 		{
 			if (i == 0)
 			{
-				result.append(Character.toUpperCase(CSString.nextLetter(random)));
+				buf.append(Character.toUpperCase(CSString.nextLetter(random)));
 			}
 			
-			int lastIndex = result.length() - 1;
-			char last = result.charAt(lastIndex);
+			int lastIndex = buf.length() - 1;
+			char last = buf.charAt(lastIndex);
 			char c;
 			
 			// Always add a consonant after a vowel
@@ -144,9 +143,9 @@ public class CSRandom
 				}
 			}
 			
-			result.append(c);
+			buf.append(c);
 		}
 		
-		return result.toString();
+		return buf.toString();
 	}
 }
