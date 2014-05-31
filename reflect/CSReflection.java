@@ -119,6 +119,11 @@ public class CSReflection
 		return null;
 	}
 	
+	public static Method getMethod(Class clazz, int methodID)
+	{
+		return clazz.getDeclaredMethods()[methodID];
+	}
+	
 	// Method invocation
 	
 	public static <T, R> R invokeStatic(Class<? super T> clazz, Object[] args, String... methodNames)
@@ -136,6 +141,31 @@ public class CSReflection
 		try
 		{
 			Method m = getMethod(clazz, methodNames);
+			m.setAccessible(true);
+			return (R) m.invoke(instance, args);
+		}
+		catch (Exception ex)
+		{
+			CSLog.error(ex);
+			return null;
+		}
+	}
+	
+	public static <T, R> R invokeStatic(Class<? super T> clazz, Object[] args, int methodID)
+	{
+		return invoke(clazz, null, args, methodID);
+	}
+	
+	public static <T, R> R invoke(T instance, Object[] args, int methodID)
+	{
+		return invoke((Class<T>) instance.getClass(), instance, args, methodID);
+	}
+	
+	public static <T, R> R invoke(Class<? super T> clazz, T instance, Object[] args, int methodID)
+	{
+		try
+		{
+			Method m = getMethod(clazz, methodID);
 			m.setAccessible(true);
 			return (R) m.invoke(instance, args);
 		}
