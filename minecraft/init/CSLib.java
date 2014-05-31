@@ -7,8 +7,6 @@ import clashsoft.cslib.minecraft.command.CommandModUpdate;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
 import clashsoft.cslib.minecraft.network.CSNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
-import clashsoft.cslib.minecraft.update.reader.SimpleUpdateReader;
-import clashsoft.cslib.minecraft.update.updater.ModUpdater;
 import clashsoft.cslib.minecraft.util.Log4JLogger;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -103,8 +101,6 @@ public class CSLib extends ClashsoftMod
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		super.postInit(event);
-		
-		CSUpdate.updateCheck(new ModUpdater("MinestrappolationCore", "MAPI", "2.0", "https://raw.githubusercontent.com/SoBiohazardous/Minestrappolation-Recode/master/version.txt", SimpleUpdateReader.instance));
 	}
 	
 	public void serverStarted(FMLServerStartedEvent event)
