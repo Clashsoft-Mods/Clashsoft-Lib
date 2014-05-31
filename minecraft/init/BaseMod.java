@@ -38,26 +38,26 @@ import net.minecraftforge.common.MinecraftForge;
  */
 public abstract class BaseMod<N extends CSNetHandler>
 {
-	public static final boolean clientSide = FMLCommonHandler.instance().getSide().isClient();
+	public static final boolean	clientSide	= FMLCommonHandler.instance().getSide().isClient();
 	
-	public String		modID;
-	public String		name;
-	public String		acronym;
-	public String		version;
-	public String		logoFile	= "";
-	public String		url			= "";
-	public List<String>	authors		= Collections.EMPTY_LIST;
+	public String				modID;
+	public String				name;
+	public String				acronym;
+	public String				version;
+	public String				logoFile	= "";
+	public String				url			= "";
+	public List<String>			authors		= Collections.EMPTY_LIST;
 	
-	public boolean		hasConfig;
-	public File			configFile;
+	public boolean				hasConfig;
+	public File					configFile;
 	
-	public Class<N>		netHandlerClass;
-	public N			netHandler;
+	public Class<N>				netHandlerClass;
+	public N					netHandler;
 	
-	public Object		eventHandler;
+	public Object				eventHandler;
 	
-	public BaseProxy	proxy;
-	public boolean		isClient;
+	public BaseProxy			proxy;
+	public boolean				isClient;
 	
 	public BaseMod(BaseProxy proxy, String modID, String name, String version)
 	{

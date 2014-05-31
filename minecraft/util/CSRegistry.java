@@ -14,7 +14,7 @@ import net.minecraft.util.RegistryNamespaced;
 
 public class CSRegistry extends RegistryNamespaced
 {
-	protected BitSet availabilityMap = new BitSet();
+	protected BitSet	availabilityMap	= new BitSet();
 	
 	public int getFreeID()
 	{
@@ -25,7 +25,9 @@ public class CSRegistry extends RegistryNamespaced
 	{
 		int i = this.getIDForObject(this.getObject(name));
 		if (i == -1)
+		{
 			i = this.getFreeID();
+		}
 		return i;
 	}
 	
@@ -65,7 +67,9 @@ public class CSRegistry extends RegistryNamespaced
 			for (String s : lines)
 			{
 				if (s.startsWith("#"))
+				{
 					continue;
+				}
 				int i = s.indexOf('=');
 				if (i != -1)
 				{

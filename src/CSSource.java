@@ -149,11 +149,17 @@ public class CSSource extends CSString
 	private static boolean isSameType(char c1, char c2)
 	{
 		if (c1 == c2)
+		{
 			return true;
-		if ((c1 == '\n') ^ (c2 == '\n'))
+		}
+		if (c1 == '\n' ^ c2 == '\n')
+		{
 			return false;
-		if ((c1 == '.') ^ (c2 == '.'))
+		}
+		if (c1 == '.' ^ c2 == '.')
+		{
 			return false;
+		}
 		return Character.isJavaIdentifierPart(c1) == Character.isJavaIdentifierPart(c2);
 	}
 	

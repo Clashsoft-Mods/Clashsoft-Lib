@@ -8,12 +8,12 @@ import clashsoft.cslib.src.parser.ParserManager;
 
 public class OptionParser extends Parser<ConfigCategory>
 {
-	public final ConfigCategory category;
+	public final ConfigCategory	category;
 	
-	public String type;
-	public String name;
-	public String comment;
-	public String value;
+	public String				type;
+	public String				name;
+	public String				comment;
+	public String				value;
 	
 	public OptionParser(ConfigCategory category)
 	{

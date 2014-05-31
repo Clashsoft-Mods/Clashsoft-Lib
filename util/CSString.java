@@ -197,7 +197,7 @@ public class CSString
 		return builder.toString();
 	}
 	
-	/**
+/**
 	 * Returns a shortened acronym version of a string.
 	 * <p>
 	 * Example:<br>
@@ -209,7 +209,9 @@ public class CSString
 	public static String getAcronym2(String string)
 	{
 		if (string == null || string.isEmpty())
+		{
 			return "";
+		}
 		
 		int len = string.length();
 		StringBuilder builder = new StringBuilder(len);
@@ -224,7 +226,9 @@ public class CSString
 			next = string.charAt(i);
 			
 			if (isVowel(curr) && isConsonant(prev) && isConsonant(next))
+			{
 				continue;
+			}
 			builder.append(curr);
 		}
 		return builder.toString();

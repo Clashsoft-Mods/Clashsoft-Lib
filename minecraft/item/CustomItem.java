@@ -182,12 +182,18 @@ public class CustomItem extends Item
 	public IIcon getIconFromDamage(int damage)
 	{
 		if (this.icons == null)
+		{
 			return this.itemIcon;
+		}
 		
 		if (damage >= this.icons.length)
+		{
 			damage = this.icons.length - 1;
+		}
 		if (damage < 0)
+		{
 			damage = 0;
+		}
 		return this.icons[damage];
 	}
 	

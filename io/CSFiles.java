@@ -13,7 +13,9 @@ public class CSFiles
 		try
 		{
 			if (!file.exists())
+			{
 				file.createNewFile();
+			}
 			
 			byte[] bytes = text.getBytes();
 			Files.write(file.toPath(), bytes);
@@ -31,7 +33,9 @@ public class CSFiles
 		try
 		{
 			if (!file.exists())
+			{
 				file.createNewFile();
+			}
 			
 			Files.write(file.toPath(), lines, Charset.defaultCharset());
 			return true;
@@ -48,7 +52,9 @@ public class CSFiles
 		try
 		{
 			if (!file.exists())
+			{
 				return null;
+			}
 			
 			byte[] bytes = Files.readAllBytes(file.toPath());
 			return new String(bytes);
@@ -65,7 +71,9 @@ public class CSFiles
 		try
 		{
 			if (!file.exists())
+			{
 				return null;
+			}
 			
 			return Files.readAllLines(file.toPath(), Charset.defaultCharset());
 		}

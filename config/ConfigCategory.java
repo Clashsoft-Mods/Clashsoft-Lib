@@ -8,7 +8,6 @@ import clashsoft.cslib.config.parser.ConfigParserManager;
 import clashsoft.cslib.io.CSFiles;
 import clashsoft.cslib.src.parser.ParserManager;
 
-
 public class ConfigCategory
 {
 	public ConfigCategory					parent;
@@ -41,7 +40,9 @@ public class ConfigCategory
 	public <T> T getOption(String name)
 	{
 		if (this.options == null)
+		{
 			this.options = new TreeMap();
+		}
 		return (T) this.options.get(name);
 	}
 	
@@ -71,27 +72,37 @@ public class ConfigCategory
 	public ConfigCategory getSubCategory(String name)
 	{
 		if (name == null)
+		{
 			return this;
+		}
 		
 		ConfigCategory category = null;
 		if (this.subCategories != null)
+		{
 			category = this.subCategories.get(name);
+		}
 		if (category == null)
+		{
 			category = this.addSubCategory(name, null);
+		}
 		return category;
 	}
 	
 	public String getComment(String name)
 	{
 		if (this.comments != null)
+		{
 			return this.comments.get(name);
+		}
 		return null;
 	}
 	
 	public void addOption(String name, String comment, Object value)
 	{
 		if (this.options == null)
+		{
 			this.options = new TreeMap();
+		}
 		this.options.put(name, value);
 		this.hasChanged = true;
 		
@@ -103,7 +114,9 @@ public class ConfigCategory
 		ConfigCategory category = new ConfigCategory(this, name);
 		
 		if (this.subCategories == null)
+		{
 			this.subCategories = new TreeMap();
+		}
 		this.subCategories.put(name, category);
 		this.hasChanged = true;
 		
@@ -117,7 +130,9 @@ public class ConfigCategory
 		if (comment != null)
 		{
 			if (this.comments == null)
+			{
 				this.comments = new HashMap();
+			}
 			this.comments.put(name, comment);
 			this.hasChanged = true;
 		}
@@ -145,12 +160,15 @@ public class ConfigCategory
 		String prefix1 = prefix + "    ";
 		
 		if (this.comment != null)
+		{
 			addSectionComment(buffer, prefix, this.comment);
+		}
 		
 		buffer.append(prefix).append(this.name).append('\n');
 		buffer.append(prefix).append("{\n");
 		
 		if (this.options != null)
+		{
 			for (Map.Entry<String, Object> entry : this.options.entrySet())
 			{
 				String key = entry.getKey();
@@ -166,8 +184,10 @@ public class ConfigCategory
 				buffer.append(prefix1).append(c).append(':').append(key).append('=').append(String.valueOf(value)).append('\n');
 				buffer.append(prefix1).append('\n');
 			}
+		}
 		
 		if (this.subCategories != null)
+		{
 			for (Map.Entry<String, ConfigCategory> entry : this.subCategories.entrySet())
 			{
 				String key = entry.getKey();
@@ -183,6 +203,7 @@ public class ConfigCategory
 				value.write(buffer, prefix1);
 				buffer.append('\n');
 			}
+		}
 		
 		buffer.append(prefix).append("}\n");
 	}
@@ -216,12 +237,16 @@ public class ConfigCategory
 			String line = lines.get(i).trim();
 			
 			if (line.length() < 2)
+			{
 				continue;
+			}
 			
 			if (line.charAt(0) == '#')
 			{
 				if (line.charAt(1) != '#')
+				{
 					comment = line.substring(2);
+				}
 				continue;
 			}
 			
@@ -273,17 +298,29 @@ public class ConfigCategory
 	public static Object parseObject(String type, String value)
 	{
 		if (type.startsWith("S"))
+		{
 			return value;
+		}
 		else if (type.startsWith("B"))
+		{
 			return Boolean.valueOf(value);
+		}
 		else if (type.startsWith("I"))
+		{
 			return Integer.valueOf(value);
+		}
 		else if (type.startsWith("L"))
+		{
 			return Long.valueOf(value);
+		}
 		else if (type.startsWith("F"))
+		{
 			return Float.valueOf(value);
+		}
 		else if (type.startsWith("D"))
+		{
 			return Double.valueOf(value);
+		}
 		return value;
 	}
 }

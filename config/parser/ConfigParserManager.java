@@ -30,7 +30,7 @@ public class ConfigParserManager extends ParserManager
 		else if (value.startsWith("#") && value.endsWith("#"))
 		{
 			return;
-		}		
+		}
 		else if (this.comment)
 		{
 			return;

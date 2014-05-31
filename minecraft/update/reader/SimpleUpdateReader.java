@@ -43,15 +43,21 @@ public class SimpleUpdateReader implements IUpdateReader
 			{
 				String s = line.substring(5);
 				if (motd == null)
+				{
 					motd = new ChatComponentText(s);
+				}
 				else
+				{
 					motd.appendText(s);
+				}
 			}
 			else if (line.startsWith("motdcolor="))
 			{
 				EnumChatFormatting color = EnumChatFormatting.getValueByName(line.substring(10));
 				if (motd == null)
+				{
 					motd = new ChatComponentText("");
+				}
 				motd.getChatStyle().setColor(color);
 			}
 			else if (line.startsWith("motdjson="))

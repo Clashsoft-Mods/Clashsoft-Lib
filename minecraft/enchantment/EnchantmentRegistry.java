@@ -12,14 +12,16 @@ import net.minecraft.potion.Potion;
 
 public class EnchantmentRegistry extends CSRegistry
 {
-	public static EnchantmentRegistry instance = new EnchantmentRegistry();
+	public static EnchantmentRegistry	instance	= new EnchantmentRegistry();
 	
 	static
 	{
 		for (Enchantment ench : Enchantment.enchantmentsList)
 		{
 			if (ench != null)
+			{
 				add(ench);
+			}
 		}
 	}
 	

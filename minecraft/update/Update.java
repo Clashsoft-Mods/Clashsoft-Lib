@@ -101,7 +101,9 @@ public class Update
 	public String getVersionChanges()
 	{
 		if (this.compare == 0)
+		{
 			return this.getVersion();
+		}
 		return this.getVersion() + " -> " + this.getNewVersion();
 	}
 	

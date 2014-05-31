@@ -18,7 +18,9 @@ public class PotionRegistry extends CSRegistry
 		for (Potion potion : Potion.potionTypes)
 		{
 			if (potion != null)
+			{
 				add(potion);
+			}
 		}
 		
 		expandPotionList(64);

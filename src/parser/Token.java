@@ -2,8 +2,6 @@ package clashsoft.cslib.src.parser;
 
 import java.util.Objects;
 
-
-
 public class Token implements IToken
 {
 	private IToken			prev;
@@ -59,7 +57,7 @@ public class Token implements IToken
 	{
 		return this.end;
 	}
-
+	
 	@Override
 	public IToken prev()
 	{
@@ -70,6 +68,7 @@ public class Token implements IToken
 		}
 		return this.prev;
 	}
+	
 	@Override
 	public IToken next()
 	{

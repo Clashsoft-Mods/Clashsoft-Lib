@@ -138,9 +138,9 @@ public class CSArrays
 		List<T> list = new ArrayList(arrays.length);
 		for (T[] array : arrays)
 		{
-			for (int j = 0; j < array.length; j++)
+			for (T element : array)
 			{
-				list.add(array[j]);
+				list.add(element);
 			}
 		}
 		return (T[]) fromList(getDeepComponentType(arrays), list);

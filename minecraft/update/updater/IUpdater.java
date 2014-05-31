@@ -31,5 +31,5 @@ public interface IUpdater
 	
 	public boolean keyMatches(String key);
 	
-	public Update newUpdate(String newVersion, List<String> notes, String downloadURL);	
+	public Update newUpdate(String newVersion, List<String> notes, String downloadURL);
 }

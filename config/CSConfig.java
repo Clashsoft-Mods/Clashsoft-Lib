@@ -41,13 +41,15 @@ public class CSConfig
 	{
 		CSLog.info("[Config] Saving config file " + configName + "...");
 		config.save();
-		CSLog.info("[Config] Saved config file " +  configName);
+		CSLog.info("[Config] Saved config file " + configName);
 	}
 	
 	public static String getDefaultDesc(String key, Object _default)
 	{
 		if (enableComments)
+		{
 			return key + ". Default: " + _default;
+		}
 		return null;
 	}
 	

@@ -3,7 +3,8 @@ package clashsoft.cslib.random;
 import java.util.Random;
 
 /**
- * A {@link Random} implementation that always returns the minimum value, mostly being 0.
+ * A {@link Random} implementation that always returns the minimum value, mostly
+ * being 0.
  * 
  * @author Clashsoft
  */
@@ -25,7 +26,9 @@ public class MinRandom extends Random
 	public void nextBytes(byte[] bytes)
 	{
 		for (int i = 0; i < bytes.length; i++)
+		{
 			bytes[i] = Byte.MIN_VALUE;
+		}
 	}
 	
 	@Override

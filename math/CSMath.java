@@ -221,7 +221,9 @@ public class CSMath
 	public static int factorial(int i)
 	{
 		if (i <= 1)
+		{
 			return 1;
+		}
 		
 		int j = i;
 		while (i > 1)
@@ -234,7 +236,9 @@ public class CSMath
 	public static long factorial(long l)
 	{
 		if (l <= 1)
+		{
 			return 1;
+		}
 		
 		long j = l;
 		while (l > 1)
@@ -470,8 +474,12 @@ public class CSMath
 	public static int calculateLogBaseTwo(int i)
 	{
 		if (isPowerOfTwo(i))
+		{
 			return multiplyDeBruijnBitPosition[(int) (i * 125613361L >> 27) & 0x1F];
+		}
 		else
+		{
 			return multiplyDeBruijnBitPosition[(int) (powerOfTwo(i) * 125613361L >> 27) & 0x1F] - 1;
+		}
 	}
 }

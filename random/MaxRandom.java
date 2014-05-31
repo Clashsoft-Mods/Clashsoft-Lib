@@ -25,7 +25,9 @@ public class MaxRandom extends Random
 	public void nextBytes(byte[] bytes)
 	{
 		for (int i = 0; i < bytes.length; i++)
+		{
 			bytes[i] = Byte.MAX_VALUE;
+		}
 	}
 	
 	@Override
