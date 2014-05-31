@@ -16,10 +16,11 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class Update
 {
-	private static final int	INVALID		= -2;
-	private static final int	NOT_CHECKED	= -999;
+	private static final int	INVALID				= -2;
+	private static final int	NOT_CHECKED			= -999;
+	private static final int	OTHER_MC_VERSION	= -998;
 	
-	public final IUpdater updater;
+	public final IUpdater		updater;
 	
 	public String				modName;
 	
@@ -29,7 +30,7 @@ public class Update
 	protected List<String>		updateNotes;
 	protected String			url;
 	
-	protected int				compare		= NOT_CHECKED;
+	protected int				compare				= NOT_CHECKED;
 	protected int				installStatus;
 	
 	public Update(IUpdater updater, String modName, String version, String newVersion, List<String> updateNotes, String updateUrl)
@@ -52,8 +53,20 @@ public class Update
 	{
 		if (this.compare == NOT_CHECKED)
 		{
-			if (this.version != null && this.newVersion != null && this.newVersion.startsWith(CSUpdate.CURRENT_VERSION))
+			if (this.version != null && this.newVersion != null)
 			{
+				int index1 = this.version.indexOf('-');
+				int index2 = this.version.indexOf('-');
+				if (index1 != -1 && index2 != -1)
+				{
+					String mcVersion1 = this.version.substring(0, index1);
+					String mcVersion2 = this.newVersion.substring(0, index2);
+					if (!mcVersion1.equals(mcVersion2))
+					{
+						this.compare = OTHER_MC_VERSION;
+						return this.compare;
+					}
+				}
 				this.compare = CSUpdate.compareVersion(this.version, this.newVersion);
 			}
 			else
@@ -105,7 +118,7 @@ public class Update
 	public boolean isValid()
 	{
 		int compare = this.validate();
-		return compare != INVALID && compare < 0;
+		return compare == -1;
 	}
 	
 	public boolean isCurrent()
@@ -135,9 +148,22 @@ public class Update
 	
 	public String getStatus()
 	{
-		if (!this.isValid())
+		this.validate();
+		if (this.compare == INVALID)
 		{
 			return I18n.getString("update.invalid");
+		}
+		else if (this.compare == OTHER_MC_VERSION)
+		{
+			return I18n.getString("update.other_mc_version");
+		}
+		else if (this.compare == 1)
+		{
+			return I18n.getString("update.behind");
+		}
+		else if (this.compare == 0)
+		{
+			return I18n.getString("update.sameversion");
 		}
 		else if (this.installStatus == -1)
 		{
