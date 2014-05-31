@@ -1,12 +1,13 @@
 package clashsoft.cslib.config;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import clashsoft.cslib.config.parser.ConfigParser;
+import clashsoft.cslib.config.parser.ConfigParserManager;
 import clashsoft.cslib.io.CSFiles;
+import clashsoft.cslib.src.parser.ParserManager;
+
 
 public class ConfigCategory
 {
@@ -40,7 +41,7 @@ public class ConfigCategory
 	public <T> T getOption(String name)
 	{
 		if (this.options == null)
-			this.options = new HashMap();
+			this.options = new TreeMap();
 		return (T) this.options.get(name);
 	}
 	
@@ -90,7 +91,7 @@ public class ConfigCategory
 	public void addOption(String name, String comment, Object value)
 	{
 		if (this.options == null)
-			this.options = new HashMap();
+			this.options = new TreeMap();
 		this.options.put(name, value);
 		this.hasChanged = true;
 		
@@ -102,7 +103,7 @@ public class ConfigCategory
 		ConfigCategory category = new ConfigCategory(this, name);
 		
 		if (this.subCategories == null)
-			this.subCategories = new HashMap();
+			this.subCategories = new TreeMap();
 		this.subCategories.put(name, category);
 		this.hasChanged = true;
 		
@@ -135,9 +136,8 @@ public class ConfigCategory
 	
 	public void load(File file)
 	{
-		List<String> lines = CSFiles.readLines(file);
-		if (lines != null)
-			this.read(lines, 0);
+		String text = CSFiles.read(file);
+		this.read(text);
 	}
 	
 	public void write(StringBuilder buffer, String prefix)
@@ -196,6 +196,13 @@ public class ConfigCategory
 		buffer.append(prefix).append("# ").append(comment).append(" #").append('\n');
 		buffer.append(prefix).append(chars).append('\n');
 		buffer.append(prefix).append('\n');
+	}
+	
+	public void read(String text)
+	{
+		ConfigParser parser = new ConfigParser(this);
+		ParserManager manager = new ConfigParserManager(parser);
+		manager.parse(text);
 	}
 	
 	public void read(List<String> lines, int i)
@@ -263,7 +270,7 @@ public class ConfigCategory
 		this.hasChanged = false;
 	}
 	
-	protected static Object parseObject(String type, String value)
+	public static Object parseObject(String type, String value)
 	{
 		if (type.startsWith("S"))
 			return value;
