@@ -54,10 +54,6 @@ public class ItemStackHashingStrategy implements HashingStrategy<ItemStack>
 		{
 			return true;
 		}
-		if (o1 == null != (o2 == null))
-		{
-			return false;
-		}
 		if (o1.getClass() != o2.getClass())
 		{
 			return false;
