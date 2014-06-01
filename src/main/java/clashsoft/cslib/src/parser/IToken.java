@@ -22,6 +22,8 @@ public interface IToken
 	
 	public boolean hasNext();
 	
+	public void setIndex(int index);
+	
 	public void setPrev(IToken prev);
 	
 	public void setNext(IToken next);

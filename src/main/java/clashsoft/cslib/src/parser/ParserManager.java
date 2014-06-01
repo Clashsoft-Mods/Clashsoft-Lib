@@ -9,6 +9,11 @@ public class ParserManager
 {
 	protected Parser	currentParser;
 	
+	public ParserManager()
+	{
+		this(Parser.rootParser);
+	}
+	
 	/**
 	 * Creates a new {@link ParserManager} with the given {@link Parser}
 	 * {@code parser} as the current parser, and calls the parser's
@@ -58,9 +63,37 @@ public class ParserManager
 	 */
 	public final void parse(String code)
 	{
-		IToken token = CSSource.tokenize(code);
+		IToken first = CSSource.tokenize(code);
+		IToken token = first;
 		try
 		{
+			boolean removed = false;
+			while (token.hasNext())
+			{
+				IToken next = token.next();
+				if (!this.retainToken(token.value(), token))
+				{
+					IToken prev = token.prev();
+					prev.setNext(next);
+					next.setPrev(prev);
+					removed = true;
+				}
+				token = next;
+			}
+			
+			if (removed)
+			{
+				token = first;
+				int index = 0;
+				while (token.hasNext())
+				{
+					token.setIndex(index);
+					token = token.next();
+					index++;
+				}
+			}
+			
+			token = first;
 			while (token.hasNext())
 			{
 				try
@@ -78,6 +111,11 @@ public class ParserManager
 		{
 			ex.print(System.err, code, token);
 		}
+	}
+	
+	public boolean retainToken(String value, IToken token)
+	{
+		return true;
 	}
 	
 	/**

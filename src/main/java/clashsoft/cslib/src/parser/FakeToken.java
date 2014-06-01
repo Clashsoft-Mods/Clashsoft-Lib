@@ -58,6 +58,11 @@ public class FakeToken implements IToken
 	}
 	
 	@Override
+	public void setIndex(int index)
+	{
+	}
+	
+	@Override
 	public void setPrev(IToken token)
 	{
 		this.prev = token;

@@ -7,7 +7,7 @@ public class Token implements IToken
 	private IToken			prev;
 	private IToken			next;
 	
-	private final int		index;
+	private int				index;
 	private final String	value;
 	private final int		start;
 	private final int		end;
@@ -90,6 +90,12 @@ public class Token implements IToken
 	public boolean hasPrev()
 	{
 		return this.prev != null;
+	}
+	
+	@Override
+	public void setIndex(int index)
+	{
+		this.index = index;
 	}
 	
 	@Override
