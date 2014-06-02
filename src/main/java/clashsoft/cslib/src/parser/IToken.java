@@ -4,19 +4,22 @@ import clashsoft.cslib.src.SyntaxException;
 
 public interface IToken
 {
-	public byte	TYPE_IDENTIFIER	= 1;
-	public byte	TYPE_SYMBOL		= 2;
-	public byte	TYPE_BRACKET	= 3;
+	public byte	TYPE_IDENTIFIER		= 1;
+	public byte	TYPE_SYMBOL			= 2;
+	public byte	TYPE_BRACKET		= 3;
 	
-	public byte	TYPE_INT		= 4;
-	public byte	TYPE_INT_HEX	= 5;
-	public byte	TYPE_INT_BIN	= 6;
+	public byte	TYPE_INT			= 4;
+	public byte	TYPE_INT_HEX		= 5;
+	public byte	TYPE_INT_BIN		= 6;
 	
-	public byte	TYPE_FLOAT		= 7;
-	public byte	TYPE_FLOAT_HEX	= 8;
+	public byte	TYPE_FLOAT			= 7;
+	public byte	TYPE_FLOAT_HEX		= 8;
 	
-	public byte	TYPE_STRING		= 9;
-	public byte	TYPE_CHAR		= 10;
+	public byte	TYPE_STRING			= 9;
+	public byte	TYPE_CHAR			= 10;
+	
+	public byte	TYPE_LINE_COMMENT	= 11;
+	public byte	TYPE_BLOCK_COMMENT	= 12;
 	
 	public String value() throws SyntaxException;
 	

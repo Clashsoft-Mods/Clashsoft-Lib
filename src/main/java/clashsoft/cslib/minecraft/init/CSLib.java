@@ -59,7 +59,18 @@ public class CSLib extends ClashsoftMod
 	{
 		instance.preInit(event);
 		
-		String code = "public static void main(String[] args) { for (int i = 0; i < 10; i++) { float f = 3.5F + i; System.out.println(f); String s = \"TEST\"; char c = 't'; } }";
+		String code = "public static void main(String[] args)"
+				+ "{\n"
+				+ "for (int i = 0; i /* Hi this is a comment */ < 10; i++)\n"
+				+ "# This is a line comment \n"
+				+ "// This is another line comment\n"
+				+ "{"
+				+ "float f = 3.5F + i;"
+				+ "System.out.println(f);"
+				+ "String s = \"TEST\";"
+				+ "char c = 't';"
+				+ "}"
+				+ "}";
 		Tokenizer tokenizer = new Tokenizer(code);
 		tokenizer.tokenize();
 		

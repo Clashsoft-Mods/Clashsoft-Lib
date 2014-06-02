@@ -13,9 +13,6 @@ public class Tokenizer implements Iterable<IToken>, Iterator<IToken>
 	protected IToken		first;
 	protected IToken		current;
 	
-	protected boolean		skipLineComments;
-	protected boolean		skipComments;
-	
 	public Tokenizer(String code)
 	{
 		this.code = code;
@@ -29,11 +26,10 @@ public class Tokenizer implements Iterable<IToken>, Iterator<IToken>
 		StringBuilder buf = new StringBuilder(20);
 		Token first = new Token(-1, "", (byte) 0, -1, -1);
 		Token prev = first;
-		int index = 0;
 		int start = 0;
 		
-		char c = 0;
 		char l = 0;
+		char c = 0;
 		byte mode = 0;
 		boolean addToken = false;
 		boolean reparse = true;
@@ -44,34 +40,13 @@ public class Tokenizer implements Iterable<IToken>, Iterator<IToken>
 			if (mode == 0)
 			{
 				start = i;
-				if (c == '"')
+				
+				if (isWhitespace(c))
 				{
-					mode = TYPE_STRING;
+					continue;
 				}
-				else if (c == '\'')
-				{
-					mode = TYPE_CHAR;
-				}
-				else if (isDigit(c))
-				{
-					mode = TYPE_INT;
-				}
-				else if (isIdentifierPart(c))
-				{
-					mode = TYPE_IDENTIFIER;
-				}
-				else if (isBracket(c))
-				{
-					mode = TYPE_BRACKET;
-				}
-				else if (isSymbol(c))
-				{
-					mode = TYPE_SYMBOL;
-				}
-				else
-				{
-					buf.append(c);
-				}
+				
+				mode = getMode(c, code, i);
 			}
 			
 			if (mode == TYPE_IDENTIFIER)
@@ -101,6 +76,22 @@ public class Tokenizer implements Iterable<IToken>, Iterator<IToken>
 				buf.append(c);
 				addToken = true;
 				reparse = false;
+			}
+			else if (mode == TYPE_LINE_COMMENT)
+			{
+				if (c == '\n')
+				{
+					mode = 0;
+					continue;
+				}
+			}
+			else if (mode == TYPE_BLOCK_COMMENT)
+			{
+				if (l == '*' && c == '/')
+				{
+					mode = 0;
+					continue;
+				}
 			}
 			else if (mode == TYPE_INT)
 			{
@@ -247,6 +238,48 @@ public class Tokenizer implements Iterable<IToken>, Iterator<IToken>
 		this.current = this.first;
 	}
 	
+	private static byte getMode(char c, String code, int i)
+	{
+		if (c == '"')
+		{
+			return TYPE_STRING;
+		}
+		else if (c == '\'')
+		{
+			return TYPE_CHAR;
+		}
+		else if (c == '#')
+		{
+			return TYPE_LINE_COMMENT;
+		}
+		else if (c == '/')
+		{
+			char n = code.charAt(i + 1);
+			if (n == '*')
+				return TYPE_BLOCK_COMMENT;
+			else if (n == '/')
+				return TYPE_LINE_COMMENT;
+			return getMode(c, code, i + 1);
+		}
+		else if (isDigit(c))
+		{
+			return TYPE_INT;
+		}
+		else if (isIdentifierPart(c))
+		{
+			return TYPE_IDENTIFIER;
+		}
+		else if (isBracket(c))
+		{
+			return TYPE_BRACKET;
+		}
+		else if (isSymbol(c))
+		{
+			return TYPE_SYMBOL;
+		}
+		return 0;
+	}
+	
 	private static Token addToken(Token prev, String s, byte type, int start, int end)
 	{
 		Token t = new Token(prev.index() + 1, s, type, start, end);
@@ -260,6 +293,11 @@ public class Tokenizer implements Iterable<IToken>, Iterator<IToken>
 		String s = buf.toString();
 		buf.delete(0, buf.length());
 		return addToken(prev, s, type, start, end);
+	}
+	
+	protected static boolean isWhitespace(char c)
+	{
+		return c == 0 || c == ' ' || c == '\t' || c == '\n' || c == '\r';
 	}
 	
 	protected static boolean isBracket(char c)
