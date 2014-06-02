@@ -73,7 +73,16 @@ public abstract class BaseMod<N extends CSNetHandler>
 		this.version = version;
 		
 		this.logoFile = "/" + this.modID + "/logo.png";
-		this.isClient = proxy == null ? clientSide : proxy.isClient();
+		
+		if (proxy == null)
+		{
+			CSLog.warning("The proxy of the mod %s (%s) is null. Is this a bug?", name, modID);
+			this.isClient = clientSide;
+		}
+		else
+		{
+			this.isClient = proxy.isClient();
+		}
 	}
 	
 	public static <T extends BaseProxy> T createProxy(String clientClass, String serverClass)
