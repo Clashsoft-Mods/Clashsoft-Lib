@@ -139,8 +139,6 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 			EntityPlayer player = this.getClientPlayer();
 			pkt.handleClient(player);
 		}
-		
-		out.add(pkt);
 	}
 	
 	/**
