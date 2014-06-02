@@ -12,7 +12,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import clashsoft.cslib.src.parser.IToken;
-import clashsoft.cslib.src.parser.Token;
 import clashsoft.cslib.util.CSString;
 
 public class CSSource extends CSString
@@ -58,109 +57,11 @@ public class CSSource extends CSString
 		return 0;
 	}
 	
-	public static final IToken tokenize(String code)
+	public static IToken tokenize(String code)
 	{
-		int len = code.length();
-		StringBuilder buf = new StringBuilder(20);
-		Token first = new Token(-1, "", 0, 0);
-		Token prev = first;
-		int index = 0;
-		int start = 0;
-		
-		char c = 0;
-		char l = code.charAt(0);
-		boolean quote = false;
-		boolean quote2 = false;
-		for (int i = 1; i < len; ++i)
-		{
-			c = code.charAt(i);
-			
-			if (l != '\\')
-			{
-				if (c == '"')
-				{
-					buf.append(c);
-					if (quote)
-					{
-						addToken(prev, buf, index++, start, i);
-						start = i + 1;
-					}
-					quote = !quote;
-				}
-				else if (c == '\'')
-				{
-					buf.append(c);
-					if (quote2)
-					{
-						addToken(prev, buf, index++, start, i);
-						start = i + 1;
-					}
-					quote2 = !quote2;
-				}
-				else if (quote || quote2)
-				{
-					buf.append(c);
-				}
-				else
-				{
-					if (!isWhitespace(c))
-					{
-						if (!isSameType(c, l) && buf.length() > 0)
-						{
-							prev = addToken(prev, buf, index++, start, i);
-							start = i + 1;
-						}
-						buf.append(c);
-					}
-					else if (buf.length() > 0)
-					{
-						prev = addToken(prev, buf, index++, start, i);
-						start = i + 1;
-					}
-				}
-			}
-			
-			l = c;
-		}
-		
-		return first.next();
-	}
-	
-	private static Token addToken(IToken prev, String s, int index, int start, int end)
-	{
-		Token t = new Token(index, s, start, end);
-		prev.setNext(t);
-		t.setPrev(prev);
-		return t;
-	}
-	
-	private static Token addToken(IToken prev, StringBuilder buf, int index, int start, int end)
-	{
-		String s = buf.toString();
-		buf.delete(0, buf.length());
-		return addToken(prev, s, index, start, end);
-	}
-	
-	private static boolean isWhitespace(char c)
-	{
-		return c == ' ' || c == '\t' || c == '\r';
-	}
-	
-	private static boolean isSameType(char c1, char c2)
-	{
-		if (c1 == c2)
-		{
-			return true;
-		}
-		if (c1 == '\n' ^ c2 == '\n')
-		{
-			return false;
-		}
-		if (c1 == '.' ^ c2 == '.')
-		{
-			return false;
-		}
-		return Character.isJavaIdentifierPart(c1) == Character.isJavaIdentifierPart(c2);
+		Tokenizer tokenizer = new Tokenizer(code);
+		tokenizer.tokenize();
+		return tokenizer.first;
 	}
 	
 	public static List<String> codeSplit(String text, char split)

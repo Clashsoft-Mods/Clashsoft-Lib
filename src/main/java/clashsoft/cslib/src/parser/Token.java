@@ -2,6 +2,8 @@ package clashsoft.cslib.src.parser;
 
 import java.util.Objects;
 
+import clashsoft.cslib.src.SyntaxException;
+
 public class Token implements IToken
 {
 	private IToken			prev;
@@ -9,21 +11,24 @@ public class Token implements IToken
 	
 	private int				index;
 	private final String	value;
+	private final byte type;
 	private final int		start;
 	private final int		end;
 	
-	public Token(int index, String value, String code)
+	public Token(int index, String value, byte type, String code)
 	{
 		this.index = index;
 		this.value = value;
+		this.type = type;
 		this.start = code.indexOf(value);
 		this.end = this.start + value.length();
 	}
 	
-	public Token(int index, String value, int start, int end)
+	public Token(int index, String value, byte type, int start, int end)
 	{
 		this.index = index;
 		this.value = value;
+		this.type = type;
 		this.start = start;
 		this.end = end;
 	}
@@ -32,6 +37,12 @@ public class Token implements IToken
 	public String value()
 	{
 		return this.value;
+	}
+	
+	@Override
+	public byte type() throws SyntaxException
+	{
+		return this.type;
 	}
 	
 	@Override
