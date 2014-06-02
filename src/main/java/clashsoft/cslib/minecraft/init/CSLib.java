@@ -29,19 +29,13 @@ public class CSLib extends ClashsoftMod
 	public static final String	VERSION				= CSUpdate.CURRENT_VERSION + "-2.0.0";
 	public static final String	DEPENDENCY			= "required-after:" + MODID;
 	
-	public static CSLib			instance;
-	public static CSLibProxy	proxy;
+	public static CSLib			instance			= new CSLib();
+	public static CSLibProxy	proxy				= createProxy("clashsoft.cslib.minecraft.client.CSLibClientProxy", "clashsoft.cslib.minecraft.common.CSLibProxy");
 	
 	public static boolean		printUpdateNotes	= false;
 	public static boolean		updateCheck			= true;
 	public static boolean		autoUpdate			= true;
 	public static boolean		enableMOTD			= true;
-	
-	static
-	{
-		instance = new CSLib();
-		proxy = createProxy("clashsoft.cslib.minecraft.client.CSLibClientProxy", "clashsoft.cslib.minecraft.common.CSLibProxy");
-	}
 	
 	public CSLib()
 	{
@@ -59,18 +53,7 @@ public class CSLib extends ClashsoftMod
 	{
 		instance.preInit(event);
 		
-		String code = "public static void main(String[] args)"
-				+ "{\n"
-				+ "for (int i = 0; i /* Hi this is a comment */ < 10; i++)\n"
-				+ "# This is a line comment \n"
-				+ "// This is another line comment\n"
-				+ "{"
-				+ "float f = 3.5F + i;"
-				+ "System.out.println(f);"
-				+ "String s = \"TEST\";"
-				+ "char c = 't';"
-				+ "}"
-				+ "}";
+		String code = "public static void main(String[] args)" + "{\n" + "for (int i = 0; i /* Hi this is a comment */ < 10; i++)\n" + "# This is a line comment \n" + "// This is another line comment\n" + "{" + "float f = 3.5F + i;" + "System.out.println(f);" + "String s = \"TEST\";" + "char c = 't';" + "}" + "}";
 		Tokenizer tokenizer = new Tokenizer(code);
 		tokenizer.tokenize();
 		
