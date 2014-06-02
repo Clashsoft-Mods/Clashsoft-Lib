@@ -26,6 +26,12 @@ public class FakeToken implements IToken
 	}
 	
 	@Override
+	public boolean isType(byte type) throws SyntaxException
+	{
+		throw new SyntaxException("No token!");
+	}
+	
+	@Override
 	public int index() throws SyntaxException
 	{
 		throw new SyntaxException("No token!");

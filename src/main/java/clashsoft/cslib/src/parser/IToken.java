@@ -27,6 +27,8 @@ public interface IToken
 	
 	public boolean equals(String value) throws SyntaxException;
 	
+	public boolean isType(byte type) throws SyntaxException;
+	
 	public int index() throws SyntaxException;
 	
 	public int start() throws SyntaxException;

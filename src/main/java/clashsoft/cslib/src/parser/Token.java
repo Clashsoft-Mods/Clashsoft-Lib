@@ -11,7 +11,7 @@ public class Token implements IToken
 	
 	private int				index;
 	private final String	value;
-	private final byte type;
+	private final byte		type;
 	private final int		start;
 	private final int		end;
 	
@@ -49,6 +49,12 @@ public class Token implements IToken
 	public boolean equals(String value)
 	{
 		return Objects.equals(this.value, value);
+	}
+	
+	@Override
+	public boolean isType(byte type) throws SyntaxException
+	{
+		return this.type == type;
 	}
 	
 	@Override
