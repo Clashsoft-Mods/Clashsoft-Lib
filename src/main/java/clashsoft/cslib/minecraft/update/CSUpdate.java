@@ -239,7 +239,7 @@ public class CSUpdate
 			ints2[i] = versionNumber(split2[i]);
 		}
 		
-		for (int i = len - 1; i >= 0; i--)
+		for (int i = 0; i < len; i++)
 		{
 			int compare = Integer.compare(ints1[i], ints2[i]);
 			if (compare != 0)
