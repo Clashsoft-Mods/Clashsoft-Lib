@@ -8,7 +8,6 @@ import clashsoft.cslib.minecraft.common.CSLibProxy;
 import clashsoft.cslib.minecraft.network.CSNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.util.Log4JLogger;
-import clashsoft.cslib.src.Tokenizer;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -52,12 +51,6 @@ public class CSLib extends ClashsoftMod
 	public static void libPreInit(FMLPreInitializationEvent event)
 	{
 		instance.preInit(event);
-		
-		String code = "public static void main(String[] args)" + "{\n" + "for (int i = 0; i /* Hi this is a comment */ < 10; i++)\n" + "# This is a line comment \n" + "// This is another line comment\n" + "{" + "float f = 3.5F + i;" + "System.out.println(f);" + "String s = \"TEST\";" + "char c = 't';" + "}" + "}";
-		Tokenizer tokenizer = new Tokenizer(code);
-		tokenizer.tokenize();
-		
-		System.out.println(tokenizer);
 	}
 	
 	public static void libInit(FMLInitializationEvent event)
