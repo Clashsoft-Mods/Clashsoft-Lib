@@ -49,12 +49,12 @@ public class CSUpdate
 	
 	public static String version(int major, int minor, int rev)
 	{
-		return String.format("%s_%d.%d.%d", CURRENT_VERSION, major, minor, rev);
+		return String.format("%s-%d.%d.%d", CURRENT_VERSION, major, minor, rev);
 	}
 	
 	public static String version(String version)
 	{
-		return String.format("%s_%s", CURRENT_VERSION, version);
+		return String.format("%s-%s", CURRENT_VERSION, version);
 	}
 	
 	public static List<Update> getUpdates(boolean invalidUpdates)
