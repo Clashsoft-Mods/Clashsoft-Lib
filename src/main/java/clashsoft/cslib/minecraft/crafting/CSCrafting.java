@@ -346,11 +346,13 @@ public class CSCrafting
 	 * 
 	 * @param output
 	 *            the output of the recipe
+	 * @return the amount of recipes removed
 	 */
-	public static void removeRecipe(ItemStack output)
+	public static int removeRecipe(ItemStack output)
 	{
 		Iterator<IRecipe> iterator = RECIPES.iterator();
 		IRecipe recipe;
+		int count = 0;
 		
 		while (iterator.hasNext())
 		{
@@ -359,8 +361,11 @@ public class CSCrafting
 			if (CSStacks.equals(output, stack))
 			{
 				iterator.remove();
+				count++;
 			}
 		}
+		
+		return count;
 	}
 	
 	/**
