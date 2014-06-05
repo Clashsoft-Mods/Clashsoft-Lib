@@ -57,9 +57,17 @@ public class CSItems
 						CSReflection.invoke(FMLControlledNamespacedRegistry.class, registry, new Object[] { id, registryName, newItem }, "addObjectRaw");
 						
 						// Replace stat list entries
-						CSReflection.setValue(StatCrafting.class, (StatCrafting) StatList.objectCraftStats[id], newItem, 0);
-						CSReflection.setValue(StatCrafting.class, (StatCrafting) StatList.objectUseStats[id], newItem, 0);
 						StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
+						if (stat != null)
+						{
+							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
+						}
+						stat = (StatCrafting) StatList.objectCraftStats[id];
+						if (stat != null)
+						{
+							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
+						}
+						stat = (StatCrafting) StatList.objectUseStats[id];
 						if (stat != null)
 						{
 							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
