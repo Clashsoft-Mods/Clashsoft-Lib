@@ -6,6 +6,11 @@ import java.util.ListIterator;
 
 import clashsoft.cslib.logging.CSLog;
 
+/**
+ * A Thread implementation that processes a queue of tasks.
+ * 
+ * @author Clashsoft
+ */
 public class CSThread extends Thread
 {
 	public static boolean		DEBUG		= true;
@@ -21,21 +26,21 @@ public class CSThread extends Thread
 	@Override
 	public void run()
 	{
-		this.info("Starting Thread " + this.getName());
+		info("Starting Thread " + this.getName());
 		
 		while (this.iterator.hasNext())
 		{
 			Task task = this.iterator.next();
-			this.info("  Starting Task " + task.name);
+			info("  Starting Task " + task.name);
 			task.run();
-			this.info("  Finished Task " + task.name);
+			info("  Finished Task " + task.name);
 			this.iterator.remove();
 		}
 		
-		this.info("Finished Thread " + this.getName());
+		info("Finished Thread " + this.getName());
 	}
 	
-	public void info(String string)
+	private static void info(String string)
 	{
 		if (DEBUG)
 		{
@@ -43,11 +48,24 @@ public class CSThread extends Thread
 		}
 	}
 	
+	/**
+	 * Adds a task to this thread. The task is added to the end of the queue,
+	 * and thus it becomes the last task to be processed.
+	 * 
+	 * @param task
+	 *            the task.
+	 */
 	public void addTask(Task task)
 	{
 		this.iterator.add(task);
 	}
 	
+	/**
+	 * Returns the amount of tasks this {@link CSThread} thread has to process
+	 * before finishing.
+	 * 
+	 * @return the amount of tasks
+	 */
 	public int getTaskCount()
 	{
 		return this.tasks.size();

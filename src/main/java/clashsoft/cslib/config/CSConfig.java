@@ -21,6 +21,15 @@ public class CSConfig
 	
 	private static Configuration	config;
 	
+	/**
+	 * Loads a config from the given {@link File} {@code file} and names it with
+	 * the given {@link String} {@code configName}.
+	 * 
+	 * @param configFile
+	 *            the config file
+	 * @param configName
+	 *            the name
+	 */
 	public static void loadConfig(File configFile, String configName)
 	{
 		CSLog.info("[Config] Loading config file " + configName + "...");
@@ -32,11 +41,20 @@ public class CSConfig
 		CSLog.info("[Config] Loaded config file " + configName);
 	}
 	
+	/**
+	 * Loads a config from the given {@link File} {@code file}.
+	 * 
+	 * @param configFile
+	 *            the config file
+	 */
 	public static void loadConfig(File configFile)
 	{
 		loadConfig(configFile, configFile.getName());
 	}
 	
+	/**
+	 * Saves the current config to the disk.
+	 */
 	public static void saveConfig()
 	{
 		CSLog.info("[Config] Saving config file " + configName + "...");
@@ -44,6 +62,19 @@ public class CSConfig
 		CSLog.info("[Config] Saved config file " + configName);
 	}
 	
+	/**
+	 * Returns the default description for the given {@link String} {@code key}
+	 * and the given {@link Object} {@code _default}.<br>
+	 * The description always has the format
+	 * <p>
+	 * [key]. Default: [_default]
+	 * 
+	 * @param key
+	 *            the key
+	 * @param _default
+	 *            the default value
+	 * @return the description
+	 */
 	public static String getDefaultDesc(String key, Object _default)
 	{
 		if (enableComments)
@@ -53,7 +84,11 @@ public class CSConfig
 		return null;
 	}
 	
-	public static void checkConfig()
+	/**
+	 * Checks if a config is currently loaded. If not, an
+	 * {@link IllegalStateException} is thrown.
+	 */
+	private static void checkConfig()
 	{
 		if (config == null)
 		{

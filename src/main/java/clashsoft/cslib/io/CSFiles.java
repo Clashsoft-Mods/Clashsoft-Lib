@@ -6,8 +6,23 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.List;
 
+/**
+ * A class for accessing files on the disk.
+ * 
+ * @author Clashsoft
+ */
 public class CSFiles
 {
+	/**
+	 * Writes the given {@link String} {@code text} to the given {@link File}
+	 * {@code file}.
+	 * 
+	 * @param file
+	 *            the file
+	 * @param text
+	 *            the text
+	 * @return true, if successful
+	 */
 	public static boolean write(File file, String text)
 	{
 		try
@@ -28,6 +43,16 @@ public class CSFiles
 		}
 	}
 	
+	/**
+	 * Writes the given {@link List} {@code lines} to the given {@link File}
+	 * {@code file}.
+	 * 
+	 * @param file
+	 *            the file
+	 * @param lines
+	 *            the lines
+	 * @return true, if successful
+	 */
 	public static boolean writeLines(File file, List<String> lines)
 	{
 		try
@@ -47,6 +72,15 @@ public class CSFiles
 		}
 	}
 	
+	/**
+	 * Reads the content of the the given {@link File} {@code file} and returns
+	 * it as a {@link String}. If the {@code file} does not exist, it returns
+	 * {@code null}.
+	 * 
+	 * @param file
+	 *            the file
+	 * @return the file content
+	 */
 	public static String read(File file)
 	{
 		try
@@ -66,6 +100,15 @@ public class CSFiles
 		}
 	}
 	
+	/**
+	 * Reads the content of the the given {@link File} {@code file} and returns
+	 * it as a {@link List} of lines. If the {@code file} does not exist, it
+	 * returns {@code null}.
+	 * 
+	 * @param file
+	 *            the file
+	 * @return the file content
+	 */
 	public static List<String> readLines(File file)
 	{
 		try

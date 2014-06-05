@@ -14,10 +14,10 @@ import java.nio.channels.ReadableByteChannel;
 public class CSWeb
 {
 	/**
-	 * Checks if the website is available.
+	 * Checks if the given website is available.
 	 * 
 	 * @param url
-	 *            the url
+	 *            the URL
 	 * @return true, if available
 	 */
 	public static boolean checkWebsiteAvailable(String url)
@@ -39,10 +39,11 @@ public class CSWeb
 	}
 	
 	/**
-	 * Reads a website or downloads its contents.
+	 * Reads the given website or downloads its contents and returns them as a
+	 * list of lines.
 	 * 
 	 * @param url
-	 *            the url
+	 *            the URL
 	 * @return the lines
 	 */
 	public static String[] readWebsite(String url)

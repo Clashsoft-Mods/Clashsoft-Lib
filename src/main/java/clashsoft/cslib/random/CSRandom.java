@@ -13,7 +13,6 @@ import clashsoft.cslib.util.CSString;
  */
 public class CSRandom
 {
-	
 	/**
 	 * Returns a random bounded int between min (inclusive) and max (exclusive),
 	 * the minimum result can be min and the maximum result can be max - 1.

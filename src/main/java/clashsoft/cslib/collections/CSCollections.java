@@ -110,7 +110,7 @@ public class CSCollections
 	}
 	
 	/**
-	 * Concats two lists
+	 * Concatenates two lists.
 	 * 
 	 * @param list1
 	 *            the first list
@@ -127,32 +127,34 @@ public class CSCollections
 	}
 	
 	/**
-	 * Removes all duplicates from a collection by using {@link HashSet}s
+	 * Removes all duplicates from the given {@link Collection}
+	 * {@code collection} by using {@link HashSet HashSets}.
 	 * 
 	 * @param collection
 	 *            the collection
 	 * @return the collection without duplicates
 	 */
-	public static <T> List<T> removeDuplicatesSet(List<T> collection)
+	public static <T> List<T> removeDuplicatesSet(Collection<T> collection)
 	{
-		if (collection != null && collection.size() > 0)
+		if (collection != null && !collection.isEmpty())
 		{
 			Set<T> set = new HashSet(collection);
 			return new ArrayList<T>(set);
 		}
-		return collection;
+		return Collections.EMPTY_LIST;
 	}
 	
 	/**
-	 * Removes all duplicates from a Collection
+	 * Removes all duplicates from the given {@link Collection}
+	 * {@code collection}.
 	 * 
 	 * @param collection
 	 *            the collection
 	 * @return the collection without duplicates
 	 */
-	public static <T> List<T> removeDuplicates(List<T> collection)
+	public static <T> List<T> removeDuplicates(Collection<T> collection)
 	{
-		if (collection != null && collection.size() > 0)
+		if (collection != null && !collection.isEmpty())
 		{
 			List<T> result = new ArrayList<T>();
 			for (T t1 : collection)
@@ -166,6 +168,7 @@ public class CSCollections
 					}
 					break;
 				}
+				
 				if (!duplicate)
 				{
 					result.add(t1);
@@ -174,11 +177,11 @@ public class CSCollections
 			
 			return result;
 		}
-		return collection;
+		return Collections.EMPTY_LIST;
 	}
 	
 	/**
-	 * Creates a new Array List from the array
+	 * Creates a new {@link ArrayList} from the given array.
 	 * 
 	 * @see CSArrays#asList(Object...)
 	 * @param array
@@ -191,7 +194,7 @@ public class CSCollections
 	}
 	
 	/**
-	 * Creates an array from the given {@code collection}
+	 * Creates an array from the given {@link Collection} {@code collection}
 	 * 
 	 * @see CSCollections#toArray(Class, Collection)
 	 * @param collection
@@ -204,9 +207,8 @@ public class CSCollections
 	}
 	
 	/**
-	 * Creates an array from the given {@code collection}
+	 * Creates an array from the given {@link Collection} {@code collection}
 	 * 
-	 * @see CSCollections#toArray(Class, Collection)
 	 * @param type
 	 *            the expected type
 	 * @param collection
@@ -221,7 +223,8 @@ public class CSCollections
 	}
 	
 	/**
-	 * Returns the first index of the {@code object} in the {@code list}
+	 * Returns the first index of the given {@link Object} {@code object} in the
+	 * given {@link List} {@code list}.
 	 * 
 	 * @param list
 	 *            the list
@@ -235,8 +238,8 @@ public class CSCollections
 	}
 	
 	/**
-	 * Returns the first index after {@code start} of the {@code object} in the
-	 * {@code list}
+	 * Returns the first index of the given {@link Object} {@code object} in the
+	 * given {@link List} {@code list}, starting from {@code start}.
 	 * 
 	 * @param list
 	 *            the list
@@ -259,7 +262,8 @@ public class CSCollections
 	}
 	
 	/**
-	 * Returns the last index of the {@code object} in the {@code list}
+	 * Returns the last index of the given {@link Object} {@code object} in the
+	 * given {@link List} {@code list}.
 	 * 
 	 * @param list
 	 *            the list
@@ -273,8 +277,8 @@ public class CSCollections
 	}
 	
 	/**
-	 * Returns the last index before {@code start} of the {@code object} in the
-	 * {@code list}
+	 * Returns the first index of the given {@link Object} {@code object} in the
+	 * given {@link List} {@code list}, starting from the given {@code start}.
 	 * 
 	 * @param list
 	 *            the list
@@ -297,8 +301,8 @@ public class CSCollections
 	}
 	
 	/**
-	 * Returns the first index of the any of the {@code objects} in the
-	 * {@code list}
+	 * Returns the first index of any of the given {@link Object Objects}
+	 * {@code objects} in the given {@link List} {@code list}.
 	 * 
 	 * @param list
 	 *            the list
@@ -320,7 +324,8 @@ public class CSCollections
 	}
 	
 	/**
-	 * Returns the last index of any of the {@code objects} in the {@code list}
+	 * Returns the last index of any of the given {@link Object Objects}
+	 * {@code objects} in the given {@link List} {@code list}.
 	 * 
 	 * @param list
 	 *            the list
@@ -342,7 +347,8 @@ public class CSCollections
 	}
 	
 	/**
-	 * Checks if {@code collection} contains the {@code object}.
+	 * Checks if the given {@link Collection} {@code collection} contains the
+	 * given {@link Object} {@code object}.
 	 * 
 	 * @param collection
 	 *            the collection
@@ -363,7 +369,8 @@ public class CSCollections
 	}
 	
 	/**
-	 * Checks if {@code collection} contains any of the {@code objects}.
+	 * Checks if the given {@link Collection} {@code collection} contains the
+	 * given {@link Object Object[]} {@code objects}.
 	 * 
 	 * @param collection
 	 *            the collection
@@ -384,7 +391,8 @@ public class CSCollections
 	}
 	
 	/**
-	 * Checks if {@code collection} contains all {@code objects}.
+	 * Checks if the given {@link Collection} {@code collection} contains all of
+	 * the given {@link Object Object[]} {@code objects}.
 	 * 
 	 * @param collection
 	 *            the collection

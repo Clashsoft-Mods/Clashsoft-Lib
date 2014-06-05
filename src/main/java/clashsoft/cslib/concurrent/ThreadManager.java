@@ -6,11 +6,28 @@ public class ThreadManager
 	public final int	cores;
 	private CSThread[]	threads;
 	
+	/**
+	 * Creates a new {@link ThreadManager} with the current amount of available
+	 * processors.
+	 * 
+	 * @param name
+	 *            the name
+	 */
 	public ThreadManager(String name)
 	{
 		this(name, Runtime.getRuntime().availableProcessors());
 	}
 	
+	/**
+	 * Creates a new {@link ThreadManager} with the given amount of available
+	 * processors. For each available processor, it creates an instance of
+	 * {@link CSThread}.
+	 * 
+	 * @param name
+	 *            the name
+	 * @param cores
+	 *            the amount of available processors
+	 */
 	public ThreadManager(String name, int cores)
 	{
 		this.name = name;
@@ -23,6 +40,12 @@ public class ThreadManager
 		}
 	}
 	
+	/**
+	 * Adds and constructs a task to the least occupied thread.
+	 * 
+	 * @param runnable
+	 *            the task
+	 */
 	public void addTask(Runnable runnable)
 	{
 		CSThread thread = this.getLeastOccupiedThread();
@@ -30,12 +53,24 @@ public class ThreadManager
 		thread.addTask(new Task(name, runnable));
 	}
 	
+	/**
+	 * Adds a task to the least occupied thread.
+	 * 
+	 * @param task
+	 *            the task
+	 */
 	public void addTask(Task task)
 	{
 		CSThread thread = this.getLeastOccupiedThread();
 		thread.addTask(task);
 	}
 	
+	/**
+	 * Returns the thread that currently has the least amount of tasks in it's
+	 * queue.
+	 * 
+	 * @return the least occupied thread
+	 */
 	public CSThread getLeastOccupiedThread()
 	{
 		CSThread[] threads = this.threads;
