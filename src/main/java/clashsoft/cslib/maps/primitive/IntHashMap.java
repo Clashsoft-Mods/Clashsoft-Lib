@@ -167,7 +167,7 @@ public class IntHashMap<V>
 		return entry2;
 	}
 	
-	private void createKey(int hash, long key, V object, int index)
+	private void createKey(int hash, int key, V object, int index)
 	{
 		Entry localEntry = this.hashArray[index];
 		this.hashArray[index] = new Entry(hash, key, object, localEntry);
@@ -179,12 +179,12 @@ public class IntHashMap<V>
 	
 	static class Entry<V>
 	{
-		final long	key;
+		final int	key;
 		final int	hash;
 		V			value;
 		Entry		next;
 		
-		protected Entry(int hash, long key, V value, Entry next)
+		protected Entry(int hash, int key, V value, Entry next)
 		{
 			this.value = value;
 			this.next = next;
@@ -192,7 +192,7 @@ public class IntHashMap<V>
 			this.hash = hash;
 		}
 		
-		public final long getKey()
+		public final int getKey()
 		{
 			return this.key;
 		}
