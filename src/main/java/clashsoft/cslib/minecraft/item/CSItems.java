@@ -33,61 +33,78 @@ import net.minecraftforge.common.util.EnumHelper;
  */
 public class CSItems
 {
-	public static boolean replaceItem(Item item, Item newItem)
+	/**
+	 * Creates a new {@link Item} of the {@link Class Type} {@code type} and the
+	 * {@link Object Object[]} {@code args} and then registers it under the name
+	 * {@code name}.
+	 * 
+	 * @param type
+	 *            the type
+	 * @param name
+	 *            the name
+	 * @param args
+	 *            the constructor arguments
+	 * @return the item instance
+	 */
+	public static <T extends Item> T createItem(Class<T> type, String name, Object... args)
 	{
-		long now = System.currentTimeMillis();
-		try
+		Class[] classes = new Class[args.length + 1];
+		
+		for (int i = 0; i < args.length; i++)
 		{
-			for (Field field : Items.class.getDeclaredFields())
+			if (args[i] != null)
 			{
-				if (Item.class.isAssignableFrom(field.getType()))
-				{
-					Item item1 = (Item) field.get(null);
-					if (item1 == item)
-					{
-						FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
-						String registryName = registry.getNameForObject(item1);
-						int id = Item.getIdFromItem(item1);
-						
-						// Set field
-						CSReflection.setModifier(field, Modifier.FINAL, false);
-						field.set(null, newItem);
-						
-						// Replace registry entry
-						CSReflection.invoke(FMLControlledNamespacedRegistry.class, registry, new Object[] { id, registryName, newItem }, "addObjectRaw");
-						
-						// Replace stat list entries
-						StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
-						if (stat != null)
-						{
-							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
-						}
-						stat = (StatCrafting) StatList.objectCraftStats[id];
-						if (stat != null)
-						{
-							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
-						}
-						stat = (StatCrafting) StatList.objectUseStats[id];
-						if (stat != null)
-						{
-							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
-						}
-						
-						now = System.currentTimeMillis() - now;
-						CSLog.info("Replace Item : %s (%s) with %s, took %d ms", new Object[] { field.getName(), item1.getClass().getSimpleName(), newItem.getClass().getSimpleName(), now });
-						
-						return true;
-					}
-				}
+				classes[i] = args[i].getClass();
+			}
+			else
+			{
+				classes[i] = Object.class;
 			}
 		}
-		catch (Exception e)
-		{
-			CSLog.error(e);
-		}
-		return false;
+		return createItem(type, name, classes, args);
 	}
 	
+	/**
+	 * Creates a new {@link Item} of the {@link Class Type} {@code type} and the
+	 * {@link Object Object[]} {@code args} of {@link Class Types}
+	 * {@code argsTypes} and then registers it under the name {@code name}.
+	 * 
+	 * @param type
+	 *            the type
+	 * @param name
+	 *            the name
+	 * @param argsTypes
+	 *            the types of the arguments
+	 * @param args
+	 *            the constructor arguments
+	 * @return the item instance
+	 */
+	public static <T extends Item> T createItem(Class<T> type, String name, Class[] argsTypes, Object... args)
+	{
+		T item = null;
+		
+		try
+		{
+			Constructor<T> c = type.getConstructor(argsTypes);
+			if (c != null)
+			{
+				item = c.newInstance(args);
+			}
+		}
+		catch (Throwable ex)
+		{
+			throw new RuntimeException(ex);
+		}
+		
+		return item;
+	}
+	
+	/**
+	 * Registers all {@link Item}s from the given {@link Class} {@code mod}.
+	 * 
+	 * @param mod
+	 *            the mod class
+	 */
 	public static void addAllItems(Class mod)
 	{
 		Item[] items = CSReflection.getStaticObjects(mod, Item.class, true);
@@ -98,6 +115,14 @@ public class CSItems
 		}
 	}
 	
+	/**
+	 * Registers the given {@link Item} {@code item}. This uses the unlocalized
+	 * name of the item to compute a registry name and then calls
+	 * {@link CSItem#addItem(Item, String)}.
+	 * 
+	 * @param item
+	 *            the item
+	 */
 	public static void addItem(Item item)
 	{
 		String name = item.getUnlocalizedName();
@@ -269,41 +294,68 @@ public class CSItems
 		return toolMaterial;
 	}
 	
-	public static <T extends Item> T createItem(Class<T> type, String name, Object... args)
+	/**
+	 * Replaces the given vanilla {@link Item} {@code item} with the
+	 * {@code newItem}.
+	 * 
+	 * @param item
+	 *            the item to replace
+	 * @param newItem
+	 *            the new item
+	 * @return true, if successful
+	 */
+	public static boolean replaceItem(Item item, Item newItem)
 	{
-		Class[] classes = new Class[args.length + 1];
-		
-		for (int i = 0; i < args.length; i++)
-		{
-			if (args[i] != null)
-			{
-				classes[i] = args[i].getClass();
-			}
-			else
-			{
-				classes[i] = Object.class;
-			}
-		}
-		return createItem(type, name, classes, args);
-	}
-	
-	public static <T extends Item> T createItem(Class<T> type, String name, Class[] argsTypes, Object... args)
-	{
-		T item = null;
-		
+		long now = System.currentTimeMillis();
 		try
 		{
-			Constructor<T> c = type.getConstructor(argsTypes);
-			if (c != null)
+			for (Field field : Items.class.getDeclaredFields())
 			{
-				item = c.newInstance(args);
+				if (Item.class.isAssignableFrom(field.getType()))
+				{
+					Item item1 = (Item) field.get(null);
+					if (item1 == item)
+					{
+						FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
+						String registryName = registry.getNameForObject(item1);
+						int id = Item.getIdFromItem(item1);
+						
+						// Set field
+						CSReflection.setModifier(field, Modifier.FINAL, false);
+						field.set(null, newItem);
+						
+						// Replace registry entry
+						CSReflection.invoke(FMLControlledNamespacedRegistry.class, registry, new Object[] { id, registryName, newItem }, "addObjectRaw");
+						
+						// Replace stat list entries
+						StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
+						if (stat != null)
+						{
+							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
+						}
+						stat = (StatCrafting) StatList.objectCraftStats[id];
+						if (stat != null)
+						{
+							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
+						}
+						stat = (StatCrafting) StatList.objectUseStats[id];
+						if (stat != null)
+						{
+							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
+						}
+						
+						now = System.currentTimeMillis() - now;
+						CSLog.info("Replace Item : %s (%s) with %s, took %d ms", new Object[] { field.getName(), item1.getClass().getSimpleName(), newItem.getClass().getSimpleName(), now });
+						
+						return true;
+					}
+				}
 			}
 		}
-		catch (Throwable ex)
+		catch (Exception e)
 		{
-			throw new RuntimeException(ex);
+			CSLog.error(e);
 		}
-		
-		return item;
+		return false;
 	}
 }

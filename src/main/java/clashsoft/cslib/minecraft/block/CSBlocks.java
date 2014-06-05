@@ -44,7 +44,7 @@ public class CSBlocks
 	
 	/**
 	 * Registers the given {@link Block} {@code block}. This uses the
-	 * unlocalized name of the block to compute a registry name and then class
+	 * unlocalized name of the block to compute a registry name and then calls
 	 * {@link CSBlocks#addBlock(Block, String)}.
 	 * 
 	 * @param block
