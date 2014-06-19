@@ -1,3 +1,9 @@
+1.7.2-2.1.1
+
++ Added FloatHashMaps and DoubleHashMaps
+* Bugfixes
+* Documentation
+
 1.7.2-2.1.0
 
 + Added new Tokenizer class
