@@ -1,9 +1,5 @@
 package clashsoft.cslib.minecraft.network;
 
-import java.io.IOException;
-
-import clashsoft.cslib.logging.CSLog;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -86,14 +82,7 @@ public abstract class CSPacket
 	 */
 	public final void writeItemStack(PacketBuffer buf, ItemStack stack)
 	{
-		try
-		{
-			buf.writeItemStackToBuffer(stack);
-		}
-		catch (IOException ioex)
-		{
-			CSLog.error(ioex);
-		}
+		buf.writeItemStackToBuffer(stack);
 	}
 	
 	/**
@@ -107,14 +96,6 @@ public abstract class CSPacket
 	 */
 	public final ItemStack readItemStack(PacketBuffer buf)
 	{
-		try
-		{
-			return buf.readItemStackFromBuffer();
-		}
-		catch (IOException ioex)
-		{
-			CSLog.error(ioex);
-		}
-		return null;
+		return buf.readItemStackFromBuffer();
 	}
 }
