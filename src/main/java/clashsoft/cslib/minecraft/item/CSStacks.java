@@ -1,10 +1,11 @@
 package clashsoft.cslib.minecraft.item;
 
+import clashsoft.cslib.minecraft.crafting.CSCrafting;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class CSStacks
 {
@@ -116,9 +117,24 @@ public class CSStacks
 	public static ItemStack	wheat					= new ItemStack(Items.wheat);
 	public static ItemStack	wither_skull			= new ItemStack(Items.skull, 1, 1);
 	
-	public static boolean equals(ItemStack stack1, ItemStack stack2)
+	public static boolean equals(ItemStack input, ItemStack target)
 	{
-		return OreDictionary.itemMatches(stack1, stack2, true);
+		if (input == target)
+		{
+			return true;
+		}
+		else if (input == null)
+		{
+			return target == null;
+		}
+		else if (target == null)
+		{
+			return false;
+		}
+		
+		int inputMetadata = input.getItemDamage();
+		int targetMetadata = target.getItemDamage();
+	    return target.getItem() == input.getItem() && (inputMetadata == targetMetadata || inputMetadata == CSCrafting.WILDCARD_VALUE || targetMetadata == CSCrafting.WILDCARD_VALUE);
 	}
 	
 	public static int mergeItemStack(ItemStack[] stacks, int start, ItemStack stack)
