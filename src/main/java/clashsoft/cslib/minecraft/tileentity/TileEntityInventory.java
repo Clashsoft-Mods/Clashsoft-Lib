@@ -140,6 +140,7 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
+		
 		this.itemStacks = new ItemStack[this.getSizeInventory()];
 		
 		NBTTagList list = nbt.getTagList("Items", 10);
@@ -159,6 +160,8 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
+		super.writeToNBT(nbt);
+		
 		NBTTagList list = new NBTTagList();
 		
 		for (int i = 0; i < this.itemStacks.length; ++i)
