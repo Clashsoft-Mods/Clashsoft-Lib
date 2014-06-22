@@ -15,6 +15,7 @@ public abstract class Parser<T>
 	
 	private Parser				parent;
 	protected int				modifiers;
+	protected int mode;
 	
 	public Parser()
 	{
@@ -60,6 +61,16 @@ public abstract class Parser<T>
 			return true;
 		}
 		return false;
+	}
+	
+	public void setMode(int mode)
+	{
+		this.mode = mode;
+	}
+	
+	public int getMode()
+	{
+		return this.mode;
 	}
 	
 	public void begin(ParserManager pm)

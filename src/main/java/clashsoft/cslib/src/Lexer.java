@@ -7,13 +7,13 @@ import java.util.Iterator;
 import clashsoft.cslib.src.parser.IToken;
 import clashsoft.cslib.src.parser.Token;
 
-public class Tokenizer implements Iterable<IToken>, Iterator<IToken>
+public class Lexer implements Iterable<IToken>, Iterator<IToken>
 {
 	protected final String	code;
 	protected IToken		first;
 	protected IToken		current;
 	
-	public Tokenizer(String code)
+	public Lexer(String code)
 	{
 		this.code = code;
 	}

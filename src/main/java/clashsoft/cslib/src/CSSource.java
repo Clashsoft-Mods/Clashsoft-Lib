@@ -59,7 +59,7 @@ public class CSSource extends CSString
 	
 	public static IToken tokenize(String code)
 	{
-		Tokenizer tokenizer = new Tokenizer(code);
+		Lexer tokenizer = new Lexer(code);
 		tokenizer.tokenize();
 		return tokenizer.first;
 	}
