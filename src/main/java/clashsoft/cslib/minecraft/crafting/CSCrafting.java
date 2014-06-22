@@ -33,7 +33,8 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class CSCrafting
 {
-	private static final List<IRecipe>	RECIPES	= CraftingManager.getInstance().getRecipeList();
+	private static final List<IRecipe>	RECIPES			= CraftingManager.getInstance().getRecipeList();
+	public static final int				WILDCARD_VALUE	= OreDictionary.WILDCARD_VALUE;
 	
 	/**
 	 * Registers the given {@link IRecipe} {@code recipe}.
@@ -158,6 +159,38 @@ public class CSCrafting
 	public static void addShapelessRecipe(ItemStack output, Object... recipe)
 	{
 		GameRegistry.addShapelessRecipe(output, recipe);
+	}
+	
+	/**
+	 * Adds a new furnace recipe to the game.
+	 * 
+	 * @param input
+	 *            the input
+	 * @param output
+	 *            the output
+	 * @param experience
+	 *            the experience
+	 * @see FurnaceRecipes#addSmelting(int, int ItemStack, float)
+	 */
+	public static void addFurnaceRecipe(Item input, ItemStack output, float experience)
+	{
+		addFurnaceRecipe(new ItemStack(input), output, experience);
+	}
+	
+	/**
+	 * Adds a new furnace recipe to the game.
+	 * 
+	 * @param input
+	 *            the input
+	 * @param output
+	 *            the output
+	 * @param experience
+	 *            the experience
+	 * @see FurnaceRecipes#addSmelting(int, int ItemStack, float)
+	 */
+	public static void addFurnaceRecipe(Block input, ItemStack output, float experience)
+	{
+		addFurnaceRecipe(new ItemStack(input, 1, OreDictionary.WILDCARD_VALUE), output, experience);
 	}
 	
 	/**
