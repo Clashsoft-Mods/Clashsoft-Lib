@@ -51,7 +51,7 @@ public class ParserManager
 	 * Starts parsing the given {@link String Code} {@code code}. The code is
 	 * tokenized using {@link CSSource#tokenize(String)} and then
 	 * {@link #parse(IToken)} is called on each token. When a
-	 * {@link SyntaxException} occurs, it gets printed to the standart error
+	 * {@link SyntaxException} occurs, it gets printed to the standard error
 	 * output {@link System#err} using
 	 * {@link SyntaxException#print(PrintStream, String, IToken)}
 	 * 
@@ -61,9 +61,13 @@ public class ParserManager
 	 * @param code
 	 *            the code.
 	 */
-	public final void parse(String code)
+	public void parse(String code)
 	{
-		IToken first = CSSource.tokenize(code);
+		this.parse(code, CSSource.tokenize(code));
+	}
+		
+	public final void parse(String code, IToken first)
+	{
 		IToken token = first;
 		try
 		{
@@ -98,7 +102,7 @@ public class ParserManager
 			{
 				try
 				{
-					this.parse(token.value(), token);
+					this.parseToken(token.value(), token);
 				}
 				catch (SyntaxException ex)
 				{
@@ -113,6 +117,16 @@ public class ParserManager
 		}
 	}
 	
+	/**
+	 * Returns true if the given {@link IToken} {@code token} should be parsed.
+	 * If not, it gets removed from the Token Chain.
+	 * 
+	 * @param value
+	 *            the value of the token
+	 * @param token
+	 *            the token
+	 * @return true, if the token should be parser
+	 */
 	public boolean retainToken(String value, IToken token)
 	{
 		return true;
@@ -130,9 +144,12 @@ public class ParserManager
 	 * @throws SyntaxException
 	 *             syntax errors
 	 */
-	public void parse(String value, IToken token) throws SyntaxException
+	public void parseToken(String value, IToken token) throws SyntaxException
 	{
-		this.currentParser.parse(this, value, token);
+		if (!this.currentParser.parse(this, value, token))
+		{
+			throw new SyntaxException("Invalid token '" + value + "'");
+		}
 	}
 	
 	/**

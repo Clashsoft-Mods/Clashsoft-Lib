@@ -1,6 +1,5 @@
 package clashsoft.cslib.src.parser;
 
-import clashsoft.cslib.src.CSSource;
 import clashsoft.cslib.src.SyntaxException;
 
 public abstract class Parser<T>
@@ -8,8 +7,9 @@ public abstract class Parser<T>
 	public static final Parser	rootParser	= new Parser()
 											{
 												@Override
-												public void parse(ParserManager pm, String value, IToken token) throws SyntaxException
+												public boolean parse(ParserManager pm, String value, IToken token) throws SyntaxException
 												{
+													return false;
 												}
 											};
 	
@@ -53,7 +53,7 @@ public abstract class Parser<T>
 	{
 	}
 	
-	public abstract void parse(ParserManager pm, String value, IToken token) throws SyntaxException;
+	public abstract boolean parse(ParserManager pm, String value, IToken token) throws SyntaxException;
 	
 	public void end(ParserManager pm)
 	{
