@@ -14,8 +14,7 @@ public abstract class Parser<T>
 											};
 	
 	private Parser				parent;
-	protected int				modifiers;
-	protected int mode;
+	protected int				mode;
 	
 	public Parser()
 	{
@@ -38,29 +37,6 @@ public abstract class Parser<T>
 		{
 			this.parent = parent;
 		}
-	}
-	
-	public int addModifier(int mod)
-	{
-		this.modifiers |= mod;
-		return this.modifiers;
-	}
-	
-	public int removeModifier(int mod)
-	{
-		this.modifiers &= ~mod;
-		return this.modifiers;
-	}
-	
-	public boolean checkModifier(String token)
-	{
-		int mod = CSSource.parseModifier(token);
-		if (mod != 0)
-		{
-			this.addModifier(mod);
-			return true;
-		}
-		return false;
 	}
 	
 	public void setMode(int mode)
