@@ -15,7 +15,7 @@ public class ConfigParserManager extends ParserManager
 	}
 	
 	@Override
-	public void parse(String value, IToken token) throws SyntaxException
+	public void parseToken(String value, IToken token) throws SyntaxException
 	{
 		if ("#".equals(value))
 		{

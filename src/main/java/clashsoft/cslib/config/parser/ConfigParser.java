@@ -19,7 +19,7 @@ public class ConfigParser extends Parser<ConfigCategory>
 	}
 	
 	@Override
-	public void parse(ParserManager pm, String value, IToken token) throws SyntaxException
+	public boolean parse(ParserManager pm, String value, IToken token) throws SyntaxException
 	{
 		if ("{".equals(value))
 		{
@@ -30,18 +30,22 @@ public class ConfigParser extends Parser<ConfigCategory>
 				pm.pushParser(new ConfigParser(sub));
 				this.name = "";
 			}
+			return true;
 		}
 		else if ("}".equals(value))
 		{
 			pm.popParser();
+			return true;
 		}
 		else if (":".equals(token.next().value()))
 		{
 			pm.pushParser(new OptionParser(this.config), token);
+			return true;
 		}
 		else
 		{
 			this.name += value + " ";
+			return true;
 		}
 	}
 }

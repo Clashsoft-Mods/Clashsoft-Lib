@@ -21,16 +21,18 @@ public class OptionParser extends Parser<ConfigCategory>
 	}
 	
 	@Override
-	public void parse(ParserManager pm, String value, IToken token) throws SyntaxException
+	public boolean parse(ParserManager pm, String value, IToken token) throws SyntaxException
 	{
 		if (":".equals(value))
 		{
 			this.type = token.prev().value();
+			return true;
 		}
 		else if ("=".equals(value))
 		{
 			this.name = token.prev().value();
 			this.value = token.next().value();
+			return true;
 		}
 		else if (this.value != null)
 		{
@@ -38,6 +40,8 @@ public class OptionParser extends Parser<ConfigCategory>
 			this.category.addOption(this.name, this.comment, obj);
 			
 			pm.popParser();
+			return true;
 		}
+		return false;
 	}
 }
