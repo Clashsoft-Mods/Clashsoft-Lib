@@ -197,7 +197,7 @@ public class ParserManager
 		}
 	}
 	
-	public void popParser(Token token) throws SyntaxException
+	public void popParser(IToken token) throws SyntaxException
 	{
 		this.popParser();
 		if (this.currentParser != null)
