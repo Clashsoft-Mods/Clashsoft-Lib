@@ -29,7 +29,7 @@ public class CSSource extends CSString
 	
 	public static int parseModifier(String s)
 	{
-		switch (s)
+		switch (s)//Fixme: incompatible types
 		{
 		case "public":
 			return Modifier.PUBLIC;
