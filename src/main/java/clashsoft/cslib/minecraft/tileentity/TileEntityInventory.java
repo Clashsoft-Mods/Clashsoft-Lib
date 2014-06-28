@@ -104,7 +104,14 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 	@Override
 	public String getInventoryName()
 	{
-		return this.hasCustomInventoryName() ? this.name : this.blockType.getUnlocalizedName();
+		if (this.name != null && !this.name.isEmpty())
+		{
+			return this.name;
+		}
+		else
+		{
+			return new ItemStack(this.blockType, 1, this.blockMetadata).getDisplayName();
+		}
 	}
 	
 	@Override
