@@ -1,3 +1,12 @@
+1.7.2-2.1.2
+
++ Added ItemStackHashMap
+* Renamed Tokenizer to Lexer
+* Fixed TileEntityInventory not saving itself
+* Improved Parsers
+* Minor improvements
+* Bugfixes
+
 1.7.2-2.1.1
 
 + Added FloatHashMaps and DoubleHashMaps
@@ -56,7 +65,7 @@
 * Improved Mod Updates
 * Major structure changes
 * Performance improvements
-* Fixed MANY bugfixes
+* Fixed MANY bugs
 
 1.6.4-8
 
