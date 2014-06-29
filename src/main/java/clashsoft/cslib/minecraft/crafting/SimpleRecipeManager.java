@@ -1,10 +1,8 @@
 package clashsoft.cslib.minecraft.crafting;
 
-import gnu.trove.map.hash.TCustomHashMap;
-
 import java.util.Map;
 
-import clashsoft.cslib.minecraft.util.ItemStackHashingStrategy;
+import clashsoft.cslib.minecraft.util.ItemStackHashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -13,7 +11,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class SimpleRecipeManager implements IRecipeManager
 {
-	private Map<ItemStack, ItemStack>	recipeMap	= new TCustomHashMap(ItemStackHashingStrategy.instance);
+	private Map<ItemStack, ItemStack>	recipeMap	= new ItemStackHashMap();
 	
 	protected SimpleRecipeManager()
 	{

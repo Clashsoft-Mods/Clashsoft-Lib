@@ -2,6 +2,7 @@ package clashsoft.cslib.minecraft.util;
 
 import gnu.trove.strategy.HashingStrategy;
 import clashsoft.cslib.minecraft.crafting.SimpleRecipeManager;
+import clashsoft.cslib.minecraft.item.CSStacks;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,17 +15,17 @@ import net.minecraft.item.ItemStack;
  * 
  * @author Clashsoft
  */
-public class ItemStackHashingStrategy implements HashingStrategy<ItemStack>
+public class ItemStackHash implements HashingStrategy<ItemStack>
 {
 	/**
 	 * True if the equals method should also compare the stack size.
 	 */
 	private boolean							compareStackSize;
 	
-	public static ItemStackHashingStrategy	instance			= new ItemStackHashingStrategy(false);
-	public static ItemStackHashingStrategy	stackSizeInstance	= new ItemStackHashingStrategy(true);
+	public static ItemStackHash	instance			= new ItemStackHash(false);
+	public static ItemStackHash	stackSizeInstance	= new ItemStackHash(true);
 	
-	public ItemStackHashingStrategy(boolean stackSize)
+	public ItemStackHash(boolean stackSize)
 	{
 		this.compareStackSize = stackSize;
 	}
@@ -47,40 +48,14 @@ public class ItemStackHashingStrategy implements HashingStrategy<ItemStack>
 	@Override
 	public boolean equals(ItemStack o1, ItemStack o2)
 	{
-		int damage1 = o1.getItemDamage();
-		int damage2 = o2.getItemDamage();
-		
-		if (o1 == o2)
+		if (CSStacks.equals(o1, o2))
 		{
+			if (this.compareStackSize)
+			{
+				return o1.stackSize == o2.stackSize;
+			}
 			return true;
 		}
-		if (o1.getClass() != o2.getClass())
-		{
-			return false;
-		}
-		if (o1.getItem() != o2.getItem())
-		{
-			return false;
-		}
-		if (damage1 != damage2 && damage1 != 32767 && damage2 != 32767)
-		{
-			return false;
-		}
-		if (this.compareStackSize && o1.stackSize != o2.stackSize)
-		{
-			return false;
-		}
-		if (o1.stackTagCompound == null)
-		{
-			if (o2.stackTagCompound != null)
-			{
-				return false;
-			}
-		}
-		else if (!o1.stackTagCompound.equals(o2.stackTagCompound))
-		{
-			return false;
-		}
-		return true;
+		return false;
 	}
 }
