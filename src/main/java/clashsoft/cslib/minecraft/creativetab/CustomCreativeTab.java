@@ -1,6 +1,6 @@
 package clashsoft.cslib.minecraft.creativetab;
 
-import clashsoft.cslib.minecraft.item.CSStacks;
+import clashsoft.cslib.minecraft.stack.CSStacks;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

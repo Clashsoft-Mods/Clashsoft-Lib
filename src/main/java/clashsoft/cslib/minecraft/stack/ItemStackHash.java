@@ -1,8 +1,7 @@
-package clashsoft.cslib.minecraft.util;
+package clashsoft.cslib.minecraft.stack;
 
 import gnu.trove.strategy.HashingStrategy;
 import clashsoft.cslib.minecraft.crafting.SimpleRecipeManager;
-import clashsoft.cslib.minecraft.item.CSStacks;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

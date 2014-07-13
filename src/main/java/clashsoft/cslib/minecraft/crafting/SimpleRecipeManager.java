@@ -2,7 +2,7 @@ package clashsoft.cslib.minecraft.crafting;
 
 import java.util.Map;
 
-import clashsoft.cslib.minecraft.util.ItemStackHashMap;
+import clashsoft.cslib.minecraft.stack.ItemStackHashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft.util;
+package clashsoft.cslib.minecraft.stack;
 
 import gnu.trove.map.hash.TCustomHashMap;
 

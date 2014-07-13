@@ -1,6 +1,6 @@
 package clashsoft.cslib.minecraft.item;
 
-import static clashsoft.cslib.minecraft.item.CSStacks.stick;
+import static clashsoft.cslib.minecraft.stack.CSStacks.stick;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

@@ -1,6 +1,6 @@
 package clashsoft.cslib.minecraft.crafting;
 
-import clashsoft.cslib.minecraft.item.CSStacks;
+import clashsoft.cslib.minecraft.stack.CSStacks;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
