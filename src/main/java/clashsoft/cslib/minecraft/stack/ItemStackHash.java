@@ -19,7 +19,7 @@ public class ItemStackHash implements HashingStrategy<ItemStack>
 	/**
 	 * True if the equals method should also compare the stack size.
 	 */
-	private boolean							compareStackSize;
+	private boolean				compareStackSize;
 	
 	public static ItemStackHash	instance			= new ItemStackHash(false);
 	public static ItemStackHash	stackSizeInstance	= new ItemStackHash(true);

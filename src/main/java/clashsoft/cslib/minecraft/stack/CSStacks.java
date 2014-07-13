@@ -145,7 +145,7 @@ public class CSStacks
 	
 	public static int hashCode(ItemStack stack)
 	{
-		return stack == null ? 0 : hashCode(stack.getItem(), stack.stackSize, stack.getItemDamage()); 
+		return stack == null ? 0 : hashCode(stack.getItem(), stack.stackSize, stack.getItemDamage());
 	}
 	
 	public static int hashCode(Item item, int stackSize, int metadata)
