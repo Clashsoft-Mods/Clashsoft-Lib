@@ -419,41 +419,29 @@ public class CSCrafting
 	}
 	
 	/**
-	 * Analyzes a crafting recipe, mainly used for recipe displays. Depending on
-	 * the recipe type, the output is either
+	 * Analyzes a crafting recipe and returns a two-dimensional Array of
+	 * {@link ItemStack ItemStacks} resembling the recipe. This method is mainly used for
+	 * recipe displays. Depending on the recipe type, the output is either
 	 * <p>
-	 * [1][2][ ] Any shape possible
-	 * <p>
-	 * [3][4][ ] # = how you need to put the items in the crafting table
-	 * <p>
-	 * [ ][ ][5]
-	 * <p>
-	 * <p>
+	 * [1][2][_] # = how you need to put the items in the crafting table<br>
+	 * [3][4][_]<br>
+	 * [_][_][5]<br>
 	 * for shaped recipes,
 	 * <p>
-	 * <p>
-	 * [1][2][3] # = objects in shaped recipe list
-	 * <p>
-	 * [4][5][ ]
-	 * <p>
-	 * [ ][ ][ ]
-	 * <p>
-	 * <p>
+	 * [1][2][3] # = objects in shaped recipe list<br>
+	 * [4][5][_]<br>
+	 * [_][_][_]<br>
 	 * for shapeless recipes or
 	 * <p>
-	 * <p>
-	 * [ ][o][ ] o = output
-	 * <p>
-	 * [ ][f][ ] f = fire
-	 * <p>
-	 * [ ][c][ ] c = coal
-	 * <p>
-	 * <p>
+	 * [_][O][_] O = output<br>
+	 * [_][F][_] F = fire<br>
+	 * [_][C][_] C = coal<br>
 	 * for furnace recipes.
 	 * 
 	 * @param recipe
 	 *            the recipe
-	 * @return the item stack[][]
+	 * @return a two-dimensional Array of {@link ItemStack ItemStacks}
+	 *         resembling the recipe.
 	 */
 	public static ItemStack[][] analyseCrafting(ISubItemRecipe recipe)
 	{

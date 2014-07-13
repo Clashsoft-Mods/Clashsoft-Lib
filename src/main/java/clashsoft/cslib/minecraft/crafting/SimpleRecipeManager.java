@@ -9,6 +9,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+/**
+ * A simple crafting recipe manager. This manager functions like the furnace
+ * crafting manager for one-to-one recipes, but doesn't support experiene
+ * output.
+ * 
+ * @author Clashsoft
+ */
 public class SimpleRecipeManager implements IRecipeManager
 {
 	private Map<ItemStack, ItemStack>	recipeMap	= new ItemStackHashMap();

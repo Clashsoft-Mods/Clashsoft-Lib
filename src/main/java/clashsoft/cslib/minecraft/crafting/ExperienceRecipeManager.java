@@ -9,6 +9,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+/**
+ * A crafting recipe manager. This manager functions like the furnace crafting
+ * manager for one-to-one recipes and does support the experience output.
+ * 
+ * @author Clashsoft
+ */
 public class ExperienceRecipeManager extends SimpleRecipeManager
 {
 	private Map<ItemStack, Float>	experienceMap	= new ItemStackHashMap();
