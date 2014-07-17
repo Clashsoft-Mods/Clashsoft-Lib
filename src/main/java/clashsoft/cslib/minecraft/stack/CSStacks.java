@@ -118,6 +118,11 @@ public class CSStacks
 	
 	public static boolean equals(ItemStack input, ItemStack target)
 	{
+		return itemEquals(input, target);
+	}
+	
+	public static boolean stackEquals(ItemStack input, ItemStack target)
+	{
 		if (input == target)
 		{
 			return true;
@@ -133,6 +138,23 @@ public class CSStacks
 		return equals(input.getItem(), input.stackSize, input.getItemDamage(), target.getItem(), target.stackSize, target.getItemDamage());
 	}
 	
+	public static boolean itemEquals(ItemStack input, ItemStack target)
+	{
+		if (input == target)
+		{
+			return true;
+		}
+		else if (input == null)
+		{
+			return target == null;
+		}
+		else if (target == null)
+		{
+			return false;
+		}
+		return equals(input.getItem(), input.getItemDamage(), target.getItem(), target.getItemDamage());
+	}
+	
 	public static boolean equals(Item item1, int meta1, Item item2, int meta2)
 	{
 		return item1 == item2 && (meta1 == meta2 || meta1 == CSCrafting.WILDCARD_VALUE || meta2 == CSCrafting.WILDCARD_VALUE);
@@ -144,6 +166,16 @@ public class CSStacks
 	}
 	
 	public static int hashCode(ItemStack stack)
+	{
+		return itemHashCode(stack);
+	}
+	
+	public static int itemHashCode(ItemStack stack)
+	{
+		return stack == null ? 0 : hashCode(stack.getItem(), 1, stack.getItemDamage());
+	}
+	
+	public static int stackHashCode(ItemStack stack)
 	{
 		return stack == null ? 0 : hashCode(stack.getItem(), stack.stackSize, stack.getItemDamage());
 	}
