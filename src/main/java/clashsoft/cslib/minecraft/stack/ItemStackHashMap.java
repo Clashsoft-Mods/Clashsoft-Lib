@@ -8,11 +8,11 @@ public class ItemStackHashMap<V> extends TCustomHashMap<ItemStack, V>
 {
 	public ItemStackHashMap()
 	{
-		super(ItemStackHash.instance);
+		super(ItemStackHash.itemInstance);
 	}
 	
 	public ItemStackHashMap(boolean stackSize)
 	{
-		super(stackSize ? ItemStackHash.stackSizeInstance : ItemStackHash.instance);
+		super(stackSize ? ItemStackHash.stackInstance : ItemStackHash.itemInstance);
 	}
 }

@@ -43,8 +43,8 @@ public class SimpleRecipeManager implements IRecipeManager
 	}
 	
 	@Override
-	public ItemStack getResult(ItemStack ingredient)
+	public ItemStack getResult(ItemStack input)
 	{
-		return this.recipeMap.get(ingredient);
+		return this.recipeMap.get(input);
 	}
 }

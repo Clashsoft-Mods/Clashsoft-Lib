@@ -1,8 +1,8 @@
 package clashsoft.cslib.minecraft.crafting;
 
-import java.util.Map;
-
-import clashsoft.cslib.minecraft.stack.ItemStackHashMap;
+import gnu.trove.map.TObjectFloatMap;
+import gnu.trove.map.custom_hash.TObjectFloatCustomHashMap;
+import clashsoft.cslib.minecraft.stack.ItemStackHash;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -17,7 +17,7 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class ExperienceRecipeManager extends SimpleRecipeManager
 {
-	private Map<ItemStack, Float>	experienceMap	= new ItemStackHashMap();
+	private TObjectFloatMap<ItemStack>	experienceMap	= new TObjectFloatCustomHashMap(ItemStackHash.itemInstance);
 	
 	@Override
 	public void addRecipe(ItemStack input, ItemStack output)
@@ -38,7 +38,7 @@ public class ExperienceRecipeManager extends SimpleRecipeManager
 	public void addRecipe(ItemStack input, ItemStack output, float exp)
 	{
 		super.addRecipe(input, output);
-		this.experienceMap.put(output.copy(), Float.valueOf(exp));
+		this.experienceMap.put(output.copy(), exp);
 	}
 	
 	public float getExp(ItemStack input)
@@ -49,7 +49,6 @@ public class ExperienceRecipeManager extends SimpleRecipeManager
 			return ret;
 		}
 		
-		Float f = this.experienceMap.get(input);
-		return f == null ? 0F : f.floatValue();
+		return this.experienceMap.get(input);
 	}
 }

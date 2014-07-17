@@ -7,9 +7,9 @@ import net.minecraft.item.ItemStack;
 
 /**
  * An {@link HashingStrategy} for comparing {@link ItemStack}s. Use the
- * {@link #instance} if you want to compare the items and item damage, for
+ * {@link #itemInstance} if you want to compare the items and item damage, for
  * example in a {@link SimpleRecipeManager}. If you do want to compare the stack
- * size, you can use the {@link #stackSizeInstance}.
+ * size, you can use the {@link #stackInstance}.
  * 
  * @author Clashsoft
  */
@@ -20,8 +20,8 @@ public class ItemStackHash implements HashingStrategy<ItemStack>
 	 */
 	private boolean				compareStackSize;
 	
-	public static ItemStackHash	instance			= new ItemStackHash(false);
-	public static ItemStackHash	stackSizeInstance	= new ItemStackHash(true);
+	public static ItemStackHash	itemInstance	= new ItemStackHash(false);
+	public static ItemStackHash	stackInstance	= new ItemStackHash(true);
 	
 	public ItemStackHash(boolean stackSize)
 	{
