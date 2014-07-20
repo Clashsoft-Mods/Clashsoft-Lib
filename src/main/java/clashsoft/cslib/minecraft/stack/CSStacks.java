@@ -185,8 +185,8 @@ public class CSStacks
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (item == null ? 0 : Item.getIdFromItem(item));
-		result = prime * result + metadata;
 		result = prime * result + stackSize;
+		result = prime * result + metadata;
 		return result;
 	}
 	

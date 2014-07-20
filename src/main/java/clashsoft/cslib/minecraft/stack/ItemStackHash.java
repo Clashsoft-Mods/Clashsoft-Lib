@@ -3,6 +3,7 @@ package clashsoft.cslib.minecraft.stack;
 import gnu.trove.strategy.HashingStrategy;
 import clashsoft.cslib.minecraft.crafting.SimpleRecipeManager;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -31,7 +32,13 @@ public class ItemStackHash implements HashingStrategy<ItemStack>
 	@Override
 	public int computeHashCode(ItemStack stack)
 	{
-		return this.compareStackSize ? CSStacks.stackHashCode(stack) : CSStacks.itemHashCode(stack);
+		if (stack != null)
+		{
+			int id = Item.getIdFromItem(stack.getItem());
+			if (this.compareStackSize)
+				id |= (stack.stackSize << 8);
+		}
+		return 0;
 	}
 	
 	@Override
