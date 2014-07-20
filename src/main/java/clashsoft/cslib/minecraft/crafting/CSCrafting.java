@@ -420,8 +420,9 @@ public class CSCrafting
 	
 	/**
 	 * Analyzes a crafting recipe and returns a two-dimensional Array of
-	 * {@link ItemStack ItemStacks} resembling the recipe. This method is mainly used for
-	 * recipe displays. Depending on the recipe type, the output is either
+	 * {@link ItemStack ItemStacks} resembling the recipe. This method is mainly
+	 * used for recipe displays. Depending on the recipe type, the output is
+	 * either
 	 * <p>
 	 * [1][2][_] # = how you need to put the items in the crafting table<br>
 	 * [3][4][_]<br>

@@ -65,7 +65,7 @@ public class ParserManager
 	{
 		this.parse(code, CSSource.tokenize(code));
 	}
-		
+	
 	public final void parse(String code, IToken first)
 	{
 		IToken token = first;

@@ -25,7 +25,7 @@ public class DoubleHashMap<V>
 	private static int getHashedKey(double key)
 	{
 		long bits = Double.doubleToLongBits(key);
-		return hash((int) (bits ^ (bits >>> 32)));
+		return hash((int) (bits ^ bits >>> 32));
 	}
 	
 	private static int hash(int hash)

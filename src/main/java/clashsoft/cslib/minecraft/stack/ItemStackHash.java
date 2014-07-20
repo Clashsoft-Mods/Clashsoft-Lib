@@ -36,7 +36,9 @@ public class ItemStackHash implements HashingStrategy<ItemStack>
 		{
 			int id = Item.getIdFromItem(stack.getItem());
 			if (this.compareStackSize)
-				id |= (stack.stackSize << 8);
+			{
+				id |= stack.stackSize << 8;
+			}
 		}
 		return 0;
 	}

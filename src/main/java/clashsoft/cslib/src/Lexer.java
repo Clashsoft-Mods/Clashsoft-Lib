@@ -256,9 +256,13 @@ public class Lexer implements Iterable<IToken>, Iterator<IToken>
 		{
 			char n = code.charAt(i + 1);
 			if (n == '*')
+			{
 				return TYPE_BLOCK_COMMENT;
+			}
 			else if (n == '/')
+			{
 				return TYPE_LINE_COMMENT;
+			}
 			return getMode(c, code, i + 1);
 		}
 		else if (isDigit(c))
@@ -322,22 +326,22 @@ public class Lexer implements Iterable<IToken>, Iterator<IToken>
 	
 	protected static boolean isHexDigit(char c)
 	{
-		return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+		return c >= '0' && c <= '9' || c >= 'a' && c <= 'f' || c >= 'A' && c <= 'F';
 	}
 	
 	protected static boolean isIntPart(char c)
 	{
-		return (c == 'l' || c == 'L');
+		return c == 'l' || c == 'L';
 	}
 	
 	protected static boolean isFloatPart(char c)
 	{
-		return (c == 'f' || c == 'F') || (c == 'd' || c == 'D');
+		return c == 'f' || c == 'F' || c == 'd' || c == 'D';
 	}
 	
 	protected static boolean isLetter(char c)
 	{
-		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+		return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';
 	}
 	
 	protected static boolean isIdentifierPart(char c)
