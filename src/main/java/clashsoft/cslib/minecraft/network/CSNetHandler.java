@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
 
+import java.io.IOException;
 import java.util.*;
 
 import clashsoft.cslib.logging.CSLog;
@@ -64,7 +65,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 			return false;
 		}
 		
-		if (this.packets.size() > 256 || this.packets.contains(clazz))
+		if (this.packets.size() > 255 || this.packets.contains(clazz))
 		{
 			return false;
 		}
@@ -79,7 +80,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	 */
 	protected byte getDiscriminator(Class<? extends CSPacket> packetClass)
 	{
-		int index = (byte) this.packets.indexOf(packetClass);
+		int index = this.packets.indexOf(packetClass);
 		if (index == -1)
 		{
 			throw new NullPointerException("No Packet Registered for: " + packetClass.getCanonicalName());
@@ -96,6 +97,10 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	 */
 	protected Class<? extends CSPacket> getClass(byte discriminator)
 	{
+		if (discriminator >= this.packets.size())
+		{
+			throw new IndexOutOfBoundsException();
+		}
 		Class clazz = this.packets.get(discriminator);
 		if (clazz == null)
 		{
@@ -107,37 +112,51 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	@Override
 	protected void encode(ChannelHandlerContext ctx, CSPacket msg, List<Object> out) throws Exception
 	{
-		PacketBuffer buffer = new PacketBuffer(Unpooled.buffer());
-		Class<? extends CSPacket> clazz = msg.getClass();
-		byte discriminator = this.getDiscriminator(clazz);
-		
-		buffer.writeByte(discriminator);
-		msg.write(buffer);
-		FMLProxyPacket proxyPacket = new FMLProxyPacket(buffer.copy(), ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get());
-		out.add(proxyPacket);
+		try
+		{
+			PacketBuffer buffer = new PacketBuffer(Unpooled.buffer());
+			Class<? extends CSPacket> clazz = msg.getClass();
+			byte discriminator = this.getDiscriminator(clazz);
+			
+			buffer.writeByte(discriminator);
+			msg.write(buffer);
+			FMLProxyPacket proxyPacket = new FMLProxyPacket(buffer.copy(), ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get());
+			out.add(proxyPacket);
+		}
+		catch (Exception ex)
+		{
+			throw new IOException(this.toString() + " failed to encode packet", ex);
+		}
 	}
 	
 	@Override
 	protected void decode(ChannelHandlerContext ctx, FMLProxyPacket msg, List<Object> out) throws Exception
 	{
-		ByteBuf payload = msg.payload();
-		byte discriminator = payload.readByte();
-		Class<? extends CSPacket> clazz = this.getClass(discriminator);
-		
-		PacketBuffer buffer = new PacketBuffer(payload.slice());
-		CSPacket pkt = clazz.newInstance();
-		
-		pkt.read(buffer);
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+		try
 		{
-			INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
-			EntityPlayerMP player = ((NetHandlerPlayServer) netHandler).playerEntity;
-			pkt.handleServer(player);
+			ByteBuf payload = msg.payload();
+			byte discriminator = payload.readByte();
+			Class<? extends CSPacket> clazz = this.getClass(discriminator);
+			
+			PacketBuffer buffer = new PacketBuffer(payload.slice());
+			CSPacket pkt = clazz.newInstance();
+			
+			pkt.read(buffer);
+			if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+			{
+				INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
+				EntityPlayerMP player = ((NetHandlerPlayServer) netHandler).playerEntity;
+				pkt.handleServer(player);
+			}
+			else
+			{
+				EntityPlayer player = this.getClientPlayer();
+				pkt.handleClient(player);
+			}
 		}
-		else
+		catch (Exception ex)
 		{
-			EntityPlayer player = this.getClientPlayer();
-			pkt.handleClient(player);
+			throw new IOException(this.toString() + " failed to decode packet", ex);
 		}
 	}
 	
@@ -342,5 +361,16 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 		{
 			this.sendToAll(message);
 		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.append("CSNetHandler [name=").append(this.name);
+		builder.append(", packets=").append(this.packets);
+		builder.append(", initiliased=").append(this.initiliased);
+		builder.append(", postInitialised=").append(this.postInitialised).append("]");
+		return builder.toString();
 	}
 }
