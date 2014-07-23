@@ -3,7 +3,9 @@ package clashsoft.cslib.minecraft.network;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -52,7 +54,7 @@ public abstract class CSPacket
 	 * @param world
 	 *            the world
 	 */
-	public final void writeWorld(PacketBuffer buf, World world)
+	public static void writeWorld(PacketBuffer buf, World world)
 	{
 		buf.writeInt(world.provider.dimensionId);
 	}
@@ -67,7 +69,7 @@ public abstract class CSPacket
 	 *            the buffer
 	 * @return the world
 	 */
-	public final World readWorld(PacketBuffer buf)
+	public static World readWorld(PacketBuffer buf)
 	{
 		int id = buf.readInt();
 		return DimensionManager.getWorld(id);
@@ -80,7 +82,7 @@ public abstract class CSPacket
 	 * @param buf
 	 * @param stack
 	 */
-	public final void writeItemStack(PacketBuffer buf, ItemStack stack)
+	public static void writeItemStack(PacketBuffer buf, ItemStack stack)
 	{
 		buf.writeItemStackToBuffer(stack);
 	}
@@ -94,8 +96,24 @@ public abstract class CSPacket
 	 * @param stack
 	 *            the stack
 	 */
-	public final ItemStack readItemStack(PacketBuffer buf)
+	public static final ItemStack readItemStack(PacketBuffer buf)
 	{
 		return buf.readItemStackFromBuffer();
+	}
+	
+	public static void writePotionEffect(PacketBuffer buf, PotionEffect effect)
+	{
+		NBTTagCompound nbt1 = new NBTTagCompound();
+		if (effect != null)
+		{
+			effect.writeCustomPotionEffectToNBT(nbt1);
+		}
+		buf.writeNBTTagCompoundToBuffer(nbt1);
+	}
+	
+	public static PotionEffect readPotionEffect(PacketBuffer buf)
+	{
+		NBTTagCompound nbt1 = buf.readNBTTagCompoundFromBuffer();
+		return PotionEffect.readCustomPotionEffectFromNBT(nbt1);
 	}
 }
