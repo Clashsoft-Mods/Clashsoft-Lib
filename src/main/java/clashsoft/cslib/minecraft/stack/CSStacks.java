@@ -104,6 +104,7 @@ public class CSStacks
 	public static ItemStack	quartz					= StackFactory.create(Items.quartz);
 	
 	public static ItemStack	reeds					= StackFactory.create(Items.reeds);
+	public static ItemStack redstone_dust			= StackFactory.create(Items.redstone);
 	
 	public static ItemStack	slimeball				= StackFactory.create(Items.slime_ball);
 	public static ItemStack	snowball				= StackFactory.create(Items.snowball);
