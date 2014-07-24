@@ -2,6 +2,7 @@ package clashsoft.cslib.minecraft.command;
 
 import clashsoft.cslib.minecraft.init.CSLib;
 import clashsoft.cslib.minecraft.update.CSUpdate;
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -12,13 +13,13 @@ public class CommandModUpdate extends CommandBase
 	@Override
 	public String getCommandName()
 	{
-		return "mu";
+		return "modupdates";
 	}
 	
 	@Override
 	public String getCommandUsage(ICommandSender sender)
 	{
-		return "/mu [update|updateall]";
+		return "/modupdates [view|update|updateall]";
 	}
 	
 	@Override
@@ -38,10 +39,14 @@ public class CommandModUpdate extends CommandBase
 			{
 				CSUpdate.updateAll((EntityPlayer) sender);
 			}
+			else if ("view".equals(args[0]))
+			{
+				FMLNetworkHandler.openGui((EntityPlayer) sender, CSLib.instance, 0, sender.getEntityWorld(), 0, 0, 0);
+			}
 		}
 		else
 		{
-			CSLib.proxy.displayUpdatesGUI();
+			FMLNetworkHandler.openGui((EntityPlayer) sender, CSLib.instance, 0, sender.getEntityWorld(), 0, 0, 0);
 		}
 	}
 	
@@ -50,5 +55,4 @@ public class CommandModUpdate extends CommandBase
 	{
 		return 0;
 	}
-	
 }
