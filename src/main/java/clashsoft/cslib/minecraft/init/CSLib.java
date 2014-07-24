@@ -36,6 +36,11 @@ public class CSLib extends ClashsoftMod
 	public static boolean		autoUpdate			= true;
 	public static boolean		enableMOTD			= true;
 	
+	static
+	{
+		CSLog.logger = new Log4JLogger();
+	}
+	
 	public CSLib()
 	{
 		super(proxy, MODID, NAME, ACRONYM, VERSION);
@@ -44,8 +49,6 @@ public class CSLib extends ClashsoftMod
 		this.netHandler = new CSNetHandler(NAME);
 		this.eventHandler = this;
 		this.url = "https://github.com/Clashsoft/CSLib-Minecraft/wiki/";
-		
-		CSLog.logger = new Log4JLogger();
 	}
 	
 	public static void libPreInit(FMLPreInitializationEvent event)
