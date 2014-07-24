@@ -142,9 +142,7 @@ public abstract class BaseMod<N extends CSNetHandler>
 				ex.printStackTrace();
 			}
 		}
-		// At least provide a default net handler, so the mod is able to send
-		// packets
-		return (N) new CSNetHandler(this.name);
+		return null;
 	}
 	
 	/**

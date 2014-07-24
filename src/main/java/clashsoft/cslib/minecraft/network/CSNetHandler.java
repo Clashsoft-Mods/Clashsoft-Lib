@@ -33,10 +33,10 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	public final String							name;
 	
 	protected EnumMap<Side, FMLEmbeddedChannel>	channels;
-	protected List<Class<? extends CSPacket>>	packets			= new ArrayList();
+	protected List<Class<? extends CSPacket>>	packets;
 	
-	protected boolean							initiliased		= false;
-	protected boolean							postInitialised	= false;
+	protected boolean							initiliased;
+	protected boolean							postInitialised;
 	
 	/**
 	 * Constructs a new CSNetHandler instance.
@@ -47,6 +47,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	public CSNetHandler(String name)
 	{
 		this.name = name;
+		this.packets = new ArrayList();
 	}
 	
 	/**
@@ -69,7 +70,6 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 		{
 			return false;
 		}
-		
 		this.packets.add(clazz);
 		return true;
 	}
@@ -97,10 +97,6 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	 */
 	protected Class<? extends CSPacket> getClass(byte discriminator)
 	{
-		if (discriminator >= this.packets.size())
-		{
-			throw new IndexOutOfBoundsException();
-		}
 		Class clazz = this.packets.get(discriminator);
 		if (clazz == null)
 		{
