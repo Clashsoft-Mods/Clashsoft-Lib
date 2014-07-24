@@ -71,7 +71,7 @@ public class SimpleUpdateReader implements IUpdateReader
 				{
 				}
 			}
-			else
+			else if (!line.isEmpty())
 			{
 				notes.add(line);
 			}
