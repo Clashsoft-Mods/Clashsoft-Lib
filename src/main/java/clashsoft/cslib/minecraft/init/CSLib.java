@@ -8,6 +8,8 @@ import clashsoft.cslib.minecraft.common.CSLibProxy;
 import clashsoft.cslib.minecraft.crafting.loader.FurnaceRecipeLoader;
 import clashsoft.cslib.minecraft.network.CSNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
+import clashsoft.cslib.minecraft.update.reader.SimpleUpdateReader;
+import clashsoft.cslib.minecraft.update.updater.ModUpdater;
 import clashsoft.cslib.minecraft.util.Log4JLogger;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -82,6 +84,13 @@ public class CSLib extends ClashsoftMod
 	}
 	
 	@Override
+	public void updateCheck()
+	{
+		final String url = "https://raw.githubusercontent.com/Clashsoft/CSLib-Minecraft/master/version.txt";
+		CSUpdate.updateCheck(new ModUpdater(NAME, ACRONYM, VERSION, url, SimpleUpdateReader.instance));
+	}
+	
+	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		super.preInit(event);
@@ -93,8 +102,6 @@ public class CSLib extends ClashsoftMod
 		super.init(event);
 		
 		FurnaceRecipeLoader.instance.load();
-		
-		CSUpdate.updateCheck(CSUpdate.CLASHSOFT_UPDATE_NOTES);
 	}
 	
 	@Override
