@@ -5,6 +5,7 @@ import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.command.CSCommand;
 import clashsoft.cslib.minecraft.command.CommandModUpdate;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
+import clashsoft.cslib.minecraft.crafting.loader.FurnaceRecipeLoader;
 import clashsoft.cslib.minecraft.network.CSNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.util.Log4JLogger;
@@ -90,6 +91,8 @@ public class CSLib extends ClashsoftMod
 	public void init(FMLInitializationEvent event)
 	{
 		super.init(event);
+		
+		FurnaceRecipeLoader.instance.load();
 		
 		CSUpdate.updateCheck(CSUpdate.CLASHSOFT_UPDATE_NOTES);
 	}
