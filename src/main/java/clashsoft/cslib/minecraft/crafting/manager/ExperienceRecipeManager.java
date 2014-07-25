@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft.crafting;
+package clashsoft.cslib.minecraft.crafting.manager;
 
 import gnu.trove.map.TObjectFloatMap;
 import gnu.trove.map.custom_hash.TObjectFloatCustomHashMap;

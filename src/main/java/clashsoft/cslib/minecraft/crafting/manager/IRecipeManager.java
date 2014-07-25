@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft.crafting;
+package clashsoft.cslib.minecraft.crafting.manager;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
