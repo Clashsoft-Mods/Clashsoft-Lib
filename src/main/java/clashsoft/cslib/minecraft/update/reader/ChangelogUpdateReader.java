@@ -29,7 +29,7 @@ public class ChangelogUpdateReader implements IUpdateReader
 				}
 				else if (version != null && !(updateNotes.isEmpty() && url == null))
 				{
-					Update update = updater.newUpdate(version, new ArrayList(updateNotes), url);
+					Update update = updater.newUpdate(version, updateNotes, url);
 					CSUpdate.addUpdate(update);
 					
 					updateNotes.clear();
@@ -43,7 +43,10 @@ public class ChangelogUpdateReader implements IUpdateReader
 					{
 						url = line.substring(index + 10).trim();
 					}
-					updateNotes.add(line);
+					else
+					{
+						updateNotes.add(line);
+					}
 				}
 			}
 		}

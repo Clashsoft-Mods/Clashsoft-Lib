@@ -61,7 +61,7 @@ public class URLUpdater implements IUpdater
 	}
 	
 	@Override
-	public boolean keyMatches(String key)
+	public boolean keyEquals(String key)
 	{
 		return true;
 	}

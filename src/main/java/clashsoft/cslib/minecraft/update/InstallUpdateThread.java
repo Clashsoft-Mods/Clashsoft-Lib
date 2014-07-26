@@ -4,12 +4,8 @@ import java.io.File;
 
 import clashsoft.cslib.io.CSWeb;
 import clashsoft.cslib.logging.CSLog;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentTranslation;
 
 /**
@@ -44,17 +40,7 @@ public class InstallUpdateThread extends Thread
 			
 			this.player.addChatMessage(new ChatComponentTranslation("update.install", modName, newVersion));
 			
-			File dataDir;
-			if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-			{
-				dataDir = Minecraft.getMinecraft().mcDataDir;
-			}
-			else
-			{
-				dataDir = new File(MinecraftServer.getServer().getFolderName());
-			}
-			
-			File modsDir = new File(dataDir, "mods");
+			File modsDir = new File("mods");
 			
 			try
 			{

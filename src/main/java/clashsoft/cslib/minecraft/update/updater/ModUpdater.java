@@ -40,13 +40,13 @@ public class ModUpdater extends URLUpdater
 	}
 	
 	@Override
-	public boolean keyMatches(String key)
+	public boolean keyEquals(String key)
 	{
-		if (this.name != null && this.name.matches(key))
+		if (this.name != null && this.name.equals(key))
 		{
 			return true;
 		}
-		if (this.acronym != null && this.acronym.matches(key))
+		if (this.acronym != null && this.acronym.equals(key))
 		{
 			return true;
 		}

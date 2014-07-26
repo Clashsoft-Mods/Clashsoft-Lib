@@ -38,7 +38,7 @@ public class FileUpdateReader implements IUpdateReader
 		
 		String key = line.substring(0, i0);
 		
-		if (updater.keyMatches(key))
+		if (updater.keyEquals(key))
 		{
 			String newVersion = line.substring(i0 + 1, i1);
 			String updateNotes = null;

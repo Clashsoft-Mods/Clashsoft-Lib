@@ -19,9 +19,9 @@ public interface IUpdater
 	
 	public IUpdater setMOTD(IChatComponent motd);
 	
-	public IUpdater setUpdateFile(String[] updateFile);
-	
 	public String[] getUpdateFile();
+	
+	public IUpdater setUpdateFile(String[] updateFile);
 	
 	public IUpdateReader getUpdateReader();
 	
@@ -29,7 +29,7 @@ public interface IUpdater
 	
 	public boolean reCheck();
 	
-	public boolean keyMatches(String key);
+	public boolean keyEquals(String key);
 	
 	public Update newUpdate(String newVersion, List<String> notes, String downloadURL);
 }
