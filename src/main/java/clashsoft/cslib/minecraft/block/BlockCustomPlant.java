@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
-public class BlockCustomPlant extends CustomBlock implements ICustomBlock, IPlantable
+public class BlockCustomPlant extends CustomBlock implements IPlantable
 {
 	@SideOnly(Side.CLIENT)
 	public IIcon[]	icons;

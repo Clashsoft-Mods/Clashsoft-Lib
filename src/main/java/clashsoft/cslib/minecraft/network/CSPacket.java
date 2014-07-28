@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -103,9 +104,10 @@ public abstract class CSPacket
 	
 	public static void writePotionEffect(PacketBuffer buf, PotionEffect effect)
 	{
-		NBTTagCompound nbt1 = new NBTTagCompound();
+		NBTTagCompound nbt1 = null;
 		if (effect != null)
 		{
+			nbt1 = new NBTTagCompound();
 			effect.writeCustomPotionEffectToNBT(nbt1);
 		}
 		buf.writeNBTTagCompoundToBuffer(nbt1);
@@ -114,6 +116,23 @@ public abstract class CSPacket
 	public static PotionEffect readPotionEffect(PacketBuffer buf)
 	{
 		NBTTagCompound nbt1 = buf.readNBTTagCompoundFromBuffer();
-		return PotionEffect.readCustomPotionEffectFromNBT(nbt1);
+		return nbt1 == null ? null : PotionEffect.readCustomPotionEffectFromNBT(nbt1);
+	}
+	
+	public static void writeTileEntity(PacketBuffer buf, TileEntity tileEntity)
+	{
+		NBTTagCompound nbt1 = null;
+		if (tileEntity != null)
+		{
+			nbt1 = new NBTTagCompound();
+			tileEntity.writeToNBT(nbt1);
+		}
+		buf.writeNBTTagCompoundToBuffer(nbt1);
+	}
+	
+	public static TileEntity readTileEntity(PacketBuffer buf)
+	{
+		NBTTagCompound nbt1 = buf.readNBTTagCompoundFromBuffer();
+		return nbt1 == null ? null : TileEntity.createAndLoadEntity(nbt1);
 	}
 }
