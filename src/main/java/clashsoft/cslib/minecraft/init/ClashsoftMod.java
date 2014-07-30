@@ -5,7 +5,6 @@ import java.util.List;
 
 import clashsoft.cslib.minecraft.common.BaseProxy;
 import clashsoft.cslib.minecraft.network.CSNetHandler;
-import clashsoft.cslib.minecraft.update.CSUpdate;
 
 public abstract class ClashsoftMod<N extends CSNetHandler> extends BaseMod<N>
 {
@@ -21,11 +20,5 @@ public abstract class ClashsoftMod<N extends CSNetHandler> extends BaseMod<N>
 	{
 		super(proxy, modID, name, acronym, version);
 		this.authors = AUTHORS_CLASHSOFT;
-	}
-	
-	@Override
-	public void updateCheck()
-	{
-		CSUpdate.updateCheck(this.name, this.acronym, this.version, CSUpdate.CLASHSOFT_UPDATE_NOTES);
 	}
 }

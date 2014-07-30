@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * The class CSUpdate.
@@ -22,18 +23,12 @@ import net.minecraft.util.IChatComponent;
 public class CSUpdate
 {
 	/** The updates already found. */
-	public static Map<String, Update>	updates					= new HashMap();
+	public static Map<String, Update>	updates			= new HashMap();
 	
-	public static List<IUpdater>		updaters				= new ArrayList();
+	public static List<IUpdater>		updaters		= new ArrayList();
 	
-	/** The Constant CURRENT_VERSION. Value: {@value} */
-	public static final String			CURRENT_VERSION			= "1.7.2";
-	
-	/** The Constant CLASHSOFT_ADFLY. Value: {@value} */
-	public static final String			CLASHSOFT_ADFLY			= "http://adf.ly/2175784/";
-	
-	/** The Constant CLASHSOFT_UPDATE_NOTES. Value: {@value} */
-	public static final String			CLASHSOFT_UPDATE_NOTES	= "https://dl.dropboxusercontent.com/s/pxm1ki6wbtxlvuv/update.txt";
+	/** Holds the current Minecraft version. Value: {@value} */
+	public static final String			CURRENT_VERSION	= MinecraftForge.MC_VERSION;
 	
 	/**
 	 * Creates a version String for Clashsoft mods.
@@ -49,12 +44,17 @@ public class CSUpdate
 	
 	public static String version(int major, int minor, int rev)
 	{
-		return String.format("%s-%d.%d.%d", CURRENT_VERSION, major, minor, rev);
+		StringBuilder builder = new StringBuilder(20);
+		builder.append(CURRENT_VERSION).append('-');
+		builder.append(major).append('.');
+		builder.append(minor).append('.');
+		builder.append(rev);
+		return builder.toString();
 	}
 	
 	public static String version(String version)
 	{
-		return String.format("%s-%s", CURRENT_VERSION, version);
+		return CURRENT_VERSION + "-" + version;
 	}
 	
 	public static List<Update> getUpdates(boolean invalidUpdates)
