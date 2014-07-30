@@ -2,11 +2,10 @@ package clashsoft.cslib.config;
 
 import java.io.File;
 
-import net.minecraftforge.common.config.Configuration;
-
-import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.util.CSString;
 import clashsoft.cslib.util.IParsable;
+
+import net.minecraftforge.common.config.Configuration;
 
 /**
  * The global class for loading configuration files.
@@ -32,13 +31,9 @@ public class CSConfig
 	 */
 	public static void loadConfig(File configFile, String configName)
 	{
-		CSLog.info("[Config] Loading config file " + configName + "...");
-		
 		CSConfig.configFile = configFile;
 		CSConfig.configName = configName;
 		config = new Configuration(configFile);
-		
-		CSLog.info("[Config] Loaded config file " + configName);
 	}
 	
 	/**
@@ -57,9 +52,7 @@ public class CSConfig
 	 */
 	public static void saveConfig()
 	{
-		CSLog.info("[Config] Saving config file " + configName + "...");
 		config.save();
-		CSLog.info("[Config] Saved config file " + configName);
 	}
 	
 	/**
