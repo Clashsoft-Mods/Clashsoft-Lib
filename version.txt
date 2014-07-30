@@ -1,5 +1,5 @@
 version=1.7.10-2.3.0
-url=https://github.com/Clashsoft/CSLib-Minecraft/releases/download/1.7.10-2.3.0/Clashsoft.Lib.1.7.10-2.3.0.jar
+url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.3.0/ClashsoftLib-1.7.10-2.3.0.jar
 
 ! Update to Minecraft 1.7.10
 + Added CustomRecipeLoader from Minestrappolation

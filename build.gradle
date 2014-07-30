@@ -21,9 +21,9 @@ buildscript
 }
 
 apply plugin: 'forge'
-version = "1.7.2-2.3.0"
+version = "1.7.10-2.3.0"
 group= "clashsoft.cslib"
-archivesBaseName = "Clashsoft Lib"
+archivesBaseName = "ClashsoftLib"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -48,7 +48,7 @@ task deobfJar(type:Jar, dependsOn:'classes')
 deobfJar
 {
     classifier = 'deobf'
-    archiveName = "${archivesBaseName} ${version}-deobf.jar"
+    archiveName = "${archivesBaseName}-${version}-deobf.jar"
     from ('build/classes/main')
     {
         include('clashsoft/cslib/**')
@@ -63,7 +63,7 @@ task sourceJar(type:Jar, dependsOn:'classes')
 sourceJar
 {
     classifier = 'sources'
-    archiveName = "${archivesBaseName} ${version}-src.jar"
+    archiveName = "${archivesBaseName}-${version}-src.jar"
     from ('build/sources/java')
     {
         include('clashsoft/cslib/**')
