@@ -141,7 +141,8 @@ public class CSUpdate
 			IChatComponent motd = updater.getMOTD();
 			if (motd != null)
 			{
-				player.addChatMessage(new ChatComponentTranslation("motd.message", updater.getName()));
+				// player.addChatMessage(new
+				// ChatComponentTranslation("motd.message", updater.getName()));
 				player.addChatMessage(motd);
 			}
 		}
