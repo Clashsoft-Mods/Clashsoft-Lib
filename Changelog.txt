@@ -1,3 +1,15 @@
+1.7.10-2.3.0
+
+! Update to Minecraft 1.7.10
++ Added CustomRecipeLoader from Minestrappolation
++ Added SimpleRecipeManager.getRecipes()
+* Updated some localizations
+* Renamed /mu command to /modupdates
+* Re-enabled the UpdateChecker
+* CSPacket can serialize more Objects now
+- Removed MOTD message
+- Removed old version checking
+
 1.7.2-2.2.0
 
 + Added StackFactory
