@@ -1,5 +1,7 @@
 package clashsoft.cslib.minecraft.network;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -85,7 +87,14 @@ public abstract class CSPacket
 	 */
 	public static void writeItemStack(PacketBuffer buf, ItemStack stack)
 	{
-		buf.writeItemStackToBuffer(stack);
+		try
+		{
+			buf.writeItemStackToBuffer(stack);
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 	
 	/**
@@ -99,7 +108,15 @@ public abstract class CSPacket
 	 */
 	public static final ItemStack readItemStack(PacketBuffer buf)
 	{
-		return buf.readItemStackFromBuffer();
+		try
+		{
+			return buf.readItemStackFromBuffer();
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
 	}
 	
 	public static void writePotionEffect(PacketBuffer buf, PotionEffect effect)
@@ -110,13 +127,29 @@ public abstract class CSPacket
 			nbt1 = new NBTTagCompound();
 			effect.writeCustomPotionEffectToNBT(nbt1);
 		}
-		buf.writeNBTTagCompoundToBuffer(nbt1);
+		try
+		{
+			buf.writeNBTTagCompoundToBuffer(nbt1);
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 	
 	public static PotionEffect readPotionEffect(PacketBuffer buf)
 	{
-		NBTTagCompound nbt1 = buf.readNBTTagCompoundFromBuffer();
+		NBTTagCompound nbt1;
+		try
+		{
+			nbt1 = buf.readNBTTagCompoundFromBuffer();
 		return nbt1 == null ? null : PotionEffect.readCustomPotionEffectFromNBT(nbt1);
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
 	}
 	
 	public static void writeTileEntity(PacketBuffer buf, TileEntity tileEntity)
@@ -127,12 +160,28 @@ public abstract class CSPacket
 			nbt1 = new NBTTagCompound();
 			tileEntity.writeToNBT(nbt1);
 		}
-		buf.writeNBTTagCompoundToBuffer(nbt1);
+		try
+		{
+			buf.writeNBTTagCompoundToBuffer(nbt1);
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 	
 	public static TileEntity readTileEntity(PacketBuffer buf)
 	{
-		NBTTagCompound nbt1 = buf.readNBTTagCompoundFromBuffer();
-		return nbt1 == null ? null : TileEntity.createAndLoadEntity(nbt1);
+		NBTTagCompound nbt1;
+		try
+		{
+			nbt1 = buf.readNBTTagCompoundFromBuffer();
+			return nbt1 == null ? null : TileEntity.createAndLoadEntity(nbt1);
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
 	}
 }

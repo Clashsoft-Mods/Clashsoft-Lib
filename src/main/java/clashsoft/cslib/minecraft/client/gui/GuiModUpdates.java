@@ -10,9 +10,10 @@ import clashsoft.cslib.minecraft.update.Update;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiYesNoCallback;
 import net.minecraft.util.EnumChatFormatting;
 
-public class GuiModUpdates extends GuiScreen
+public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 {
 	public final GuiScreen		parent;
 	

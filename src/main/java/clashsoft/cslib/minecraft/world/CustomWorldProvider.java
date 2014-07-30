@@ -139,6 +139,6 @@ public abstract class CustomWorldProvider extends WorldProvider
 		f3 *= f2 * 0.94F + 0.06F;
 		f4 *= f2 * 0.94F + 0.06F;
 		f5 *= f2 * 0.91F + 0.09F;
-		return this.worldObj.getWorldVec3Pool().getVecFromPool(f3, f4, f5);
+		return Vec3.createVectorHelper(f3, f4, f5);
 	}
 }
