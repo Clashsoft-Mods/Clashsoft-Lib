@@ -14,7 +14,7 @@ update.notification=A new %1$s version is available: %2$s. You are using %3$s.
 update.none=No updates found for "%1$s"
 update.notes=Update notes:
 update.invalid=Invalid
-update.automatic.disabled=Automatic updates disabled. Type ">update %1$s" to update.
+update.automatic.disabled=Automatic updates disabled. Type "/modupdate %1$s" to update.
 
 update.install=Installing %1$s.
 update.install.skipping=Skipping installation.
@@ -35,6 +35,6 @@ update.list.install=Install
 update.list.installall=Install All
 update.list.install.status=Installation Status:
 update.list.install.error=Installation failed
-update.list.install.notstarted=Not yet installed
+update.list.install.notstarted=Not yet started
 update.list.install.installing=Installing...
 update.list.install.installed=Installed
