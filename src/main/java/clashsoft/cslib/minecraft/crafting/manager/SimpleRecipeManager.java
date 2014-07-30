@@ -18,7 +18,7 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class SimpleRecipeManager implements IRecipeManager
 {
-	private Map<ItemStack, ItemStack>	recipeMap	= new ItemStackHashMap();
+	protected Map<ItemStack, ItemStack>	recipeMap	= new ItemStackHashMap();
 	
 	protected SimpleRecipeManager()
 	{
@@ -46,5 +46,10 @@ public class SimpleRecipeManager implements IRecipeManager
 	public ItemStack getResult(ItemStack input)
 	{
 		return this.recipeMap.get(input);
+	}
+	
+	public Map<ItemStack, ItemStack> getRecipes()
+	{
+		return this.recipeMap;
 	}
 }
