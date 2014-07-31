@@ -6,7 +6,7 @@ import clashsoft.cslib.minecraft.command.CSCommand;
 import clashsoft.cslib.minecraft.command.CommandModUpdate;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
 import clashsoft.cslib.minecraft.crafting.loader.FurnaceRecipeLoader;
-import clashsoft.cslib.minecraft.network.CSNetHandler;
+import clashsoft.cslib.minecraft.network.CSLibNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.update.reader.SimpleUpdateReader;
 import clashsoft.cslib.minecraft.update.updater.ModUpdater;
@@ -49,7 +49,7 @@ public class CSLib extends ClashsoftMod
 		super(proxy, MODID, NAME, ACRONYM, VERSION);
 		
 		this.hasConfig = true;
-		this.netHandler = new CSNetHandler(NAME);
+		this.netHandler = new CSLibNetHandler();
 		this.eventHandler = this;
 		this.url = "https://github.com/Clashsoft/CSLib-Minecraft/wiki/";
 	}
@@ -72,6 +72,11 @@ public class CSLib extends ClashsoftMod
 	public static void libServerStart(FMLServerStartedEvent event)
 	{
 		instance.serverStarted(event);
+	}
+	
+	public static CSLibNetHandler getNetHandler()
+	{
+		return (CSLibNetHandler) instance.netHandler;
 	}
 	
 	@Override
