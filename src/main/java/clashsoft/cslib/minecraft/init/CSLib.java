@@ -115,7 +115,7 @@ public class CSLib extends ClashsoftMod
 	{
 		super.postInit(event);
 		
-		CSItems.replaceCraftingRecipes();
+		CSItems.replaceRecipes();
 	}
 	
 	public void serverStarted(FMLServerStartedEvent event)

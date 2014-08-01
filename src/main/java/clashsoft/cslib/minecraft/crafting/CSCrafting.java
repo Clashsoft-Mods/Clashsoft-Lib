@@ -33,8 +33,9 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class CSCrafting
 {
-	public static final List<IRecipe>	RECIPES			= CraftingManager.getInstance().getRecipeList();
-	public static final int				WILDCARD_VALUE	= OreDictionary.WILDCARD_VALUE;
+	public static final List<IRecipe>				RECIPES			= CraftingManager.getInstance().getRecipeList();
+	public static final Map<ItemStack, ItemStack>	SMELTINGMAP		= FurnaceRecipes.smelting().getSmeltingList();
+	public static final int							WILDCARD_VALUE	= OreDictionary.WILDCARD_VALUE;
 	
 	/**
 	 * Registers the given {@link IRecipe} {@code recipe}.

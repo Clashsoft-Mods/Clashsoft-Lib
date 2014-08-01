@@ -8,6 +8,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
@@ -382,7 +383,7 @@ public class CSItems
 		{
 			Item item = stack.getItem();
 			Item newItem = replacements.get(item);
-			if (item != newItem)
+			if (newItem != null && item != newItem)
 			{
 				setItem(stack, newItem);
 				return true;
@@ -391,11 +392,18 @@ public class CSItems
 		return false;
 	}
 	
-	public static void replaceCraftingRecipes()
+	public static void replaceRecipes()
 	{
+		if (replacements.isEmpty())
+		{
+			return;
+		}
+		
 		long now = System.currentTimeMillis();
 		int count = 0;
+		int size = CSCrafting.RECIPES.size();
 		
+		// Crafting Recipes
 		for (IRecipe recipe : CSCrafting.RECIPES)
 		{
 			ItemStack output = recipe.getRecipeOutput();
@@ -428,7 +436,21 @@ public class CSItems
 			}
 		}
 		
+		// Furnace Recipes
+		for (Entry<ItemStack, ItemStack> entry : CSCrafting.SMELTINGMAP.entrySet())
+		{
+			size++;
+			if (applyReplacement(entry.getKey()))
+			{
+				count++;
+			}
+			if (applyReplacement(entry.getValue()))
+			{
+				count++;
+			}
+		}
+		
 		now = System.currentTimeMillis() - now;
-		CSLog.info("Replaced " + count + " item references from " + CSCrafting.RECIPES.size() + " recipes, took " + now + "ms");
+		CSLog.info("Replaced " + count + " item references from " + size + " recipes, took " + now + "ms");
 	}
 }
