@@ -7,7 +7,7 @@ import clashsoft.cslib.logging.CSLogger;
 
 public class Log4JLogger extends CSLogger
 {
-	public static org.apache.logging.log4j.Logger	logger	= LogManager.getLogger();
+	public static org.apache.logging.log4j.Logger	logger	= LogManager.getLogger("CSLOG");
 	
 	public static Level convertLevel(java.util.logging.Level level)
 	{
