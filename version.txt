@@ -1,12 +1,7 @@
-version=1.7.10-2.3.0
-url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.3.0/ClashsoftLib-1.7.10-2.3.0.jar
+version=1.7.10-2.4.0
+url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.4.0/ClashsoftLib-1.7.10-2.4.0.jar
 
-! Update to Minecraft 1.7.10
-+ Added CustomRecipeLoader from Minestrappolation
-+ Added SimpleRecipeManager.getRecipes()
-* Updated some localizations
-* Renamed /mu command to /modupdates
-* Re-enabled the UpdateChecker
-* CSPacket can serialize more Objects now
-- Removed MOTD message
-- Removed old version checking
++ Added TileEntity request / send packets from CSHUD
++ Added Constants class for Field ID constants
+* Fixed replaceItem not replacing item references in crafting and furnace recipes
+* Fixed UpdateChecker not working

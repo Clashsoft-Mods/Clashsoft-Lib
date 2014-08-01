@@ -1,3 +1,10 @@
+1.7.10-2.4.0
+
++ Added TileEntity request / send packets from CSHUD
++ Added Constants class for Field ID constants
+* Fixed replaceItem not replacing item references in crafting and furnace recipes
+* Fixed UpdateChecker not working
+
 1.7.10-2.3.0
 
 ! Update to Minecraft 1.7.10

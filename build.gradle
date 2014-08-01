@@ -21,7 +21,7 @@ buildscript
 }
 
 apply plugin: 'forge'
-version = "1.7.10-2.3.0"
+version = "1.7.10-2.4.0"
 group= "clashsoft.cslib"
 archivesBaseName = "ClashsoftLib"
 
@@ -42,13 +42,11 @@ minecraft
     }
 }
 
-task update(dependsOn:['eclipse', 'setupDevWorkspace'])
-
 task deobfJar(type:Jar, dependsOn:'classes')
 deobfJar
 {
     classifier = 'deobf'
-    archiveName = "${archivesBaseName}-${version}-deobf.jar"
+    archiveName = "${archivesBaseName}-${version}-dev.jar"
     from ('build/classes/main')
     {
         include('clashsoft/cslib/**')
