@@ -18,4 +18,10 @@ public class CSLibClientProxy extends CSLibProxy
 		}
 		return null;
 	}
+	
+	@Override
+	public boolean isClient()
+	{
+		return true;
+	}
 }
