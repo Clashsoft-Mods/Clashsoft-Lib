@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.block.ItemCustomBlock;
+import clashsoft.cslib.minecraft.util.Constants;
 import clashsoft.cslib.reflect.CSReflection;
 import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
 import cpw.mods.fml.common.registry.GameData;
@@ -147,7 +148,7 @@ public class CSBlocks
 						// Replace ItemBlock reference
 						if (item != null)
 						{
-							CSReflection.setValue(ItemBlock.class, item, newBlock, 0);
+							CSReflection.setValue(ItemBlock.class, item, newBlock, Constants.ITEMBLOCK_BLOCK_FIELD);
 						}
 						
 						now = System.currentTimeMillis() - now;

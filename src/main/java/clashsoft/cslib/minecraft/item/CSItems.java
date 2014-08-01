@@ -5,10 +5,14 @@ import static clashsoft.cslib.minecraft.stack.CSStacks.stick;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
+import clashsoft.cslib.minecraft.util.Constants;
 import clashsoft.cslib.reflect.CSReflection;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -20,6 +24,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.stats.StatCrafting;
 import net.minecraft.stats.StatList;
 import net.minecraftforge.common.util.EnumHelper;
@@ -33,6 +40,8 @@ import net.minecraftforge.common.util.EnumHelper;
  */
 public class CSItems
 {
+	public static Map<Item, Item>	replacements	= new HashMap();
+	
 	/**
 	 * Creates a new {@link Item} of the {@link Class Type} {@code type} and the
 	 * {@link Object Object[]} {@code args} and then registers it under the name
@@ -331,18 +340,21 @@ public class CSItems
 						StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
 						if (stat != null)
 						{
-							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
+							CSReflection.setValue(StatCrafting.class, stat, newItem, Constants.STATCRAFTING_ITEM_FIELD);
 						}
 						stat = (StatCrafting) StatList.objectCraftStats[id];
 						if (stat != null)
 						{
-							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
+							CSReflection.setValue(StatCrafting.class, stat, newItem, Constants.STATCRAFTING_ITEM_FIELD);
 						}
 						stat = (StatCrafting) StatList.objectUseStats[id];
 						if (stat != null)
 						{
-							CSReflection.setValue(StatCrafting.class, stat, newItem, 0);
+							CSReflection.setValue(StatCrafting.class, stat, newItem, Constants.STATCRAFTING_ITEM_FIELD);
 						}
+						
+						// Replace Crafting Recipes
+						replacements.put(item, newItem);
 						
 						now = System.currentTimeMillis() - now;
 						CSLog.info("Replace Item : %s (%s) with %s, took %d ms", new Object[] { field.getName(), item1.getClass().getSimpleName(), newItem.getClass().getSimpleName(), now });
@@ -357,5 +369,55 @@ public class CSItems
 			CSLog.error(e);
 		}
 		return false;
+	}
+	
+	public static void setItem(ItemStack stack, Item item)
+	{
+		CSReflection.setValue(ItemStack.class, stack, item, Constants.ITEMSTACK_ITEM_FIELD);
+	}
+	
+	private static void applyReplacement(ItemStack stack)
+	{
+		Item item = stack.getItem();
+		Item newItem = replacements.get(item);
+		if (item != newItem)
+		{
+			setItem(stack, newItem);
+		}
+	}
+	
+	public static void replaceCraftingRecipes()
+	{
+		for (IRecipe recipe : CSCrafting.RECIPES)
+		{
+			ItemStack output = recipe.getRecipeOutput();
+			if (output != null)
+			{
+				applyReplacement(output);
+			}
+			
+			if (recipe instanceof ShapedRecipes)
+			{
+				ItemStack[] recipeItems = ((ShapedRecipes) recipe).recipeItems;
+				for (ItemStack stack : recipeItems)
+				{
+					if (stack != null)
+					{
+						applyReplacement(stack);
+					}
+				}
+			}
+			else if (recipe instanceof ShapelessRecipes)
+			{
+				List<ItemStack> recipeItems = ((ShapelessRecipes) recipe).recipeItems;
+				for (ItemStack stack : recipeItems)
+				{
+					if (stack != null)
+					{
+						applyReplacement(stack);
+					}
+				}
+			}
+		}
 	}
 }

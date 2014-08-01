@@ -1,5 +1,6 @@
 package clashsoft.cslib.minecraft.item;
 
+import clashsoft.cslib.minecraft.util.Constants;
 import clashsoft.cslib.reflect.CSReflection;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -12,8 +13,8 @@ public class ItemCustomArmor extends ItemArmor
 	public ItemCustomArmor(ArmorMaterial material, int renderIndex, int armorType)
 	{
 		super(material, renderIndex, armorType & 3);
-		CSReflection.setValue(ItemArmor.class, this, armorType, 4);
-		CSReflection.setValue(ItemArmor.class, this, this.getDamageReductionAmount(material), 5);
+		CSReflection.setValue(ItemArmor.class, this, armorType, Constants.ITEMARMOR_ARMORTYPE_FIELD);
+		CSReflection.setValue(ItemArmor.class, this, this.getDamageReductionAmount(material), Constants.ITEMARMOR_DAMAGEREDUCTION_FIELD);
 	}
 	
 	@Override

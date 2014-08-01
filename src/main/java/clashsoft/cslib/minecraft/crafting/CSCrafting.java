@@ -33,7 +33,7 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class CSCrafting
 {
-	private static final List<IRecipe>	RECIPES			= CraftingManager.getInstance().getRecipeList();
+	public static final List<IRecipe>	RECIPES			= CraftingManager.getInstance().getRecipeList();
 	public static final int				WILDCARD_VALUE	= OreDictionary.WILDCARD_VALUE;
 	
 	/**
