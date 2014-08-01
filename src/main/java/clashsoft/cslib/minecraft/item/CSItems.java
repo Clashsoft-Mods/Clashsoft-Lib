@@ -376,24 +376,32 @@ public class CSItems
 		CSReflection.setValue(ItemStack.class, stack, item, Constants.ITEMSTACK_ITEM_FIELD);
 	}
 	
-	private static void applyReplacement(ItemStack stack)
+	private static boolean applyReplacement(ItemStack stack)
 	{
-		Item item = stack.getItem();
-		Item newItem = replacements.get(item);
-		if (item != newItem)
+		if (stack != null)
 		{
-			setItem(stack, newItem);
+			Item item = stack.getItem();
+			Item newItem = replacements.get(item);
+			if (item != newItem)
+			{
+				setItem(stack, newItem);
+				return true;
+			}
 		}
+		return false;
 	}
 	
 	public static void replaceCraftingRecipes()
 	{
+		long now = System.currentTimeMillis();
+		int count = 0;
+		
 		for (IRecipe recipe : CSCrafting.RECIPES)
 		{
 			ItemStack output = recipe.getRecipeOutput();
-			if (output != null)
+			if (applyReplacement(output))
 			{
-				applyReplacement(output);
+				count++;
 			}
 			
 			if (recipe instanceof ShapedRecipes)
@@ -401,9 +409,9 @@ public class CSItems
 				ItemStack[] recipeItems = ((ShapedRecipes) recipe).recipeItems;
 				for (ItemStack stack : recipeItems)
 				{
-					if (stack != null)
+					if (applyReplacement(stack))
 					{
-						applyReplacement(stack);
+						count++;
 					}
 				}
 			}
@@ -412,12 +420,15 @@ public class CSItems
 				List<ItemStack> recipeItems = ((ShapelessRecipes) recipe).recipeItems;
 				for (ItemStack stack : recipeItems)
 				{
-					if (stack != null)
+					if (applyReplacement(stack))
 					{
-						applyReplacement(stack);
+						count++;
 					}
 				}
 			}
 		}
+		
+		now = System.currentTimeMillis() - now;
+		CSLog.info("Replaced " + count + " item references from " + CSCrafting.RECIPES.size() + " recipes, took " + now + "ms");
 	}
 }

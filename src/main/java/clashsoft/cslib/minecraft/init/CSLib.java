@@ -6,6 +6,7 @@ import clashsoft.cslib.minecraft.command.CSCommand;
 import clashsoft.cslib.minecraft.command.CommandModUpdate;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
 import clashsoft.cslib.minecraft.crafting.loader.FurnaceRecipeLoader;
+import clashsoft.cslib.minecraft.item.CSItems;
 import clashsoft.cslib.minecraft.network.CSLibNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.update.reader.SimpleUpdateReader;
@@ -113,6 +114,8 @@ public class CSLib extends ClashsoftMod
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		super.postInit(event);
+		
+		CSItems.replaceCraftingRecipes();
 	}
 	
 	public void serverStarted(FMLServerStartedEvent event)
