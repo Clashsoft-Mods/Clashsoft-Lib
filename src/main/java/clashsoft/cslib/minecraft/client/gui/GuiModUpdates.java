@@ -6,6 +6,7 @@ import java.util.List;
 import clashsoft.cslib.minecraft.lang.I18n;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.update.Update;
+import clashsoft.cslib.minecraft.util.Constants;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
@@ -131,13 +132,13 @@ public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 		switch (line.charAt(0))
 		{
 		case '+':
-			return 0x00FF00;
+			return Constants.COLOR_GREEN;
 		case '-':
-			return 0xFF0000;
+			return Constants.COLOR_RED;
 		case '*':
-			return 0xFFFF00;
+			return Constants.COLOR_YELLOW;
 		case '!':
-			return 0x007FFF;
+			return Constants.COLOR_LIGHT_BLUE;
 		default:
 			return 0xFFFFFF;
 		}
