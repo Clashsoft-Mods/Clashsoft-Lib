@@ -13,6 +13,17 @@ import clashsoft.cslib.util.CSString;
  */
 public class CSRandom
 {
+	public static int nextInt(Random random, float f)
+	{
+		int i = (int) f;
+		f -= i;
+		if (random.nextFloat() < f)
+		{
+			i++;
+		}
+		return i;
+	}
+	
 	/**
 	 * Returns a random bounded int between min (inclusive) and max (exclusive),
 	 * the minimum result can be min and the maximum result can be max - 1.
@@ -40,7 +51,7 @@ public class CSRandom
 		{
 			return min;
 		}
-		return min + random.nextInt(max - min);
+		return min + random.nextInt(max - min + 1);
 	}
 	
 	public static float nextFloat(Random random, float min, float max)
