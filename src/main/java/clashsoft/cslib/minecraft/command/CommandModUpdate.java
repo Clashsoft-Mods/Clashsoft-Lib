@@ -1,12 +1,14 @@
 package clashsoft.cslib.minecraft.command;
 
+import java.util.List;
+
 import clashsoft.cslib.minecraft.init.CSLib;
 import clashsoft.cslib.minecraft.update.CSUpdate;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 public class CommandModUpdate extends CommandBase
 {
@@ -25,6 +27,11 @@ public class CommandModUpdate extends CommandBase
 	@Override
 	public void processCommand(ICommandSender sender, String[] args)
 	{
+		if (!(sender instanceof EntityPlayerMP))
+		{
+			return;
+		}
+		
 		if (args.length >= 1)
 		{
 			if ("update".equals(args[0]))
@@ -41,13 +48,19 @@ public class CommandModUpdate extends CommandBase
 			}
 			else if ("view".equals(args[0]))
 			{
-				FMLNetworkHandler.openGui((EntityPlayer) sender, CSLib.instance, 0, sender.getEntityWorld(), 0, 0, 0);
+				CSLib.getNetHandler().sendOpenMUScreen((EntityPlayerMP) sender);
 			}
 		}
 		else
 		{
-			FMLNetworkHandler.openGui((EntityPlayer) sender, CSLib.instance, 0, sender.getEntityWorld(), 0, 0, 0);
+			CSLib.getNetHandler().sendOpenMUScreen((EntityPlayerMP) sender);
 		}
+	}
+	
+	@Override
+	public List addTabCompletionOptions(ICommandSender sender, String[] args)
+	{
+		return getListOfStringsMatchingLastWord(args, "update", "updateall", "view");
 	}
 	
 	@Override

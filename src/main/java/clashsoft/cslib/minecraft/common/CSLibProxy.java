@@ -10,4 +10,12 @@ public class CSLibProxy extends BaseProxy
 	{
 		return null;
 	}
+	
+	public void openMUScreen()
+	{
+	}
+	
+	public void openGUI(Object gui)
+	{
+	}
 }

@@ -1,22 +1,32 @@
 package clashsoft.cslib.minecraft.client;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-
 import clashsoft.cslib.minecraft.client.gui.GuiModUpdates;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
 public class CSLibClientProxy extends CSLibProxy
 {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if (ID == 0)
-		{
-			return new GuiModUpdates(Minecraft.getMinecraft().currentScreen);
-		}
 		return null;
+	}
+	
+	@Override
+	public void openMUScreen()
+	{
+		Minecraft mc = Minecraft.getMinecraft();
+		mc.displayGuiScreen(new GuiModUpdates(mc.currentScreen));
+	}
+	
+	@Override
+	public void openGUI(Object gui)
+	{
+		Minecraft.getMinecraft().displayGuiScreen((GuiScreen) gui);
 	}
 	
 	@Override
