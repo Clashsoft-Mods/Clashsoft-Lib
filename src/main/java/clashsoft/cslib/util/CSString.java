@@ -21,10 +21,7 @@ import clashsoft.cslib.logging.CSLog;
  */
 public class CSString
 {
-	/** The Constant ROMANCODE. */
 	private static final String[]	ROMANCODE				= { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
-	
-	/** The Constant BINEQUAL. */
 	private static final int[]		BINEQUAL				= { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
 	
 	public static final String[]	fastRomanCache			= { "0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX" };
@@ -126,6 +123,34 @@ public class CSString
 		return roman.toString();
 	}
 	
+	public static List<String> getWords(String string, boolean spacesOnly)
+	{
+		List<String> words = new ArrayList();
+		StringBuilder temp = new StringBuilder(10);
+		char l = 0;
+		
+		for (int i = 0; i < string.length(); i++)
+		{
+			char c = string.charAt(i);
+			temp.append(c);
+			if (isSpace(c) || (!spacesOnly && !isLetter(c)))
+			{
+				words.add(temp.toString());
+				temp.delete(0, temp.length());
+				continue;
+			}
+			
+			l = c;
+		}
+		
+		if (temp.length() > 0)
+		{
+			words.add(temp.toString());
+		}
+		
+		return words;
+	}
+	
 	/**
 	 * Wraps a string to make multiple lines with a maximum length. It doesn't
 	 * cut words
@@ -136,25 +161,29 @@ public class CSString
 	 *            the max line length
 	 * @return the string
 	 */
-	public static String cutString(String string, int maxLineLength)
+	public static List<String> cutString(String string, int maxLineLength)
 	{
-		String[] words = string.split(" ");
-		StringBuilder ret = new StringBuilder(string.length());
+		List<String> words = getWords(string, false);
+		int size = words.size();
 		StringBuilder temp = new StringBuilder(10);
+		List<String> lines = new ArrayList();
 		
 		int i = 0;
-		while (i < words.length)
+		for (String word : words)
 		{
-			while (i < words.length && temp.append(words[i]).length() <= maxLineLength)
+			if (temp.length() + word.length() >= maxLineLength)
 			{
-				temp.append(' ');
-				i++;
+				lines.add(temp.toString());
+				temp.delete(0, temp.length());
 			}
-			ret.append(temp.toString().trim()).append('\n');
-			temp.delete(0, temp.length());
-			i++;
+			temp.append(word);
 		}
-		return ret.toString().trim();
+		if (temp.length() > 0)
+		{
+			lines.add(temp.toString());
+		}
+		
+		return lines;
 	}
 	
 	/**
@@ -616,6 +645,26 @@ public class CSString
 	public static String firstCharToCase(String string, int mode)
 	{
 		return (mode == 0 ? Character.toLowerCase(string.charAt(0)) : Character.toUpperCase(string.charAt(0))) + string.substring(1);
+	}
+	
+	public static boolean isNumber(char c)
+	{
+		return c >= '0' && c <= '9';
+	}
+	
+	public static boolean isLetter(char c)
+	{
+		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+	}
+	
+	public static boolean isIdentifier(char c)
+	{
+		return isLetter(c) || isNumber(c);
+	}
+	
+	public static boolean isSpace(char c)
+	{
+		return c == ' ' || c == '\t' || c == '\n' || c == '\r';
 	}
 	
 	/**
