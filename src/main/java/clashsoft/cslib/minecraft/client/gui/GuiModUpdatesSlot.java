@@ -1,5 +1,6 @@
 package clashsoft.cslib.minecraft.client.gui;
 
+import clashsoft.cslib.minecraft.lang.I18n;
 import clashsoft.cslib.minecraft.update.Update;
 import cpw.mods.fml.client.GuiScrollingList;
 
@@ -56,7 +57,7 @@ public class GuiModUpdatesSlot extends GuiScrollingList
 			int color = update.isValid() ? 0x00FF00 : update.isCurrent() ? 0xFFFFFF : 0xFF0000;
 			font.drawStringWithShadow("\u00a7n" + update.getModName(), x + 2, y + 2, 0xFFFFFF);
 			font.drawStringWithShadow(update.getVersionChanges(), x + 2, y + 12, color);
-			font.drawStringWithShadow(update.getStatus(), x + 2, y + 22, 0xFFFFFF);
+			font.drawStringWithShadow(I18n.getString(update.getStatus()), x + 2, y + 22, 0xFFFFFF);
 		}
 	}
 }

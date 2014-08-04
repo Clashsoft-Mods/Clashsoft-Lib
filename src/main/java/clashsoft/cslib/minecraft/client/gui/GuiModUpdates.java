@@ -7,6 +7,7 @@ import clashsoft.cslib.minecraft.lang.I18n;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.update.Update;
 import clashsoft.cslib.minecraft.util.Constants;
+import clashsoft.cslib.util.CSString;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
@@ -25,6 +26,9 @@ public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 	public List<Update>			updates;
 	public Update				update;
 	public boolean				showInvalidUpdates;
+	
+	private int					urlMinY;
+	private int					urlMaxY;
 	
 	private String				title				= I18n.getString("update.list.title");
 	private String				updates_showinvalid	= I18n.getString("update.list.showinvalid");
@@ -74,30 +78,44 @@ public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 			boolean valid = update.isValid();
 			int color1 = valid ? 0xFF0000 : 0x00FF00;
 			int color2 = valid ? 0x00FF00 : 0xFF0000;
+			int i = 45;
 			
 			this.drawString(this.fontRendererObj, "\u00a7n" + update.getName(), 160, 37, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, this.mod_name, 160, 55, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, this.current_version, 160, 65, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, this.new_version, 160, 75, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, this.url, 160, 85, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, this.install_status, 160, 95, 0xFFFFFF);
 			
-			this.drawString(this.fontRendererObj, update.getModName(), 260, 55, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, update.getVersion(), 260, 65, color1);
-			this.drawString(this.fontRendererObj, update.getNewVersion(), 260, 75, color2);
-			this.drawString(this.fontRendererObj, update.getUpdateURL(), 260, 85, 0xFFFFFF);
-			this.drawString(this.fontRendererObj, update.getStatus(), 260, 95, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, this.mod_name, 160, i += 10, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, update.getModName(), 260, i, 0xFFFFFF);
 			
-			int i = 125;
+			this.drawString(this.fontRendererObj, this.current_version, 160, i += 10, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, update.getVersion(), 260, i, color1);
+			
+			this.drawString(this.fontRendererObj, this.new_version, 160, i += 10, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, update.getNewVersion(), 260, i, color2);
+			
+			this.drawString(this.fontRendererObj, this.url, 160, i += 10, 0xFFFFFF);
+			this.urlMinY = i;
+			for (String s : CSString.cutString(update.getUpdateURL(), (this.width - 300) / 5))
+			{
+				this.drawString(this.fontRendererObj, s, 260, i, 0xFFFFFF);
+				i += 10;
+			}
+			this.urlMaxY = i;
+			
+			this.drawString(this.fontRendererObj, this.install_status, 160, i, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, I18n.getString(update.getStatus()), 260, i, 0xFFFFFF);
+			
 			List<String> updateNotes = update.getUpdateNotes();
 			if (!updateNotes.isEmpty())
 			{
-				this.drawString(this.fontRendererObj, this.update_notes, 160, 110, 0xFFFFFF);
+				this.drawString(this.fontRendererObj, this.update_notes, 160, i += 15, 0xFFFFFF);
+				i += 5;
 				
 				for (String line : updateNotes)
 				{
-					this.drawString(this.fontRendererObj, line, 160, i, this.getDiffColor(line));
-					i += 10;
+					this.drawString(this.fontRendererObj, line, 160, i += 10, this.getDiffColor(line));
+					if (i > this.height - 30)
+					{
+						break;
+					}
 				}
 			}
 		}
@@ -113,9 +131,8 @@ public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 		if (this.update != null)
 		{
 			String url = this.update.getUpdateURL();
-			int i = this.fontRendererObj.getStringWidth(url);
 			
-			if (x >= 260 && x <= 260 + i && y >= 80 && y < 90)
+			if (x >= 260 && x < this.width - 40 && y >= this.urlMinY && y < this.urlMaxY)
 			{
 				this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
 			}
@@ -138,6 +155,8 @@ public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 		case '*':
 			return Constants.COLOR_YELLOW;
 		case '!':
+			return Constants.COLOR_BLUE;
+		case '#':
 			return Constants.COLOR_LIGHT_BLUE;
 		default:
 			return 0xFFFFFF;

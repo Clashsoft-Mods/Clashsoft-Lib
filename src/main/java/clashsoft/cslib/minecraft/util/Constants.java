@@ -10,7 +10,7 @@ public class Constants
 	
 	public static final int	COLOR_RED						= 0xFF0000;
 	public static final int	COLOR_YELLOW					= 0xFFDF00;
-	public static final int	COLOR_GREEN						= 0x007F00;
-	public static final int	COLOR_BLUE						= 0x0000FF;
-	public static final int	COLOR_LIGHT_BLUE				= 0x007FFF;
+	public static final int	COLOR_GREEN						= 0x00DF00;
+	public static final int	COLOR_BLUE						= 0x007FFF;
+	public static final int	COLOR_LIGHT_BLUE				= 0x00DFFF;
 }

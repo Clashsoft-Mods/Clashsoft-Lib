@@ -2,7 +2,6 @@ package clashsoft.cslib.minecraft.update;
 
 import java.util.List;
 
-import clashsoft.cslib.minecraft.lang.I18n;
 import clashsoft.cslib.minecraft.update.updater.IUpdater;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -153,35 +152,35 @@ public class Update
 		this.validate();
 		if (this.compare == INVALID)
 		{
-			return I18n.getString("update.invalid");
+			return "update.invalid";
 		}
 		else if (this.compare == OTHER_MC_VERSION)
 		{
-			return I18n.getString("update.other_mc_version");
+			return "update.other_mc_version";
 		}
 		else if (this.compare == 1)
 		{
-			return I18n.getString("update.behind");
+			return "update.older_version";
 		}
 		else if (this.compare == 0)
 		{
-			return I18n.getString("update.sameversion");
+			return "update.current_version";
 		}
 		else if (this.installStatus == -1)
 		{
-			return I18n.getString("update.list.install.error");
+			return "update.list.install.error";
 		}
 		else if (this.installStatus == 0)
 		{
-			return I18n.getString("update.list.install.notstarted");
+			return "update.list.install.notstarted";
 		}
 		else if (this.installStatus == 1)
 		{
-			return I18n.getString("update.list.install.installing");
+			return "update.list.install.installing";
 		}
 		else if (this.installStatus == 2)
 		{
-			return I18n.getString("update.list.install.installed");
+			return "update.list.install.installed";
 		}
 		return "Unknown";
 	}

@@ -13,8 +13,12 @@ update.found=Updates found:
 update.notification=A new %1$s version is available: %2$s. You are using %3$s.
 update.none=No updates found for "%1$s"
 update.notes=Update notes:
-update.invalid=Invalid
 update.automatic.disabled=Automatic updates disabled. Type "/modupdate %1$s" to update.
+
+update.invalid=Invalid
+update.other_mc_version=Other Minecraft Version
+update.older_version=Older Version
+update.current_version=Current Version
 
 update.install=Installing %1$s.
 update.install.skipping=Skipping installation.
