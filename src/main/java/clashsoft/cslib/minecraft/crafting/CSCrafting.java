@@ -390,12 +390,18 @@ public class CSCrafting
 		
 		while (iterator.hasNext())
 		{
-			recipe = iterator.next();
-			ItemStack stack = recipe.getRecipeOutput();
-			if (CSStacks.equals(output, stack))
+			try
 			{
-				iterator.remove();
-				count++;
+				recipe = iterator.next();
+				ItemStack stack = recipe.getRecipeOutput();
+				if (CSStacks.stackEquals(output, stack))
+				{
+					iterator.remove();
+					count++;
+				}
+			}
+			catch (Exception ex)
+			{
 			}
 		}
 		
