@@ -57,6 +57,23 @@ public class CSUpdate
 		return CURRENT_VERSION + "-" + version;
 	}
 	
+	public static String extractMinecraftVersion(String version)
+	{
+		int i = version.indexOf('-');
+		if (i != -1)
+		{
+			return version.substring(0, i);
+		}
+		
+		i = version.indexOf(':');
+		if (i != -1)
+		{
+			return version.substring(i + 1, version.length());
+		}
+		
+		return null;
+	}
+	
 	public static List<Update> getUpdates(boolean invalidUpdates)
 	{
 		Collection<Update> collection = updates.values();

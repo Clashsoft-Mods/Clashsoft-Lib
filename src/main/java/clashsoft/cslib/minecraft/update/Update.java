@@ -54,17 +54,12 @@ public class Update
 		{
 			if (this.version != null && this.newVersion != null)
 			{
-				int index1 = this.version.indexOf('-');
-				int index2 = this.version.indexOf('-');
-				if (index1 != -1 && index2 != -1)
+				String mcVersion1 = CSUpdate.extractMinecraftVersion(this.version);
+				String mcVersion2 = CSUpdate.extractMinecraftVersion(this.newVersion);
+				if (mcVersion1 != null && mcVersion2 != null && !mcVersion1.equals(mcVersion2))
 				{
-					String mcVersion1 = this.version.substring(0, index1);
-					String mcVersion2 = this.newVersion.substring(0, index2);
-					if (!mcVersion1.equals(mcVersion2))
-					{
-						this.compare = OTHER_MC_VERSION;
-						return this.compare;
-					}
+					this.compare = OTHER_MC_VERSION;
+					return this.compare;
 				}
 				this.compare = CSUpdate.compareVersion(this.version, this.newVersion);
 			}
