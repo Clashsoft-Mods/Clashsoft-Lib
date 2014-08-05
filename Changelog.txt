@@ -1,3 +1,13 @@
+1.7.10-2.4.1
+
++ Added Color Constants
++ Added a few String Utils
+* Improved CSRandom
+* Improved Mod Updates GUI
+* Fixed Mod Updates GUI not opening
+* Fixed potential removeRecipe crash
+* Fixed potential Update validation crash
+
 1.7.10-2.4.0
 
 + Added TileEntity request / send packets from CSHUD
