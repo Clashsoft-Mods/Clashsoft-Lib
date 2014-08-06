@@ -9,22 +9,22 @@ search.match.category=Category Match
 
 motd.message=%1$s Message of the Day:
 
-update.found=Updates found:
-update.notification=A new %1$s version is available: %2$s. You are using %3$s.
-update.none=No updates found for "%1$s"
+update.found=§aUpdates found:
+update.notification=§7A new §f%1$s§7 version is available: §a%2$s§7.
+update.none=§7No updates found for %1$s.
 update.notes=Update notes:
-update.automatic.disabled=Automatic updates disabled. Type "/modupdate %1$s" to update.
+update.automatic.disabled=§cAutomatic updates disabled.
 
 update.invalid=Invalid
 update.other_mc_version=Other Minecraft Version
 update.older_version=Older Version
 update.current_version=Current Version
 
-update.install=Installing %1$s.
-update.install.skipping=Skipping installation.
-update.install.oldversion=An old version of %1$s was detected (%2$s). Deleting.
-update.install.success=Successfully installed %1$s.
-update.install.failure=Installation of %1$s failed. Reason: %2$s
+update.install=§aInstalling %1$s...
+update.install.skipping=§eSkipping installation.
+update.install.oldversion=§eAn old version of %1$s was detected (%2$s). Deleting.
+update.install.success=§aSuccessfully installed %1$s.
+update.install.failure=§cFailed to install %1$s. Reason: %2$s
 
 update.list.title=Mod Updates
 update.list.showinvalid=Show Invalid Updates

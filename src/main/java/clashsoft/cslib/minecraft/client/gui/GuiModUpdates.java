@@ -6,7 +6,6 @@ import java.util.List;
 import clashsoft.cslib.minecraft.lang.I18n;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.update.Update;
-import clashsoft.cslib.minecraft.util.Constants;
 import clashsoft.cslib.util.CSString;
 
 import net.minecraft.client.gui.GuiButton;
@@ -111,7 +110,7 @@ public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 				
 				for (String line : updateNotes)
 				{
-					this.drawString(this.fontRendererObj, line, 160, i += 10, this.getDiffColor(line));
+					this.drawString(this.fontRendererObj, line, 160, i += 10, CSUpdate.getChangeColor(line));
 					if (i > this.height - 30)
 					{
 						break;
@@ -136,31 +135,6 @@ public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 			{
 				this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
 			}
-		}
-	}
-	
-	public int getDiffColor(String line)
-	{
-		if (line.isEmpty())
-		{
-			return 0xFFFFFF;
-		}
-		
-		switch (line.charAt(0))
-		{
-		case '+':
-			return Constants.COLOR_GREEN;
-		case '-':
-			return Constants.COLOR_RED;
-		case '*':
-			return Constants.COLOR_YELLOW;
-		case '!':
-		case '>':
-			return Constants.COLOR_BLUE;
-		case '#':
-			return Constants.COLOR_LIGHT_BLUE;
-		default:
-			return 0xFFFFFF;
 		}
 	}
 	

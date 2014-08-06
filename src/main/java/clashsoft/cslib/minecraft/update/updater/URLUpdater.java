@@ -81,7 +81,7 @@ public class URLUpdater implements IUpdater
 	@Override
 	public boolean reCheck()
 	{
-		return true;
+		return false;
 	}
 	
 	@Override

@@ -6,10 +6,12 @@ import clashsoft.cslib.minecraft.init.CSLib;
 import clashsoft.cslib.minecraft.update.updater.IUpdater;
 import clashsoft.cslib.minecraft.update.updater.ModUpdater;
 import clashsoft.cslib.minecraft.update.updater.URLUpdater;
+import clashsoft.cslib.minecraft.util.Constants;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -63,14 +65,14 @@ public class CSUpdate
 		if (i != -1)
 		{
 			// MCVersion-ModVersion
-			return new String [] { version.substring(0, i), version.substring(i + 1, version.length()) };
+			return new String[] { version.substring(0, i), version.substring(i + 1, version.length()) };
 		}
 		
 		i = version.indexOf(':');
 		if (i != -1)
 		{
 			// ModVersion:MCVersion
-			return new String [] { version.substring(i + 1, version.length()), version.substring(0, i) };
+			return new String[] { version.substring(i + 1, version.length()), version.substring(0, i) };
 		}
 		
 		return new String[] { version };
@@ -169,7 +171,6 @@ public class CSUpdate
 		List<Update> updates = getUpdates(false);
 		if (!updates.isEmpty())
 		{
-			player.addChatMessage(new ChatComponentTranslation("update.found"));
 			for (Update update : updates)
 			{
 				notify(player, update);
@@ -181,7 +182,7 @@ public class CSUpdate
 	{
 		if (update != null && update.isValid())
 		{
-			player.addChatMessage(new ChatComponentTranslation("update.notification", update.getModName(), update.getNewVersion(), update.getVersion()));
+			player.addChatMessage(new ChatComponentTranslation("update.notification", update.getModName(), update.getNewVersion()));
 			
 			if (update.getUpdateNotes().size() > 0)
 			{
@@ -189,7 +190,13 @@ public class CSUpdate
 				
 				for (String line : update.getUpdateNotes())
 				{
-					player.addChatMessage(new ChatComponentText(line));
+					IChatComponent component = new ChatComponentText(line);
+					EnumChatFormatting color = getChangeChatColor(line);
+					if (color != EnumChatFormatting.WHITE)
+					{
+						component.getChatStyle().setColor(color);
+					}
+					player.addChatMessage(component);
 				}
 			}
 			
@@ -297,5 +304,54 @@ public class CSUpdate
 			}
 		}
 		return 0;
+	}
+	
+	public static int getChangeColor(String line)
+	{
+		if (line.isEmpty())
+		{
+			return 0xFFFFFF;
+		}
+		
+		switch (line.charAt(0))
+		{
+		case '+':
+			return Constants.COLOR_GREEN;
+		case '-':
+			return Constants.COLOR_RED;
+		case '*':
+			return Constants.COLOR_YELLOW;
+		case '!':
+		case '>':
+			return Constants.COLOR_BLUE;
+		case '#':
+			return Constants.COLOR_LIGHT_BLUE;
+		default:
+			return 0xFFFFFF;
+		}
+	}
+	
+	public static EnumChatFormatting getChangeChatColor(String line)
+	{
+		if (line.isEmpty())
+		{
+			return EnumChatFormatting.WHITE;
+		}
+		
+		switch (line.charAt(0))
+		{
+		case '+':
+			return EnumChatFormatting.GREEN;
+		case '-':
+			return EnumChatFormatting.RED;
+		case '*':
+			return EnumChatFormatting.YELLOW;
+		case '!':
+		case '>':
+		case '#':
+			return EnumChatFormatting.BLUE;
+		default:
+			return EnumChatFormatting.WHITE;
+		}
 	}
 }
