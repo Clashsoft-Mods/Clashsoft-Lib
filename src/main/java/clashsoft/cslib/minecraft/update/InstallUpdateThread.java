@@ -4,6 +4,7 @@ import java.io.File;
 
 import clashsoft.cslib.io.CSWeb;
 import clashsoft.cslib.logging.CSLog;
+import clashsoft.cslib.util.CSString;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentTranslation;
@@ -27,6 +28,29 @@ public class InstallUpdateThread extends Thread
 		this.player = player;
 	}
 	
+	/**
+	 * Extracts the mod name from the file name. This is used to find existing
+	 * mod jars.
+	 * <p>
+	 * Example: "ClashsoftLib-1.0.0-0.0.0" -> "ClashsoftLib"
+	 * 
+	 * @param modName
+	 * @param fileName
+	 * @return
+	 */
+	private static String getModFileName(String modName, String fileName)
+	{
+		for (int i = 0; i < fileName.length(); i++)
+		{
+			char c = fileName.charAt(i);
+			if (!CSString.isLetter(c))
+			{
+				return fileName.substring(0, i);
+			}
+		}
+		return modName;
+	}
+	
 	@Override
 	public void run()
 	{
@@ -35,6 +59,8 @@ public class InstallUpdateThread extends Thread
 			this.update.installStatus = 1;
 			
 			String modName = this.update.getModName();
+			String fileName = this.update.getDownloadedFileName();
+			String modFileName = getModFileName(modName, fileName);
 			String newVersion = this.update.getNewVersion();
 			String mod = this.update.getName();
 			
@@ -44,7 +70,7 @@ public class InstallUpdateThread extends Thread
 			
 			try
 			{
-				File output = new File(modsDir, this.update.getDownloadedFileName());
+				File output = new File(modsDir, fileName);
 				
 				if (output.exists())
 				{
@@ -55,10 +81,10 @@ public class InstallUpdateThread extends Thread
 				
 				for (File f : modsDir.listFiles())
 				{
-					String fileName = f.getName();
-					if (fileName.startsWith(modName))
+					String fileName1 = f.getName();
+					if (fileName1.startsWith(modName) || fileName1.startsWith(modFileName))
 					{
-						this.player.addChatMessage(new ChatComponentTranslation("update.install.oldversion", modName, fileName));
+						this.player.addChatMessage(new ChatComponentTranslation("update.install.oldversion", modName, fileName1));
 						f.delete();
 					}
 				}
