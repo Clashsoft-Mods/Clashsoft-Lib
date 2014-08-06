@@ -29,7 +29,6 @@ public class GuiModUpdatesSlot extends GuiScrollingList
 	protected void elementClicked(int slotID, boolean doubleClick)
 	{
 		this.selectedIndex = slotID;
-		this.parent.updateIndex = slotID;
 	}
 	
 	@Override
