@@ -57,21 +57,23 @@ public class CSUpdate
 		return CURRENT_VERSION + "-" + version;
 	}
 	
-	public static String extractMinecraftVersion(String version)
+	public static String[] splitVersion(String version)
 	{
 		int i = version.indexOf('-');
 		if (i != -1)
 		{
-			return version.substring(0, i);
+			// MCVersion-ModVersion
+			return new String [] { version.substring(0, i), version.substring(i + 1, version.length()) };
 		}
 		
 		i = version.indexOf(':');
 		if (i != -1)
 		{
-			return version.substring(i + 1, version.length());
+			// ModVersion:MCVersion
+			return new String [] { version.substring(i + 1, version.length()), version.substring(0, i) };
 		}
 		
-		return null;
+		return new String[] { version };
 	}
 	
 	public static List<Update> getUpdates(boolean invalidUpdates)

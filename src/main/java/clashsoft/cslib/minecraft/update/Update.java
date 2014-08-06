@@ -15,9 +15,9 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class Update
 {
-	private static final int	INVALID				= -2;
 	private static final int	NOT_CHECKED			= -999;
-	private static final int	OTHER_MC_VERSION	= -998;
+	private static final int	INVALID				= -998;
+	private static final int	OTHER_MC_VERSION	= -997;
 	
 	public final IUpdater		updater;
 	
@@ -54,14 +54,40 @@ public class Update
 		{
 			if (this.version != null && this.newVersion != null)
 			{
-				String mcVersion1 = CSUpdate.extractMinecraftVersion(this.version);
-				String mcVersion2 = CSUpdate.extractMinecraftVersion(this.newVersion);
-				if (mcVersion1 != null && mcVersion2 != null && !mcVersion1.equals(mcVersion2))
+				String[] split = CSUpdate.splitVersion(this.version);
+				String[] newSplit = CSUpdate.splitVersion(this.newVersion);
+				String mc = null;
+				String newMC = null;
+				String version;
+				String newVersion;
+				
+				if (split.length == 2)
+				{
+					mc = split[0];
+					version = split[1];
+				}
+				else
+				{
+					version = split[0];
+				}
+				
+				if (newSplit.length == 2)
+				{
+					newMC = newSplit[0];
+					newVersion = newSplit[1];
+				}
+				else
+				{
+					newVersion = newSplit[0];
+				}
+				
+				if (mc != null && newMC != null && !mc.equals(newMC))
 				{
 					this.compare = OTHER_MC_VERSION;
 					return this.compare;
 				}
-				this.compare = CSUpdate.compareVersion(this.version, this.newVersion);
+				
+				this.compare = CSUpdate.compareVersion(version, newVersion);
 			}
 			else
 			{
@@ -73,12 +99,12 @@ public class Update
 	
 	public String getModName()
 	{
-		return this.modName == null ? "[unknown]" : this.modName;
+		return this.modName == null ? "[Unknown]" : this.modName;
 	}
 	
 	public String getVersion()
 	{
-		return this.version == null ? "[unknown]" : this.version;
+		return this.version == null ? "[Unknown]" : this.version;
 	}
 	
 	public String getNewVersion()
@@ -103,7 +129,7 @@ public class Update
 	
 	public String getUpdateURL()
 	{
-		return this.url == null ? "[none]" : this.url;
+		return this.url == null ? "[No URL]" : this.url;
 	}
 	
 	public List<String> getUpdateNotes()
@@ -127,19 +153,25 @@ public class Update
 		return this.url != null && !this.url.isEmpty();
 	}
 	
-	private String getFileType()
+	public String getDownloadedFileName()
 	{
 		if (this.url == null)
 		{
-			return "zip";
+			return null;
 		}
-		int i = this.url.lastIndexOf('.');
-		return i == -1 ? "zip" : this.url.substring(i + 1);
+		
+		int i = this.url.lastIndexOf('/');
+		if (i == -1)
+		{
+			return null;
+		}
+		
+		return this.url.substring(i + 1, this.url.length());
 	}
 	
-	public String getDownloadedFileName()
+	public boolean canInstall()
 	{
-		return String.format("%s %s.%s", this.modName, this.newVersion, this.getFileType());
+		return this.isValid() && this.installStatus == 0;
 	}
 	
 	public String getStatus()
