@@ -1,142 +1,148 @@
+1.7.10-2.4.2
+
+* Improved Update installation.
+* Improved Update Version comparator.
+* Improved Mod Updates GUI.
+
 1.7.10-2.4.1
 
-+ Added Color Constants
-+ Added a few String Utils
-* Improved CSRandom
-* Improved Mod Updates GUI
-* Fixed Mod Updates GUI not opening
-* Fixed potential removeRecipe crash
-* Fixed potential Update validation crash
++ Added Color Constants.
++ Added a few String Utils.
+* Improved CSRandom.
+* Improved Mod Updates GUI.
+* Fixed Mod Updates GUI not opening.
+* Fixed potential removeRecipe crash.
+* Fixed potential Update validation crash.
 
 1.7.10-2.4.0
 
-+ Added TileEntity request / send packets from CSHUD
-+ Added Constants class for Field ID constants
-* Fixed replaceItem not replacing item references in crafting and furnace recipes
-* Fixed UpdateChecker not working
++ Added TileEntity request / send packets from CSHUD.
++ Added Constants class for Field ID constants.
+* Fixed replaceItem not replacing item references in crafting and furnace recipes.
+* Fixed UpdateChecker not working.
 
 1.7.10-2.3.0
 
-! Update to Minecraft 1.7.10
-+ Added CustomRecipeLoader from Minestrappolation
-+ Added SimpleRecipeManager.getRecipes()
-* Updated some localizations
-* Renamed /mu command to /modupdates
-* Re-enabled the UpdateChecker
-* CSPacket can serialize more Objects now
-- Removed MOTD message
-- Removed old version checking
+> Update to Minecraft 1.7.10.
++ Added CustomRecipeLoader from Minestrappolation.
++ Added SimpleRecipeManager.getRecipes().
+* Updated some localizations.
+* Renamed /mu command to /modupdates.
+* Re-enabled the UpdateChecker.
+* CSPacket can serialize more Objects now.
+- Removed MOTD message.
+- Removed old version checking.
 
 1.7.2-2.2.0
 
-+ Added StackFactory
-* Improved Stack Hashing
-* Improved Recipe Managers
-* Documentation
++ Added StackFactory.
+* Improved Stack Hashing.
+* Improved Recipe Managers.
+* Documentation.
 
 1.7.2-2.1.2
 
-+ Added ItemStackHashMap
-* Renamed Tokenizer to Lexer
-* Fixed TileEntityInventory not saving itself
-* Improved Parsers
-* Minor improvements
-* Bugfixes
++ Added ItemStackHashMap.
+* Renamed Tokenizer to Lexer.
+* Fixed TileEntityInventory not saving itself.
+* Improved Parsers.
+* Minor improvements.
+* Bugfixes.
 
 1.7.2-2.1.1
 
-+ Added FloatHashMaps and DoubleHashMaps
-* Bugfixes
-* Documentation
++ Added FloatHashMaps and DoubleHashMaps.
+* Documentation.
+* Bugfixes.
 
 1.7.2-2.1.0
 
-+ Added new Tokenizer class
-+ Tokens have lexical types now
-* Improved Parser system
-* Fixed unhandled packets leaking
-* Bugfixes
++ Added new Tokenizer class.
++ Tokens have lexical types now.
+* Improved Parser system.
+* Fixed unhandled packets leaking.
+* Bugfixes.
 
 1.7.2-2.0.0
 
-+ Added Parser system
-+ Added CSFiles
-+ Added MaxRandom and MinRandom implementations of Random
-+ Added Enchantment Registry
-+ Added Potion Registry
-+ Added MOTD system
-* Seperated mod loader from actual mod
-* Made the update system even more customizable
-* Many internal changes
-* Structure changes
-* Cleanup
++ Added Parser system.
++ Added CSFiles.
++ Added MaxRandom and MinRandom implementations of Random.
++ Added Enchantment Registry.
++ Added Potion Registry.
++ Added MOTD system.
+* Seperated mod loader from actual mod.
+* Made the update system even more customizable.
+* Many internal changes.
+* Structure changes.
+* Cleanup.
 
 1.7.2-1.1.0
 
-+ Added recipe managers
-+ Added new custom block classes
-+ Added abstract world management classes
-* Made the update system more customizable
-* Bugfixes
-- Removed addon system
++ Added recipe managers.
++ Added new custom block classes.
++ Added abstract world management classes.
+* Made the update system more customizable.
+* Bugfixes.
+- Removed addon system.
 
 1.7.2-1.0.2
 
-+ Added CSEntities
-* Fixed CSCrafting.addStorageBlock not working correctly
-* Fixed CustomPortal crash
-* Fixed crash when switching / reloading resource packs
-* Improved BaseMod
++ Added CSEntities.
+* Improved BaseMod.
+* Fixed CSCrafting.addStorageBlock not working correctly.
+* Fixed CustomPortal crash.
+* Fixed crash when switching / reloading resource packs.
 
 1.7.2-1.0.1
 
-* Fixed crash if no mods register a command with CSCommands
-* Fixed crash if there are no more empty potion list entrys
+* Fixed crash if no mods register a command with CSCommands.
+* Fixed crash if there are no more empty potion list entrys.
 
 1.7.2-1.0.0
 
-! Update to 1.7.2
-+ Added MANY new classes and utilities
-+ Added Mod Updates GUI and commands (/mu)
-* Improved Mod Updates
-* Major structure changes
-* Performance improvements
-* Fixed MANY bugs
+> Update to 1.7.2.
++ Added MANY new classes and utilities.
++ Added Mod Updates GUI and commands (/mu).
+* Improved Mod Updates.
+* Performance improvements.
+* Major structure changes.
+* Fixed MANY bugs.
 
 1.6.4-8
 
-* Many internal changes
-* Fixed many bugs
+* Many internal changes.
+* Fixed many bugs.
 
 1.6.4-7
 
-* Renamed to "Clashsoft Lib"
-* Structure changes
+* Renamed to "Clashsoft Lib".
+* Structure changes.
 
 1.6.4-6
 
-+ Added thread update notifications (faster world loading)
-+ Added string utilities
-* Fixed update crash
++ Added thread update notifications (faster world loading).
++ Added string utilities.
+* Fixed update crash.
 
 1.6.4-5
 
-+ Added ">Restart" command
-+ Added string utilities
-+ Added Javadoc
++ Added ">Restart" command.
++ Added string utilities.
++ Added Javadoc.
 
 1.6.4-4
 
-+ Added ">Update [modname]" command
++ Added ">Update [modname]" command.
 
 1.6.4-3
 
-+ Automatic update downloading
++ Automatic update downloading.
 
 1.6.4-2
 
-+ Added Update Checking
++ Added Update Checking.
 
 1.6.4-1
 
-+ Seperated Clashsoft API from other Clashsoft mods
++ Seperated Clashsoft API from other Clashsoft mods.

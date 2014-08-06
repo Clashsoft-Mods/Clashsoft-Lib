@@ -1,10 +1,6 @@
-version=1.7.10-2.4.0
-url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.4.1/ClashsoftLib-1.7.10-2.4.1.jar
+version=1.7.10-2.4.2
+url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.4.2/ClashsoftLib-1.7.10-2.4.2.jar
 
-+ Added Color Constants
-+ Added a few String Utils
-* Improved CSRandom
-* Improved Mod Updates GUI
-* Fixed Mod Updates GUI not opening
-* Fixed potential removeRecipe crash
-* Fixed potential Update validation crash
+* Improved Update installation.
+* Improved Update Version comparator.
+* Improved Mod Updates GUI.
