@@ -155,6 +155,7 @@ public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 		case '*':
 			return Constants.COLOR_YELLOW;
 		case '!':
+		case '>':
 			return Constants.COLOR_BLUE;
 		case '#':
 			return Constants.COLOR_LIGHT_BLUE;
@@ -219,20 +220,35 @@ public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 		}
 	}
 	
-	protected void selectUpdate(int update)
+	@Override
+	public void updateScreen()
 	{
-		this.update = this.updates.get(update);
-		this.buttonInstall.enabled = this.update.isValid();
+		if (this.updates != null)
+		{
+			this.update = this.updates.get(this.slots.selectedIndex);
+			this.buttonInstall.enabled = this.update.canInstall();
+			this.buttonInstall.visible = true;
+		}
+		else
+		{
+			this.update = null;
+			this.buttonInstall.visible = false;
+		}
 	}
 	
 	protected void updateList()
 	{
 		this.updates = CSUpdate.getUpdates(this.showInvalidUpdates);
-		this.update = this.updates.isEmpty() ? null : this.updates.get(0);
+		int i = this.updates.indexOf(this.update);
+		if (i == -1)
+		{
+			i = 0;
+		}
+		this.update = this.updates.isEmpty() ? null : this.updates.get(i);
 		
 		if (this.slots != null)
 		{
-			this.slots.selectedIndex = 0;
+			this.slots.selectedIndex = i;
 		}
 	}
 	
