@@ -214,6 +214,9 @@ public class Update
 	
 	public void install(EntityPlayer player)
 	{
-		new InstallUpdateThread(this, player).start();
+		if (this.canInstall())
+		{
+			new InstallUpdateThread(this, player).start();
+		}
 	}
 }
