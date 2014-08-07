@@ -71,11 +71,10 @@ public abstract class CustomWorldProvider extends WorldProvider
 	@Override
 	protected void generateLightBrightnessTable()
 	{
-		float f = 12.0F;
 		for (int i = 0; i <= 15; i++)
 		{
 			float f1 = 12.0F - i / 15.0F;
-			this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * (1.0F - f) + f;
+			this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * -11F + 12F;
 		}
 	}
 	
@@ -83,12 +82,10 @@ public abstract class CustomWorldProvider extends WorldProvider
 	@SideOnly(Side.CLIENT)
 	public float[] calcSunriseSunsetColors(float f, float f1)
 	{
-		float f2 = 0.4F;
 		float f3 = MathHelper.cos(f * 3.141593F * 2.0F) - 0.0F;
-		float f4 = -0.0F;
-		if (f3 >= f4 - f2 && f3 <= f4 + f2)
+		if (f3 >= -0.4F && f3 <= 0.4F)
 		{
-			float f5 = (f3 - f4) / f2 * 0.5F + 0.5F;
+			float f5 = f3 / 0.4F * 0.5F + 0.5F;
 			float f6 = 1.0F - (1.0F - MathHelper.sin(f5 * 3.141593F)) * 0.99F;
 			f6 *= f6;
 			this.colorsSunriseSunset[0] = f5 * 0.3F + 0.7F;
