@@ -1,7 +1,12 @@
 package clashsoft.cslib.minecraft.common;
 
+import java.util.List;
+
+import clashsoft.cslib.minecraft.init.CSLib;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 public class CSLibProxy extends BaseProxy
 {
@@ -11,11 +16,44 @@ public class CSLibProxy extends BaseProxy
 		return null;
 	}
 	
+	public void setCape(EntityPlayer player, String capeName)
+	{
+		CSLib.getNetHandler().sendCapePacket(player, capeName);
+	}
+	
 	public void openMUScreen()
 	{
 	}
 	
 	public void openGUI(Object gui)
 	{
+	}
+	
+	public EntityPlayer findPlayer(String username)
+	{
+		for (World world : DimensionManager.getWorlds())
+		{
+			EntityPlayer player = this.findPlayer(world, username);
+			if (player != null)
+			{
+				return player;
+			}
+		}
+		return null;
+	}
+	
+	public EntityPlayer findPlayer(World world, String username)
+	{
+		List<EntityPlayer> players = world.playerEntities;
+		EntityPlayer player = null;
+		for (int i = 0; i < players.size(); i++)
+		{
+			player = players.get(i);
+			if (player.getDisplayName().equals(username))
+			{
+				return player;
+			}
+		}
+		return null;
 	}
 }

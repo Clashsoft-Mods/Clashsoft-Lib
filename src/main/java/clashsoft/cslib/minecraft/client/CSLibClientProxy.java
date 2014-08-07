@@ -1,5 +1,7 @@
 package clashsoft.cslib.minecraft.client;
 
+import clashsoft.cslib.minecraft.cape.CapeHelper;
+import clashsoft.cslib.minecraft.cape.Capes;
 import clashsoft.cslib.minecraft.client.gui.GuiModUpdates;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
 
@@ -27,6 +29,12 @@ public class CSLibClientProxy extends CSLibProxy
 	public void openGUI(Object gui)
 	{
 		Minecraft.getMinecraft().displayGuiScreen((GuiScreen) gui);
+	}
+	
+	@Override
+	public void setCape(EntityPlayer player, String capeName)
+	{
+		CapeHelper.updateCape(player, Capes.getCape(capeName));
 	}
 	
 	@Override

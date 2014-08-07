@@ -1,5 +1,6 @@
 package clashsoft.cslib.minecraft.network;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -14,6 +15,7 @@ public class CSLibNetHandler extends CSNetHandler
 		this.registerPacket(PacketSendTileEntity.class);
 		this.registerPacket(PacketRequestTileEntity.class);
 		this.registerPacket(PacketOpenMUScreen.class);
+		this.registerPacket(CapePacket.class);
 	}
 	
 	public void requestTEData(World world, int x, int y, int z)
@@ -35,5 +37,10 @@ public class CSLibNetHandler extends CSNetHandler
 	public void sendOpenMUScreen(EntityPlayerMP sender)
 	{
 		this.sendTo(new PacketOpenMUScreen(), sender);
+	}
+	
+	public void sendCapePacket(EntityPlayer player, String capeName)
+	{
+		this.sendToAll(new CapePacket(player, capeName));
 	}
 }
