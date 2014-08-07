@@ -15,4 +15,6 @@ public interface ICustomBiome
 	public byte getFillerMetadata(int x, int y, int z);
 	
 	public byte getStoneMetadata(int x, int y, int z);
+	
+	public int getBedrockHeight();
 }

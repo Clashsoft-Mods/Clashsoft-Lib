@@ -57,6 +57,12 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	}
 	
 	@Override
+	public int getBedrockHeight()
+	{
+		return 5;
+	}
+	
+	@Override
 	public void genTerrainBlocks(World world, Random random, Block[] blocks, byte[] metadatas, int x, int z, double noise)
 	{
 		Block topBlock = this.topBlock;
@@ -64,6 +70,7 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 		byte topMeta = 0;
 		byte fillerMeta = 0;
 		
+		int bedrock = this.getBedrockHeight();
 		int count = blocks.length >> 8;
 		int x1 = x & 0xF;
 		int z1 = z & 0xF;
@@ -75,7 +82,7 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 		{
 			int index = index1 + y;
 			
-			if (y < 5 && y <= random.nextInt(5))
+			if (y <= random.nextInt(bedrock))
 			{
 				blocks[index] = Blocks.bedrock;
 				continue;
