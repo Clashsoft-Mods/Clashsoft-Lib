@@ -92,7 +92,7 @@ public class CSLib extends ClashsoftMod
 	@Override
 	public void updateCheck()
 	{
-		final String url = "https://raw.githubusercontent.com/Clashsoft/CSLib-Minecraft/master/version.txt";
+		final String url = "https://raw.githubusercontent.com/Clashsoft/Clashsoft-Lib/master/version.txt";
 		CSUpdate.updateCheck(new ModUpdater(NAME, ACRONYM, VERSION, url, SimpleUpdateReader.instance));
 	}
 	
