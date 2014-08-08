@@ -10,7 +10,10 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 {
+	public byte topMetadata;
+	public byte fillerMetadata;
 	public Block stoneBlock = Blocks.stone;
+	public byte stoneMetadata;
 	
 	public CustomBiome(int id)
 	{
@@ -43,19 +46,19 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	@Override
 	public byte getTopMetadata()
 	{
-		return 0;
+		return this.topMetadata;
 	}
 	
 	@Override
 	public byte getFillerMetadata()
 	{
-		return 0;
+		return this.fillerMetadata;
 	}
 	
 	@Override
 	public byte getStoneMetadata()
 	{
-		return 0;
+		return this.stoneMetadata;
 	}
 	
 	@Override
@@ -75,6 +78,8 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 		int randomNoise = (int) (noise / 3.0D + 3.0D + random.nextDouble() * 0.25D);
 		
 		int bedrock = this.getBedrockHeight();
+		boolean genBedrock = bedrock > 0;
+		
 		Block stone = this.getStoneBlock();
 		byte stonem = this.getStoneMetadata();
 		Block top = this.getTopBlock();
@@ -86,7 +91,7 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 		{
 			int index = index1 + y;
 			
-			if (y <= random.nextInt(bedrock))
+			if (genBedrock && y <= random.nextInt(bedrock))
             {
                 blocks[index] = Blocks.bedrock;
                 continue;
@@ -114,7 +119,6 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 					metadatas[index] = stonem;
 				}
 			}
-			// Air block
 			else
 			{
 				grassHeight = -1;
