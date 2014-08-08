@@ -10,6 +10,8 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 {
+	public Block stoneBlock = Blocks.stone;
+	
 	public CustomBiome(int id)
 	{
 		super(id);
@@ -21,37 +23,37 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	}
 	
 	@Override
-	public Block getTopBlock(int x, int y, int z)
+	public Block getTopBlock()
 	{
 		return this.topBlock;
 	}
 	
 	@Override
-	public Block getFillerBlock(int x, int y, int z)
+	public Block getFillerBlock()
 	{
 		return this.fillerBlock;
 	}
 	
 	@Override
-	public Block getStoneBlock(int x, int y, int z)
+	public Block getStoneBlock()
 	{
-		return Blocks.stone;
+		return this.stoneBlock;
 	}
 	
 	@Override
-	public byte getTopMetadata(int x, int y, int z)
-	{
-		return 0;
-	}
-	
-	@Override
-	public byte getFillerMetadata(int x, int y, int z)
+	public byte getTopMetadata()
 	{
 		return 0;
 	}
 	
 	@Override
-	public byte getStoneMetadata(int x, int y, int z)
+	public byte getFillerMetadata()
+	{
+		return 0;
+	}
+	
+	@Override
+	public byte getStoneMetadata()
 	{
 		return 0;
 	}
@@ -65,111 +67,57 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	@Override
 	public void genTerrainBlocks(World world, Random random, Block[] blocks, byte[] metadatas, int x, int z, double noise)
 	{
-		Block topBlock = this.topBlock;
-		Block fillerBlock = this.fillerBlock;
-		byte topMeta = 0;
-		byte fillerMeta = 0;
-		
-		int bedrock = this.getBedrockHeight();
 		int count = blocks.length >> 8;
 		int x1 = x & 0xF;
 		int z1 = z & 0xF;
 		int index1 = ((z1 << 4) + x1) * count;
-		int sandHeight = -1;
+		int grassHeight = -1;
 		int randomNoise = (int) (noise / 3.0D + 3.0D + random.nextDouble() * 0.25D);
+		
+		int bedrock = this.getBedrockHeight();
+		Block stone = this.getStoneBlock();
+		byte stonem = this.getStoneMetadata();
+		Block top = this.getTopBlock();
+		byte topm = this.getTopMetadata();
+		Block filler = this.getFillerBlock();
+		byte fillerm = this.getFillerMetadata();
 		
 		for (int y = 255; y >= 0; --y)
 		{
 			int index = index1 + y;
 			
 			if (y <= random.nextInt(bedrock))
-			{
-				blocks[index] = Blocks.bedrock;
-				continue;
-			}
+            {
+                blocks[index] = Blocks.bedrock;
+                continue;
+            }
 			
 			Block block = blocks[index];
 			
 			if (block != null && block.getMaterial() != Material.air)
 			{
-				if (block != Blocks.stone)
+				if (grassHeight == -1)
 				{
-					continue;
+					grassHeight = y;
+					
+					blocks[index] = top;
+					metadatas[index] = topm;
 				}
-				
-				blocks[index] = this.getStoneBlock(x, y, z);
-				metadatas[index] = this.getStoneMetadata(x, y, z);
-				
-				if (sandHeight == -1)
+				else if (y >= grassHeight - randomNoise)
 				{
-					if (randomNoise <= 0)
-					{
-						topBlock = null;
-						topMeta = 0;
-						
-						fillerBlock = this.getStoneBlock(x, y, z);
-						fillerMeta = this.getStoneMetadata(x, y, z);
-					}
-					else if (y > 58 && y <= 64)
-					{
-						topBlock = this.getTopBlock(x, y, z);
-						topMeta = this.getTopMetadata(x, y, z);
-						
-						fillerBlock = this.getFillerBlock(x, y, z);
-						fillerMeta = this.getFillerMetadata(x, y, z);
-					}
-					
-					if (y < 63 && topBlock == null)
-					{
-						if (this.getFloatTemperature(x, y, z) < 0.15F)
-						{
-							topBlock = Blocks.ice;
-							topMeta = 0;
-						}
-						else
-						{
-							topBlock = Blocks.water;
-							topMeta = 0;
-						}
-					}
-					
-					sandHeight = randomNoise;
-					
-					if (y >= 62)
-					{
-						blocks[index] = topBlock;
-						metadatas[index] = topMeta;
-					}
-					else if (y < 56 - randomNoise)
-					{
-						topBlock = null;
-						topMeta = 0;
-						
-						fillerBlock = this.getStoneBlock(x, y, z);
-						fillerMeta = this.getStoneMetadata(x, y, z);
-					}
-					else
-					{
-						blocks[index] = fillerBlock;
-						metadatas[index] = fillerMeta;
-					}
+					blocks[index] = filler;
+					metadatas[index] = fillerm;
 				}
 				else
 				{
-					--sandHeight;
-					blocks[index] = fillerBlock;
-					metadatas[index] = fillerMeta;
-					
-					if (sandHeight == 0 && fillerBlock == Blocks.sand)
-					{
-						sandHeight = random.nextInt(4) + Math.max(0, y - 63);
-						fillerBlock = Blocks.sandstone;
-					}
+					blocks[index] = stone;
+					metadatas[index] = stonem;
 				}
 			}
+			// Air block
 			else
 			{
-				sandHeight = -1;
+				grassHeight = -1;
 			}
 		}
 	}
