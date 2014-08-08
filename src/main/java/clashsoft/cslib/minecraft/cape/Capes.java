@@ -32,16 +32,37 @@ public final class Capes
 	{
 	}
 	
+	/**
+	 * Sets the cape of the given {@link EntityPlayer} {@code player} to the
+	 * default cape and syncs it.
+	 * 
+	 * @param player
+	 *            the player
+	 */
 	public static void clearCape(EntityPlayer player)
 	{
 		CSLib.proxy.clearCape(player);
 	}
 	
+	/**
+	 * Updates the cape of the given {@link EntityPlayer} {@code player} and
+	 * syncs it.
+	 * 
+	 * @param player
+	 *            the player
+	 */
 	public static void updateCape(EntityPlayer player)
 	{
 		CSLib.proxy.updateCape(player);
 	}
 	
+	/**
+	 * Sets the cape of the given {@link EntityPlayer} {@code player} to the
+	 * cape with the given {@link String} {@code capeName} and syncs it.
+	 *
+	 * @param player
+	 * @param capeName
+	 */
 	public static void setCape(EntityPlayer player, String capeName)
 	{
 		CSLib.proxy.setCape(player, capeName);
@@ -54,11 +75,25 @@ public final class Capes
 		return capeName;
 	}
 	
+	/**
+	 * Returns the {@link Cape} with the given {@link String} {@code capeName}.
+	 * 
+	 * @param capeName
+	 *            the cape's name
+	 * @return the cape
+	 */
 	public static Cape getCape(String capeName)
 	{
 		return capeNameToCape.get(capeName);
 	}
 	
+	/**
+	 * Registers the given {@link Cape} {@code cape}.
+	 * 
+	 * @param cape
+	 *            the cape
+	 * @return the cape
+	 */
 	public static Cape addCape(Cape cape)
 	{
 		capeNameToCape.put(cape.getName(), cape);
@@ -79,6 +114,15 @@ public final class Capes
 		return cape;
 	}
 	
+	/**
+	 * Assigns the cape with the given {@link String} {@code capeName} to the
+	 * given {@link String} {@code username}.
+	 * 
+	 * @param username
+	 *            the username
+	 * @param capeName
+	 *            the name of the cape
+	 */
 	public static void setCapeName(String username, String capeName)
 	{
 		usernameToCapeName.put(username, capeName);
@@ -98,7 +142,29 @@ public final class Capes
 		setCapeName(username, capename);
 	}
 	
-	public static void addFileUrl(String fileUrl)
+	/**
+	 * Loads a cape file at the given {@link String} {@code fileUrl}. The file should have the following format:
+	 * <PRE>
+	 * [capename]=http://[URL]
+	 * test_cape=http://test.com/image.png
+	 * 
+	 * [capename]=https://[URL]
+	 * test_cape=https://secure.test.com/image.png
+	 * 
+	 * [capename]=local:[resource location]
+	 * local_cape=local:textures/misc/cape.png
+	 * 
+	 * [capename]=local:[domain]:[resource location]
+	 * local_cape=local:cslib:textures/misc/cape.png
+	 * 
+	 * [username]=[capename]
+	 * Clashsoft=local_cape
+	 * </PRE>
+	 * 
+	 * @param fileUrl
+	 *            the url
+	 */
+	public static void loadCapeFile(String fileUrl)
 	{
 		try
 		{
@@ -132,7 +198,7 @@ public final class Capes
 		String value = line.substring(i + 1);
 		
 		// Capename=URL
-		if (value.startsWith("http:") || value.startsWith("https:"))
+		if (value.startsWith("http://") || value.startsWith("https://"))
 		{
 			Cape cape = new URLCape(key, value);
 			capeNameToCape.put(key, cape);
