@@ -7,7 +7,9 @@ import java.net.URL;
 import java.util.HashMap;
 
 import clashsoft.cslib.logging.CSLog;
+import clashsoft.cslib.minecraft.init.CSLib;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 public final class Capes
@@ -28,6 +30,21 @@ public final class Capes
 	
 	private Capes()
 	{
+	}
+	
+	public static void clearCape(EntityPlayer player)
+	{
+		CSLib.proxy.clearCape(player);
+	}
+	
+	public static void updateCape(EntityPlayer player)
+	{
+		CSLib.proxy.updateCape(player);
+	}
+	
+	public static void setCape(EntityPlayer player, String capeName)
+	{
+		CSLib.proxy.setCape(player, capeName);
 	}
 	
 	private static String uniqueName()

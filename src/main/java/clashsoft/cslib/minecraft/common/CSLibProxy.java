@@ -21,7 +21,7 @@ public class CSLibProxy extends BaseProxy
 		this.setCape(player, "no_cape");
 	}
 	
-	public void setCape(EntityPlayer player)
+	public void updateCape(EntityPlayer player)
 	{
 		this.setCape(player, "default_cape");
 	}
