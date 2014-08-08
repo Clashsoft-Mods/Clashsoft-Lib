@@ -20,7 +20,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.DimensionManager;
 
 public abstract class BlockCustomPortal extends BlockImpl
 {
@@ -155,9 +154,10 @@ public abstract class BlockCustomPortal extends BlockImpl
 	
 	public void transferEntity(Entity entity)
 	{
-		ServerConfigurationManager manager = MinecraftServer.getServer().getConfigurationManager();
+		MinecraftServer server = MinecraftServer.getServer();
+		ServerConfigurationManager manager = server.getConfigurationManager();
 		int src = entity.dimension;
-		int dest = this.getDestination(entity);
+		int dest = src == 0 ? this.dimensionID : 0;
 		WorldServer destWorld = manager.getServerInstance().worldServerForDimension(dest);
 		Teleporter teleporter = this.createTeleporter(destWorld);
 		
@@ -167,13 +167,9 @@ public abstract class BlockCustomPortal extends BlockImpl
 		}
 		else
 		{
-			manager.transferEntityToWorld(entity, dest, DimensionManager.getWorld(src), destWorld, teleporter);
+			WorldServer srcWorld = server.worldServerForDimension(src);
+			manager.transferEntityToWorld(entity, dest, srcWorld, destWorld, teleporter);
 		}
-	}
-	
-	public int getDestination(Entity entity)
-	{
-		return entity.dimension == 0 ? this.dimensionID : 0;
 	}
 	
 	public abstract Teleporter createTeleporter(WorldServer world);
