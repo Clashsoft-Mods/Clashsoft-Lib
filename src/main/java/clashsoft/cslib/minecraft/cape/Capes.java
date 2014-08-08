@@ -16,13 +16,23 @@ public final class Capes
 	protected static HashMap<String, Cape>		capeNameToCape		= new HashMap();
 	protected static int						uniqueID			= 0;
 	
+	public static Cape							noCape				= new EmptyCape("no_cape");
+	
+	public static Cape							defaultCape			= new DefaultCape("default_cape");
+	
+	static
+	{
+		addCape(noCape);
+		addCape(defaultCape);
+	}
+	
 	private Capes()
 	{
 	}
 	
 	private static String uniqueName()
 	{
-		String capeName = "cape-" + uniqueID;
+		String capeName = "cape_" + uniqueID;
 		uniqueID++;
 		return capeName;
 	}

@@ -34,12 +34,7 @@ public abstract class Cape
 	public boolean isTextureLoaded(AbstractClientPlayer player)
 	{
 		ResourceLocation location = player.getLocationCape();
-		if (location == null)
-		{
-			return false;
-		}
-		
-		return true;
+		return location == this.getLocation();
 	}
 	
 	public void setName(String name)

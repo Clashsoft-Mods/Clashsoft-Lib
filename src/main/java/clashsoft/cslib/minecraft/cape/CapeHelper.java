@@ -3,8 +3,6 @@ package clashsoft.cslib.minecraft.cape;
 import static clashsoft.cslib.minecraft.cape.Capes.capeNameToCape;
 import static clashsoft.cslib.minecraft.cape.Capes.usernameToCapeName;
 
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -17,29 +15,16 @@ public class CapeHelper
 	public static Cape getCape(EntityPlayer player)
 	{
 		String group = usernameToCapeName.get(player.getCommandSenderName());
-		return capeNameToCape.get(group);
+		Cape cape = capeNameToCape.get(group);
+		return cape == null ? Capes.defaultCape : cape;
 	}
 	
 	public static void updateCape(EntityPlayer player, Cape cape)
 	{
 		if (player instanceof AbstractClientPlayer)
 		{
-			if (cape == null)
-			{
-				// Default if cape is null.
-				cape = getCape(player);
-			}
-			
-			if (cape == null)
-			{
-				// Cape is still null -> no default cape
-				((AbstractClientPlayer) player).func_152121_a(MinecraftProfileTexture.Type.CAPE, null);
-				
-			}
-			else
-			{
-				cape.loadTexture((AbstractClientPlayer) player);
-			}
+			AbstractClientPlayer player1 = (AbstractClientPlayer) player;
+			cape.loadTexture(player1);
 		}
 	}
 	

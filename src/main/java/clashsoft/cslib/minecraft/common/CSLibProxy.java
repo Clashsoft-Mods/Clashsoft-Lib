@@ -16,6 +16,16 @@ public class CSLibProxy extends BaseProxy
 		return null;
 	}
 	
+	public void clearCape(EntityPlayer player)
+	{
+		this.setCape(player, "no_cape");
+	}
+	
+	public void setCape(EntityPlayer player)
+	{
+		this.setCape(player, "default_cape");
+	}
+	
 	public void setCape(EntityPlayer player, String capeName)
 	{
 		CSLib.getNetHandler().sendCapePacket(player, capeName);
