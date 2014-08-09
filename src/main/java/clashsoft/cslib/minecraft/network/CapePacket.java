@@ -2,7 +2,7 @@ package clashsoft.cslib.minecraft.network;
 
 import java.io.IOException;
 
-import clashsoft.cslib.minecraft.init.CSLib;
+import clashsoft.cslib.minecraft.CSLib;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;

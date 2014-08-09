@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import clashsoft.cslib.minecraft.init.CSLib;
+import clashsoft.cslib.minecraft.CSLib;
 
 /**
  * The class Addon.

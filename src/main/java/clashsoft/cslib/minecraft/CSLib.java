@@ -1,17 +1,22 @@
-package clashsoft.cslib.minecraft.init;
+package clashsoft.cslib.minecraft;
 
 import clashsoft.cslib.config.CSConfig;
 import clashsoft.cslib.logging.CSLog;
+import clashsoft.cslib.minecraft.cape.Capes;
 import clashsoft.cslib.minecraft.command.CSCommand;
 import clashsoft.cslib.minecraft.command.CommandModUpdate;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
 import clashsoft.cslib.minecraft.crafting.loader.FurnaceRecipeLoader;
+import clashsoft.cslib.minecraft.init.ClashsoftMod;
 import clashsoft.cslib.minecraft.item.CSItems;
 import clashsoft.cslib.minecraft.network.CSLibNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.update.reader.SimpleUpdateReader;
 import clashsoft.cslib.minecraft.update.updater.ModUpdater;
 import clashsoft.cslib.minecraft.util.Log4JLogger;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -24,6 +29,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
+@Mod(modid = CSLib.MODID, name = CSLib.NAME, version = CSLib.VERSION)
 public class CSLib extends ClashsoftMod
 {
 	public static final String	MODID				= "cslib";
@@ -32,18 +38,20 @@ public class CSLib extends ClashsoftMod
 	public static final String	VERSION				= "1.7.10-2.4.2";
 	public static final String	DEPENDENCY			= "required-after:" + MODID;
 	
-	public static CSLib			instance			= new CSLib();
+	static
+	{
+		CSLog.logger = new Log4JLogger();
+	}
+	
+	@Instance(MODID)
+	public static CSLib			instance;
+	
 	public static CSLibProxy	proxy				= createProxy("clashsoft.cslib.minecraft.client.CSLibClientProxy", "clashsoft.cslib.minecraft.common.CSLibProxy");
 	
 	public static boolean		printUpdateNotes	= false;
 	public static boolean		updateCheck			= true;
 	public static boolean		autoUpdate			= true;
 	public static boolean		enableMOTD			= true;
-	
-	static
-	{
-		CSLog.logger = new Log4JLogger();
-	}
 	
 	public CSLib()
 	{
@@ -53,26 +61,6 @@ public class CSLib extends ClashsoftMod
 		this.netHandler = new CSLibNetHandler();
 		this.eventHandler = this;
 		this.url = "https://github.com/Clashsoft/CSLib-Minecraft/wiki/";
-	}
-	
-	public static void libPreInit(FMLPreInitializationEvent event)
-	{
-		instance.preInit(event);
-	}
-	
-	public static void libInit(FMLInitializationEvent event)
-	{
-		instance.init(event);
-	}
-	
-	public static void libPostInit(FMLPostInitializationEvent event)
-	{
-		instance.postInit(event);
-	}
-	
-	public static void libServerStart(FMLServerStartedEvent event)
-	{
-		instance.serverStarted(event);
 	}
 	
 	public static CSLibNetHandler getNetHandler()
@@ -97,12 +85,14 @@ public class CSLib extends ClashsoftMod
 	}
 	
 	@Override
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		super.preInit(event);
 	}
 	
 	@Override
+	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
 		super.init(event);
@@ -111,6 +101,7 @@ public class CSLib extends ClashsoftMod
 	}
 	
 	@Override
+	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		super.postInit(event);
@@ -118,6 +109,7 @@ public class CSLib extends ClashsoftMod
 		CSItems.replaceRecipes();
 	}
 	
+	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event)
 	{
 		ServerCommandManager manager = (ServerCommandManager) MinecraftServer.getServer().getCommandManager();
@@ -135,9 +127,15 @@ public class CSLib extends ClashsoftMod
 	@SubscribeEvent
 	public void playerJoined(EntityJoinWorldEvent event)
 	{
-		if (event.world.isRemote && event.entity instanceof EntityPlayer)
+		if (event.entity instanceof EntityPlayer)
 		{
-			CSUpdate.notifyAll((EntityPlayer) event.entity);
+			EntityPlayer player = (EntityPlayer) event.entity;
+			Capes.updateCape(player);
+			
+			if (event.world.isRemote)
+			{
+				CSUpdate.notifyAll(player);
+			}
 		}
 	}
 }

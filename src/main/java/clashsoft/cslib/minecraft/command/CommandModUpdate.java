@@ -2,7 +2,7 @@ package clashsoft.cslib.minecraft.command;
 
 import java.util.List;
 
-import clashsoft.cslib.minecraft.init.CSLib;
+import clashsoft.cslib.minecraft.CSLib;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 
 import net.minecraft.command.CommandBase;

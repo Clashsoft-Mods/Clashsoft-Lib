@@ -1,6 +1,6 @@
 package clashsoft.cslib.minecraft.network;
 
-import clashsoft.cslib.minecraft.init.CSLib;
+import clashsoft.cslib.minecraft.CSLib;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

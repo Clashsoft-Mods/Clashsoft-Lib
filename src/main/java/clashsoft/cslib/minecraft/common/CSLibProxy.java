@@ -2,7 +2,7 @@ package clashsoft.cslib.minecraft.common;
 
 import java.util.List;
 
-import clashsoft.cslib.minecraft.init.CSLib;
+import clashsoft.cslib.minecraft.CSLib;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

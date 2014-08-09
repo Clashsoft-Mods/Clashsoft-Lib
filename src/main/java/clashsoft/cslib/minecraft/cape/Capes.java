@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 import clashsoft.cslib.logging.CSLog;
-import clashsoft.cslib.minecraft.init.CSLib;
+import clashsoft.cslib.minecraft.CSLib;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
