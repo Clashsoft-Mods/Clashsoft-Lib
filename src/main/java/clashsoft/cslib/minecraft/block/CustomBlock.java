@@ -49,6 +49,8 @@ public class CustomBlock extends Block implements ICustomBlock
 		this.setBlockName(names[0]);
 		
 		this.names = names;
+		this.opaque = true;
+		this.lightOpacity = 255;
 		
 		this.drops = new ItemStack[this.names.length];
 		this.hardnesses = new float[this.names.length];

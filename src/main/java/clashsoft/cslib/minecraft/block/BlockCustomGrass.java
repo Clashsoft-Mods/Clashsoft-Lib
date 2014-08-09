@@ -109,12 +109,13 @@ public class BlockCustomGrass extends CustomBlock
 			int metadata = world.getBlockMetadata(x, y, z);
 			Block dirt = this.dirtBlocks[metadata];
 			int dirtMetadata = this.dirtBlockMetadatas[metadata];
+			int lightValue = world.getBlockLightValue(x, y + 1, z);
+			int lightOpacity = world.getBlockLightOpacity(x, y + 1, z);
 			
-			if (world.getBlockLightValue(x, y + 1, z) < 4 && world.getBlockLightOpacity(x, y + 1, z) > 2)
+			if (lightValue < 4 && lightOpacity > 2)
 			{
 				world.setBlock(x, y, z, dirt, dirtMetadata, 3);
 			}
-			
 			else if (world.getBlockLightValue(x, y + 1, z) >= 9)
 			{
 				for (int l = 0; l < 4; ++l)
@@ -125,8 +126,8 @@ public class BlockCustomGrass extends CustomBlock
 					
 					Block block = world.getBlock(x1, y1, z1);
 					int blockMetadata = world.getBlockMetadata(x1, y1, z1);
-					int lightValue = world.getBlockLightValue(x1, y1 + 1, z1);
-					int lightOpacity = world.getBlockLightOpacity(x1, y1 + 1, z1);
+					lightValue = world.getBlockLightValue(x1, y1 + 1, z1);
+					lightOpacity = world.getBlockLightOpacity(x1, y1 + 1, z1);
 					
 					if (block == dirt && blockMetadata == dirtMetadata && lightValue >= 4 && lightOpacity <= 2)
 					{

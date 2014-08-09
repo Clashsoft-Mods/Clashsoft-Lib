@@ -31,6 +31,8 @@ public class BlockCustomPlant extends CustomBlock implements IPlantable
 	public BlockCustomPlant(String[] names, String[] icons)
 	{
 		super(Material.plants, names, icons, null);
+		this.lightOpacity = 0;
+		this.opaque = false;
 		this.setBlockBounds(0.3F, 0F, 0.3F, 0.7F, 0.6F, 0.7F);
 		this.setStepSound(Block.soundTypeGrass);
 	}
@@ -95,16 +97,8 @@ public class BlockCustomPlant extends CustomBlock implements IPlantable
 	
 	public boolean canBlockStay(World world, int x, int y, int z, int metadata)
 	{
-		Block soil = world.getBlock(x, y - 1, z);
-		
-		if (soil == null)
-		{
-			return false;
-		}
-		
-		boolean validLight = world.getFullBlockLightValue(x, y, z) >= 8 || world.canBlockSeeTheSky(x, y, z);
-		
-		return validLight && this.isValidGround(metadata, soil, world.getBlockMetadata(x, y - 1, z));
+		int lightValue = world.getBlockLightValue(x, y, z);
+		return lightValue >= 8 && this.isValidGround(metadata, world.getBlock(x, y - 1, z), world.getBlockMetadata(x, y - 1, z));
 	}
 	
 	public boolean isValidGround(World world, int x, int y, int z)
