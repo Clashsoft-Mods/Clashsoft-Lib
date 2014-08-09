@@ -3,11 +3,9 @@ package clashsoft.cslib.minecraft.world.gen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSapling;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenTrees;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * The class CustomTreeGenerator
@@ -96,12 +94,8 @@ public class CustomTreeGen extends WorldGenTrees
 				return false;
 			}
 			
-			Block block2 = world.getBlock(x, y - 1, z);
-			
-			boolean isSoil = block2.canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, (BlockSapling) Blocks.sapling);
-			if (isSoil && y < 256 - height - 1)
+			if (y < 256 - height - 1)
 			{
-				block2.onPlantGrow(world, x, y - 1, z, x, y, z);
 				byte b0 = 3;
 				byte b1 = 0;
 				
@@ -235,6 +229,41 @@ public class CustomTreeGen extends WorldGenTrees
 			
 			this.setBlockAndNotifyAdequately(world, x, y, z, this.vineBlock, metadata);
 			--i1;
+		}
+	}
+	
+	public void generateRoot(World world, int x, int y, int z, int radius, int height)
+	{
+		if (radius == 1)
+		{
+			for (int i = 0; i < height; i++)
+			{
+				this.setBlockAndNotifyAdequately(world, x, y + height, z, this.logBlock, this.logMetadata);
+			}
+		}
+		else if (radius == 2)
+		{
+			for (int i = 0; i < height; i++)
+			{
+				this.setBlockAndNotifyAdequately(world, x, y + height, z, this.logBlock, this.logMetadata);
+				this.setBlockAndNotifyAdequately(world, x + 1, y + height, z, this.logBlock, this.logMetadata);
+				this.setBlockAndNotifyAdequately(world, x, y + height, z + 1, this.logBlock, this.logMetadata);
+				this.setBlockAndNotifyAdequately(world, x + 1, y + height, z + 1, this.logBlock, this.logMetadata);
+			}
+		}
+		else
+		{
+			int sqradius = radius * radius;
+			for (int i = -radius; i <= radius; i++)
+			{
+				for (int j = -radius; j <= radius; j++)
+				{
+					for (int k = 0; k < height; k++)
+					{
+						this.setBlockAndNotifyAdequately(world, x, y, z, this.logBlock, this.logMetadata);
+					}
+				}
+			}
 		}
 	}
 }
