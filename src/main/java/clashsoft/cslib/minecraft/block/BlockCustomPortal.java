@@ -144,10 +144,14 @@ public abstract class BlockCustomPortal extends BlockImpl
 	{
 		if (!world.isRemote && entity.ridingEntity == null && entity.riddenByEntity == null)
 		{
-			entity.setInPortal();
-			if (entity.getPortalCooldown() >= entity.getMaxInPortalTime())
+			if (entity.timeUntilPortal == 0)
 			{
+				entity.timeUntilPortal = entity.getPortalCooldown();
 				this.transferEntity(entity);
+			}
+			else
+			{
+				entity.setInPortal();
 			}
 		}
 	}
