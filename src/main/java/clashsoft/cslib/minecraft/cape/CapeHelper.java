@@ -16,13 +16,18 @@ public class CapeHelper
 	{
 		String group = usernameToCapeName.get(player.getCommandSenderName());
 		Cape cape = capeNameToCape.get(group);
-		return cape == null ? Capes.defaultCape : cape;
+		return cape == null ? (Cape) Capes.noCape : cape;
 	}
 	
 	public static void updateCape(EntityPlayer player, Cape cape)
 	{
 		if (player instanceof AbstractClientPlayer)
 		{
+			if (cape == null)
+			{
+				cape = getCape(player);
+			}
+			
 			AbstractClientPlayer player1 = (AbstractClientPlayer) player;
 			cape.loadTexture(player1);
 		}

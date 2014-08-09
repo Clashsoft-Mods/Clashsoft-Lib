@@ -2,8 +2,10 @@ package clashsoft.cslib.minecraft.client;
 
 import clashsoft.cslib.minecraft.cape.CapeHelper;
 import clashsoft.cslib.minecraft.cape.Capes;
+import clashsoft.cslib.minecraft.cape.EmptyCape;
 import clashsoft.cslib.minecraft.client.gui.GuiModUpdates;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -12,6 +14,12 @@ import net.minecraft.world.World;
 
 public class CSLibClientProxy extends CSLibProxy
 {
+	@Override
+	public void init(FMLInitializationEvent event)
+	{
+		Capes.noCape = Capes.addCape(new EmptyCape("no_cape"));
+	}
+	
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{

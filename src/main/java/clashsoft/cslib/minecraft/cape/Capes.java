@@ -18,15 +18,8 @@ public final class Capes
 	protected static HashMap<String, Cape>		capeNameToCape		= new HashMap();
 	protected static int						uniqueID			= 0;
 	
-	public static Cape							noCape				= new EmptyCape("no_cape");
-	
-	public static Cape							defaultCape			= new DefaultCape("default_cape");
-	
-	static
-	{
-		addCape(noCape);
-		addCape(defaultCape);
-	}
+	public static Object						noCape;
+	public static Object						defaultCape;
 	
 	private Capes()
 	{
@@ -85,10 +78,6 @@ public final class Capes
 	public static Cape getCape(String capeName)
 	{
 		Cape cape = capeNameToCape.get(capeName);
-		if (cape == null)
-		{
-			cape = defaultCape;
-		}
 		return cape;
 	}
 	

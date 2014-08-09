@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 
 public final class EmptyCape extends Cape
 {
-	EmptyCape(String name)
+	public EmptyCape(String name)
 	{
 		super(name);
 	}

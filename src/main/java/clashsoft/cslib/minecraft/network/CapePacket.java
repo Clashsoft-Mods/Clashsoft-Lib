@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import clashsoft.cslib.minecraft.CSLib;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
@@ -53,7 +52,7 @@ public class CapePacket extends CSPacket
 	@Override
 	public void handleClient(EntityPlayer player)
 	{
-		EntityPlayer player1 = CSLib.proxy.findPlayer(Minecraft.getMinecraft().theWorld, this.username);
+		EntityPlayer player1 = CSLib.proxy.findPlayer(player.worldObj, this.username);
 		CSLib.proxy.setCape(player1, this.cape);
 	}
 	
