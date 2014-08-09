@@ -16,7 +16,6 @@ public final class Capes
 {
 	protected static HashMap<String, String>	usernameToCapeName	= new HashMap();
 	protected static HashMap<String, Cape>		capeNameToCape		= new HashMap();
-	protected static int						uniqueID			= 0;
 	
 	public static Object						noCape;
 	public static Object						defaultCape;
@@ -59,13 +58,6 @@ public final class Capes
 	public static void setCape(EntityPlayer player, String capeName)
 	{
 		CSLib.proxy.setCape(player, capeName);
-	}
-	
-	private static String uniqueName()
-	{
-		String capeName = "cape_" + uniqueID;
-		uniqueID++;
-		return capeName;
 	}
 	
 	/**
@@ -124,14 +116,14 @@ public final class Capes
 	
 	public static void setLocalCape(String username, ResourceLocation location)
 	{
-		String capename = uniqueName();
+		String capename = "cape_" + username;
 		addCape(capename, location);
 		setCapeName(username, capename);
 	}
 	
 	public static void setURLCape(String username, String url)
 	{
-		String capename = uniqueName();
+		String capename = "cape_" + username;
 		addCape(capename, url);
 		setCapeName(username, capename);
 	}
