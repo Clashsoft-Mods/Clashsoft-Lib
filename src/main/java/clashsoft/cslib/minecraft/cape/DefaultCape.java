@@ -24,7 +24,7 @@ public final class DefaultCape extends Cape
 	public void loadTexture(AbstractClientPlayer player)
 	{
 		Cape cape = CapeHelper.getCape(player);
-		if (cape == null)
+		if (cape == null || cape == this)
 		{
 			cape = Capes.noCape;
 		}

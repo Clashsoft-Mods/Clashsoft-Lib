@@ -84,7 +84,12 @@ public final class Capes
 	 */
 	public static Cape getCape(String capeName)
 	{
-		return capeNameToCape.get(capeName);
+		Cape cape = capeNameToCape.get(capeName);
+		if (cape == null)
+		{
+			cape = defaultCape;
+		}
+		return cape;
 	}
 	
 	/**
@@ -143,7 +148,9 @@ public final class Capes
 	}
 	
 	/**
-	 * Loads a cape file at the given {@link String} {@code fileUrl}. The file should have the following format:
+	 * Loads a cape file at the given {@link String} {@code fileUrl}. The file
+	 * should have the following format:
+	 * 
 	 * <PRE>
 	 * [capename]=http://[URL]
 	 * test_cape=http://test.com/image.png
