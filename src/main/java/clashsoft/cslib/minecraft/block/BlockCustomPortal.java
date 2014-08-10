@@ -23,9 +23,11 @@ import net.minecraft.world.WorldServer;
 
 public abstract class BlockCustomPortal extends BlockImpl
 {
-	public static final int[][]	metadataMap	= { { 3, 1 }, { 2, 0 } };
+	public static int[][]	metadataMap	= { { 3, 1 }, { 2, 0 } };
 	
-	public int					dimensionID;
+	public int				dimensionID;
+	public Block			frameBlock;
+	public int				frameMetadata;
 	
 	public BlockCustomPortal(String name, String iconName, int dimensionID)
 	{
@@ -37,25 +39,18 @@ public abstract class BlockCustomPortal extends BlockImpl
 		this.dimensionID = dimensionID;
 	}
 	
-	public abstract Block getFrameBlock();
-	
-	public int getFrameMetadata()
-	{
-		return 0;
-	}
-	
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
 	{
 		int i = limitToValidMetadata(world.getBlockMetadata(x, y, z));
-		PortalSize size1 = new PortalSize(this, world, x, y, z, 0);
-		PortalSize size2 = new PortalSize(this, world, x, y, z, 1);
+		PortalSize size1 = new PortalSize(world, x, y, z, 0);
+		PortalSize size2 = new PortalSize(world, x, y, z, 1);
 		
-		if (i == 1 && (!size1.isValid() || size1.portals < size1.width * size1.height))
+		if (i == 1 && (!size1.isValid() || size1.portals < size1.height * size1.width))
 		{
 			world.setBlock(x, y, z, Blocks.air);
 		}
-		else if (i == 2 && (!size2.isValid() || size2.portals < size2.width * size2.height))
+		else if (i == 2 && (!size2.isValid() || size2.portals < size2.height * size2.width))
 		{
 			world.setBlock(x, y, z, Blocks.air);
 		}
@@ -67,8 +62,8 @@ public abstract class BlockCustomPortal extends BlockImpl
 	
 	public boolean generatePortal(World world, int x, int y, int z)
 	{
-		PortalSize size1 = new PortalSize(this, world, x, y, z, 0);
-		PortalSize size2 = new PortalSize(this, world, x, y, z, 1);
+		PortalSize size1 = new PortalSize(world, x, y, z, 0);
+		PortalSize size2 = new PortalSize(world, x, y, z, 1);
 		
 		if (size1.isValid() && size1.portals == 0)
 		{
@@ -229,40 +224,35 @@ public abstract class BlockCustomPortal extends BlockImpl
 		return 0;
 	}
 	
-	public static class PortalSize
+	public class PortalSize
 	{
-		public BlockCustomPortal	portalBlock;
-		
 		private final World			world;
 		private final int			metadata;
-		private final int			direction2;
 		private final int			direction1;
-		private int					portals;
+		private final int			direction2;
+		private int					portals	= 0;
 		private ChunkCoordinates	chunkPos;
-		private int					width;
 		private int					height;
+		private int					width;
 		
-		public PortalSize(BlockCustomPortal portalBlock, World world, int x, int y, int z, int metadata)
+		public PortalSize(World world, int x, int y, int z, int metadata)
 		{
-			this.portalBlock = portalBlock;
 			this.world = world;
 			this.metadata = metadata;
-			this.direction1 = metadataMap[metadata][0];
-			this.direction2 = metadataMap[metadata][1];
+			this.direction2 = metadataMap[metadata][0];
+			this.direction1 = metadataMap[metadata][1];
 			
-			int i = y;
-			
-			while (y > i - 21 && y > 0 && this.isBlockValid(x, y - 1, z))
+			for (int i1 = y; y > i1 - 21 && y > 0 && this.isValidBlock(x, y - 1, z); --y)
 			{
-				--y;
+				;
 			}
 			
-			int j = this.calculateWidth(x, y, z, this.direction1) - 1;
+			int j1 = this.calculateWidth(x, y, z, this.direction2) - 1;
 			
-			if (j >= 0)
+			if (j1 >= 0)
 			{
-				this.chunkPos = new ChunkCoordinates(x + j * Direction.offsetX[this.direction1], y, z + j * Direction.offsetZ[this.direction1]);
-				this.width = this.calculateWidth(this.chunkPos.posX, this.chunkPos.posY, this.chunkPos.posZ, this.direction2);
+				this.chunkPos = new ChunkCoordinates(x + j1 * Direction.offsetX[this.direction2], y, z + j1 * Direction.offsetZ[this.direction2]);
+				this.width = this.calculateWidth(this.chunkPos.posX, this.chunkPos.posY, this.chunkPos.posZ, this.direction1);
 				
 				if (this.width < 2 || this.width > 21)
 				{
@@ -277,81 +267,70 @@ public abstract class BlockCustomPortal extends BlockImpl
 			}
 		}
 		
-		public boolean isFrameBlock(int x, int y, int z)
-		{
-			if (this.world.getBlock(x, y, z) == this.portalBlock.getFrameBlock())
-			{
-				int i = this.portalBlock.getFrameMetadata();
-				return i == -1 || this.world.getBlockMetadata(x, y, z) == i;
-			}
-			return false;
-		}
-		
 		protected int calculateWidth(int x, int y, int z, int direction)
 		{
-			int i;
-			int j = Direction.offsetX[direction];
-			int k = Direction.offsetZ[direction];
-			int x1 = 0;
-			int z1 = 0;
+			int xoff = Direction.offsetX[direction];
+			int zoff = Direction.offsetZ[direction];
+			int width;
 			
-			for (i = 0; i < 22; ++i)
+			for (width = 0; width < 22; ++width)
 			{
-				x1 = x + j * i;
-				z1 = z + k * i;
-				if (!this.isBlockValid(x1, y, z1))
+				int i = xoff * width;
+				int j = zoff * width;
+				
+				if (!this.isValidBlock(x + i, y, z + j))
 				{
 					break;
 				}
 				
-				if (!this.isFrameBlock(x1, y - 1, z1))
+				if (!this.isFrameBlock(x + i, y - 1, z + j))
 				{
 					break;
 				}
 			}
 			
-			if (this.isFrameBlock(x1, y, z1))
-			{
-				return i;
-			}
-			return 0;
+			return isFrameBlock(x + xoff * width, y, z + zoff * width) ? width : 0;
 		}
 		
 		protected int calculateHeight()
 		{
-			int j;
-			int k;
-			int l;
-			for (this.height = 0; this.height < 21; this.height += 1)
+			int var0 = metadataMap[this.metadata][0];
+			int var1 = metadataMap[this.metadata][1];
+			
+			outer:
+			for (int width = 0; width < 21; ++width)
 			{
-				int i = this.chunkPos.posY + this.height;
+				int y = this.chunkPos.posY + this.height;
 				
-				for (j = 0; j < this.width; ++j)
+				for (int height = 0; height < this.width; ++height)
 				{
-					k = this.chunkPos.posX + j * Direction.offsetX[metadataMap[this.metadata][1]];
-					l = this.chunkPos.posZ + j * Direction.offsetZ[metadataMap[this.metadata][1]];
+					int x = this.chunkPos.posX + height * Direction.offsetX[var1];
+					int z = this.chunkPos.posZ + height * Direction.offsetZ[var1];
+					Block block = this.world.getBlock(x, y, z);
+					int metadata = this.world.getBlockMetadata(x, y, z);
 					
-					if (this.isFrameBlock(k, i, l))
+					if (!this.isValidBlock(block, metadata))
 					{
-						this.portals++;
-					}
-					else if (!this.isBlockValid(k, i, l))
-					{
-						break;
+						break outer;
 					}
 					
-					if (j == 0)
+					if (block == BlockCustomPortal.this)
 					{
-						if (!this.isFrameBlock(k + Direction.offsetX[metadataMap[this.metadata][0]], i, l + Direction.offsetZ[metadataMap[this.metadata][0]]))
+						++this.portals;
+					}
+					
+					if (height == 0)
+					{
+						if (!isFrameBlock(x + Direction.offsetX[var0], y, z + Direction.offsetZ[var0]))
 						{
-							break;
+							break outer;
 						}
 					}
-					if (j == this.width - 1)
+					else if (height == this.width - 1)
 					{
-						if (!this.isFrameBlock(k + Direction.offsetX[metadataMap[this.metadata][1]], i, l + Direction.offsetZ[metadataMap[this.metadata][1]]))
+						if (!isFrameBlock(x + Direction.offsetX[var1], y, z + Direction.offsetZ[var1]))
 						{
-							break;
+							break outer;
 						}
 					}
 				}
@@ -359,31 +338,48 @@ public abstract class BlockCustomPortal extends BlockImpl
 			
 			for (int i = 0; i < this.width; ++i)
 			{
-				j = this.chunkPos.posX + i * Direction.offsetX[metadataMap[this.metadata][1]];
-				k = this.chunkPos.posY + this.height;
-				l = this.chunkPos.posZ + i * Direction.offsetZ[metadataMap[this.metadata][1]];
+				int x = this.chunkPos.posX + i * Direction.offsetX[var1];
+				int y = this.chunkPos.posY + this.height;
+				int z = this.chunkPos.posZ + i * Direction.offsetZ[var1];
 				
-				if (this.world.getBlock(j, k, l) != this.portalBlock.getFrameBlock())
+				if (!isFrameBlock(x, y, z))
 				{
 					this.height = 0;
 					break;
 				}
 			}
 			
-			if (this.height > 21 || this.height < 3)
+			if (this.height <= 21 && this.height >= 3)
+			{
+				return this.height;
+			}
+			else
 			{
 				this.chunkPos = null;
 				this.width = 0;
 				this.height = 0;
 				return 0;
 			}
-			return this.height;
 		}
 		
-		protected boolean isBlockValid(int x, int y, int z)
+		protected boolean isValidBlock(int x, int y, int z)
 		{
-			Block block = this.world.getBlock(x, y, z);
-			return block.getMaterial() == Material.air || block == Blocks.fire || this.isFrameBlock(x, y, z);
+			return this.isValidBlock(this.world.getBlock(x, y, z), this.world.getBlockMetadata(x, y, z));
+		}
+		
+		protected boolean isValidBlock(Block block, int metadata)
+		{
+			return block.getMaterial() == Material.air || block == Blocks.fire || block == BlockCustomPortal.this || this.isFrameBlock(block, metadata);
+		}
+		
+		protected boolean isFrameBlock(int x, int y, int z)
+		{
+			return this.isFrameBlock(this.world.getBlock(x, y, z), this.world.getBlockMetadata(x, y, z));
+		}
+		
+		protected boolean isFrameBlock(Block block, int metadata)
+		{
+			return block == BlockCustomPortal.this.frameBlock && metadata == BlockCustomPortal.this.frameMetadata;
 		}
 		
 		public boolean isValid()
@@ -395,13 +391,13 @@ public abstract class BlockCustomPortal extends BlockImpl
 		{
 			for (int i = 0; i < this.width; ++i)
 			{
-				int j = this.chunkPos.posX + Direction.offsetX[this.direction2] * i;
-				int k = this.chunkPos.posZ + Direction.offsetZ[this.direction2] * i;
+				int j = this.chunkPos.posX + Direction.offsetX[this.direction1] * i;
+				int k = this.chunkPos.posZ + Direction.offsetZ[this.direction1] * i;
 				
 				for (int l = 0; l < this.height; ++l)
 				{
 					int i1 = this.chunkPos.posY + l;
-					this.world.setBlock(j, i1, k, this.portalBlock, this.metadata, 2);
+					this.world.setBlock(j, i1, k, BlockCustomPortal.this, this.metadata, 2);
 				}
 			}
 		}

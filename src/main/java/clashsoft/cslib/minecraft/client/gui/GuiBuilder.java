@@ -1,5 +1,7 @@
 package clashsoft.cslib.minecraft.client.gui;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ResourceLocation;
@@ -31,6 +33,7 @@ public class GuiBuilder extends Gui
 	
 	public void bind(ResourceLocation resourceLocation)
 	{
+		GL11.glColor4f(1F, 1F, 1F, 1F);
 		this.mc.renderEngine.bindTexture(resourceLocation);
 	}
 	
