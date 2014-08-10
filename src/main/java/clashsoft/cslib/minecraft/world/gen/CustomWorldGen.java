@@ -9,9 +9,9 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 public abstract class CustomWorldGen extends WorldGenerator
 {
-	public int	flags;
-	public Block genBlock = Blocks.stone;
-	public int genMetadata;
+	public int		flags;
+	public Block	genBlock	= Blocks.stone;
+	public int		genMetadata;
 	
 	public CustomWorldGen(boolean update)
 	{
@@ -24,7 +24,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		world.setBlock(x, y, z, this.genBlock, this.genMetadata, this.flags);
 	}
 	
-	public void drawLineX(World world, int x, int y, int z, int length, Random random)
+	public final void drawLineX(World world, int x, int y, int z, int length, Random random)
 	{
 		for (int x1 = x; x1 < x + length; x1++)
 		{
@@ -32,7 +32,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawLineY(World world, int x, int y, int z, int length, Random random)
+	public final void drawLineY(World world, int x, int y, int z, int length, Random random)
 	{
 		for (int y1 = y; y1 < y + length; y1++)
 		{
@@ -40,7 +40,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawLineZ(World world, int x, int y, int z, int length, Random random)
+	public final void drawLineZ(World world, int x, int y, int z, int length, Random random)
 	{
 		for (int z1 = z; z1 < z + length; z1++)
 		{
@@ -48,7 +48,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawPlaneX(World world, int x, int y, int z, int ySize, int zSize, Random random)
+	public final void drawPlaneX(World world, int x, int y, int z, int ySize, int zSize, Random random)
 	{
 		for (int y1 = y; y1 < y + ySize; y1++)
 		{
@@ -59,7 +59,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawPlaneY(World world, int x, int y, int z, int xSize, int zSize, Random random)
+	public final void drawPlaneY(World world, int x, int y, int z, int xSize, int zSize, Random random)
 	{
 		for (int x1 = x; x1 < x + xSize; x1++)
 		{
@@ -70,7 +70,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawPlaneZ(World world, int x, int y, int z, int xSize, int ySize, Random random)
+	public final void drawPlaneZ(World world, int x, int y, int z, int xSize, int ySize, Random random)
 	{
 		for (int x1 = x; x1 < x + xSize; x1++)
 		{
@@ -81,7 +81,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawHollowBox(World world, int x, int y, int z, int xSize, int ySize, int zSize, Random random)
+	public final void drawHollowBox(World world, int x, int y, int z, int xSize, int ySize, int zSize, Random random)
 	{
 		drawSolidBox(world, x + 1, y + 1, z + 1, xSize - 1, ySize - 1, zSize - 1, Blocks.air, 0);
 		drawPlaneY(world, x, y, z, xSize, zSize, random);
@@ -92,7 +92,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, random);
 	}
 	
-	public void drawSquareTube(World world, int x, int y, int z, int xSize, int ySize, int zSize, int direction, Random random)
+	public final void drawSquareTube(World world, int x, int y, int z, int xSize, int ySize, int zSize, int direction, Random random)
 	{
 		drawSolidBox(world, x, y, z, xSize, ySize, zSize, random);
 		if (direction == 0 || direction == 2)
@@ -112,7 +112,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawSolidBox(World world, int x, int y, int z, int sizeX, int sizeY, int sizeZ, Random random)
+	public final void drawSolidBox(World world, int x, int y, int z, int sizeX, int sizeY, int sizeZ, Random random)
 	{
 		for (int x1 = x; x1 < x + sizeX; x1++)
 		{
@@ -126,7 +126,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawLineX(World world, int x, int y, int z, int length, Block block, int metadata)
+	public final void drawLineX(World world, int x, int y, int z, int length, Block block, int metadata)
 	{
 		for (int x1 = x; x1 < x + length; x1++)
 		{
@@ -134,7 +134,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawLineY(World world, int x, int y, int z, int length, Block block, int metadata)
+	public final void drawLineY(World world, int x, int y, int z, int length, Block block, int metadata)
 	{
 		for (int y1 = y; y1 < y + length; y1++)
 		{
@@ -142,7 +142,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawLineZ(World world, int x, int y, int z, int length, Block block, int metadata)
+	public final void drawLineZ(World world, int x, int y, int z, int length, Block block, int metadata)
 	{
 		for (int z1 = z; z1 < z + length; z1++)
 		{
@@ -150,7 +150,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawPlaneX(World world, int x, int y, int z, int ySize, int zSize, Block block, int metadata)
+	public final void drawPlaneX(World world, int x, int y, int z, int ySize, int zSize, Block block, int metadata)
 	{
 		for (int y1 = y; y1 < y + ySize; y1++)
 		{
@@ -161,7 +161,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawPlaneY(World world, int x, int y, int z, int xSize, int zSize, Block block, int metadata)
+	public final void drawPlaneY(World world, int x, int y, int z, int xSize, int zSize, Block block, int metadata)
 	{
 		for (int x1 = x; x1 < x + xSize; x1++)
 		{
@@ -172,7 +172,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawPlaneZ(World world, int x, int y, int z, int xSize, int ySize, Block block, int metadata)
+	public final void drawPlaneZ(World world, int x, int y, int z, int xSize, int ySize, Block block, int metadata)
 	{
 		for (int x1 = x; x1 < x + xSize; x1++)
 		{
@@ -183,7 +183,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawSquareTube(World world, int x, int y, int z, int xSize, int ySize, int zSize, int direction, Block block, int metadata)
+	public final void drawSquareTube(World world, int x, int y, int z, int xSize, int ySize, int zSize, int direction, Block block, int metadata)
 	{
 		drawSolidBox(world, x, y, z, xSize, ySize, zSize, block, metadata);
 		if (direction == 0 || direction == 2)
@@ -203,7 +203,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawHollowBox(World world, int x, int y, int z, int xSize, int ySize, int zSize, Block block, int metadata)
+	public final void drawHollowBox(World world, int x, int y, int z, int xSize, int ySize, int zSize, Block block, int metadata)
 	{
 		drawSolidBox(world, x + 1, y + 1, z + 1, xSize - 1, ySize - 1, zSize - 1, Blocks.air, 0);
 		drawPlaneY(world, x, y, z, xSize, zSize, block, metadata);
@@ -214,7 +214,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, block, metadata);
 	}
 	
-	public void drawSolidBox(World world, int x, int y, int z, int sizeX, int sizeY, int sizeZ, Block block, int metadata)
+	public final void drawSolidBox(World world, int x, int y, int z, int sizeX, int sizeY, int sizeZ, Block block, int metadata)
 	{
 		for (int x1 = x; x1 < x + sizeX; x1++)
 		{
@@ -228,7 +228,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawHollowSphere(World world, int x, int y, int z, int radius, Block block, int metadata)
+	public final void drawHollowSphere(World world, int x, int y, int z, int radius, Block block, int metadata)
 	{
 		int sqradius = radius * radius;
 		for (int i = -radius; i <= radius; i++)
@@ -246,7 +246,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public void drawSolidSphere(World world, int x, int y, int z, int radius, Block block, int metadata)
+	public final void drawSolidSphere(World world, int x, int y, int z, int radius, Block block, int metadata)
 	{
 		int sqradius = radius * radius;
 		for (int i = -radius; i <= radius; i++)
