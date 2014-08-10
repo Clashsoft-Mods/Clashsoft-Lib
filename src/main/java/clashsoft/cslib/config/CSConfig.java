@@ -131,31 +131,31 @@ public class CSConfig
 	public static int getInt(String category, String key, String desc, int _default)
 	{
 		checkConfig();
-		return config.get(CSString.identifier(key), category, _default, desc).getInt(_default);
+		return config.get(category, CSString.identifier(key), _default, desc).getInt(_default);
 	}
 	
 	public static float getFloat(String category, String key, String desc, float _default)
 	{
 		checkConfig();
-		return (float) config.get(CSString.identifier(key), category, _default, desc).getDouble(_default);
+		return (float) config.get(category, CSString.identifier(key), _default, desc).getDouble(_default);
 	}
 	
 	public static double getDouble(String category, String key, String desc, double _default)
 	{
 		checkConfig();
-		return config.get(CSString.identifier(key), category, _default, desc).getDouble(_default);
+		return config.get(category, CSString.identifier(key), _default, desc).getDouble(_default);
 	}
 	
 	public static boolean getBool(String category, String key, String desc, boolean _default)
 	{
 		checkConfig();
-		return config.get(CSString.identifier(key), category, _default, desc).getBoolean(_default);
+		return config.get(category, CSString.identifier(key), _default, desc).getBoolean(_default);
 	}
 	
 	public static String getString(String category, String key, String desc, String _default)
 	{
 		checkConfig();
-		return config.get(CSString.identifier(key), category, _default, desc).getString();
+		return config.get(category, CSString.identifier(key), _default, desc).getString();
 	}
 	
 	public static <T extends IParsable> T getObject(String category, String key, String desc, T _default)
