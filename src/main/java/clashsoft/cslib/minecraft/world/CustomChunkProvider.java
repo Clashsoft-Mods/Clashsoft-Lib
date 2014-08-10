@@ -110,70 +110,70 @@ public abstract class CustomChunkProvider implements IChunkProvider
 		short short1 = 256;
 		
 		for (int x1 = 0; x1 < 4; ++x1)
-        {
-            int l = x1 * 5;
-            int i1 = (x1 + 1) * 5;
-
-            for (int z1 = 0; z1 < 4; ++z1)
-            {
-                int k1 = (l + z1) * 33;
-                int l1 = (l + z1 + 1) * 33;
-                int i2 = (i1 + z1) * 33;
-                int j2 = (i1 + z1 + 1) * 33;
-
-                for (int y1 = 0; y1 < 32; ++y1)
-                {
-                    double d1 = this.noiseArray[k1 + y1];
-                    double d2 = this.noiseArray[l1 + y1];
-                    double d3 = this.noiseArray[i2 + y1];
-                    double d4 = this.noiseArray[j2 + y1];
-                    double d5 = (this.noiseArray[k1 + y1 + 1] - d1) * d0;
-                    double d6 = (this.noiseArray[l1 + y1 + 1] - d2) * d0;
-                    double d7 = (this.noiseArray[i2 + y1 + 1] - d3) * d0;
-                    double d8 = (this.noiseArray[j2 + y1 + 1] - d4) * d0;
-
-                    for (int y2 = 0; y2 < 8; ++y2)
-                    {
-                        double d10 = d1;
-                        double d11 = d2;
-                        double d12 = (d3 - d1) * d9;
-                        double d13 = (d4 - d2) * d9;
-
-                        for (int y3 = 0; y3 < 4; ++y3)
-                        {
-                            int j3 = y3 + x1 * 4 << 12 | z1 * 4 << 8 | y1 * 8 + y2;
-                            j3 -= short1;
-                            double d16 = (d11 - d10) * d14;
-                            double d15 = d10 - d16;
-
-                            for (int k3 = 0; k3 < 4; ++k3)
-                            {
-                                if ((d15 += d16) > 0.0D)
-                                {
-                                    blocks[j3 += short1] = Blocks.stone;
-                                }
-                                else if (y1 * 8 + y2 < 63)
-                                {
-                                    blocks[j3 += short1] = Blocks.water;
-                                }
-                                else
-                                {
-                                    blocks[j3 += short1] = Blocks.air;
-                                }
-                            }
-
-                            d10 += d12;
-                            d11 += d13;
-                        }
-
-                        d1 += d5;
-                        d2 += d6;
-                        d3 += d7;
-                        d4 += d8;
-                    }
-                }
-            }
-        }
+		{
+			int l = x1 * 5;
+			int i1 = (x1 + 1) * 5;
+			
+			for (int z1 = 0; z1 < 4; ++z1)
+			{
+				int k1 = (l + z1) * 33;
+				int l1 = (l + z1 + 1) * 33;
+				int i2 = (i1 + z1) * 33;
+				int j2 = (i1 + z1 + 1) * 33;
+				
+				for (int y1 = 0; y1 < 32; ++y1)
+				{
+					double d1 = this.noiseArray[k1 + y1];
+					double d2 = this.noiseArray[l1 + y1];
+					double d3 = this.noiseArray[i2 + y1];
+					double d4 = this.noiseArray[j2 + y1];
+					double d5 = (this.noiseArray[k1 + y1 + 1] - d1) * d0;
+					double d6 = (this.noiseArray[l1 + y1 + 1] - d2) * d0;
+					double d7 = (this.noiseArray[i2 + y1 + 1] - d3) * d0;
+					double d8 = (this.noiseArray[j2 + y1 + 1] - d4) * d0;
+					
+					for (int y2 = 0; y2 < 8; ++y2)
+					{
+						double d10 = d1;
+						double d11 = d2;
+						double d12 = (d3 - d1) * d9;
+						double d13 = (d4 - d2) * d9;
+						
+						for (int y3 = 0; y3 < 4; ++y3)
+						{
+							int j3 = y3 + x1 * 4 << 12 | z1 * 4 << 8 | y1 * 8 + y2;
+							j3 -= short1;
+							double d16 = (d11 - d10) * d14;
+							double d15 = d10 - d16;
+							
+							for (int k3 = 0; k3 < 4; ++k3)
+							{
+								if ((d15 += d16) > 0.0D)
+								{
+									blocks[j3 += short1] = Blocks.stone;
+								}
+								else if (y1 * 8 + y2 < 63)
+								{
+									blocks[j3 += short1] = Blocks.water;
+								}
+								else
+								{
+									blocks[j3 += short1] = Blocks.air;
+								}
+							}
+							
+							d10 += d12;
+							d11 += d13;
+						}
+						
+						d1 += d5;
+						d2 += d6;
+						d3 += d7;
+						d4 += d8;
+					}
+				}
+			}
+		}
 	}
 	
 	public void replaceBlocksForBiome(int x, int z, Block[] blocks, byte[] metadata, BiomeGenBase[] biomes)
@@ -214,15 +214,16 @@ public abstract class CustomChunkProvider implements IChunkProvider
 		this.generate(x, z, blocks);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, x * 16, z * 16, 16, 16);
 		this.replaceBlocksForBiome(x, z, blocks, metadata, this.biomesForGeneration);
-		this.caveGenerator.func_151539_a(this, this.worldObj, x, z, blocks);
-		this.ravineGenerator.func_151539_a(this, this.worldObj, x, z, blocks);
+		
+		this.mapGen(this.caveGenerator, this.worldObj, x, z, blocks);
+		this.mapGen(this.ravineGenerator, this.worldObj, x, z, blocks);
 		
 		if (this.mapFeaturesEnabled)
 		{
-			this.mineshaftGenerator.func_151539_a(this, this.worldObj, x, z, blocks);
-			this.villageGenerator.func_151539_a(this, this.worldObj, x, z, blocks);
-			this.strongholdGenerator.func_151539_a(this, this.worldObj, x, z, blocks);
-			this.scatteredFeatureGenerator.func_151539_a(this, this.worldObj, x, z, blocks);
+			this.mapGen(this.mineshaftGenerator, this.worldObj, x, z, blocks);
+			this.mapGen(this.villageGenerator, this.worldObj, x, z, blocks);
+			this.mapGen(this.strongholdGenerator, this.worldObj, x, z, blocks);
+			this.mapGen(this.scatteredFeatureGenerator, this.worldObj, x, z, blocks);
 		}
 		
 		Chunk chunk = new Chunk(this.worldObj, blocks, metadata, x, z);
@@ -235,6 +236,14 @@ public abstract class CustomChunkProvider implements IChunkProvider
 		
 		chunk.generateSkylightMap();
 		return chunk;
+	}
+	
+	public void mapGen(MapGenBase mapGen, World world, int chunkX, int chunkZ, Block[] blocks)
+	{
+		if (mapGen != null)
+		{
+			mapGen.func_151539_a(this, world, chunkX, chunkZ, blocks);
+		}
 	}
 	
 	public void generateNoises(int x, int y, int z)
