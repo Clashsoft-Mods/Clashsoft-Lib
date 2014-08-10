@@ -354,7 +354,12 @@ public class CustomBlock extends Block implements ICustomBlock
 	public static String getUnlocalizedName(Block block, ItemStack stack, String[] names)
 	{
 		int metadata = stack.getItemDamage();
-		return block.getUnlocalizedName() + "." + names[metadata % names.length];
+		String name = names[metadata % names.length];
+		if (name != null)
+		{
+			return block.getUnlocalizedName() + "." + name;
+		}
+		return block.getUnlocalizedName();
 	}
 	
 	@Override
