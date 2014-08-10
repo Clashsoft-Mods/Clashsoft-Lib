@@ -112,7 +112,7 @@ public class BlockCustomGrass extends CustomBlock
 			int lightValue = world.getBlockLightValue(x, y + 1, z);
 			int lightOpacity = world.getBlockLightOpacity(x, y + 1, z);
 			
-			if (lightValue < 4 && lightOpacity > 2)
+			if (lightValue < 4 && lightOpacity > 2 && dirt != null)
 			{
 				world.setBlock(x, y, z, dirt, dirtMetadata, 3);
 			}
