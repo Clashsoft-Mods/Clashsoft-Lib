@@ -41,9 +41,9 @@ public class WorldGenRanged extends WorldGenerator
 			int y1 = y + random.nextInt(this.rangeY) - random.nextInt(this.rangeY);
 			int z1 = z + random.nextInt(this.rangeZ) - random.nextInt(this.rangeZ);
 			
-			if (this.block.canPlaceBlockAt(world, x1, y1, z1))
+			if (world.isAirBlock(x1, y1, z1) && this.block.canPlaceBlockAt(world, x1, y1, z1))
 			{
-				world.setBlock(x1, y1, z1, this.block, this.metadata, 2);
+				this.setBlockAndNotifyAdequately(world, x1, y1, z1, this.block, this.metadata);
 			}
 		}
 		
