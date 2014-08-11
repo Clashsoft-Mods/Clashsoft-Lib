@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import clashsoft.cslib.minecraft.client.icon.IIconSupplier;
+import clashsoft.cslib.minecraft.client.icon.IconSupplier;
+import clashsoft.cslib.minecraft.client.icon.MultiIconSupplier;
 import clashsoft.cslib.minecraft.item.meta.ISubItem;
 import clashsoft.cslib.minecraft.lang.I18n;
 import clashsoft.cslib.util.CSArrays;
@@ -26,11 +29,9 @@ public class CustomItem extends Item
 	public static final String	FORCEHIDE	= "%&";
 	
 	public String[]				names;
-	public String[]				iconNames;
+	public IIconSupplier iconSupplier;
 	
 	public CreativeTabs[]		tabs;
-	
-	public IIcon[]				icons;
 	
 	public boolean[]			enabled;
 	
@@ -42,13 +43,24 @@ public class CustomItem extends Item
 	 * 
 	 * @param subItems
 	 *            the sub items
-	 * @param showSubItems
+	 * @param shownSubItems
 	 *            the displaylist
 	 */
-	public CustomItem(List<ISubItem> subItems, List<ISubItem> showSubItems)
+	public CustomItem(List<ISubItem> subItems, List<ISubItem> shownSubItems)
 	{
 		this.subItems = subItems;
-		this.shownSubItems = showSubItems;
+		this.shownSubItems = shownSubItems;
+		
+		String[]  iconNames = new String[subItems.size()];
+		for (int i = 0; i < subItems.size(); i++)
+		{
+			ISubItem item = subItems.get(i);
+			if (item != null)
+			{
+				iconNames[i] = item.getIconName();
+			}
+		}
+		this.iconSupplier = new MultiIconSupplier(iconNames);
 	}
 	
 	/**
@@ -61,10 +73,10 @@ public class CustomItem extends Item
 	 * @param descriptions
 	 *            the descriptions
 	 */
-	public CustomItem(String[] names, String[] iconNames, CreativeTabs[] tabs)
+	public CustomItem(String[] names, Object icons, CreativeTabs[] tabs)
 	{
 		this.names = names;
-		this.iconNames = iconNames;
+		this.iconSupplier = IconSupplier.create(icons);
 		this.tabs = tabs;
 		this.enabled = new boolean[this.names.length];
 		Arrays.fill(this.enabled, true);
@@ -72,29 +84,9 @@ public class CustomItem extends Item
 		this.setHasSubtypes(names.length > 1);
 	}
 	
-	public CustomItem(String[] names, String[] iconNames)
-	{
-		this(names, iconNames, null);
-	}
-	
-	public CustomItem(String[] names, String domain, CreativeTabs[] tabs)
-	{
-		this(names, CSString.concatAll(names, domain + ":", ""), tabs);
-	}
-	
-	public CustomItem(String[] names, String domain)
-	{
-		this(names, domain, null);
-	}
-	
-	public CustomItem(String names, String iconName, CreativeTabs tab)
-	{
-		this(CSArrays.create(names), CSArrays.create(iconName), CSArrays.create(tab));
-	}
-	
 	public CustomItem(String name, String iconName)
 	{
-		this(CSArrays.create(name), CSArrays.create(iconName));
+		this(CSArrays.create(name), iconName, null);
 	}
 	
 	@Override
@@ -181,43 +173,13 @@ public class CustomItem extends Item
 	@Override
 	public IIcon getIconFromDamage(int damage)
 	{
-		if (this.icons == null)
-		{
-			return this.itemIcon;
-		}
-		
-		if (damage >= this.icons.length)
-		{
-			damage = this.icons.length - 1;
-		}
-		if (damage < 0)
-		{
-			damage = 0;
-		}
-		return this.icons[damage];
+		return this.iconSupplier.getIcon(damage);
 	}
 	
 	@Override
 	public void registerIcons(IIconRegister iconRegister)
 	{
-		if (this.hasItemMetadataList())
-		{
-			this.icons = new IIcon[this.subItems.size()];
-			for (int i = 0; i < this.subItems.size(); i++)
-			{
-				String iconName = this.subItems.get(i).getIconName();
-				this.icons[i] = iconRegister.registerIcon(iconName);
-			}
-		}
-		else
-		{
-			this.icons = new IIcon[this.iconNames.length];
-			for (int i = 0; i < this.iconNames.length; i++)
-			{
-				String iconName = this.iconNames[i];
-				this.icons[i] = iconRegister.registerIcon(iconName);
-			}
-		}
+		this.iconSupplier.registerIcons(iconRegister);
 	}
 	
 	@Override
