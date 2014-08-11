@@ -14,11 +14,21 @@ import net.minecraft.world.World;
 
 public class BlockCustomGrass extends CustomBlock
 {
-	public String[]	topIconNames, sideIconNames, bottomIconNames;
 	public Block[]	dirtBlocks;
 	public int[]	dirtBlockMetadatas;
 	
+	public String[]	topIconNames, sideIconNames, bottomIconNames;
 	public IIcon[]	topIcons, sideIcons, bottomIcons;
+	
+	public BlockCustomGrass(String name, String icon)
+	{
+		this(new String[] { name }, new String[] { icon });
+	}
+	
+	public BlockCustomGrass(String[] names, String[] icons)
+	{
+		this(names, null, icons, null);
+	}
 	
 	public BlockCustomGrass(String name, String topIcon, String sideIcon, String bottomIcon)
 	{
@@ -27,7 +37,7 @@ public class BlockCustomGrass extends CustomBlock
 	
 	public BlockCustomGrass(String[] names, String[] topIcons, String[] sideIcons, String[] bottomIcons)
 	{
-		super(Material.grass, names, sideIcons, null);
+		super(Material.grass, names, (String[]) null, null);
 		this.setStepSound(Block.soundTypeGrass);
 		this.setTickRandomly(true);
 		this.setHardness(0.6F);
@@ -58,15 +68,33 @@ public class BlockCustomGrass extends CustomBlock
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.topIcons = new IIcon[this.topIconNames.length];
-		this.sideIcons = new IIcon[this.sideIconNames.length];
-		this.bottomIcons = new IIcon[this.bottomIconNames.length];
-		
-		for (int i = 0; i < this.topIconNames.length; i++)
+		int count = this.topIconNames.length;
+		if (this.sideIconNames == null && this.bottomIconNames == null)
 		{
-			this.topIcons[i] = iconRegister.registerIcon(this.topIconNames[i]);
-			this.sideIcons[i] = iconRegister.registerIcon(this.sideIconNames[i]);
-			this.bottomIcons[i] = iconRegister.registerIcon(this.bottomIconNames[i]);
+			this.topIcons = new IIcon[count];
+			this.sideIcons = new IIcon[count];
+			this.bottomIcons = new IIcon[count];
+			
+			for (int i = 0; i < this.topIconNames.length; i++)
+			{
+				String name = this.topIconNames[i];
+				this.topIcons[i] = iconRegister.registerIcon(name + "_top");
+				this.sideIcons[i] = iconRegister.registerIcon(name + "_side");
+				this.bottomIcons[i] = iconRegister.registerIcon(name + "_bottom");
+			}
+		}
+		else
+		{
+			this.topIcons = new IIcon[count];
+			this.sideIcons = new IIcon[count];
+			this.bottomIcons = new IIcon[count];
+			
+			for (int i = 0; i < count; i++)
+			{
+				this.topIcons[i] = iconRegister.registerIcon(this.topIconNames[i]);
+				this.sideIcons[i] = iconRegister.registerIcon(this.sideIconNames[i]);
+				this.bottomIcons[i] = iconRegister.registerIcon(this.bottomIconNames[i]);
+			}
 		}
 	}
 	
