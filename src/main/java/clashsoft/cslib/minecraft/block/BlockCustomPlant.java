@@ -5,7 +5,8 @@ import static net.minecraftforge.common.EnumPlantType.Plains;
 import java.util.List;
 import java.util.Random;
 
-import clashsoft.cslib.util.CSString;
+import clashsoft.cslib.minecraft.client.icon.IIconSupplier;
+import clashsoft.cslib.minecraft.client.icon.IconSupplier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,28 +27,55 @@ import net.minecraftforge.common.IPlantable;
 public class BlockCustomPlant extends CustomBlock implements IPlantable
 {
 	@SideOnly(Side.CLIENT)
-	public IIcon[]	icons;
+	public IIconSupplier iconSupplier;
 	
-	public BlockCustomPlant(String[] names, String[] icons)
+	public BlockCustomPlant(String[] names, Object icons)
 	{
 		super(Material.plants, names, icons, null);
-		this.lightOpacity = 0;
-		this.opaque = false;
 		this.setBlockBounds(0.3F, 0F, 0.3F, 0.7F, 0.6F, 0.7F);
 		this.setStepSound(Block.soundTypeGrass);
+		this.lightOpacity = 0;
+		this.opaque = false;
+		this.iconSupplier = IconSupplier.create(icons);
 	}
 	
-	public BlockCustomPlant(String[] names, String domain)
+	// RENDER SECTION
+	
+	@Override
+	public boolean isOpaqueCube()
 	{
-		this(names, CSString.concatAll(names, domain + ":", ""));
+		return false;
 	}
+	
+	@Override
+	public boolean renderAsNormalBlock()
+	{
+		return false;
+	}
+	
+	@Override
+	public int getRenderType()
+	{
+		return 1;
+	}
+	
+	// ICON SECTION
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata)
 	{
-		return this.icons[metadata];
+		return this.iconSupplier.getIcon(metadata, side);
 	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister iconRegister)
+	{
+		this.iconSupplier.registerIcons(iconRegister);
+	}
+	
+	// WORLD SECTION
 	
 	@Override
 	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
@@ -111,29 +139,15 @@ public class BlockCustomPlant extends CustomBlock implements IPlantable
 		return block == Blocks.dirt || block == Blocks.grass;
 	}
 	
+	// COLLISION BOX
+	
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
 	{
 		return null;
 	}
 	
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
-	}
-	
-	@Override
-	public boolean renderAsNormalBlock()
-	{
-		return false;
-	}
-	
-	@Override
-	public int getRenderType()
-	{
-		return 1;
-	}
+	// OTHER PROPERTIES
 	
 	@Override
 	public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z)
@@ -159,6 +173,8 @@ public class BlockCustomPlant extends CustomBlock implements IPlantable
 		return metadata;
 	}
 	
+	// SUB BLOCKS
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs creativeTab, List itemList)
@@ -166,17 +182,6 @@ public class BlockCustomPlant extends CustomBlock implements IPlantable
 		for (int i = 0; i < this.names.length; i++)
 		{
 			itemList.add(new ItemStack(this, 1, i));
-		}
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister)
-	{
-		this.icons = new IIcon[this.iconNames.length];
-		for (int i = 0; i < this.iconNames.length; ++i)
-		{
-			this.icons[i] = iconRegister.registerIcon(this.iconNames[i]);
 		}
 	}
 }

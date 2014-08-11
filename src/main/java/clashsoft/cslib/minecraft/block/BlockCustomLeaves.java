@@ -3,6 +3,7 @@ package clashsoft.cslib.minecraft.block;
 import java.util.List;
 import java.util.Random;
 
+import clashsoft.cslib.util.CSString;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -45,7 +46,7 @@ public class BlockCustomLeaves extends BlockLeaves implements ICustomBlock
 	
 	public BlockCustomLeaves(String[] names, String domain)
 	{
-		this(names, CustomBlock.applyDomain(names, domain));
+		this(names, CSString.concatAll(names, domain + ":", null));
 	}
 	
 	public BlockCustomLeaves setAppleStacks(ItemStack... appleStacks)

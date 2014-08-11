@@ -3,6 +3,8 @@ package clashsoft.cslib.minecraft.block;
 import java.util.List;
 import java.util.Random;
 
+import clashsoft.cslib.minecraft.client.icon.IIconSupplier;
+import clashsoft.cslib.minecraft.client.icon.IconSupplier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -22,24 +24,16 @@ import net.minecraftforge.event.terraingen.TerrainGen;
 public abstract class BlockCustomSapling extends BlockSapling implements ICustomBlock
 {
 	public String[]	names;
-	public String[]	iconNames;
+	public IIconSupplier iconSupplier;
 	
-	@SideOnly(Side.CLIENT)
-	public IIcon[]	icons;
-	
-	public BlockCustomSapling(String[] names, String[] iconNames)
+	public BlockCustomSapling(String[] names, Object icons)
 	{
 		this.setBlockBounds(0.1F, 0.0F, 0.1F, 0.9F, 0.8F, 0.9F);
 		this.setHardness(0F);
 		this.setStepSound(Block.soundTypeGrass);
 		
 		this.names = names;
-		this.iconNames = iconNames;
-	}
-	
-	public BlockCustomSapling(String[] names, String domain)
-	{
-		this(names, CustomBlock.applyDomain(names, domain));
+		this.iconSupplier = IconSupplier.create(icons);
 	}
 	
 	@Override
@@ -72,7 +66,7 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata)
 	{
-		return this.icons[metadata & 3];
+		return this.iconSupplier.getIcon(metadata & 3, side);
 	}
 	
 	public void markOrGrowMarked(World world, int x, int y, int z, Random random)
@@ -166,12 +160,6 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		int len = this.iconNames.length;
-		
-		this.icons = new IIcon[len];
-		for (int i = 0; i < len; ++i)
-		{
-			this.icons[i] = iconRegister.registerIcon(this.iconNames[i]);
-		}
+		this.iconSupplier.registerIcons(iconRegister);
 	}
 }
