@@ -2,6 +2,8 @@ package clashsoft.cslib.minecraft.block;
 
 import java.util.Random;
 
+import clashsoft.cslib.minecraft.client.icon.IIconSupplier;
+import clashsoft.cslib.minecraft.client.icon.grass.GrassIconSupplier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -17,35 +19,22 @@ public class BlockCustomGrass extends CustomBlock
 	public Block[]	dirtBlocks;
 	public int[]	dirtBlockMetadatas;
 	
-	public String[]	topIconNames, sideIconNames, bottomIconNames;
-	public IIcon[]	topIcons, sideIcons, bottomIcons;
+	public IIconSupplier iconSupplier;
 	
 	public BlockCustomGrass(String name, String icon)
 	{
 		this(new String[] { name }, new String[] { icon });
 	}
 	
-	public BlockCustomGrass(String[] names, String[] icons)
+	public BlockCustomGrass(String[] names, Object icons)
 	{
-		this(names, null, icons, null);
-	}
-	
-	public BlockCustomGrass(String name, String topIcon, String sideIcon, String bottomIcon)
-	{
-		this(new String[] { name }, new String[] { topIcon }, new String[] { sideIcon }, new String[] { bottomIcon });
-	}
-	
-	public BlockCustomGrass(String[] names, String[] topIcons, String[] sideIcons, String[] bottomIcons)
-	{
-		super(Material.grass, names, (String[]) null, null);
+		super(Material.grass, names, null, null);
 		this.setStepSound(Block.soundTypeGrass);
 		this.setTickRandomly(true);
 		this.setHardness(0.6F);
 		
 		this.names = names;
-		this.topIconNames = topIcons;
-		this.sideIconNames = sideIcons;
-		this.bottomIconNames = bottomIcons;
+		this.iconSupplier = GrassIconSupplier.create(icons);
 		
 		this.dirtBlocks = new Block[names.length];
 		this.dirtBlockMetadatas = new int[names.length];
@@ -68,45 +57,14 @@ public class BlockCustomGrass extends CustomBlock
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		int count = this.topIconNames.length;
-		if (this.sideIconNames == null && this.bottomIconNames == null)
-		{
-			this.topIcons = new IIcon[count];
-			this.sideIcons = new IIcon[count];
-			this.bottomIcons = new IIcon[count];
-			
-			for (int i = 0; i < this.topIconNames.length; i++)
-			{
-				String name = this.topIconNames[i];
-				this.topIcons[i] = iconRegister.registerIcon(name + "_top");
-				this.sideIcons[i] = iconRegister.registerIcon(name + "_side");
-				this.bottomIcons[i] = iconRegister.registerIcon(name + "_bottom");
-			}
-		}
-		else
-		{
-			this.topIcons = new IIcon[count];
-			this.sideIcons = new IIcon[count];
-			this.bottomIcons = new IIcon[count];
-			
-			for (int i = 0; i < count; i++)
-			{
-				this.topIcons[i] = iconRegister.registerIcon(this.topIconNames[i]);
-				this.sideIcons[i] = iconRegister.registerIcon(this.sideIconNames[i]);
-				this.bottomIcons[i] = iconRegister.registerIcon(this.bottomIconNames[i]);
-			}
-		}
+		this.iconSupplier.registerIcons(iconRegister);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata)
 	{
-		if (metadata < 0 || metadata >= this.topIconNames.length)
-		{
-			metadata = 0;
-		}
-		return side == 1 ? this.topIcons[metadata] : side == 0 ? this.bottomIcons[metadata] : this.sideIcons[metadata];
+		return this.iconSupplier.getIcon(metadata & 3, side);
 	}
 	
 	@Override
