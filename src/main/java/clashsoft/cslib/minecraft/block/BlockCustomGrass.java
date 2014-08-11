@@ -64,7 +64,7 @@ public class BlockCustomGrass extends CustomBlock
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata)
 	{
-		return this.iconSupplier.getIcon(metadata & 3, side);
+		return this.iconSupplier.getIcon(metadata, side);
 	}
 	
 	@Override
