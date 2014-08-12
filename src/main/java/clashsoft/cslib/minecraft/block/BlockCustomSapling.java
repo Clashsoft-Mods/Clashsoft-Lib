@@ -125,18 +125,11 @@ public abstract class BlockCustomSapling extends BlockSapling implements ICustom
 	
 	public abstract WorldGenerator getWorldGen(World world, int x, int y, int z, Random random);
 	
-	public boolean canBlockStay(World world, int x, int y, int z, int metadata)
+	@Override
+	public boolean canBlockStay(World world, int x, int y, int z)
 	{
-		Block soil = world.getBlock(x, y - 1, z);
-		
-		if (soil == null)
-		{
-			return false;
-		}
-		
 		boolean validLight = world.getFullBlockLightValue(x, y, z) >= 8 || world.canBlockSeeTheSky(x, y, z);
-		
-		return validLight && this.isValidGround(metadata, soil, world.getBlockMetadata(x, y - 1, z));
+		return validLight && this.isValidGround(world, x, y, z);
 	}
 	
 	public boolean isValidGround(World world, int x, int y, int z)
