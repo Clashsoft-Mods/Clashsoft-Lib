@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 
@@ -114,11 +115,7 @@ public class CustomTreeGen extends WorldGenTrees
 							
 							if (Math.abs(j2) != l1 || Math.abs(l2) != l1 || random.nextInt(2) != 0 && i3 != 0)
 							{
-								Block block1 = world.getBlock(i2, k1, k2);
-								if (block1.isAir(world, i2, k1, k2) || block1.isLeaves(world, i2, k1, k2))
-								{
-									this.setBlockAndNotifyAdequately(world, i2, k1, k2, this.leafBlock, this.leafMetadata);
-								}
+								this.setBlock(world, i2, k1, k2, this.leafBlock, this.leafMetadata);
 							}
 						}
 					}
@@ -222,7 +219,7 @@ public class CustomTreeGen extends WorldGenTrees
 		{
 			--y;
 			
-			if (world.getBlock(x, y, z).isAir(world, x, y, z) || i1 <= 0)
+			if (world.isAirBlock(x, y, z) || i1 <= 0)
 			{
 				return;
 			}
@@ -264,6 +261,50 @@ public class CustomTreeGen extends WorldGenTrees
 					}
 				}
 			}
+		}
+	}
+	
+	public void generateLeafCircles(World world, Random random, double radius, double decrease, int x, int y, int z, int height)
+	{
+		for (int i = 0; i < height; i++)
+		{
+			this.generateLeafCircle(world, random, radius, x, y + i, z);
+			radius -= decrease;
+		}
+	}
+	
+	public void generateLeafCircle(World world, Random random, double radius, int x, int y, int z)
+	{
+		double radius1 = radius * radius;
+		double radius2 = (radius - 1) * (radius - 1);
+		int x1 = MathHelper.floor_double(-radius);
+		int z1 = MathHelper.floor_double(-radius);
+		int x2 = MathHelper.ceiling_double_int(radius);
+		int z2 = MathHelper.ceiling_double_int(radius);
+		
+		for (int x0 = x1; x0 <= x2; x0++)
+		{
+			for (int z0 = z1; z0 <= z2; z0++)
+			{
+				double d = x0 * x0 + z0 * z0;
+				
+				if (d <= radius1)
+				{
+					if (d <= radius2 || random.nextInt(2) == 0)
+					{
+						this.setBlock(world, x + x0, y, z + z0, this.leafBlock, this.leafMetadata);
+					}
+				}
+			}
+		}
+	}
+	
+	protected void setBlock(World world, int x, int y, int z, Block block, int meta)
+	{
+		Block cur = world.getBlock(x, y, z);
+		if (cur.isAir(world, x, y, z) || cur == this.leafBlock)
+		{
+			world.setBlock(x, y, z, block, meta, 2);
 		}
 	}
 }
