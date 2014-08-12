@@ -15,6 +15,8 @@ import net.minecraft.world.gen.feature.WorldGenTrees;
  */
 public class CustomTreeGen extends WorldGenTrees
 {
+	protected final int flags;
+	
 	/** The minimum height of a generated tree. */
 	public int		minTreeHeight	= 4;
 	
@@ -44,6 +46,7 @@ public class CustomTreeGen extends WorldGenTrees
 	public CustomTreeGen(boolean blockUpdates, int minTreeHeight, Block log, Block leaf, int woodMetadata, int leavesMetadata, boolean vinesGrow)
 	{
 		super(blockUpdates);
+		this.flags = blockUpdates ? 3 : 2;
 		this.minTreeHeight = minTreeHeight;
 		this.logBlock = log;
 		this.leafBlock = leaf;
@@ -229,54 +232,69 @@ public class CustomTreeGen extends WorldGenTrees
 		}
 	}
 	
-	public void generateRoot(World world, int x, int y, int z, int radius, int height)
+	public void generateRoot(World world, int x, int y, int z, int width, int height)
 	{
-		if (radius == 1)
+		if (width == 1)
 		{
 			for (int i = 0; i < height; i++)
 			{
-				this.setBlockAndNotifyAdequately(world, x, y + height, z, this.logBlock, this.logMetadata);
+				this.setBlockAndNotifyAdequately(world, x, y + i, z, this.logBlock, this.logMetadata);
 			}
 		}
-		else if (radius == 2)
+		else if (width == 2)
 		{
 			for (int i = 0; i < height; i++)
 			{
-				this.setBlockAndNotifyAdequately(world, x, y + height, z, this.logBlock, this.logMetadata);
-				this.setBlockAndNotifyAdequately(world, x + 1, y + height, z, this.logBlock, this.logMetadata);
-				this.setBlockAndNotifyAdequately(world, x, y + height, z + 1, this.logBlock, this.logMetadata);
-				this.setBlockAndNotifyAdequately(world, x + 1, y + height, z + 1, this.logBlock, this.logMetadata);
+				this.setBlockAndNotifyAdequately(world, x, y + i, z, this.logBlock, this.logMetadata);
+				this.setBlockAndNotifyAdequately(world, x + 1, y + i, z, this.logBlock, this.logMetadata);
+				this.setBlockAndNotifyAdequately(world, x, y + i, z + 1, this.logBlock, this.logMetadata);
+				this.setBlockAndNotifyAdequately(world, x + 1, y + i, z + 1, this.logBlock, this.logMetadata);
 			}
 		}
 		else
 		{
-			int sqradius = radius * radius;
-			for (int i = -radius; i <= radius; i++)
+			int sqradius = width * width;
+			for (int i = -width; i <= width; i++)
 			{
-				for (int j = -radius; j <= radius; j++)
+				for (int j = -width; j <= width; j++)
 				{
+					if (i * i + j * j > sqradius)
+					{
+						continue;
+					}
+					
 					for (int k = 0; k < height; k++)
 					{
-						this.setBlockAndNotifyAdequately(world, x, y, z, this.logBlock, this.logMetadata);
+						this.setBlockAndNotifyAdequately(world, x + i, y + k, z + j, this.logBlock, this.logMetadata);
 					}
 				}
 			}
 		}
 	}
 	
-	public void generateLeafCircles(World world, Random random, double radius, double decrease, int x, int y, int z, int height)
+	public void generateLeafCircles(World world, Random random, int x, int y, int z, int height, double radius, double decrease)
+	{
+		this.generateLeafCircles(world, random, x, y, z, height, radius, decrease, false);
+	}
+	
+	public void generateLeafCircles(World world, Random random, int x, int y, int z, int height, double radius, double decrease, boolean rand)
 	{
 		for (int i = 0; i < height; i++)
 		{
-			this.generateLeafCircle(world, random, radius, x, y + i, z);
+			this.generateLeafCircle(world, random, x, y + i, z, radius, rand);
 			radius -= decrease;
 		}
 	}
 	
-	public void generateLeafCircle(World world, Random random, double radius, int x, int y, int z)
+	public void generateLeafCirlce(World world, Random random, int x, int y, int z, double radius)
+	{
+		this.generateLeafCircle(world, random, x, y, z, radius, false);
+	}
+	
+	public void generateLeafCircle(World world, Random random, int x, int y, int z, double radius, boolean rand)
 	{
 		double radius1 = radius * radius;
-		double radius2 = (radius - 1) * (radius - 1);
+		double radius2 = rand ? (radius - 1) * (radius - 1) : radius1;
 		int x1 = MathHelper.floor_double(-radius);
 		int z1 = MathHelper.floor_double(-radius);
 		int x2 = MathHelper.ceiling_double_int(radius);
@@ -290,7 +308,7 @@ public class CustomTreeGen extends WorldGenTrees
 				
 				if (d <= radius1)
 				{
-					if (d <= radius2 || random.nextInt(2) == 0)
+					if (!rand || d <= radius2 || random.nextInt(2) == 0)
 					{
 						this.setBlock(world, x + x0, y, z + z0, this.leafBlock, this.leafMetadata);
 					}
@@ -304,7 +322,7 @@ public class CustomTreeGen extends WorldGenTrees
 		Block cur = world.getBlock(x, y, z);
 		if (cur.isAir(world, x, y, z) || cur == this.leafBlock)
 		{
-			world.setBlock(x, y, z, block, meta, 2);
+			world.setBlock(x, y, z, block, meta, this.flags);
 		}
 	}
 }
