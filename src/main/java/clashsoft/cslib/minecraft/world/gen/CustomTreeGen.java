@@ -286,7 +286,7 @@ public class CustomTreeGen extends WorldGenTrees
 		}
 	}
 	
-	public void generateLeafCirlce(World world, Random random, int x, int y, int z, double radius)
+	public void generateLeafCircle(World world, Random random, int x, int y, int z, double radius)
 	{
 		this.generateLeafCircle(world, random, x, y, z, radius, false);
 	}
