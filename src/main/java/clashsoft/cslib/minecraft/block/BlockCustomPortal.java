@@ -23,7 +23,7 @@ import net.minecraft.world.WorldServer;
 
 public abstract class BlockCustomPortal extends BlockImpl
 {
-	public static int[][]	metadataMap	= { { 3, 1 }, { 2, 0 } };
+	public static int[][]	metadataMap	= { null, { 3, 1 }, { 2, 0 } };
 	
 	public int				dimensionID;
 	public Block			frameBlock;
@@ -43,8 +43,8 @@ public abstract class BlockCustomPortal extends BlockImpl
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
 	{
 		int i = limitToValidMetadata(world.getBlockMetadata(x, y, z));
-		PortalSize size1 = new PortalSize(world, x, y, z, 0);
-		PortalSize size2 = new PortalSize(world, x, y, z, 1);
+		PortalSize size1 = new PortalSize(world, x, y, z, 1);
+		PortalSize size2 = new PortalSize(world, x, y, z, 2);
 		
 		if (i == 1 && (!size1.isValid() || size1.portals < size1.height * size1.width))
 		{
@@ -62,8 +62,8 @@ public abstract class BlockCustomPortal extends BlockImpl
 	
 	public boolean generatePortal(World world, int x, int y, int z)
 	{
-		PortalSize size1 = new PortalSize(world, x, y, z, 0);
-		PortalSize size2 = new PortalSize(world, x, y, z, 1);
+		PortalSize size1 = new PortalSize(world, x, y, z, 1);
+		PortalSize size2 = new PortalSize(world, x, y, z, 2);
 		
 		if (size1.isValid() && size1.portals == 0)
 		{
@@ -107,19 +107,14 @@ public abstract class BlockCustomPortal extends BlockImpl
 			}
 		}
 		
-		float f1 = 0.125F;
-		float f2 = 0.125F;
-		
 		if (i == 1)
 		{
-			f1 = 0.5F;
+			this.setBlockBounds(0F, 0.0F, 0.475F, 1F, 1.0F, 0.625F);
 		}
-		if (i == 2)
+		else if (i == 2)
 		{
-			f2 = 0.5F;
+			this.setBlockBounds(0.475F, 0.0F, 0F, 0.625F, 1.0F, 1F);
 		}
-		
-		this.setBlockBounds(0.5F - f1, 0.0F, 0.5F - f2, 0.5F + f1, 1.0F, 0.5F + f2);
 	}
 	
 	@Override
@@ -133,6 +128,13 @@ public abstract class BlockCustomPortal extends BlockImpl
 	{
 		return true;
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public int getRenderBlockPass()
+    {
+        return 1;
+    }
 	
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
@@ -173,6 +175,8 @@ public abstract class BlockCustomPortal extends BlockImpl
 	
 	public abstract Teleporter createTeleporter(WorldServer world);
 	
+	public abstract void spawnParticle(World world, double x, double y, double z, double vX, double vY, double vZ);
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random random)
@@ -202,7 +206,7 @@ public abstract class BlockCustomPortal extends BlockImpl
 				d4 = random.nextFloat() * 2.0F * j;
 			}
 			
-			world.spawnParticle("portal", d1, d2, d3, d4, d5, d6);
+			this.spawnParticle(world, d1, d2, d3, d4, d5, d6);
 		}
 	}
 	
@@ -298,14 +302,14 @@ public abstract class BlockCustomPortal extends BlockImpl
 			int var1 = metadataMap[this.metadata][1];
 			
 			outer:
-			for (int width = 0; width < 21; ++width)
+			for (this.height = 0; this.height < 21; ++this.height)
 			{
 				int y = this.chunkPos.posY + this.height;
 				
-				for (int height = 0; height < this.width; ++height)
+				for (int i = 0; i < this.width; ++i)
 				{
-					int x = this.chunkPos.posX + height * Direction.offsetX[var1];
-					int z = this.chunkPos.posZ + height * Direction.offsetZ[var1];
+					int x = this.chunkPos.posX + i * Direction.offsetX[var1];
+					int z = this.chunkPos.posZ + i * Direction.offsetZ[var1];
 					Block block = this.world.getBlock(x, y, z);
 					int metadata = this.world.getBlockMetadata(x, y, z);
 					
@@ -319,14 +323,14 @@ public abstract class BlockCustomPortal extends BlockImpl
 						++this.portals;
 					}
 					
-					if (height == 0)
+					if (i == 0)
 					{
 						if (!isFrameBlock(x + Direction.offsetX[var0], y, z + Direction.offsetZ[var0]))
 						{
 							break outer;
 						}
 					}
-					else if (height == this.width - 1)
+					else if (i == this.width - 1)
 					{
 						if (!isFrameBlock(x + Direction.offsetX[var1], y, z + Direction.offsetZ[var1]))
 						{
@@ -369,7 +373,7 @@ public abstract class BlockCustomPortal extends BlockImpl
 		
 		protected boolean isValidBlock(Block block, int metadata)
 		{
-			return block.getMaterial() == Material.air || block == Blocks.fire || block == BlockCustomPortal.this || this.isFrameBlock(block, metadata);
+			return block.getMaterial() == Material.air || block == Blocks.fire || block == BlockCustomPortal.this;
 		}
 		
 		protected boolean isFrameBlock(int x, int y, int z)
