@@ -44,9 +44,12 @@ public abstract class BaseMod<N extends CSNetHandler>
 	public String				name;
 	public String				acronym;
 	public String				version;
-	public String				logoFile	= "";
+	
+	public String				description	= "";
+	public String				logoFile;
 	public String				url			= "";
 	public List<String>			authors		= Collections.EMPTY_LIST;
+	public String				credits		= "";
 	
 	public boolean				hasConfig;
 	public File					configFile;
@@ -72,7 +75,7 @@ public abstract class BaseMod<N extends CSNetHandler>
 		this.acronym = acronym;
 		this.version = version;
 		
-		this.logoFile = "/" + this.modID + "/logo.png";
+		this.logoFile = "/assets/" + this.modID + "/logo.png";
 		
 		if (proxy == null)
 		{
@@ -158,9 +161,12 @@ public abstract class BaseMod<N extends CSNetHandler>
 		metadata.name = this.name;
 		metadata.modId = this.modID;
 		metadata.version = this.version;
+		
+		metadata.description = this.description;
 		metadata.logoFile = this.logoFile;
 		metadata.url = this.url;
 		metadata.authorList = this.authors;
+		metadata.credits = this.credits;
 	}
 	
 	/**

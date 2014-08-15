@@ -152,7 +152,7 @@ public class CSBlocks
 						}
 						
 						now = System.currentTimeMillis() - now;
-						CSLog.info("Replace Item : %s (%s) with %s", new Object[] { field.getName(), block1.getClass().getSimpleName(), newBlock.getClass().getSimpleName(), now });
+						CSLog.info("Replace Block : %s (%s) with %s, took %d ms", new Object[] { field.getName(), block1.getClass().getSimpleName(), newBlock.getClass().getSimpleName(), now });
 						
 						return true;
 					}
