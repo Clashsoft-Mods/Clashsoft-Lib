@@ -128,35 +128,46 @@ public class CSBlocks
 		{
 			for (Field field : Blocks.class.getDeclaredFields())
 			{
-				if (Block.class.isAssignableFrom(field.getType()))
+				if (!Block.class.isAssignableFrom(field.getType()))
 				{
-					Block block1 = (Block) field.get(null);
-					if (block1 == block)
-					{
-						FMLControlledNamespacedRegistry<Block> registry = GameData.getBlockRegistry();
-						String registryName = registry.getNameForObject(block1);
-						int id = Block.getIdFromBlock(block1);
-						ItemBlock item = (ItemBlock) Item.getItemFromBlock(block1);
-						
-						// Set field
-						CSReflection.setModifier(field, Modifier.FINAL, false);
-						field.set(null, newBlock);
-						
-						// Replace registry entry
-						CSReflection.invoke(FMLControlledNamespacedRegistry.class, registry, new Object[] { id, registryName, newBlock }, "addObjectRaw");
-						
-						// Replace ItemBlock reference
-						if (item != null)
-						{
-							CSReflection.setValue(ItemBlock.class, item, newBlock, Constants.ITEMBLOCK_BLOCK_FIELD);
-						}
-						
-						now = System.currentTimeMillis() - now;
-						CSLog.info("Replace Block : %s (%s) with %s, took %d ms", new Object[] { field.getName(), block1.getClass().getSimpleName(), newBlock.getClass().getSimpleName(), now });
-						
-						return true;
-					}
+					continue;
 				}
+				
+				Block block1 = (Block) field.get(null);
+				if (block1 != block)
+				{
+					continue;
+				}
+				
+				FMLControlledNamespacedRegistry<Block> registry = GameData.getBlockRegistry();
+				String registryName = registry.getNameForObject(block);
+				int id = Block.getIdFromBlock(block);
+				ItemBlock itemBlock = (ItemBlock) Item.getItemFromBlock(block);
+				
+				// Set field
+				CSReflection.setModifier(field, Modifier.FINAL, false);
+				field.set(null, newBlock);
+				
+				// Replace registry entry
+				CSReflection.invoke(Constants.METHOD_REGISTRY_ADDOBJECTRAW, registry, new Object[] { id, registryName, newBlock });
+				
+				// Replace ItemBlock reference
+				if (itemBlock != null)
+				{
+					CSReflection.setValue(Constants.FIELD_ITEMBLOCK_BLOCK, itemBlock, newBlock);
+				}
+				
+				boolean flag = true;
+				if (registry.getObject(registryName) != newBlock)
+				{
+					// Something went wrong
+					flag = false;
+				}
+				
+				now = System.currentTimeMillis() - now;
+				CSLog.info(flag ? "Replace Block : %s (%s) with %s, took %d ms" : "Replace Block : %s (%s) with %s FAILED, took %d ms", new Object[] { field.getName(), block1.getClass().getSimpleName(), newBlock.getClass().getSimpleName(), now });
+				
+				return true;
 			}
 		}
 		catch (Exception e)

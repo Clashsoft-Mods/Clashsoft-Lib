@@ -13,8 +13,8 @@ public class ItemCustomArmor extends ItemArmor
 	public ItemCustomArmor(ArmorMaterial material, int renderIndex, int armorType)
 	{
 		super(material, renderIndex, armorType & 3);
-		CSReflection.setValue(ItemArmor.class, this, armorType, Constants.ITEMARMOR_ARMORTYPE_FIELD);
-		CSReflection.setValue(ItemArmor.class, this, this.getDamageReductionAmount(material), Constants.ITEMARMOR_DAMAGEREDUCTION_FIELD);
+		CSReflection.setValue(Constants.FIELD_ITEMARMOR_ARMORTYPE, this, armorType);
+		CSReflection.setValue(Constants.FIELD_ITEMARMOR_DAMAGEREDUCTION, this, this.getDamageReductionAmount(material));
 	}
 	
 	@Override

@@ -321,48 +321,58 @@ public class CSItems
 		{
 			for (Field field : Items.class.getDeclaredFields())
 			{
-				if (Item.class.isAssignableFrom(field.getType()))
+				if (!Item.class.isAssignableFrom(field.getType()))
 				{
-					Item item1 = (Item) field.get(null);
-					if (item1 == item)
-					{
-						FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
-						String registryName = registry.getNameForObject(item1);
-						int id = Item.getIdFromItem(item1);
-						
-						// Set field
-						CSReflection.setModifier(field, Modifier.FINAL, false);
-						field.set(null, newItem);
-						
-						// Replace registry entry
-						CSReflection.invoke(FMLControlledNamespacedRegistry.class, registry, new Object[] { id, registryName, newItem }, "addObjectRaw");
-						
-						// Replace stat list entries
-						StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
-						if (stat != null)
-						{
-							CSReflection.setValue(StatCrafting.class, stat, newItem, Constants.STATCRAFTING_ITEM_FIELD);
-						}
-						stat = (StatCrafting) StatList.objectCraftStats[id];
-						if (stat != null)
-						{
-							CSReflection.setValue(StatCrafting.class, stat, newItem, Constants.STATCRAFTING_ITEM_FIELD);
-						}
-						stat = (StatCrafting) StatList.objectUseStats[id];
-						if (stat != null)
-						{
-							CSReflection.setValue(StatCrafting.class, stat, newItem, Constants.STATCRAFTING_ITEM_FIELD);
-						}
-						
-						// Replace Crafting Recipes
-						replacements.put(item, newItem);
-						
-						now = System.currentTimeMillis() - now;
-						CSLog.info("Replace Item : %s (%s) with %s, took %d ms", new Object[] { field.getName(), item1.getClass().getSimpleName(), newItem.getClass().getSimpleName(), now });
-						
-						return true;
-					}
+					continue;
 				}
+				
+				Item item1 = (Item) field.get(null);
+				if (item1 != item)
+				{
+					continue;
+				}
+				
+				FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
+				String registryName = registry.getNameForObject(item);
+				int id = Item.getIdFromItem(item);
+				
+				// Set field
+				CSReflection.setModifier(field, Modifier.FINAL, false);
+				field.set(null, newItem);
+				
+				// Replace registry entry
+				CSReflection.invoke(Constants.METHOD_REGISTRY_ADDOBJECTRAW, registry, new Object[] { id, registryName, newItem });
+				
+				// Replace stat list entries
+				StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
+				if (stat != null)
+				{
+					CSReflection.setValue(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
+				}
+				stat = (StatCrafting) StatList.objectCraftStats[id];
+				if (stat != null)
+				{
+					CSReflection.setValue(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
+				}
+				stat = (StatCrafting) StatList.objectUseStats[id];
+				if (stat != null)
+				{
+					CSReflection.setValue(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
+				}
+				
+				// Replace Crafting Recipes
+				replacements.put(item, newItem);
+				
+				boolean flag = true;
+				if (registry.getObject(registryName) != newItem)
+				{
+					flag = false;
+				}
+				
+				now = System.currentTimeMillis() - now;
+				CSLog.info(flag ? "Replace Item : %s (%s) with %s, took %d ms" : "Replace Item : %s (%s) with %s FAILED, took %d ms", new Object[] { field.getName(), item1.getClass().getSimpleName(), newItem.getClass().getSimpleName(), now });
+				
+				return true;
 			}
 		}
 		catch (Exception e)
@@ -374,7 +384,7 @@ public class CSItems
 	
 	public static void setItem(ItemStack stack, Item item)
 	{
-		CSReflection.setValue(ItemStack.class, stack, item, Constants.ITEMSTACK_ITEM_FIELD);
+		CSReflection.setValue(Constants.FIELD_ITEMSTACK_ITEM, stack, item);
 	}
 	
 	private static boolean applyReplacement(ItemStack stack)
