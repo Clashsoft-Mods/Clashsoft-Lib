@@ -20,11 +20,13 @@ import clashsoft.cslib.logging.CSLog;
 public class CSReflection
 {
 	private static Field	modifiersField;
+	
 	static
 	{
 		try
 		{
 			modifiersField = Field.class.getDeclaredField("modifiers");
+			// Makes the 'modifiers' field of the class Field accessible
 			modifiersField.setAccessible(true);
 		}
 		catch (ReflectiveOperationException ignored)
@@ -102,17 +104,68 @@ public class CSReflection
 	
 	// Methods
 	
-	public static Method getMethod(Class clazz, String... methodNames)
+	public static Method getMethod(Class clazz, Object object)
 	{
-		Method[] methods = clazz.getDeclaredMethods();
+		if (object == null)
+		{
+			throw new NullPointerException("Cannot get null method!");
+		}
+		Class c = object.getClass();
+		if (c == Method.class)
+		{
+			return (Method) object;
+		}
+		else if (c == int.class)
+		{
+			return getMethod(clazz, (int) object);
+		}
+		else if (c == Object[].class)
+		{
+			Object[] aobject = (Object[]) object;
+			if (aobject.length == 2)
+			{
+				if (aobject[0] instanceof String)
+				{
+					return getMethod(clazz, (String) aobject[0], (Class[]) aobject[1]);
+				}
+				else if (aobject[0] instanceof String[])
+				{
+					return getMethod(clazz, (String[]) aobject[0], (Class[]) aobject[1]);
+				}
+			}
+		}
+		CSLog.error("Unable to get method specified with " + object);
+		return null;
+	}
+	
+	public static Method getMethod(Class clazz, String methodName, Class[] parameterTypes)
+	{
+		try
+		{
+			Method m = clazz.getDeclaredMethod(methodName, parameterTypes);
+			if (m != null)
+			{
+				return m;
+			}
+		}
+		catch (NoSuchMethodException ex)
+		{
+		}
+		catch (SecurityException ex)
+		{
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Method getMethod(Class clazz, String[] methodNames, Class[] parameterTypes)
+	{
 		for (String methodName : methodNames)
 		{
-			for (Method method : methods)
+			Method m = getMethod(clazz, methodName, parameterTypes);
+			if (m != null)
 			{
-				if (methodName.equals(method.getName()))
-				{
-					return method;
-				}
+				return m;
 			}
 		}
 		CSLog.error(new NoSuchMethodException("Method not found! (Class: " + clazz + "; Expected field names: " + Arrays.toString(methodNames)));
@@ -126,30 +179,25 @@ public class CSReflection
 	
 	// Method invocation
 	
-	public static <T, R> R invokeStatic(Class<? super T> clazz, Object[] args, String... methodNames)
+	// Reference
+	
+	public static <T, R> R invokeStatic(Class<? super T> clazz, Object[] args, Object method)
 	{
-		return invoke(clazz, null, args, methodNames);
+		return invoke(clazz, null, args, method);
 	}
 	
-	public static <T, R> R invoke(T instance, Object[] args, String... methodNames)
+	public static <T, R> R invoke(T instance, Object[] args, Object method)
 	{
-		return invoke((Class<T>) instance.getClass(), instance, args, methodNames);
+		return invoke((Class<T>) instance.getClass(), instance, args, method);
 	}
 	
-	public static <T, R> R invoke(Class<? super T> clazz, T instance, Object[] args, String... methodNames)
+	public static <T, R> R invoke(Class<? super T> clazz, T instance, Object[] args, Object method)
 	{
-		try
-		{
-			Method m = getMethod(clazz, methodNames);
-			m.setAccessible(true);
-			return (R) m.invoke(instance, args);
-		}
-		catch (Exception ex)
-		{
-			CSLog.error(ex);
-			return null;
-		}
+		Method m = getMethod(clazz, method);
+		return invoke(m, instance, args);
 	}
+	
+	// Method ID
 	
 	public static <T, R> R invokeStatic(Class<? super T> clazz, Object[] args, int methodID)
 	{
@@ -163,11 +211,18 @@ public class CSReflection
 	
 	public static <T, R> R invoke(Class<? super T> clazz, T instance, Object[] args, int methodID)
 	{
+		Method m = getMethod(clazz, methodID);
+		return invoke(m, instance, args);
+	}
+	
+	// Raw Invokation
+	
+	public static <T, R> R invoke(Method method, Object instance, Object[] args)
+	{
 		try
 		{
-			Method m = getMethod(clazz, methodID);
-			m.setAccessible(true);
-			return (R) m.invoke(instance, args);
+			method.setAccessible(true);
+			return (R) method.invoke(instance, args);
 		}
 		catch (Exception ex)
 		{
@@ -207,7 +262,7 @@ public class CSReflection
 		return (T[]) list.toArray();
 	}
 	
-	public static Field getField(Class clazz, String... fieldNames) throws NoSuchFieldException
+	public static Field getField(Class clazz, String... fieldNames)
 	{
 		Field[] fields = clazz.getDeclaredFields();
 		for (String fieldName : fieldNames)
@@ -224,7 +279,7 @@ public class CSReflection
 		return null;
 	}
 	
-	public static int getFieldID(Class clazz, String... fieldNames) throws NoSuchFieldException
+	public static int getFieldID(Class clazz, String... fieldNames)
 	{
 		Field[] fields = clazz.getDeclaredFields();
 		for (String fieldName : fieldNames)
@@ -254,6 +309,8 @@ public class CSReflection
 	
 	// Field getters
 	
+	// Reference
+	
 	public static <T, R> R getStaticValue(Class<? super T> clazz, String... fieldNames)
 	{
 		return getValue(clazz, null, fieldNames);
@@ -279,6 +336,8 @@ public class CSReflection
 		}
 	}
 	
+	// Field ID
+	
 	public static <T, R> R getStaticValue(Class<? super T> clazz, int fieldID)
 	{
 		return getValue(clazz, null, fieldID);
@@ -291,11 +350,18 @@ public class CSReflection
 	
 	public static <T, R> R getValue(Class<? super T> clazz, T instance, int fieldID)
 	{
+		Field f = getField(clazz, fieldID);
+		return getValue(f, instance);
+	}
+	
+	// Raw Getter
+	
+	public static <T, R> R getValue(Field field, Object instance)
+	{
 		try
 		{
-			Field f = getField(clazz, fieldID);
-			f.setAccessible(true);
-			return (R) f.get(instance);
+			field.setAccessible(true);
+			return (R) field.get(instance);
 		}
 		catch (Exception ex)
 		{
@@ -305,6 +371,8 @@ public class CSReflection
 	}
 	
 	// Field setters
+	
+	// Reference
 	
 	public static <T, V> void setStaticValue(Class<? super T> clazz, V value, String... fieldNames)
 	{
@@ -318,17 +386,11 @@ public class CSReflection
 	
 	public static <T, V> void setValue(Class<? super T> clazz, T instance, V value, String... fieldNames)
 	{
-		try
-		{
-			Field f = getField(clazz, fieldNames);
-			f.setAccessible(true);
-			f.set(instance, value);
-		}
-		catch (Exception ex)
-		{
-			CSLog.error(ex);
-		}
+		Field f = getField(clazz, fieldNames);
+		setValue(f, instance, value);
 	}
+	
+	// Field ID
 	
 	public static <T, V> void setStaticValue(Class<? super T> clazz, V value, int fieldID)
 	{
@@ -342,11 +404,18 @@ public class CSReflection
 	
 	public static <T, V> void setValue(Class<? super T> clazz, T instance, V value, int fieldID)
 	{
+		Field f = getField(clazz, fieldID);
+		setValue(f, instance, value);
+	}
+	
+	// Raw Setter
+	
+	public static <T, V> void setValue(Field field, T instance, V value)
+	{
 		try
 		{
-			Field f = getField(clazz, fieldID);
-			f.setAccessible(true);
-			f.set(instance, value);
+			field.setAccessible(true);
+			field.set(instance, value);
 		}
 		catch (Exception ex)
 		{
@@ -381,18 +450,6 @@ public class CSReflection
 		}
 	}
 	
-	/**
-	 * Creates a new instance of T using the parameters.
-	 * 
-	 * @param <T>
-	 *            the generic type
-	 * @param c
-	 *            the c
-	 * @param parameters
-	 *            the parameters
-	 * @return the t
-	 * @see ImmutableObjectFactory#createObject(Class, Object...)
-	 */
 	public static <T> T createInstance(Class<T> c, Object... parameters)
 	{
 		Class[] parameterTypes = new Class[parameters.length];
@@ -404,6 +461,11 @@ public class CSReflection
 			}
 		}
 		
+		return createInstance(c, parameterTypes, parameters);
+	}
+	
+	public static <T> T createInstance(Class<T> c, Class[] parameterTypes, Object... parameters)
+	{
 		try
 		{
 			Constructor<T> constructor = c.getConstructor(parameterTypes);
