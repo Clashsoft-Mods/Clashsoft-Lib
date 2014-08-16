@@ -24,6 +24,11 @@ public abstract class CustomWorldGen extends WorldGenerator
 		world.setBlock(x, y, z, this.genBlock, this.genMetadata, this.flags);
 	}
 	
+	public void setBlock(World world, int x, int y, int z, Block block, int metadata)
+	{
+		world.setBlock(x, y, z, block, metadata, this.flags);
+	}
+	
 	public final void drawLineX(World world, int x, int y, int z, int length, Random random)
 	{
 		for (int x1 = x; x1 < x + length; x1++)
@@ -81,17 +86,6 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
-	public final void drawHollowBox(World world, int x, int y, int z, int xSize, int ySize, int zSize, Random random)
-	{
-		this.drawSolidBox(world, x + 1, y + 1, z + 1, xSize - 1, ySize - 1, zSize - 1, Blocks.air, 0);
-		this.drawPlaneY(world, x, y, z, xSize, zSize, random);
-		this.drawPlaneY(world, x, y + ySize - 1, z, xSize, zSize, random);
-		this.drawPlaneX(world, x, y, z, ySize, zSize, random);
-		this.drawPlaneX(world, x + xSize - 1, y, z, ySize, zSize, random);
-		this.drawPlaneZ(world, x, y, z, xSize, ySize, random);
-		this.drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, random);
-	}
-	
 	public final void drawSquareTube(World world, int x, int y, int z, int xSize, int ySize, int zSize, int direction, Random random)
 	{
 		this.drawSolidBox(world, x, y, z, xSize, ySize, zSize, random);
@@ -112,6 +106,17 @@ public abstract class CustomWorldGen extends WorldGenerator
 		}
 	}
 	
+	public final void drawHollowBox(World world, int x, int y, int z, int xSize, int ySize, int zSize, Random random)
+	{
+		this.drawSolidBox(world, x + 1, y + 1, z + 1, xSize - 1, ySize - 1, zSize - 1, Blocks.air, 0);
+		this.drawPlaneY(world, x, y, z, xSize, zSize, random);
+		this.drawPlaneY(world, x, y + ySize - 1, z, xSize, zSize, random);
+		this.drawPlaneX(world, x, y, z, ySize, zSize, random);
+		this.drawPlaneX(world, x + xSize - 1, y, z, ySize, zSize, random);
+		this.drawPlaneZ(world, x, y, z, xSize, ySize, random);
+		this.drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, random);
+	}
+	
 	public final void drawSolidBox(World world, int x, int y, int z, int sizeX, int sizeY, int sizeZ, Random random)
 	{
 		for (int x1 = x; x1 < x + sizeX; x1++)
@@ -121,6 +126,42 @@ public abstract class CustomWorldGen extends WorldGenerator
 				for (int z1 = z; z1 < z + sizeZ; z1++)
 				{
 					this.setBlock(world, x1, y1, z1, random);
+				}
+			}
+		}
+	}
+	
+	public final void drawHollowSphere(World world, int x, int y, int z, int radius, Random random)
+	{
+		int sqradius = radius * radius;
+		for (int i = -radius; i <= radius; i++)
+		{
+			for (int j = -radius; j <= radius; j++)
+			{
+				for (int k = -radius; k <= radius; k++)
+				{
+					if (i * i + j * j + k * k == sqradius)
+					{
+						this.setBlock(world, x + i, y + j, z + k, random);
+					}
+				}
+			}
+		}
+	}
+	
+	public final void drawSolidSphere(World world, int x, int y, int z, int radius, Random random)
+	{
+		int sqradius = radius * radius;
+		for (int i = -radius; i <= radius; i++)
+		{
+			for (int j = -radius; j <= radius; j++)
+			{
+				for (int k = -radius; k <= radius; k++)
+				{
+					if (i * i + j * j + k * k <= sqradius)
+					{
+						this.setBlock(world, x + i, y + j, z + k, random);
+					}
 				}
 			}
 		}
