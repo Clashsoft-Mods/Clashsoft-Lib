@@ -197,7 +197,7 @@ public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 	@Override
 	public void updateScreen()
 	{
-		if (this.updates != null)
+		if (this.updates != null || this.updates.isEmpty())
 		{
 			this.update = this.updates.get(this.slots.selectedIndex);
 			this.buttonInstall.enabled = this.update.canInstall();
