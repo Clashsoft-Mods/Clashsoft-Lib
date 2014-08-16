@@ -34,6 +34,17 @@ public class CSReflection
 		}
 	}
 	
+	/**
+	 * Adds the modifiers {@code mod} to the given {@link Field} {@code field}
+	 * if {@code flag} is true, and removed them otherwise.
+	 * 
+	 * @param field
+	 *            the field
+	 * @param mod
+	 *            the modifiers
+	 * @param flag
+	 *            add or remove
+	 */
 	public static void setModifier(Field field, int mod, boolean flag)
 	{
 		try
@@ -58,6 +69,11 @@ public class CSReflection
 	
 	// Caller-sensitive
 	
+	/**
+	 * Returns the caller {@link Class}.
+	 * 
+	 * @return the called class.
+	 */
 	public static Class getCallerClass()
 	{
 		try
@@ -71,11 +87,21 @@ public class CSReflection
 		}
 	}
 	
+	/**
+	 * Returns the name of the caller class.
+	 * 
+	 * @return the name of the caller class.
+	 */
 	public static String getCallerClassName()
 	{
 		return getCaller().getClassName();
 	}
 	
+	/**
+	 * Returns the caller {@link StackTraceElement}.
+	 * 
+	 * @return the caller stack trace element
+	 */
 	public static StackTraceElement getCaller()
 	{
 		StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
@@ -104,6 +130,29 @@ public class CSReflection
 	
 	// Methods
 	
+	/**
+	 * Returns the method of the given {@link Class} {@code class} specified by
+	 * the given {@code object}.
+	 * <ul>
+	 * <li>If {@code object} is a {@link Method} instance, it returns the
+	 * object.
+	 * <li>If {@code object} is an integer, it returns the {@link Method} of the
+	 * given {@link Class} {@code class} with the id {@code object}.
+	 * <li>If {@code object} is an Object[] of length 2, it
+	 * <ul>
+	 * <li>Returns the method with the name {@code object[0]} if
+	 * {@code object[0]} is a String
+	 * <li>Returns the method with the name of any {@code object[0]} if
+	 * {@code object[0]} is a String[]
+	 * </ul>
+	 * </ul>
+	 * 
+	 * @param clazz
+	 *            the clazz
+	 * @param object
+	 *            the object
+	 * @return the method
+	 */
 	public static Method getMethod(Class clazz, Object object)
 	{
 		if (object == null)
@@ -138,6 +187,19 @@ public class CSReflection
 		return null;
 	}
 	
+	/**
+	 * Returns the {@link Method} of the given {@link Class} {@code clazz} with
+	 * the given name {@code methodName} and the given parameter types
+	 * {@code parameterTypes}.
+	 * 
+	 * @param clazz
+	 *            the clazz
+	 * @param methodName
+	 *            the method name
+	 * @param parameterTypes
+	 *            the parameter types
+	 * @return the method
+	 */
 	public static Method getMethod(Class clazz, String methodName, Class[] parameterTypes)
 	{
 		try
@@ -158,6 +220,19 @@ public class CSReflection
 		return null;
 	}
 	
+	/**
+	 * Returns the {@link Method} of the given {@link Class} {@code clazz} with
+	 * a name contained in {@code methodNames} and the given parameter types
+	 * {@code parameterTypes}.
+	 * 
+	 * @param clazz
+	 *            the clazz
+	 * @param methodNames
+	 *            the possible method names
+	 * @param parameterTypes
+	 *            the parameter types
+	 * @return the method
+	 */
 	public static Method getMethod(Class clazz, String[] methodNames, Class[] parameterTypes)
 	{
 		for (String methodName : methodNames)
@@ -172,6 +247,16 @@ public class CSReflection
 		return null;
 	}
 	
+	/**
+	 * Returns the {@link Method} of the given {@link Class} {@code clazz} with
+	 * the given method ID {@code methodID}.
+	 * 
+	 * @param clazz
+	 *            the clazz
+	 * @param methodID
+	 *            the method ID
+	 * @return the method
+	 */
 	public static Method getMethod(Class clazz, int methodID)
 	{
 		return clazz.getDeclaredMethods()[methodID];
@@ -215,8 +300,19 @@ public class CSReflection
 		return invoke(m, instance, args);
 	}
 	
-	// Raw Invokation
-	
+	/**
+	 * Directly invokes the given {@link Method} {@code method} on the given
+	 * {@link Object} {@code instance} with the given arguments {@code args} and
+	 * returns the result.
+	 * 
+	 * @param method
+	 *            the method to invoke
+	 * @param instance
+	 *            the instance
+	 * @param args
+	 *            the arguments
+	 * @return the result
+	 */
 	public static <T, R> R invoke(Method method, Object instance, Object[] args)
 	{
 		try
@@ -262,6 +358,41 @@ public class CSReflection
 		return (T[]) list.toArray();
 	}
 	
+	// Fields
+	
+	/**
+	 * Returns the {@link Field} of the given {@link Class} {@code clazz} with
+	 * the name {@code name}.
+	 * 
+	 * @param clazz
+	 *            the clazz
+	 * @param name
+	 *            the field name
+	 * @return the field
+	 */
+	public static Field getField(Class clazz, String name)
+	{
+		Field[] fields = clazz.getDeclaredFields();
+		for (Field field : fields)
+		{
+			if (name.equals(field.getName()))
+			{
+				return field;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns the {@link Field} of the given {@link Class} {@code clazz} with a
+	 * name contained in {@code fieldNames}.
+	 * 
+	 * @param clazz
+	 *            the clazz
+	 * @param fieldNames
+	 *            the possible field names
+	 * @return the field
+	 */
 	public static Field getField(Class clazz, String... fieldNames)
 	{
 		Field[] fields = clazz.getDeclaredFields();
@@ -279,29 +410,16 @@ public class CSReflection
 		return null;
 	}
 	
-	public static int getFieldID(Class clazz, String... fieldNames)
-	{
-		Field[] fields = clazz.getDeclaredFields();
-		for (String fieldName : fieldNames)
-		{
-			for (int i = 0; i < fields.length; i++)
-			{
-				Field field = fields[i];
-				if (fieldName.equals(field.getName()))
-				{
-					return i;
-				}
-			}
-		}
-		CSLog.error(new NoSuchFieldException("Field not found! (Class: " + clazz + "; Expected field names: " + Arrays.toString(fieldNames)));
-		return -1;
-	}
-	
-	public static String getFieldName(Class clazz, int fieldID)
-	{
-		return getField(clazz, fieldID).getName();
-	}
-	
+	/**
+	 * Returns the {@link Field} of the given {@link Class} {@code clazz} with
+	 * the field ID {@code fieldID}
+	 * 
+	 * @param clazz
+	 *            the clazz
+	 * @param fieldID
+	 *            the field ID
+	 * @return the field
+	 */
 	public static Field getField(Class clazz, int fieldID)
 	{
 		return clazz.getDeclaredFields()[fieldID];
@@ -323,17 +441,8 @@ public class CSReflection
 	
 	public static <T, R> R getValue(Class<? super T> clazz, T instance, String... fieldNames)
 	{
-		try
-		{
-			Field f = getField(clazz, fieldNames);
-			f.setAccessible(true);
-			return (R) f.get(instance);
-		}
-		catch (Exception ex)
-		{
-			CSLog.error(ex);
-			return null;
-		}
+		Field f = getField(clazz, fieldNames);
+		return getValue(f, instance);
 	}
 	
 	// Field ID
@@ -354,8 +463,16 @@ public class CSReflection
 		return getValue(f, instance);
 	}
 	
-	// Raw Getter
-	
+	/**
+	 * Directly gets the value of the given {@link Field} on the given
+	 * {@link Object} {@code instance}.
+	 * 
+	 * @param field
+	 *            the field to get
+	 * @param instance
+	 *            the instance
+	 * @return the value
+	 */
 	public static <T, R> R getValue(Field field, Object instance)
 	{
 		try
@@ -408,8 +525,18 @@ public class CSReflection
 		setValue(f, instance, value);
 	}
 	
-	// Raw Setter
-	
+	/**
+	 * Directly sets the value of the given {@link Field} on the given
+	 * {@link Object} {@code instance} to the given {@link Object} {@code value}
+	 * .
+	 * 
+	 * @param field
+	 *            the field to set
+	 * @param instance
+	 *            the instance
+	 * @param value
+	 *            the new value
+	 */
 	public static <T, V> void setValue(Field field, T instance, V value)
 	{
 		try
