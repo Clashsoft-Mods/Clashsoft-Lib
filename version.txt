@@ -1,6 +1,25 @@
-version=1.7.10-2.4.2
-url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.4.2/ClashsoftLib-1.7.10-2.4.2.jar
+version=1.7.10-2.5.0
+url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.5.0/ClashsoftLib-1.7.10-2.5.0.jar
 
-* Improved Update installation.
-* Improved Update Version comparator.
-* Improved Mod Updates GUI.
+> Update to Forge 1.7.10-10.13.0.1207
++ Added Custom Bedrock height to CustomBiomes
++ Added a Cape API
++ Added CustomWorldGen
++ Added more ModMetadata options (description, credits, ...)
++ Introduced the IconSupplier system
+* Update Reflection API
+* Update replaceItem and replaceBlock
+* Improved Update Chat output
+* Improved CustomTreeGen
+* Improved Mod loading
+* Improved CustomBlock unlocalized name
+* Fixed ItemCustomArmor not working correctly
+* Fixed CustomChunkProvider not working correctly
+* Fixed CustomBiomes not correctly generating
+* Fixed Block opacity issues
+* Fixed CustomGrass growing issues
+* Fixed CustomPortals not working correctly
+* Fixed WorldGenRanged replacing blocks
+* Fixed CustomSapling placing issues
+* Fixed config key and category being swapped
+* Documentation
