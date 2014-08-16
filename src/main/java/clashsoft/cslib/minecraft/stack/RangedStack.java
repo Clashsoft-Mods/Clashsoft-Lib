@@ -9,8 +9,8 @@ import net.minecraft.item.Item;
 
 public class RangedStack extends RandomStack
 {
-	public int minSize;
-	public int maxSize;
+	public int	minSize;
+	public int	maxSize;
 	
 	public RangedStack(Item item)
 	{

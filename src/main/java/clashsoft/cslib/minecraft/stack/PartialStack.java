@@ -9,9 +9,9 @@ import net.minecraft.item.Item;
 
 public class PartialStack extends RandomStack
 {
-	public Item item;
-	public int metadata;
-	public float stackSize = 1F;
+	public Item		item;
+	public int		metadata;
+	public float	stackSize	= 1F;
 	
 	public PartialStack(Item item)
 	{

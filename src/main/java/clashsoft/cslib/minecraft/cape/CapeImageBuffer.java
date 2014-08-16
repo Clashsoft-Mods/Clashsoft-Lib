@@ -27,9 +27,13 @@ public class CapeImageBuffer implements IImageBuffer
 			this.imageWidth = bufferedImage.getWidth((ImageObserver) null);
 			this.imageHeight = bufferedImage.getHeight((ImageObserver) null);
 			if (this.imageWidth < 64)
+			{
 				this.imageWidth = 64;
+			}
 			if (this.imageHeight < 32)
+			{
 				this.imageHeight = 32;
+			}
 			
 			BufferedImage capeImage = new BufferedImage(this.imageWidth, this.imageHeight, 2);
 			
@@ -40,7 +44,7 @@ public class CapeImageBuffer implements IImageBuffer
 			return capeImage;
 		}
 	}
-
+	
 	@Override
 	public void func_152634_a()
 	{

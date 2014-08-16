@@ -131,10 +131,10 @@ public abstract class BlockCustomPortal extends BlockImpl
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public int getRenderBlockPass()
-    {
-        return 1;
-    }
+	public int getRenderBlockPass()
+	{
+		return 1;
+	}
 	
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
@@ -293,7 +293,7 @@ public abstract class BlockCustomPortal extends BlockImpl
 				}
 			}
 			
-			return isFrameBlock(x + xoff * width, y, z + zoff * width) ? width : 0;
+			return this.isFrameBlock(x + xoff * width, y, z + zoff * width) ? width : 0;
 		}
 		
 		protected int calculateHeight()
@@ -325,14 +325,14 @@ public abstract class BlockCustomPortal extends BlockImpl
 					
 					if (i == 0)
 					{
-						if (!isFrameBlock(x + Direction.offsetX[var0], y, z + Direction.offsetZ[var0]))
+						if (!this.isFrameBlock(x + Direction.offsetX[var0], y, z + Direction.offsetZ[var0]))
 						{
 							break outer;
 						}
 					}
 					else if (i == this.width - 1)
 					{
-						if (!isFrameBlock(x + Direction.offsetX[var1], y, z + Direction.offsetZ[var1]))
+						if (!this.isFrameBlock(x + Direction.offsetX[var1], y, z + Direction.offsetZ[var1]))
 						{
 							break outer;
 						}
@@ -346,7 +346,7 @@ public abstract class BlockCustomPortal extends BlockImpl
 				int y = this.chunkPos.posY + this.height;
 				int z = this.chunkPos.posZ + i * Direction.offsetZ[var1];
 				
-				if (!isFrameBlock(x, y, z))
+				if (!this.isFrameBlock(x, y, z))
 				{
 					this.height = 0;
 					break;

@@ -39,7 +39,7 @@ public class BlockCustomLeaves extends BlockLeaves implements ICustomBlock
 		this.setTickRandomly(true);
 		this.setStepSound(Block.soundTypeGrass);
 		this.setHardness(0.2F);
-        this.setLightOpacity(1);
+		this.setLightOpacity(1);
 		
 		this.names = names;
 		this.iconNames = iconNames;

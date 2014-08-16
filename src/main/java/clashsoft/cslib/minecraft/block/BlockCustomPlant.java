@@ -27,7 +27,7 @@ import net.minecraftforge.common.IPlantable;
 public class BlockCustomPlant extends CustomBlock implements IPlantable
 {
 	@SideOnly(Side.CLIENT)
-	public IIconSupplier iconSupplier;
+	public IIconSupplier	iconSupplier;
 	
 	public BlockCustomPlant(String[] names, Object icons)
 	{
@@ -67,7 +67,7 @@ public class BlockCustomPlant extends CustomBlock implements IPlantable
 	{
 		return this.iconSupplier.getIcon(metadata, side);
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister)

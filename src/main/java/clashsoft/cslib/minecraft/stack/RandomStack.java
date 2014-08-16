@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 
 public abstract class RandomStack
 {
-	public Item item;
-	public int metadata;
+	public Item	item;
+	public int	metadata;
 	
 	public RandomStack(Item item, int metadata)
 	{

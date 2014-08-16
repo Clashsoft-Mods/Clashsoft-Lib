@@ -133,7 +133,7 @@ public class CSString
 		{
 			char c = string.charAt(i);
 			temp.append(c);
-			if (isSpace(c) || (!spacesOnly && !isLetter(c)))
+			if (isSpace(c) || !spacesOnly && !isLetter(c))
 			{
 				words.add(temp.toString());
 				temp.delete(0, temp.length());
@@ -654,7 +654,7 @@ public class CSString
 	
 	public static boolean isLetter(char c)
 	{
-		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+		return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';
 	}
 	
 	public static boolean isIdentifier(char c)

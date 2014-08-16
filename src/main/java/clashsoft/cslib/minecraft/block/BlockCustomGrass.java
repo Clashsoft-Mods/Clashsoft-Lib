@@ -16,10 +16,10 @@ import net.minecraft.world.World;
 
 public class BlockCustomGrass extends CustomBlock
 {
-	public Block[]	dirtBlocks;
-	public int[]	dirtBlockMetadatas;
+	public Block[]			dirtBlocks;
+	public int[]			dirtBlockMetadatas;
 	
-	public IIconSupplier iconSupplier;
+	public IIconSupplier	iconSupplier;
 	
 	public BlockCustomGrass(String name, String icon)
 	{

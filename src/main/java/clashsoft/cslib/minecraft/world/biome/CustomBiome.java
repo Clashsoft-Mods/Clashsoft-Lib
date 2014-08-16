@@ -10,10 +10,10 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 {
-	public byte topMetadata;
-	public byte fillerMetadata;
-	public Block stoneBlock = Blocks.stone;
-	public byte stoneMetadata;
+	public byte		topMetadata;
+	public byte		fillerMetadata;
+	public Block	stoneBlock	= Blocks.stone;
+	public byte		stoneMetadata;
 	
 	public CustomBiome(int id)
 	{
@@ -92,10 +92,10 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 			int index = index1 + y;
 			
 			if (genBedrock && y <= random.nextInt(bedrock))
-            {
-                blocks[index] = Blocks.bedrock;
-                continue;
-            }
+			{
+				blocks[index] = Blocks.bedrock;
+				continue;
+			}
 			
 			Block block = blocks[index];
 			

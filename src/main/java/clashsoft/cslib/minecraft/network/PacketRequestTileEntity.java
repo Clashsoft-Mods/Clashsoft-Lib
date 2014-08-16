@@ -9,10 +9,10 @@ import net.minecraft.world.World;
 
 public class PacketRequestTileEntity extends CSPacket
 {
-	public World			world;
-	public int				x;
-	public int				y;
-	public int				z;
+	public World	world;
+	public int		x;
+	public int		y;
+	public int		z;
 	
 	public PacketRequestTileEntity()
 	{

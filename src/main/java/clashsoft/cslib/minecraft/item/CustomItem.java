@@ -29,7 +29,7 @@ public class CustomItem extends Item
 	public static final String	FORCEHIDE	= "%&";
 	
 	public String[]				names;
-	public IIconSupplier iconSupplier;
+	public IIconSupplier		iconSupplier;
 	
 	public CreativeTabs[]		tabs;
 	
@@ -51,7 +51,7 @@ public class CustomItem extends Item
 		this.subItems = subItems;
 		this.shownSubItems = shownSubItems;
 		
-		String[]  iconNames = new String[subItems.size()];
+		String[] iconNames = new String[subItems.size()];
 		for (int i = 0; i < subItems.size(); i++)
 		{
 			ISubItem item = subItems.get(i);

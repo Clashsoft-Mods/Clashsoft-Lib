@@ -7,13 +7,13 @@ import net.minecraft.item.ItemStack;
 
 public class FurnaceRecipeLoader extends CustomRecipeLoader
 {
-	public static FurnaceRecipeLoader instance = new FurnaceRecipeLoader();
+	public static FurnaceRecipeLoader	instance	= new FurnaceRecipeLoader();
 	
 	public FurnaceRecipeLoader()
 	{
 		super("furnace");
 	}
-
+	
 	@Override
 	public void addRecipe(Item input, int inputMeta, Item output, int outputMeta, int amount, float exp)
 	{

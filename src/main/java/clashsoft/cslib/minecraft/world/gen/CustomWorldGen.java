@@ -36,7 +36,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 	{
 		for (int y1 = y; y1 < y + length; y1++)
 		{
-			setBlock(world, x, y1, z, random);
+			this.setBlock(world, x, y1, z, random);
 		}
 	}
 	
@@ -44,7 +44,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 	{
 		for (int z1 = z; z1 < z + length; z1++)
 		{
-			setBlock(world, x, y, z1, random);
+			this.setBlock(world, x, y, z1, random);
 		}
 	}
 	
@@ -54,7 +54,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		{
 			for (int z1 = z; z1 < z + zSize; z1++)
 			{
-				setBlock(world, x, y1, z1, random);
+				this.setBlock(world, x, y1, z1, random);
 			}
 		}
 	}
@@ -65,7 +65,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 		{
 			for (int z1 = z; z1 < z + zSize; z1++)
 			{
-				setBlock(world, x1, y, z1, random);
+				this.setBlock(world, x1, y, z1, random);
 			}
 		}
 	}
@@ -76,39 +76,39 @@ public abstract class CustomWorldGen extends WorldGenerator
 		{
 			for (int y1 = y; y1 < y + ySize; y1++)
 			{
-				setBlock(world, x1, y1, z, random);
+				this.setBlock(world, x1, y1, z, random);
 			}
 		}
 	}
 	
 	public final void drawHollowBox(World world, int x, int y, int z, int xSize, int ySize, int zSize, Random random)
 	{
-		drawSolidBox(world, x + 1, y + 1, z + 1, xSize - 1, ySize - 1, zSize - 1, Blocks.air, 0);
-		drawPlaneY(world, x, y, z, xSize, zSize, random);
-		drawPlaneY(world, x, y + ySize - 1, z, xSize, zSize, random);
-		drawPlaneX(world, x, y, z, ySize, zSize, random);
-		drawPlaneX(world, x + xSize - 1, y, z, ySize, zSize, random);
-		drawPlaneZ(world, x, y, z, xSize, ySize, random);
-		drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, random);
+		this.drawSolidBox(world, x + 1, y + 1, z + 1, xSize - 1, ySize - 1, zSize - 1, Blocks.air, 0);
+		this.drawPlaneY(world, x, y, z, xSize, zSize, random);
+		this.drawPlaneY(world, x, y + ySize - 1, z, xSize, zSize, random);
+		this.drawPlaneX(world, x, y, z, ySize, zSize, random);
+		this.drawPlaneX(world, x + xSize - 1, y, z, ySize, zSize, random);
+		this.drawPlaneZ(world, x, y, z, xSize, ySize, random);
+		this.drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, random);
 	}
 	
 	public final void drawSquareTube(World world, int x, int y, int z, int xSize, int ySize, int zSize, int direction, Random random)
 	{
-		drawSolidBox(world, x, y, z, xSize, ySize, zSize, random);
+		this.drawSolidBox(world, x, y, z, xSize, ySize, zSize, random);
 		if (direction == 0 || direction == 2)
 		{
-			drawPlaneY(world, x, y, z, xSize, zSize, random);
-			drawPlaneY(world, x, y + ySize - 1, z, xSize, zSize, random);
+			this.drawPlaneY(world, x, y, z, xSize, zSize, random);
+			this.drawPlaneY(world, x, y + ySize - 1, z, xSize, zSize, random);
 		}
 		if (direction == 1 || direction == 2)
 		{
-			drawPlaneX(world, x, y, z, ySize, zSize, random);
-			drawPlaneX(world, x + xSize - 1, y, z, ySize, zSize, random);
+			this.drawPlaneX(world, x, y, z, ySize, zSize, random);
+			this.drawPlaneX(world, x + xSize - 1, y, z, ySize, zSize, random);
 		}
 		if (direction == 0 || direction == 1)
 		{
-			drawPlaneZ(world, x, y, z, xSize, ySize, random);
-			drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, random);
+			this.drawPlaneZ(world, x, y, z, xSize, ySize, random);
+			this.drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, random);
 		}
 	}
 	
@@ -120,7 +120,7 @@ public abstract class CustomWorldGen extends WorldGenerator
 			{
 				for (int z1 = z; z1 < z + sizeZ; z1++)
 				{
-					setBlock(world, x1, y1, z1, random);
+					this.setBlock(world, x1, y1, z1, random);
 				}
 			}
 		}
@@ -185,33 +185,33 @@ public abstract class CustomWorldGen extends WorldGenerator
 	
 	public final void drawSquareTube(World world, int x, int y, int z, int xSize, int ySize, int zSize, int direction, Block block, int metadata)
 	{
-		drawSolidBox(world, x, y, z, xSize, ySize, zSize, block, metadata);
+		this.drawSolidBox(world, x, y, z, xSize, ySize, zSize, block, metadata);
 		if (direction == 0 || direction == 2)
 		{
-			drawPlaneY(world, x, y, z, xSize, zSize, block, metadata);
-			drawPlaneY(world, x, y + ySize - 1, z, xSize, zSize, block, metadata);
+			this.drawPlaneY(world, x, y, z, xSize, zSize, block, metadata);
+			this.drawPlaneY(world, x, y + ySize - 1, z, xSize, zSize, block, metadata);
 		}
 		if (direction == 1 || direction == 2)
 		{
-			drawPlaneX(world, x, y, z, ySize, zSize, block, metadata);
-			drawPlaneX(world, x + xSize - 1, y, z, ySize, zSize, block, metadata);
+			this.drawPlaneX(world, x, y, z, ySize, zSize, block, metadata);
+			this.drawPlaneX(world, x + xSize - 1, y, z, ySize, zSize, block, metadata);
 		}
 		if (direction == 0 || direction == 1)
 		{
-			drawPlaneZ(world, x, y, z, xSize, ySize, block, metadata);
-			drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, block, metadata);
+			this.drawPlaneZ(world, x, y, z, xSize, ySize, block, metadata);
+			this.drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, block, metadata);
 		}
 	}
 	
 	public final void drawHollowBox(World world, int x, int y, int z, int xSize, int ySize, int zSize, Block block, int metadata)
 	{
-		drawSolidBox(world, x + 1, y + 1, z + 1, xSize - 1, ySize - 1, zSize - 1, Blocks.air, 0);
-		drawPlaneY(world, x, y, z, xSize, zSize, block, metadata);
-		drawPlaneY(world, x, y + ySize - 1, z, xSize, zSize, block, metadata);
-		drawPlaneX(world, x, y, z, ySize, zSize, block, metadata);
-		drawPlaneX(world, x + xSize - 1, y, z, ySize, zSize, block, metadata);
-		drawPlaneZ(world, x, y, z, xSize, ySize, block, metadata);
-		drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, block, metadata);
+		this.drawSolidBox(world, x + 1, y + 1, z + 1, xSize - 1, ySize - 1, zSize - 1, Blocks.air, 0);
+		this.drawPlaneY(world, x, y, z, xSize, zSize, block, metadata);
+		this.drawPlaneY(world, x, y + ySize - 1, z, xSize, zSize, block, metadata);
+		this.drawPlaneX(world, x, y, z, ySize, zSize, block, metadata);
+		this.drawPlaneX(world, x + xSize - 1, y, z, ySize, zSize, block, metadata);
+		this.drawPlaneZ(world, x, y, z, xSize, ySize, block, metadata);
+		this.drawPlaneZ(world, x, y, z + zSize - 1, xSize, ySize, block, metadata);
 	}
 	
 	public final void drawSolidBox(World world, int x, int y, int z, int sizeX, int sizeY, int sizeZ, Block block, int metadata)

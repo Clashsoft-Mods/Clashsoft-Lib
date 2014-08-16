@@ -143,7 +143,7 @@ public abstract class CSPacket
 		try
 		{
 			nbt1 = buf.readNBTTagCompoundFromBuffer();
-		return nbt1 == null ? null : PotionEffect.readCustomPotionEffectFromNBT(nbt1);
+			return nbt1 == null ? null : PotionEffect.readCustomPotionEffectFromNBT(nbt1);
 		}
 		catch (IOException ex)
 		{

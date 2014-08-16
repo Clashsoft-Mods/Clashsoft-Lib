@@ -211,7 +211,6 @@ public class CustomBlock extends Block implements ICustomBlock
 	
 	// NAME SECTION
 	
-
 	/**
 	 * Gets the names.
 	 * 

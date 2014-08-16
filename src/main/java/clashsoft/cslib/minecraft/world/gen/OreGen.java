@@ -95,9 +95,9 @@ public class OreGen extends WorldGenerator
 	{
 		float f = random.nextFloat() * 3.141593F;
 		double d0 = x + 8 + MathHelper.sin(f) * this.count / 8.0F;
-		double d1 = x + 8 - (MathHelper.sin(f) * this.count / 8.0F);
+		double d1 = x + 8 - MathHelper.sin(f) * this.count / 8.0F;
 		double d2 = z + 8 + MathHelper.cos(f) * this.count / 8.0F;
-		double d3 = z + 8 - (MathHelper.cos(f) * this.count / 8.0F);
+		double d3 = z + 8 - MathHelper.cos(f) * this.count / 8.0F;
 		double d4 = y + random.nextInt(3) - 2;
 		double d5 = y + random.nextInt(3) - 2;
 		
@@ -109,9 +109,9 @@ public class OreGen extends WorldGenerator
 			double d9 = random.nextDouble() * this.count / 16.0D;
 			double d10 = (MathHelper.sin(l * 3.141593F / this.count) + 1.0F) * d9 + 1.0D;
 			double d11 = (MathHelper.sin(l * 3.141593F / this.count) + 1.0F) * d9 + 1.0D;
-			int x0 = MathHelper.floor_double(d6 - (d10 / 2.0D));
-			int y0 = MathHelper.floor_double(d7 - (d11 / 2.0D));
-			int z0 = MathHelper.floor_double(d8 - (d10 / 2.0D));
+			int x0 = MathHelper.floor_double(d6 - d10 / 2.0D);
+			int y0 = MathHelper.floor_double(d7 - d11 / 2.0D);
+			int z0 = MathHelper.floor_double(d8 - d10 / 2.0D);
 			int x2 = MathHelper.floor_double(d6 + d10 / 2.0D);
 			int y2 = MathHelper.floor_double(d7 + d11 / 2.0D);
 			int z2 = MathHelper.floor_double(d8 + d10 / 2.0D);
@@ -121,14 +121,18 @@ public class OreGen extends WorldGenerator
 				double d12 = (x1 + 0.5D - d6) / d10 / 2.0D;
 				
 				if (d12 * d12 >= 1.0D)
+				{
 					continue;
+				}
 				
 				for (int y1 = y0; y1 <= y2; ++y1)
 				{
 					double d13 = (y1 + 0.5D - d7) / d11 / 2.0D;
 					
 					if (d12 * d12 + d13 * d13 >= 1.0D)
+					{
 						continue;
+					}
 					
 					for (int z1 = z0; z1 <= z2; ++z1)
 					{

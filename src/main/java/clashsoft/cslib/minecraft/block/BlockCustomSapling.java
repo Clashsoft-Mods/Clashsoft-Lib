@@ -23,8 +23,8 @@ import net.minecraftforge.event.terraingen.TerrainGen;
 
 public abstract class BlockCustomSapling extends BlockSapling implements ICustomBlock
 {
-	public String[]	names;
-	public IIconSupplier iconSupplier;
+	public String[]			names;
+	public IIconSupplier	iconSupplier;
 	
 	public BlockCustomSapling(String[] names, Object icons)
 	{

@@ -33,7 +33,7 @@ public class CSLibNetHandler extends CSNetHandler
 			this.sendTo(new PacketSendTileEntity(world, x, y, z, data), player);
 		}
 	}
-
+	
 	public void sendOpenMUScreen(EntityPlayerMP sender)
 	{
 		this.sendTo(new PacketOpenMUScreen(), sender);

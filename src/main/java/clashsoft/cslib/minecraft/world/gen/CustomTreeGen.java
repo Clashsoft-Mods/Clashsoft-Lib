@@ -15,23 +15,23 @@ import net.minecraft.world.gen.feature.WorldGenTrees;
  */
 public class CustomTreeGen extends WorldGenTrees
 {
-	protected final int flags;
+	protected final int	flags;
 	
 	/** The minimum height of a generated tree. */
-	public int		minTreeHeight	= 4;
+	public int			minTreeHeight	= 4;
 	
 	/** True if this tree should grow Vines. */
-	public boolean	vinesGrow		= false;
+	public boolean		vinesGrow		= false;
 	
-	public Block	logBlock		= Blocks.log;
-	public Block	leafBlock		= Blocks.leaves;
-	public Block	vineBlock		= Blocks.vine;
+	public Block		logBlock		= Blocks.log;
+	public Block		leafBlock		= Blocks.leaves;
+	public Block		vineBlock		= Blocks.vine;
 	
 	/** The metadata value of the wood to use in tree generation. */
-	public int		logMetadata		= 0;
+	public int			logMetadata		= 0;
 	
 	/** The metadata value of the leaves to use in tree generation. */
-	public int		leafMetadata	= 0;
+	public int			leafMetadata	= 0;
 	
 	public CustomTreeGen(boolean blockUpdates, int minTreeHeight, Block log, Block leaf)
 	{
