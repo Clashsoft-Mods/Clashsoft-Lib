@@ -1,27 +1,37 @@
+1.7.10-2.5.1
+
++ Added missing CustomWorldGen methods.
++ Added Custom Update notifications.
+* Update CSWeb.
+* Fixed /modupdates crash if there are no updates.
+* Fixed printUpdateNotes setting not doing anything.
+* Fixed Update and MOTD spam on servers.
+* Documentation.
+
 1.7.10-2.5.0
 
-> Update to Forge 1.7.10-10.13.0.1207
-+ Added Custom Bedrock height to CustomBiomes
-+ Added a Cape API
-+ Added CustomWorldGen
-+ Added more ModMetadata options (description, credits, ...)
-+ Introduced the IconSupplier system
-* Update Reflection API
-* Update replaceItem and replaceBlock
-* Improved Update Chat output
-* Improved CustomTreeGen
-* Improved Mod loading
-* Improved CustomBlock unlocalized name
-* Fixed ItemCustomArmor not working correctly
-* Fixed CustomChunkProvider not working correctly
-* Fixed CustomBiomes not correctly generating
-* Fixed Block opacity issues
-* Fixed CustomGrass growing issues
-* Fixed CustomPortals not working correctly
-* Fixed WorldGenRanged replacing blocks
-* Fixed CustomSapling placing issues
-* Fixed config key and category being swapped
-* Documentation
+> Update to Forge 1.7.10-10.13.0.1207.
++ Added Custom Bedrock height to CustomBiomes.
++ Added a Cape API.
++ Added CustomWorldGen.
++ Added more ModMetadata options (description, credits, ...).
++ Introduced the IconSupplier system.
+* Update Reflection API.
+* Update replaceItem and replaceBlock.
+* Improved Update Chat output.
+* Improved CustomTreeGen.
+* Improved Mod loading.
+* Improved CustomBlock unlocalized name.
+* Fixed ItemCustomArmor not working correctly.
+* Fixed CustomChunkProvider not working correctly.
+* Fixed CustomBiomes not correctly generating.
+* Fixed Block opacity issues.
+* Fixed CustomGrass growing issues.
+* Fixed CustomPortals not working correctly.
+* Fixed WorldGenRanged replacing blocks.
+* Fixed CustomSapling placing issues.
+* Fixed config key and category being swapped.
+* Documentation.
 
 1.7.10-2.4.2
 
