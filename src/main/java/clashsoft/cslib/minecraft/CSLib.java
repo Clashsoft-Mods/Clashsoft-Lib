@@ -57,11 +57,11 @@ public class CSLib extends ClashsoftMod
 	public CSLib()
 	{
 		super(proxy, MODID, NAME, ACRONYM, VERSION);
-		
 		this.hasConfig = true;
 		this.netHandler = new CSLibNetHandler();
 		this.eventHandler = this;
 		this.url = "https://github.com/Clashsoft/CSLib-Minecraft/wiki/";
+		this.description = "Clashsoft's Minecraft Library adds many useful Classes and APIs for modders to use.";
 	}
 	
 	public static CSLibNetHandler getNetHandler()
