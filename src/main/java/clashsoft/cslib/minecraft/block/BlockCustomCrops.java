@@ -153,7 +153,7 @@ public class BlockCustomCrops extends BlockCustomPlant implements IGrowable
 	@Override
 	public IIcon getIcon(int side, int metadata)
 	{
-		return metadata < this.icons.length ? this.icons[metadata] : null;
+		return metadata < this.icons.length ? this.icons[metadata] : this.icons[0];
 	}
 	
 	@Override
@@ -162,7 +162,7 @@ public class BlockCustomCrops extends BlockCustomPlant implements IGrowable
 		this.icons = new IIcon[this.fullGrownMetadata + 1];
 		for (int i = 0; i <= this.fullGrownMetadata; i++)
 		{
-			this.icons[i] = iconRegister.registerIcon(this.getTextureName() + "_" + i);
+			this.icons[i] = iconRegister.registerIcon(this.textureName + "_" + i);
 		}
 	}
 	
@@ -214,7 +214,7 @@ public class BlockCustomCrops extends BlockCustomPlant implements IGrowable
 	}
 	
 	@Override
-	public int quantityDropped(Random random)
+	public int quantityDropped(int metadata, int fortune, Random random)
 	{
 		return 1;
 	}
