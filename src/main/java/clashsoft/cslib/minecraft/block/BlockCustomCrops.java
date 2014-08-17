@@ -81,16 +81,16 @@ public class BlockCustomCrops extends BlockCustomPlant implements IGrowable
 	// canGrow
 	@Override
 	public boolean func_149851_a(World world, int x, int y, int z, boolean flag)
-    {
-        return world.getBlockMetadata(x, y, z) != this.fullGrownMetadata;
-    }
-
+	{
+		return world.getBlockMetadata(x, y, z) != this.fullGrownMetadata;
+	}
+	
 	// consumeBonemeal
-    @Override
+	@Override
 	public boolean func_149852_a(World world, Random random, int x, int y, int z)
-    {
-        return true;
-    }
+	{
+		return true;
+	}
 	
 	// fertilize
 	@Override

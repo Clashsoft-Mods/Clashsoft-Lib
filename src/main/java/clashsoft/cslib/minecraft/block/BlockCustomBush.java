@@ -108,10 +108,7 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable
 		{
 			return random.nextInt(2) + 2;
 		}
-		else
-		{
-			return 0;
-		}
+		return 0;
 	}
 	
 	@Override
