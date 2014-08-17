@@ -96,6 +96,12 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable
 	}
 	
 	@Override
+	public int getDamageValue(World world, int x, int y, int z)
+	{
+		return this.drop.getItemDamage();
+	}
+	
+	@Override
 	public int quantityDropped(int meta, int fortune, Random random)
 	{
 		if (meta == this.fullGrownMetadata)
@@ -109,9 +115,15 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable
 	}
 	
 	@Override
+	public IIcon getIcon(int side, int metadata)
+	{
+		return this.blockIcon;
+	}
+	
+	@Override
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		super.registerBlockIcons(iconRegister);
+		this.blockIcon = iconRegister.registerIcon(this.textureName);
 		this.bushIcon = iconRegister.registerIcon(this.bushIconName);
 	}
 	

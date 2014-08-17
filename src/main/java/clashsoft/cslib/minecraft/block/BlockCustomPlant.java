@@ -119,7 +119,7 @@ public class BlockCustomPlant extends CustomBlock implements IPlantable
 	public boolean canBlockStay(World world, int x, int y, int z, int metadata)
 	{
 		boolean validLight = world.getFullBlockLightValue(x, y, z) >= 8 || world.canBlockSeeTheSky(x, y, z);
-		return validLight && this.isValidGround(metadata, world.getBlock(x, y - 1, z), world.getBlockMetadata(x, y - 1, z));
+		return validLight && this.isValidGround(world, x, y, z);
 	}
 	
 	public boolean isValidGround(World world, int x, int y, int z)

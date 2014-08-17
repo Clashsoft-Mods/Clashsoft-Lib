@@ -6,7 +6,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -53,9 +52,9 @@ public class BlockCustomCrops extends BlockCustomPlant implements IGrowable
 	}
 	
 	@Override
-	public boolean canPlaceBlockAt(World world, int x, int y, int z)
+	public boolean isValidGround(World world, int x, int y, int z)
 	{
-		return super.canPlaceBlockAt(world, x, y, z) && world.getBlock(x, y - 1, z) == Blocks.farmland;
+		return world.getBlock(x, y - 1, z).canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, this);
 	}
 	
 	@Override
@@ -73,8 +72,7 @@ public class BlockCustomCrops extends BlockCustomPlant implements IGrowable
 				
 				if (random.nextInt((int) (25.0F / growthRate) + 1) == 0)
 				{
-					++metadata;
-					world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
+					world.setBlockMetadataWithNotify(x, y, z, metadata + 1, 2);
 				}
 			}
 		}
