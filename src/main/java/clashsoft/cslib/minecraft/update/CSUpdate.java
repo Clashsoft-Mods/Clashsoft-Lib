@@ -176,6 +176,10 @@ public class CSUpdate
 				notify(player, update);
 			}
 		}
+		else
+		{
+			player.addChatMessage(new ChatComponentTranslation("update.none"));
+		}
 	}
 	
 	public static void notify(EntityPlayer player, Update update)
@@ -220,7 +224,7 @@ public class CSUpdate
 		}
 		else
 		{
-			player.addChatMessage(new ChatComponentTranslation("update.none", modName));
+			player.addChatMessage(new ChatComponentTranslation("update.not_found", modName));
 		}
 	}
 	

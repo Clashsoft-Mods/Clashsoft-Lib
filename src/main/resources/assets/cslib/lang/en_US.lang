@@ -9,9 +9,10 @@ search.match.category=Category Match
 
 motd.message=%1$s Message of the Day:
 
+update.none=§7No Updates found.
 update.found=§aUpdates found:
+update.not_found=§7No updates found for %1$s.
 update.notification=§7A new §f%1$s§7 version is available: §a%2$s§7.
-update.none=§7No updates found for %1$s.
 update.notes=Update notes:
 update.automatic.disabled=§cAutomatic updates disabled.
 
