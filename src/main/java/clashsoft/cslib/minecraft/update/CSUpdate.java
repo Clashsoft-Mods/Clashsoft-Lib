@@ -182,7 +182,7 @@ public class CSUpdate
 	{
 		if (update != null && update.isValid())
 		{
-			player.addChatMessage(new ChatComponentTranslation("update.notification", update.getModName(), update.getNewVersion()));
+			player.addChatMessage(update.getNotification());
 			
 			if (CSLib.printUpdateNotes && update.getUpdateNotes().size() > 0)
 			{

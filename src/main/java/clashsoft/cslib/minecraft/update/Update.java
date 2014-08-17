@@ -5,6 +5,8 @@ import java.util.List;
 import clashsoft.cslib.minecraft.update.updater.IUpdater;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 
 /**
  * The class Update.
@@ -26,6 +28,7 @@ public class Update
 	protected String			version;
 	protected String			newVersion;
 	
+	protected IChatComponent	notification;
 	protected List<String>		updateNotes;
 	protected String			url;
 	
@@ -46,6 +49,11 @@ public class Update
 	{
 		this.modName = name;
 		this.version = version;
+	}
+	
+	public void setNotification(IChatComponent notification)
+	{
+		this.notification = notification;
 	}
 	
 	public int validate()
@@ -125,6 +133,15 @@ public class Update
 			return this.getVersion();
 		}
 		return this.getVersion() + " -> " + this.getNewVersion();
+	}
+	
+	public IChatComponent getNotification()
+	{
+		if (this.notification == null)
+		{
+			this.notification = new ChatComponentTranslation("update.notification", this.getModName(), this.getNewVersion());
+		}
+		return this.notification;
 	}
 	
 	public String getUpdateURL()
