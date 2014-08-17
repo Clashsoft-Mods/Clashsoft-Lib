@@ -26,16 +26,18 @@ import net.minecraft.world.World;
  */
 public class CustomBlock extends Block implements ICustomBlock
 {
-	public String[]			names;
-	public IIconSupplier	iconSupplier;
+	public static final String[]	DEFAULT_NAMES	= { null };
 	
-	public boolean			opaque;
-	public int				renderType;
+	public String[]					names;
+	public IIconSupplier			iconSupplier;
 	
-	public ItemStack[]		drops;
-	public float[]			hardnesses;
-	public CreativeTabs[]	tabs;
-	public boolean[]		enabled;
+	public boolean					opaque;
+	public int						renderType;
+	
+	public ItemStack[]				drops;
+	public float[]					hardnesses;
+	public CreativeTabs[]			tabs;
+	public boolean[]				enabled;
 	
 	protected CustomBlock(Material material, String[] names, CreativeTabs[] tabs)
 	{

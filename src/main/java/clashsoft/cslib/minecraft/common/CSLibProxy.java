@@ -10,6 +10,9 @@ import net.minecraftforge.common.DimensionManager;
 
 public class CSLibProxy extends BaseProxy
 {
+	public static int	BLOCK2D_RENDER_ID;
+	public static int	CUSTOMBUSH_RENDER_ID;
+	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{

@@ -1,7 +1,7 @@
 package clashsoft.cslib.minecraft.client.renderer.block;
 
+import clashsoft.cslib.minecraft.common.CSLibProxy;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -11,14 +11,12 @@ import net.minecraft.world.IBlockAccess;
 
 public class RenderBlock2D implements ISimpleBlockRenderingHandler
 {
-	public static RenderItem	itemRender	= new RenderItem();
-	
-	public static final int		renderID	= RenderingRegistry.getNextAvailableRenderId();
+	public static RenderItem	itemRender	= RenderItem.getInstance();
 	
 	@Override
 	public int getRenderId()
 	{
-		return renderID;
+		return CSLibProxy.BLOCK2D_RENDER_ID;
 	}
 	
 	@Override

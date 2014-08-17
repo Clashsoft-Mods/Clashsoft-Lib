@@ -5,8 +5,6 @@ import static net.minecraftforge.common.EnumPlantType.Plains;
 import java.util.List;
 import java.util.Random;
 
-import clashsoft.cslib.minecraft.client.icon.IIconSupplier;
-import clashsoft.cslib.minecraft.client.icon.IconSupplier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,9 +24,6 @@ import net.minecraftforge.common.IPlantable;
 
 public class BlockCustomPlant extends CustomBlock implements IPlantable
 {
-	@SideOnly(Side.CLIENT)
-	public IIconSupplier	iconSupplier;
-	
 	public BlockCustomPlant(String[] names, Object icons)
 	{
 		super(Material.plants, names, icons, null);
@@ -36,7 +31,6 @@ public class BlockCustomPlant extends CustomBlock implements IPlantable
 		this.setStepSound(Block.soundTypeGrass);
 		this.lightOpacity = 0;
 		this.opaque = false;
-		this.iconSupplier = IconSupplier.create(icons);
 	}
 	
 	// RENDER SECTION
@@ -112,8 +106,7 @@ public class BlockCustomPlant extends CustomBlock implements IPlantable
 	{
 		if (!this.canBlockStay(world, x, y, z, metadata))
 		{
-			this.dropBlockAsItem(world, x, y, z, metadata, 0);
-			world.setBlockToAir(x, y, z);
+			world.func_147480_a(x, y, z, true);
 		}
 	}
 	

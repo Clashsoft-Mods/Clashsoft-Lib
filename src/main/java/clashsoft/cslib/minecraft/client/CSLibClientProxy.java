@@ -5,6 +5,7 @@ import clashsoft.cslib.minecraft.cape.Capes;
 import clashsoft.cslib.minecraft.cape.EmptyCape;
 import clashsoft.cslib.minecraft.client.gui.GuiModUpdates;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
 import net.minecraft.client.Minecraft;
@@ -18,6 +19,9 @@ public class CSLibClientProxy extends CSLibProxy
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
+		BLOCK2D_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
+		CUSTOMBUSH_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
+		
 		Capes.setLocalCape("AdrianKunz", new ResourceLocation("cslib", "textures/capes/cape_clashsoft.png"));
 		Capes.noCape = Capes.addCape(new EmptyCape("no_cape"));
 	}
