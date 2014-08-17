@@ -4,6 +4,8 @@ import clashsoft.cslib.minecraft.cape.CapeHelper;
 import clashsoft.cslib.minecraft.cape.Capes;
 import clashsoft.cslib.minecraft.cape.EmptyCape;
 import clashsoft.cslib.minecraft.client.gui.GuiModUpdates;
+import clashsoft.cslib.minecraft.client.renderer.block.RenderBlock2D;
+import clashsoft.cslib.minecraft.client.renderer.block.RenderBlockBush;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -21,6 +23,9 @@ public class CSLibClientProxy extends CSLibProxy
 	{
 		BLOCK2D_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
 		CUSTOMBUSH_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
+		
+		RenderingRegistry.registerBlockHandler(BLOCK2D_RENDER_ID, new RenderBlock2D());
+		RenderingRegistry.registerBlockHandler(CUSTOMBUSH_RENDER_ID, new RenderBlockBush());
 		
 		Capes.setLocalCape("AdrianKunz", new ResourceLocation("cslib", "textures/capes/cape_clashsoft.png"));
 		Capes.noCape = Capes.addCape(new EmptyCape("no_cape"));
