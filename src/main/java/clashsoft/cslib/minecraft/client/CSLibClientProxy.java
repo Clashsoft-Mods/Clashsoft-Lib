@@ -52,4 +52,16 @@ public class CSLibClientProxy extends CSLibProxy
 	{
 		return true;
 	}
+	
+	@Override
+	public World getClientWorld()
+	{
+		return Minecraft.getMinecraft().theWorld;
+	}
+	
+	@Override
+	public EntityPlayer getClientPlayer()
+	{
+		return Minecraft.getMinecraft().thePlayer;
+	}
 }

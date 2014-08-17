@@ -22,6 +22,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ServerCommandManager;
@@ -132,10 +133,15 @@ public class CSLib extends ClashsoftMod
 			EntityPlayer player = (EntityPlayer) event.entity;
 			Capes.updateCape(player);
 			
-			if (event.world.isRemote)
-			{
-				CSUpdate.notifyAll(player);
-			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void playerLogin(PlayerEvent.PlayerLoggedInEvent event)
+	{
+		if (proxy.isClient())
+		{
+			CSUpdate.notifyAll(event.player);
 		}
 	}
 }

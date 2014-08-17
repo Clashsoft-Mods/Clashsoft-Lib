@@ -39,6 +39,16 @@ public class CSLibProxy extends BaseProxy
 	{
 	}
 	
+	public World getClientWorld()
+	{
+		return null;
+	}
+	
+	public EntityPlayer getClientPlayer()
+	{
+		return null;
+	}
+	
 	public EntityPlayer findPlayer(String username)
 	{
 		for (World world : DimensionManager.getWorlds())
