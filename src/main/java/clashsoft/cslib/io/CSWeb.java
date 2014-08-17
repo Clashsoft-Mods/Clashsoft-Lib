@@ -1,15 +1,20 @@
 package clashsoft.cslib.io;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+
+import clashsoft.cslib.logging.CSLog;
 
 /**
  * A utility class for everything related to connecting to the internet.
  * 
- * @author Clashsot
+ * @author Clashsoft
  */
 public class CSWeb
 {
@@ -38,41 +43,45 @@ public class CSWeb
 		}
 	}
 	
+	public static String tryReadWebsite(String url)
+	{
+		try
+		{
+			return readWebsite(url);
+		}
+		catch (IOException ex)
+		{
+			CSLog.error(ex);
+		}
+		return null;
+	}
+	
 	/**
-	 * Reads the given website or downloads its contents and returns them as a
-	 * list of lines.
+	 * Reads the given website with the URL {@code url} or downloads its
+	 * contents and returns them as a {@link String}.
 	 * 
 	 * @param url
 	 *            the URL
 	 * @return the lines
 	 */
-	public static String[] readWebsite(String url)
+	public static String readWebsite(String url) throws IOException
+	{
+		URL url1 = new URL(url);
+		ReadableByteChannel rbc = Channels.newChannel(url1.openStream());
+		ByteBuffer bytebuf = ByteBuffer.allocate(1024);
+		rbc.read(bytebuf);
+		return new String(bytebuf.array());
+	}
+	
+	public static void tryDownload(String url, File output)
 	{
 		try
 		{
-			URL url1 = new URL(url);
-			HttpURLConnection.setFollowRedirects(true);
-			HttpURLConnection con = (HttpURLConnection) url1.openConnection();
-			con.setDoOutput(false);
-			con.setReadTimeout(20000);
-			con.setRequestProperty("Connection", "keep-alive");
-			con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/20.0");
-			con.setRequestMethod("GET");
-			con.setConnectTimeout(5000);
-			
-			BufferedInputStream in = new BufferedInputStream(con.getInputStream());
-			StringBuffer buffer = new StringBuffer();
-			int read;
-			while ((read = in.read()) != -1)
-			{
-				char c = (char) read;
-				buffer.append(c);
-			}
-			return buffer.toString().split("\n");
+			download(url, output);
 		}
-		catch (Exception ex)
+		catch (IOException ex)
 		{
-			return new String[] {};
+			CSLog.error(ex);
 		}
 	}
 	

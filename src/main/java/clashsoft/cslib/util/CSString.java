@@ -1,9 +1,6 @@
 package clashsoft.cslib.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -195,11 +192,19 @@ public class CSString
 	 */
 	public static String[] lineArray(String string)
 	{
+		if (string == null)
+		{
+			return new String[0];
+		}
 		return string.split("\n");
 	}
 	
 	public static List<String> lineList(String string)
 	{
+		if (string == null)
+		{
+			return Collections.EMPTY_LIST;
+		}
 		return Arrays.asList(lineArray(string));
 	}
 	

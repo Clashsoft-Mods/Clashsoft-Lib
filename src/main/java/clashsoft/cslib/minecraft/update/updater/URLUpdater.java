@@ -7,6 +7,7 @@ import clashsoft.cslib.io.CSWeb;
 import clashsoft.cslib.minecraft.update.Update;
 import clashsoft.cslib.minecraft.update.reader.FileUpdateReader;
 import clashsoft.cslib.minecraft.update.reader.IUpdateReader;
+import clashsoft.cslib.util.CSString;
 
 import net.minecraft.util.IChatComponent;
 
@@ -96,7 +97,7 @@ public class URLUpdater implements IUpdater
 	{
 		if (this.updateFile == null)
 		{
-			this.updateFile = CSWeb.readWebsite(this.getURL());
+			this.updateFile = CSString.lineArray(CSWeb.tryReadWebsite(this.getURL()));
 		}
 		return this.updateFile;
 	}
