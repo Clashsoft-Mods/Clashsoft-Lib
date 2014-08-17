@@ -1,3 +1,10 @@
+1.7.10-2.6.0
+
++ Added ItemCraftingHelper for mortar-like items.
++ Added BlockCustomBush from MFM.
++ Added BlockCustomCrops from MFM.
+* Fixed some recipes crashing the game.
+
 1.7.10-2.5.2
 
 * Updated logo

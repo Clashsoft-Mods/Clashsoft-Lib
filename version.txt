@@ -1,11 +1,7 @@
-version=1.7.10-2.5.2
-url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.5.2/ClashsoftLib-1.7.10-2.5.2.jar
+version=1.7.10-2.6.0
+url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.6.0/ClashsoftLib-1.7.10-2.6.0.jar
 
-+ Added missing CustomWorldGen methods.
-+ Added Custom Update notifications.
-* Update Logo.
-* Updated CSWeb.
-* Fixed /modupdates crash if there are no updates.
-* Fixed printUpdateNotes setting not doing anything.
-* Fixed Update and MOTD spam on servers.
-* Documentation.
++ Added ItemCraftingHelper for mortar-like items.
++ Added BlockCustomBush from MFM.
++ Added BlockCustomCrops from MFM.
+* Fixed some recipes crashing the game.
