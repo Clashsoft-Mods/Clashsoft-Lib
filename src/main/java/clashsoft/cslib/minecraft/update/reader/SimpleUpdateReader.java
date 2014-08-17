@@ -11,6 +11,36 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+/**
+ * The class SimpleUpdateReader is an {@link IUpdateReader} implementation that
+ * reads a single mod from a custom file. It supports several properties to
+ * describe the update. The format used is
+ * 
+ * <PRE>
+ * key = value
+ * </PRE>
+ * 
+ * The following keys and properties are supported:
+ * <ul>
+ * <li>{@code version}: Current version of the mod.
+ * <li>{@code modname}: Required to tell the UpdateChecker which mod the version
+ * belongs to, in case a {@link URLUpdater} was used
+ * <li>{@code url}: The URL where the new version can be downloaded, should be a
+ * direct link to a file.
+ * <li>{@code motd}: The Message of the Day of the mod.
+ * <li>{@code motd_color}: The display color of the Message of the Day of the
+ * mod.
+ * <li>{@code motd_json}: Creates MOTD's with advanced formatting. Uses the
+ * Default Chat Message JSON format that is used by the /tellraw command.
+ * <li>{@code version_motd}: The text of the update notification. The default
+ * update notification is "A new [modname] version is available: [version].".
+ * <li>{@code version_color}: The display color of the update notification.
+ * <li>{@code version_json}: Creates Update notifications with advanced
+ * formatting. Uses the Default Chat Message JSON format that is used by the
+ * /tellraw command.
+ * 
+ * @author Clashsoft
+ */
 public class SimpleUpdateReader implements IUpdateReader
 {
 	public static final SimpleUpdateReader	instance	= new SimpleUpdateReader();
