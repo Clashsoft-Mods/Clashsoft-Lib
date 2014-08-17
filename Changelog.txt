@@ -1,8 +1,13 @@
+1.7.10-2.5.2
+
+* Updated logo
+* Actually fixed /modupdates crash if there are no updates.
+
 1.7.10-2.5.1
 
 + Added missing CustomWorldGen methods.
 + Added Custom Update notifications.
-* Update CSWeb.
+* Updated CSWeb.
 * Fixed /modupdates crash if there are no updates.
 * Fixed printUpdateNotes setting not doing anything.
 * Fixed Update and MOTD spam on servers.

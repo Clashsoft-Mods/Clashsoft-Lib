@@ -1,9 +1,10 @@
-version=1.7.10-2.5.1
-url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.5.1/ClashsoftLib-1.7.10-2.5.1.jar
+version=1.7.10-2.5.2
+url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.5.2/ClashsoftLib-1.7.10-2.5.2.jar
 
 + Added missing CustomWorldGen methods.
 + Added Custom Update notifications.
-* Update CSWeb.
+* Update Logo.
+* Updated CSWeb.
 * Fixed /modupdates crash if there are no updates.
 * Fixed printUpdateNotes setting not doing anything.
 * Fixed Update and MOTD spam on servers.
