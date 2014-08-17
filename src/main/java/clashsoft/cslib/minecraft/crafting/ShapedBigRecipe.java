@@ -8,16 +8,16 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class ShapedAdvancedRecipe extends ShapedRecipes
+public class ShapedBigRecipe extends ShapedRecipes
 {
-	public ShapedAdvancedRecipe(int width, int height, ItemStack[] stacks, ItemStack output)
+	public ShapedBigRecipe(int width, int height, ItemStack[] stacks, ItemStack output)
 	{
 		super(width, height, stacks, output);
 	}
 	
-	public static ShapedAdvancedRecipe fromRecipe(ShapedRecipes recipe)
+	public static ShapedBigRecipe fromRecipe(ShapedRecipes recipe)
 	{
-		return new ShapedAdvancedRecipe(recipe.recipeWidth, recipe.recipeHeight, recipe.recipeItems, recipe.getRecipeOutput());
+		return new ShapedBigRecipe(recipe.recipeWidth, recipe.recipeHeight, recipe.recipeItems, recipe.getRecipeOutput());
 	}
 	
 	@Override
