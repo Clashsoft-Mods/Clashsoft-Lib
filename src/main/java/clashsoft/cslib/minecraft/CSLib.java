@@ -2,6 +2,8 @@ package clashsoft.cslib.minecraft;
 
 import clashsoft.cslib.config.CSConfig;
 import clashsoft.cslib.logging.CSLog;
+import clashsoft.cslib.minecraft.block.BlockOre2;
+import clashsoft.cslib.minecraft.block.CSBlocks;
 import clashsoft.cslib.minecraft.cape.Capes;
 import clashsoft.cslib.minecraft.command.CSCommand;
 import clashsoft.cslib.minecraft.command.CommandModUpdate;
@@ -9,6 +11,7 @@ import clashsoft.cslib.minecraft.common.CSLibProxy;
 import clashsoft.cslib.minecraft.crafting.loader.FurnaceRecipeLoader;
 import clashsoft.cslib.minecraft.init.ClashsoftMod;
 import clashsoft.cslib.minecraft.item.CSItems;
+import clashsoft.cslib.minecraft.item.block.ItemCustomBlock;
 import clashsoft.cslib.minecraft.network.CSLibNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.update.reader.SimpleUpdateReader;
@@ -24,9 +27,11 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 
+import net.minecraft.block.Block;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
@@ -90,6 +95,22 @@ public class CSLib extends ClashsoftMod
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		super.preInit(event);
+		
+		BlockOre2 coalOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreCoal").setBlockTextureName("cslib:coal_overlay");
+		BlockOre2 ironOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreIron").setBlockTextureName("cslib:iron_overlay");
+		BlockOre2 goldOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreGold").setBlockTextureName("cslib:gold_overlay");
+		BlockOre2 diamondOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreDiamond").setBlockTextureName("cslib:diamond_overlay");
+		BlockOre2 emeraldOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreEmerald").setBlockTextureName("cslib:emerald_overlay");
+		// redstoneOre2
+		BlockOre2 lapisOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreLapis").setBlockTextureName("cslib:lapis_overlay");
+		
+		CSBlocks.replaceBlock(Blocks.coal_ore, coalOre2, new ItemCustomBlock(coalOre2));
+		CSBlocks.replaceBlock(Blocks.iron_ore, ironOre2, new ItemCustomBlock(ironOre2));
+		CSBlocks.replaceBlock(Blocks.gold_ore, goldOre2, new ItemCustomBlock(goldOre2));
+		CSBlocks.replaceBlock(Blocks.diamond_ore, diamondOre2, new ItemCustomBlock(diamondOre2));
+		CSBlocks.replaceBlock(Blocks.emerald_ore, emeraldOre2, new ItemCustomBlock(emeraldOre2));
+		//
+		CSBlocks.replaceBlock(Blocks.lapis_ore, lapisOre2, new ItemCustomBlock(lapisOre2));
 	}
 	
 	@Override
