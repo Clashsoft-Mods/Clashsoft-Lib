@@ -27,6 +27,41 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 	}
 	
 	@Override
+	public int getHarvestLevel(int metadata)
+	{
+		int i = super.getHarvestLevel(metadata);
+		OreBase base = this.getBase(metadata);
+		if (base != null)
+		{
+			i += base.harvestLevel;
+			return i < 0 ? 0 : i;
+		}
+		return i;
+	}
+	
+	@Override
+	public String getHarvestTool(int metadata)
+	{
+		OreBase base = this.getBase(metadata);
+		if (base != null)
+		{
+			return base.harvestTool;
+		}
+		return super.getHarvestTool(metadata);
+	}
+	
+	@Override
+	public boolean isToolEffective(String type, int metadata)
+	{
+		OreBase base = this.getBase(metadata);
+		if (base != null)
+		{
+			return type.equals(base.harvestTool);
+		}
+		return super.isToolEffective(type, metadata);
+	}
+	
+	@Override
 	public float getBlockHardness(World world, int x, int y, int z)
 	{
 		float f = super.getBlockHardness(world, x, y, z);

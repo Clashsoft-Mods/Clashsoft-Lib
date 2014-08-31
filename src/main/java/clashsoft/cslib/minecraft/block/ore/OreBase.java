@@ -5,18 +5,20 @@ import net.minecraft.util.IIcon;
 
 public class OreBase
 {
-	public static OreBase[]	oreBases	= new OreBase[16];
-	private static int		nextID		= 0;
+	public static OreBase[]	oreBases			= new OreBase[16];
+	private static int		nextID				= 0;
 	
-	public static OreBase	stone		= new OreBaseStone(0, "stone", 1F).register();
-	public static OreBase	gravel		= new OreBase(1, "gravel", 0.8F).register();
-	public static OreBase	dirt		= new OreBase(2, "dirt", 0.7F).register();
+	public static OreBase	stone				= new OreBaseStone(0, "stone", 1F).register();
+	public static OreBase	gravel				= new OreBase(1, "gravel", 0.8F).setHarvestTool("shovel").setHarvestLevel(-1).register();
+	public static OreBase	dirt				= new OreBase(2, "dirt", 0.7F).setHarvestTool("shovel").setHarvestLevel(-1).register();
 	
 	public final int		id;
 	public final String		name;
 	
-	public float			hardness	= 1.5F;
-	public float			resistance	= 2.5F;
+	public int				harvestLevel;
+	public String			harvestTool			= "pickaxe";
+	public float			hardness			= 1.5F;
+	public float			resistance			= 2.5F;
 	public float			amountMultiplier;
 	public float			xpMultiplier;
 	
@@ -72,6 +74,18 @@ public class OreBase
 	public OreBase setIconName(String iconName)
 	{
 		this.iconName = iconName;
+		return this;
+	}
+	
+	public OreBase setHarvestLevel(int harvestLevel)
+	{
+		this.harvestLevel = harvestLevel;
+		return this;
+	}
+	
+	public OreBase setHarvestTool(String harvestTool)
+	{
+		this.harvestTool = harvestTool;
 		return this;
 	}
 	
