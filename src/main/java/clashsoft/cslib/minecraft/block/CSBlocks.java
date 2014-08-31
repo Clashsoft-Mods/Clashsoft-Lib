@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 
 import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
+import clashsoft.cslib.minecraft.item.CSItems;
 import clashsoft.cslib.minecraft.item.block.ItemCustomBlock;
 import clashsoft.cslib.minecraft.util.Constants;
 import clashsoft.cslib.reflect.CSReflection;
@@ -113,7 +114,12 @@ public class CSBlocks
 	
 	public static boolean replaceBlock(Block block, Block newBlock)
 	{
-		return replaceBlock(block, newBlock, true);
+		return replaceBlock(block, newBlock, null, true);
+	}
+	
+	public static boolean replaceBlock(Block block, Block newBlock, ItemBlock newItemBlock)
+	{
+		return replaceBlock(block, newBlock, newItemBlock, true);
 	}
 	
 	/**
@@ -126,7 +132,7 @@ public class CSBlocks
 	 *            the new block
 	 * @return true, if successful
 	 */
-	public static boolean replaceBlock(Block block, Block newBlock, boolean replaceField)
+	public static boolean replaceBlock(Block block, Block newBlock, ItemBlock newItemBlock, boolean replaceField)
 	{
 		long now = System.currentTimeMillis();
 		try
@@ -139,8 +145,13 @@ public class CSBlocks
 			// Replace registry entry
 			CSReflection.invoke(Constants.METHOD_REGISTRY_ADDOBJECTRAW, registry, new Object[] { id, registryName, newBlock });
 			
-			// Replace ItemBlock reference
-			if (itemBlock != null)
+			// Replace ItemBlock
+			if (newItemBlock != null)
+			{
+				CSItems.replaceItem(itemBlock, newItemBlock, false);
+			}
+			// Use old ItemBlock and update reference
+			else if (itemBlock != null)
 			{
 				CSReflection.setValue(Constants.FIELD_ITEMBLOCK_BLOCK, itemBlock, newBlock);
 			}
