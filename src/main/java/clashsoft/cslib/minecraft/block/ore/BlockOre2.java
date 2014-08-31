@@ -3,6 +3,7 @@ package clashsoft.cslib.minecraft.block.ore;
 import java.util.List;
 import java.util.Random;
 
+import clashsoft.cslib.math.CSMath;
 import clashsoft.cslib.minecraft.block.CustomBlock;
 import clashsoft.cslib.minecraft.block.IBlockRenderPass;
 import clashsoft.cslib.minecraft.block.ICustomBlock;
@@ -92,7 +93,7 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 		OreBase base = this.getBase(metadata);
 		if (base != null)
 		{
-			return (int) (base.amountMultiplier * i);
+			return CSMath.ceiling_float(base.amountMultiplier * i);
 		}
 		return i;
 	}
@@ -104,7 +105,7 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 		OreBase base = this.getBase(metadata);
 		if (base != null)
 		{
-			return (int) (base.xpMultiplier * i);
+			return CSMath.ceiling_float(base.xpMultiplier * i);
 		}
 		return i;
 	}
