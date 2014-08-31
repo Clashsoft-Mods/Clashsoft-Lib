@@ -9,8 +9,6 @@ public class OreBase
 	private static int		nextID				= 0;
 	
 	public static OreBase	stone				= new OreBaseStone(0, "stone", 1F).register();
-	public static OreBase	gravel				= new OreBase(1, "gravel", 0.8F).setHarvestTool("shovel").setHarvestLevel(-1).register();
-	public static OreBase	dirt				= new OreBase(2, "dirt", 0.7F).setHarvestTool("shovel").setHarvestLevel(-1).register();
 	
 	public final int		id;
 	public final String		name;
