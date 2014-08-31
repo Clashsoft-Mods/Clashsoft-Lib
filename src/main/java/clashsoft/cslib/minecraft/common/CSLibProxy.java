@@ -10,6 +10,7 @@ import net.minecraftforge.common.DimensionManager;
 
 public class CSLibProxy extends BaseProxy
 {
+	public static int	MULTI_RENDER_ID;
 	public static int	BLOCK2D_RENDER_ID;
 	public static int	CUSTOMBUSH_RENDER_ID;
 	

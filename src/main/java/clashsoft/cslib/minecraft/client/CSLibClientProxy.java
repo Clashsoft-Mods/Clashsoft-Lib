@@ -6,6 +6,7 @@ import clashsoft.cslib.minecraft.cape.EmptyCape;
 import clashsoft.cslib.minecraft.client.gui.GuiModUpdates;
 import clashsoft.cslib.minecraft.client.renderer.block.RenderBlock2D;
 import clashsoft.cslib.minecraft.client.renderer.block.RenderBlockBush;
+import clashsoft.cslib.minecraft.client.renderer.block.RenderBlockMulti;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -21,9 +22,11 @@ public class CSLibClientProxy extends CSLibProxy
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
+		MULTI_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
 		BLOCK2D_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
 		CUSTOMBUSH_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
 		
+		RenderingRegistry.registerBlockHandler(MULTI_RENDER_ID, RenderBlockMulti.instance);
 		RenderingRegistry.registerBlockHandler(BLOCK2D_RENDER_ID, new RenderBlock2D());
 		RenderingRegistry.registerBlockHandler(CUSTOMBUSH_RENDER_ID, new RenderBlockBush());
 		
