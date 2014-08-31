@@ -2,8 +2,9 @@ package clashsoft.cslib.minecraft;
 
 import clashsoft.cslib.config.CSConfig;
 import clashsoft.cslib.logging.CSLog;
-import clashsoft.cslib.minecraft.block.BlockOre2;
 import clashsoft.cslib.minecraft.block.CSBlocks;
+import clashsoft.cslib.minecraft.block.ore.BlockOre2;
+import clashsoft.cslib.minecraft.block.ore.BlockRedstoneOre2;
 import clashsoft.cslib.minecraft.cape.Capes;
 import clashsoft.cslib.minecraft.command.CSCommand;
 import clashsoft.cslib.minecraft.command.CommandModUpdate;
@@ -101,7 +102,8 @@ public class CSLib extends ClashsoftMod
 		BlockOre2 goldOre2 = (BlockOre2) new BlockOre2().setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreGold").setBlockTextureName("cslib:gold_overlay");
 		BlockOre2 diamondOre2 = (BlockOre2) new BlockOre2().setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreDiamond").setBlockTextureName("cslib:diamond_overlay");
 		BlockOre2 emeraldOre2 = (BlockOre2) new BlockOre2().setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreEmerald").setBlockTextureName("cslib:emerald_overlay");
-		// redstoneOre2
+		BlockOre2 redstoneOre2 = (BlockOre2) new BlockRedstoneOre2(false).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreRedstone").setBlockTextureName("cslib:redstone_overlay");
+		BlockOre2 litRedstoneOre2 = (BlockOre2) new BlockRedstoneOre2(true).setLightLevel(0.625F).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreRedstone").setBlockTextureName("cslib:redstone_overlay");
 		BlockOre2 lapisOre2 = (BlockOre2) new BlockOre2().setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreLapis").setBlockTextureName("cslib:lapis_overlay");
 		
 		CSBlocks.replaceBlock(Blocks.coal_ore, coalOre2, new ItemCustomBlock(coalOre2));
@@ -109,7 +111,8 @@ public class CSLib extends ClashsoftMod
 		CSBlocks.replaceBlock(Blocks.gold_ore, goldOre2, new ItemCustomBlock(goldOre2));
 		CSBlocks.replaceBlock(Blocks.diamond_ore, diamondOre2, new ItemCustomBlock(diamondOre2));
 		CSBlocks.replaceBlock(Blocks.emerald_ore, emeraldOre2, new ItemCustomBlock(emeraldOre2));
-		//
+		CSBlocks.replaceBlock(Blocks.redstone_ore, redstoneOre2, new ItemCustomBlock(redstoneOre2));
+		CSBlocks.replaceBlock(Blocks.lit_redstone_ore, litRedstoneOre2);
 		CSBlocks.replaceBlock(Blocks.lapis_ore, lapisOre2, new ItemCustomBlock(lapisOre2));
 	}
 	

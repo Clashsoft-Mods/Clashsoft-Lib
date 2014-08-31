@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft.block;
+package clashsoft.cslib.minecraft.block.ore;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;

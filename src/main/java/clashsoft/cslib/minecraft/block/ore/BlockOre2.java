@@ -1,8 +1,11 @@
-package clashsoft.cslib.minecraft.block;
+package clashsoft.cslib.minecraft.block.ore;
 
 import java.util.List;
 import java.util.Random;
 
+import clashsoft.cslib.minecraft.block.CustomBlock;
+import clashsoft.cslib.minecraft.block.IBlockRenderPass;
+import clashsoft.cslib.minecraft.block.ICustomBlock;
 import clashsoft.cslib.minecraft.client.renderer.block.RenderBlockMulti;
 
 import net.minecraft.block.BlockOre;

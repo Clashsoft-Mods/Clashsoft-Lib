@@ -1,4 +1,4 @@
-package clashsoft.cslib.minecraft.block;
+package clashsoft.cslib.minecraft.block.ore;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
@@ -40,7 +40,7 @@ public class OreBaseStone extends OreBase
 	@Override
 	public boolean isOverlayTexture(BlockOre2 ore)
 	{
-		return ore == Blocks.coal_ore || ore == Blocks.iron_ore || ore == Blocks.gold_ore || ore == Blocks.diamond_ore || ore == Blocks.emerald_ore || ore == Blocks.redstone_ore || ore == Blocks.lapis_ore;
+		return ore == Blocks.coal_ore || ore == Blocks.iron_ore || ore == Blocks.gold_ore || ore == Blocks.diamond_ore || ore == Blocks.emerald_ore || ore == Blocks.redstone_ore || ore == Blocks.lit_redstone_ore || ore == Blocks.lapis_ore;
 	}
 	
 	@Override
@@ -66,7 +66,7 @@ public class OreBaseStone extends OreBase
 		{
 			return this.emeraldIcon;
 		}
-		else if (ore == Blocks.redstone_ore)
+		else if (ore == Blocks.redstone_ore || ore == Blocks.lit_redstone_ore)
 		{
 			return this.redstoneIcon;
 		}
