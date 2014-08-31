@@ -304,76 +304,88 @@ public class CSItems
 		return toolMaterial;
 	}
 	
+	public static boolean replaceItem(Item item, Item newItem)
+	{
+		return replaceItem(item, newItem, true);
+	}
+	
 	/**
 	 * Replaces the given vanilla {@link Item} {@code item} with the
-	 * {@code newItem}.
+	 * {@code newItem}. If {@code replaceField} is true, this method searches
+	 * for the fields in {@link Items} and replaces references.
 	 * 
 	 * @param item
 	 *            the item to replace
 	 * @param newItem
 	 *            the new item
+	 * @param replaceField
+	 *            replace field
 	 * @return true, if successful
 	 */
-	public static boolean replaceItem(Item item, Item newItem)
+	public static boolean replaceItem(Item item, Item newItem, boolean replaceField)
 	{
 		long now = System.currentTimeMillis();
 		try
 		{
-			for (Field field : Items.class.getDeclaredFields())
+			FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
+			String registryName = registry.getNameForObject(item);
+			int id = Item.getIdFromItem(item);
+			
+			// Replace registry entry
+			CSReflection.invoke(Constants.METHOD_REGISTRY_ADDOBJECTRAW, registry, new Object[] { id, registryName, newItem });
+			
+			// Replace stat list entries
+			StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
+			if (stat != null)
 			{
-				if (!Item.class.isAssignableFrom(field.getType()))
-				{
-					continue;
-				}
-				
-				Item item1 = (Item) field.get(null);
-				if (item1 != item)
-				{
-					continue;
-				}
-				
-				FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
-				String registryName = registry.getNameForObject(item);
-				int id = Item.getIdFromItem(item);
-				
-				// Set field
-				CSReflection.setModifier(field, Modifier.FINAL, false);
-				field.set(null, newItem);
-				
-				// Replace registry entry
-				CSReflection.invoke(Constants.METHOD_REGISTRY_ADDOBJECTRAW, registry, new Object[] { id, registryName, newItem });
-				
-				// Replace stat list entries
-				StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
-				if (stat != null)
-				{
-					CSReflection.setValue(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
-				}
-				stat = (StatCrafting) StatList.objectCraftStats[id];
-				if (stat != null)
-				{
-					CSReflection.setValue(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
-				}
-				stat = (StatCrafting) StatList.objectUseStats[id];
-				if (stat != null)
-				{
-					CSReflection.setValue(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
-				}
-				
-				// Replace Crafting Recipes
-				replacements.put(item, newItem);
-				
-				boolean flag = true;
-				if (registry.getObject(registryName) != newItem)
-				{
-					flag = false;
-				}
-				
-				now = System.currentTimeMillis() - now;
-				CSLog.info(flag ? "Replace Item : %s (%s) with %s, took %d ms" : "Replace Item : %s (%s) with %s FAILED, took %d ms", new Object[] { field.getName(), item1.getClass().getSimpleName(), newItem.getClass().getSimpleName(), now });
-				
-				return true;
+				CSReflection.setValue(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
 			}
+			stat = (StatCrafting) StatList.objectCraftStats[id];
+			if (stat != null)
+			{
+				CSReflection.setValue(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
+			}
+			stat = (StatCrafting) StatList.objectUseStats[id];
+			if (stat != null)
+			{
+				CSReflection.setValue(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
+			}
+			
+			// Replace Crafting Recipes
+			replacements.put(item, newItem);
+			
+			// Replace Field
+			if (replaceField)
+			{
+				for (Field field : Items.class.getDeclaredFields())
+				{
+					if (!Item.class.isAssignableFrom(field.getType()))
+					{
+						continue;
+					}
+					
+					Item item1 = (Item) field.get(null);
+					if (item1 != item)
+					{
+						continue;
+					}
+					
+					// Set field
+					CSReflection.setModifier(field, Modifier.FINAL, false);
+					field.set(null, newItem);
+				}
+			}
+			
+			boolean flag = true;
+			if (registry.getObject(registryName) != newItem)
+			{
+				flag = false;
+			}
+			
+			now = System.currentTimeMillis() - now;
+			CSLog.info(flag ? "Replace Item : %s (%s) with %s, took %d ms" : "Replace Item : %s (%s) with %s FAILED, took %d ms", new Object[] { item.getUnlocalizedName(), item.getClass().getSimpleName(), newItem.getClass().getSimpleName(), now });
+			
+			return true;
 		}
 		catch (Exception e)
 		{

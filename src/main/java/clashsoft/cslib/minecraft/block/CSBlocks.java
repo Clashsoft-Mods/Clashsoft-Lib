@@ -111,6 +111,11 @@ public class CSBlocks
 		CSCrafting.addRecipe(new ItemStack(block, craftingAmount), recipe);
 	}
 	
+	public static boolean replaceBlock(Block block, Block newBlock)
+	{
+		return replaceBlock(block, newBlock, true);
+	}
+	
 	/**
 	 * Replaces the given vanilla {@link Block} {@code block} with the
 	 * {@code newBlock}.
@@ -121,54 +126,57 @@ public class CSBlocks
 	 *            the new block
 	 * @return true, if successful
 	 */
-	public static boolean replaceBlock(Block block, Block newBlock)
+	public static boolean replaceBlock(Block block, Block newBlock, boolean replaceField)
 	{
 		long now = System.currentTimeMillis();
 		try
 		{
-			for (Field field : Blocks.class.getDeclaredFields())
+			FMLControlledNamespacedRegistry<Block> registry = GameData.getBlockRegistry();
+			String registryName = registry.getNameForObject(block);
+			int id = Block.getIdFromBlock(block);
+			ItemBlock itemBlock = (ItemBlock) Item.getItemFromBlock(block);
+			
+			// Replace registry entry
+			CSReflection.invoke(Constants.METHOD_REGISTRY_ADDOBJECTRAW, registry, new Object[] { id, registryName, newBlock });
+			
+			// Replace ItemBlock reference
+			if (itemBlock != null)
 			{
-				if (!Block.class.isAssignableFrom(field.getType()))
-				{
-					continue;
-				}
-				
-				Block block1 = (Block) field.get(null);
-				if (block1 != block)
-				{
-					continue;
-				}
-				
-				FMLControlledNamespacedRegistry<Block> registry = GameData.getBlockRegistry();
-				String registryName = registry.getNameForObject(block);
-				int id = Block.getIdFromBlock(block);
-				ItemBlock itemBlock = (ItemBlock) Item.getItemFromBlock(block);
-				
-				// Set field
-				CSReflection.setModifier(field, Modifier.FINAL, false);
-				field.set(null, newBlock);
-				
-				// Replace registry entry
-				CSReflection.invoke(Constants.METHOD_REGISTRY_ADDOBJECTRAW, registry, new Object[] { id, registryName, newBlock });
-				
-				// Replace ItemBlock reference
-				if (itemBlock != null)
-				{
-					CSReflection.setValue(Constants.FIELD_ITEMBLOCK_BLOCK, itemBlock, newBlock);
-				}
-				
-				boolean flag = true;
-				if (registry.getObject(registryName) != newBlock)
-				{
-					// Something went wrong
-					flag = false;
-				}
-				
-				now = System.currentTimeMillis() - now;
-				CSLog.info(flag ? "Replace Block : %s (%s) with %s, took %d ms" : "Replace Block : %s (%s) with %s FAILED, took %d ms", new Object[] { field.getName(), block1.getClass().getSimpleName(), newBlock.getClass().getSimpleName(), now });
-				
-				return true;
+				CSReflection.setValue(Constants.FIELD_ITEMBLOCK_BLOCK, itemBlock, newBlock);
 			}
+			
+			// Replace Field
+			if (replaceField)
+			{
+				for (Field field : Blocks.class.getDeclaredFields())
+				{
+					if (!Block.class.isAssignableFrom(field.getType()))
+					{
+						continue;
+					}
+					
+					Block block1 = (Block) field.get(null);
+					if (block1 != block)
+					{
+						continue;
+					}
+					
+					// Set field
+					CSReflection.setModifier(field, Modifier.FINAL, false);
+					field.set(null, newBlock);
+				}
+			}
+			
+			boolean flag = true;
+			if (registry.getObject(registryName) != newBlock)
+			{
+				flag = false;
+			}
+			
+			now = System.currentTimeMillis() - now;
+			CSLog.info(flag ? "Replace Block : %s (%s) with %s, took %d ms" : "Replace Block : %s (%s) with %s FAILED, took %d ms", new Object[] { block.getUnlocalizedName(), block.getClass().getSimpleName(), newBlock.getClass().getSimpleName(), now });
+			
+			return true;
 		}
 		catch (Exception e)
 		{
