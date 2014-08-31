@@ -15,6 +15,8 @@ public class OreBase
 	public final int		id;
 	public final String		name;
 	
+	public float			hardness	= 1.5F;
+	public float			resistance	= 2.5F;
 	public float			amountMultiplier;
 	public float			xpMultiplier;
 	
@@ -70,6 +72,18 @@ public class OreBase
 	public OreBase setIconName(String iconName)
 	{
 		this.iconName = iconName;
+		return this;
+	}
+	
+	public OreBase setHardness(float hardness)
+	{
+		this.hardness = hardness;
+		return this;
+	}
+	
+	public OreBase setResistance(float resistance)
+	{
+		this.resistance = resistance;
 		return this;
 	}
 	

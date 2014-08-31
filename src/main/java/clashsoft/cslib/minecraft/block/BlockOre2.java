@@ -8,6 +8,7 @@ import clashsoft.cslib.minecraft.client.renderer.block.RenderBlockMulti;
 import net.minecraft.block.BlockOre;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,17 +24,27 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 	}
 	
 	@Override
-	public void registerBlockIcons(IIconRegister iconRegister)
+	public float getBlockHardness(World world, int x, int y, int z)
 	{
-		super.registerBlockIcons(iconRegister);
-		for (int i = 0; i < OreBase.oreBases.length; i++)
+		float f = super.getBlockHardness(world, x, y, z);
+		OreBase base = this.getBase(world.getBlockMetadata(x, y, z));
+		if (base != null)
 		{
-			OreBase base = OreBase.oreBases[i];
-			if (base != null)
-			{
-				base.registerIcons(iconRegister);
-			}
+			return base.hardness + f;
 		}
+		return f;
+	}
+	
+	@Override
+	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+	{
+		float f = super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
+		OreBase base = this.getBase(world.getBlockMetadata(x, y, z));
+		if (base != null)
+		{
+			return base.resistance + f;
+		}
+		return f;
 	}
 	
 	@Override
@@ -75,6 +86,20 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 			return 1;
 		}
 		return 2;
+	}
+	
+	@Override
+	public void registerBlockIcons(IIconRegister iconRegister)
+	{
+		super.registerBlockIcons(iconRegister);
+		for (int i = 0; i < OreBase.oreBases.length; i++)
+		{
+			OreBase base = this.getBase(i);
+			if (base != null)
+			{
+				base.registerIcons(iconRegister);
+			}
+		}
 	}
 	
 	@Override
@@ -125,7 +150,7 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 	{
 		for (int i = 0; i < OreBase.oreBases.length; i++)
 		{
-			OreBase base = OreBase.oreBases[i];
+			OreBase base = this.getBase(i);
 			if (base != null)
 			{
 				list.add(new ItemStack(item, 1, i));

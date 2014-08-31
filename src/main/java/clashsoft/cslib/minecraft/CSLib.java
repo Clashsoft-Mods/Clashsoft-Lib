@@ -96,13 +96,13 @@ public class CSLib extends ClashsoftMod
 	{
 		super.preInit(event);
 		
-		BlockOre2 coalOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreCoal").setBlockTextureName("cslib:coal_overlay");
-		BlockOre2 ironOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreIron").setBlockTextureName("cslib:iron_overlay");
-		BlockOre2 goldOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreGold").setBlockTextureName("cslib:gold_overlay");
-		BlockOre2 diamondOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreDiamond").setBlockTextureName("cslib:diamond_overlay");
-		BlockOre2 emeraldOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreEmerald").setBlockTextureName("cslib:emerald_overlay");
+		BlockOre2 coalOre2 = (BlockOre2) new BlockOre2().setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreCoal").setBlockTextureName("cslib:coal_overlay");
+		BlockOre2 ironOre2 = (BlockOre2) new BlockOre2().setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreIron").setBlockTextureName("cslib:iron_overlay");
+		BlockOre2 goldOre2 = (BlockOre2) new BlockOre2().setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreGold").setBlockTextureName("cslib:gold_overlay");
+		BlockOre2 diamondOre2 = (BlockOre2) new BlockOre2().setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreDiamond").setBlockTextureName("cslib:diamond_overlay");
+		BlockOre2 emeraldOre2 = (BlockOre2) new BlockOre2().setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreEmerald").setBlockTextureName("cslib:emerald_overlay");
 		// redstoneOre2
-		BlockOre2 lapisOre2 = (BlockOre2) new BlockOre2().setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundTypePiston).setBlockName("oreLapis").setBlockTextureName("cslib:lapis_overlay");
+		BlockOre2 lapisOre2 = (BlockOre2) new BlockOre2().setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreLapis").setBlockTextureName("cslib:lapis_overlay");
 		
 		CSBlocks.replaceBlock(Blocks.coal_ore, coalOre2, new ItemCustomBlock(coalOre2));
 		CSBlocks.replaceBlock(Blocks.iron_ore, ironOre2, new ItemCustomBlock(ironOre2));
