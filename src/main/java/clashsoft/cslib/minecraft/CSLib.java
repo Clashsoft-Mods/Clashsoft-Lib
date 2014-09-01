@@ -10,6 +10,7 @@ import clashsoft.cslib.minecraft.command.CSCommand;
 import clashsoft.cslib.minecraft.command.CommandModUpdate;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
 import clashsoft.cslib.minecraft.crafting.loader.FurnaceRecipeLoader;
+import clashsoft.cslib.minecraft.entity.CSEntities;
 import clashsoft.cslib.minecraft.init.ClashsoftMod;
 import clashsoft.cslib.minecraft.item.CSItems;
 import clashsoft.cslib.minecraft.item.block.ItemCustomBlock;
@@ -150,14 +151,15 @@ public class CSLib extends ClashsoftMod
 	}
 	
 	@SubscribeEvent
-	public void playerJoined(EntityJoinWorldEvent event)
+	public void entityJoined(EntityJoinWorldEvent event)
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
 			Capes.updateCape(player);
-			
 		}
+		
+		CSEntities.loadProperties(event.entity);
 	}
 	
 	@SubscribeEvent

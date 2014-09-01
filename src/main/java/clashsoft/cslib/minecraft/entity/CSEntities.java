@@ -1,20 +1,27 @@
 package clashsoft.cslib.minecraft.entity;
 
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.util.Constants;
 import clashsoft.cslib.reflect.CSReflection;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraftforge.common.IExtendedEntityProperties;
 
 public class CSEntities
 {
-	private static Map<String, Class>	STRING_CLASS_MAPPING	= EntityList.stringToClassMapping;
-	private static Map<Class, String>	CLASS_STRING_MAPPING	= EntityList.classToStringMapping;
-	private static Map<Integer, Class>	ID_CLASS_MAPPING		= EntityList.IDtoClassMapping;
-	private static Map<Class, Integer>	CLASS_ID_MAPPING		= CSReflection.getValue(Constants.FIELD_EntityList_classToIDMapping, (Object) null);
-	private static Map<String, Integer>	STRING_ID_MAPPING		= CSReflection.getValue(Constants.FIELD_EntityList_stringToIDMapping, (Object) null);
+	private static Map<String, Class>		STRING_CLASS_MAPPING	= EntityList.stringToClassMapping;
+	private static Map<Class, String>		CLASS_STRING_MAPPING	= EntityList.classToStringMapping;
+	private static Map<Integer, Class>		ID_CLASS_MAPPING		= EntityList.IDtoClassMapping;
+	private static Map<Class, Integer>		CLASS_ID_MAPPING		= CSReflection.getValue(Constants.FIELD_EntityList_classToIDMapping, (Object) null);
+	private static Map<String, Integer>		STRING_ID_MAPPING		= CSReflection.getValue(Constants.FIELD_EntityList_stringToIDMapping, (Object) null);
+	
+	public static List<EntityProperties>	properties				= new ArrayList();
 	
 	private static void register_do(String name, Integer id, Class clazz)
 	{
@@ -93,5 +100,102 @@ public class CSEntities
 	public static void replace(Class<? extends Entity> oldClass, Class<? extends Entity> newClass)
 	{
 		register_do(CLASS_STRING_MAPPING.get(oldClass), CLASS_ID_MAPPING.get(oldClass), newClass);
+	}
+	
+	public static void registerProperties(String name, Class<? extends IExtendedEntityProperties> clazz)
+	{
+		properties.add(new EntityProperties(name, clazz));
+	}
+	
+	public static void registerProperties(EntityProperties props)
+	{
+		if (props == null)
+		{
+			throw new NullPointerException("Cannot use null EntityProperties");
+		}
+		properties.add(props);
+	}
+	
+	public static IExtendedEntityProperties getProperties(String name, Entity entity)
+	{
+		IExtendedEntityProperties properties = entity.getExtendedProperties(name);
+		if (properties != null)
+		{
+			return properties;
+		}
+		return initProperties(name, entity);
+	}
+	
+	public static IExtendedEntityProperties initProperties(String name, Entity entity)
+	{
+		for (EntityProperties eps : properties)
+		{
+			if (name.equals(eps.name))
+			{
+				return eps.loadProperties(entity);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Should not be used from outside this library.
+	 */
+	public static void loadProperties(Entity entity)
+	{
+		for (EntityProperties ep : properties)
+		{
+			ep.loadProperties(entity);
+		}
+	}
+	
+	public static class EntityProperties
+	{
+		public String	name;
+		public Class	propertyClass;
+		
+		public EntityProperties(String name, Class propertyClass)
+		{
+			if (propertyClass == null)
+			{
+				throw new NullPointerException("Cannot use null property class");
+			}
+			
+			this.name = name;
+			this.propertyClass = propertyClass;
+		}
+		
+		public boolean canApply(Entity entity)
+		{
+			return true;
+		}
+		
+		public IExtendedEntityProperties loadProperties(Entity entity)
+		{
+			IExtendedEntityProperties properties = entity.getExtendedProperties(this.name);
+			if (properties == null)
+			{
+				properties = this.createProperties(entity);
+				if (properties != null)
+				{
+					entity.registerExtendedProperties(this.name, properties);
+				}
+			}
+			return properties;
+		}
+		
+		public IExtendedEntityProperties createProperties(Entity entity)
+		{
+			try
+			{
+				Constructor c = this.propertyClass.getConstructor(Entity.class);
+				return (IExtendedEntityProperties) c.newInstance(entity);
+			}
+			catch (Exception ex)
+			{
+				CSLog.error("Failed to load Entity Properties (" + this.propertyClass + "): " + ex.getMessage());
+				return null;
+			}
+		}
 	}
 }
