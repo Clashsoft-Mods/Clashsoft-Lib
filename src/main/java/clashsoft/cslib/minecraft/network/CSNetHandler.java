@@ -119,6 +119,10 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 			FMLProxyPacket proxyPacket = new FMLProxyPacket(buffer.copy(), ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get());
 			out.add(proxyPacket);
 		}
+		catch (IOException ex)
+		{
+			throw new IOException(this.toString() + " failed to write packet", ex);
+		}
 		catch (Exception ex)
 		{
 			throw new IOException(this.toString() + " failed to encode packet", ex);
@@ -149,6 +153,10 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 				EntityPlayer player = this.getClientPlayer();
 				pkt.handleClient(player);
 			}
+		}
+		catch (IOException ex)
+		{
+			throw new IOException(this.toString() + " failed to read packet", ex);
 		}
 		catch (Exception ex)
 		{

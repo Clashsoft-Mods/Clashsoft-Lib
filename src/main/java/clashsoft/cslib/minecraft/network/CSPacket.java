@@ -20,7 +20,7 @@ public abstract class CSPacket
 	 * @param buf
 	 *            the buffer
 	 */
-	public abstract void write(PacketBuffer buf);
+	public abstract void write(PacketBuffer buf) throws IOException;
 	
 	/**
 	 * Reads this packet from the {@link PacketBuffer} {@code buf}.
@@ -28,7 +28,7 @@ public abstract class CSPacket
 	 * @param buf
 	 *            the buffer
 	 */
-	public abstract void read(PacketBuffer buf);
+	public abstract void read(PacketBuffer buf) throws IOException;
 	
 	/**
 	 * Handles this packet client-side.
@@ -85,16 +85,9 @@ public abstract class CSPacket
 	 * @param buf
 	 * @param stack
 	 */
-	public static void writeItemStack(PacketBuffer buf, ItemStack stack)
+	public static void writeItemStack(PacketBuffer buf, ItemStack stack) throws IOException
 	{
-		try
-		{
-			buf.writeItemStackToBuffer(stack);
-		}
-		catch (IOException ex)
-		{
-			ex.printStackTrace();
-		}
+		buf.writeItemStackToBuffer(stack);
 	}
 	
 	/**
@@ -106,20 +99,12 @@ public abstract class CSPacket
 	 * @param stack
 	 *            the stack
 	 */
-	public static final ItemStack readItemStack(PacketBuffer buf)
+	public static final ItemStack readItemStack(PacketBuffer buf) throws IOException
 	{
-		try
-		{
-			return buf.readItemStackFromBuffer();
-		}
-		catch (IOException ex)
-		{
-			ex.printStackTrace();
-			return null;
-		}
+		return buf.readItemStackFromBuffer();
 	}
 	
-	public static void writePotionEffect(PacketBuffer buf, PotionEffect effect)
+	public static void writePotionEffect(PacketBuffer buf, PotionEffect effect) throws IOException
 	{
 		NBTTagCompound nbt1 = null;
 		if (effect != null)
@@ -127,32 +112,16 @@ public abstract class CSPacket
 			nbt1 = new NBTTagCompound();
 			effect.writeCustomPotionEffectToNBT(nbt1);
 		}
-		try
-		{
-			buf.writeNBTTagCompoundToBuffer(nbt1);
-		}
-		catch (IOException ex)
-		{
-			ex.printStackTrace();
-		}
+		buf.writeNBTTagCompoundToBuffer(nbt1);
 	}
 	
-	public static PotionEffect readPotionEffect(PacketBuffer buf)
+	public static PotionEffect readPotionEffect(PacketBuffer buf) throws IOException
 	{
-		NBTTagCompound nbt1;
-		try
-		{
-			nbt1 = buf.readNBTTagCompoundFromBuffer();
-			return nbt1 == null ? null : PotionEffect.readCustomPotionEffectFromNBT(nbt1);
-		}
-		catch (IOException ex)
-		{
-			ex.printStackTrace();
-			return null;
-		}
+		NBTTagCompound nbt1 = buf.readNBTTagCompoundFromBuffer();
+		return nbt1 == null ? null : PotionEffect.readCustomPotionEffectFromNBT(nbt1);
 	}
 	
-	public static void writeTileEntity(PacketBuffer buf, TileEntity tileEntity)
+	public static void writeTileEntity(PacketBuffer buf, TileEntity tileEntity) throws IOException
 	{
 		NBTTagCompound nbt1 = null;
 		if (tileEntity != null)
@@ -160,28 +129,12 @@ public abstract class CSPacket
 			nbt1 = new NBTTagCompound();
 			tileEntity.writeToNBT(nbt1);
 		}
-		try
-		{
-			buf.writeNBTTagCompoundToBuffer(nbt1);
-		}
-		catch (IOException ex)
-		{
-			ex.printStackTrace();
-		}
+		buf.writeNBTTagCompoundToBuffer(nbt1);
 	}
 	
-	public static TileEntity readTileEntity(PacketBuffer buf)
+	public static TileEntity readTileEntity(PacketBuffer buf) throws IOException
 	{
-		NBTTagCompound nbt1;
-		try
-		{
-			nbt1 = buf.readNBTTagCompoundFromBuffer();
-			return nbt1 == null ? null : TileEntity.createAndLoadEntity(nbt1);
-		}
-		catch (IOException ex)
-		{
-			ex.printStackTrace();
-			return null;
-		}
+		NBTTagCompound nbt1 = buf.readNBTTagCompoundFromBuffer();
+		return nbt1 == null ? null : TileEntity.createAndLoadEntity(nbt1);
 	}
 }
