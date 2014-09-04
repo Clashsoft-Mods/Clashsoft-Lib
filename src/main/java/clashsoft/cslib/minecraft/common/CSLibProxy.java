@@ -1,6 +1,7 @@
 package clashsoft.cslib.minecraft.common;
 
 import java.util.List;
+import java.util.UUID;
 
 import clashsoft.cslib.minecraft.CSLib;
 
@@ -73,7 +74,35 @@ public class CSLibProxy extends BaseProxy
 		for (int i = 0; i < players.size(); i++)
 		{
 			player = players.get(i);
-			if (player.getDisplayName().equals(username))
+			if (player.getCommandSenderName().equals(username))
+			{
+				return player;
+			}
+		}
+		return null;
+	}
+	
+	public EntityPlayer findPlayer(UUID uuid)
+	{
+		for (World world : DimensionManager.getWorlds())
+		{
+			EntityPlayer player = this.findPlayer(world, uuid);
+			if (player != null)
+			{
+				return player;
+			}
+		}
+		return null;
+	}
+	
+	public EntityPlayer findPlayer(World world, UUID uuid)
+	{
+		List<EntityPlayer> players = world.playerEntities;
+		EntityPlayer player = null;
+		for (int i = 0; i < players.size(); i++)
+		{
+			player = players.get(i);
+			if (player.getUniqueID().equals(uuid))
 			{
 				return player;
 			}
