@@ -3,6 +3,9 @@ package clashsoft.cslib.minecraft.block;
 import java.util.List;
 import java.util.Random;
 
+import clashsoft.cslib.minecraft.client.icon.IIconSupplier;
+import clashsoft.cslib.minecraft.client.icon.slab.SlabIconSupplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,22 +21,21 @@ public class BlockCustomSlab extends BlockStoneSlab implements ICustomBlock
 	public Block	otherSlab;
 	
 	public String[]	names;
-	public String[]	topIconNames;
-	public String[]	sideIconNames;
 	
-	private IIcon[]	topIcons;
-	private IIcon[]	sideIcons;
+	public IIconSupplier iconSupplier;
 	
-	public BlockCustomSlab(String[] names, String[] topIcons, String[] sideIcons, Block otherSlab, boolean doubleSlab)
+	public BlockCustomSlab(String[] names, Object icons, boolean doubleSlab)
 	{
 		super(doubleSlab);
 		
 		this.names = names;
-		this.topIconNames = topIcons;
-		this.topIcons = new IIcon[topIcons.length];
-		this.sideIconNames = sideIcons;
-		this.sideIcons = new IIcon[sideIcons.length];
-		this.otherSlab = otherSlab;
+		this.iconSupplier = SlabIconSupplier.create(icons);
+	}
+	
+	public static void bind(BlockCustomSlab halfSlab, BlockCustomSlab doubleSlab)
+	{
+		halfSlab.otherSlab = doubleSlab;
+		doubleSlab.otherSlab = halfSlab;
 	}
 	
 	@Override
@@ -43,20 +45,15 @@ public class BlockCustomSlab extends BlockStoneSlab implements ICustomBlock
 		{
 			side = 1;
 		}
+		metadata &= 7;
 		
-		return side == 1 || side == 0 ? this.topIcons[metadata & 7] : this.sideIcons[metadata & 7];
+		return this.iconSupplier.getIcon(metadata, side);
 	}
 	
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		for (int i = 0; i < this.topIconNames.length; i++)
-		{
-			this.topIcons[i] = iconRegister.registerIcon(this.topIconNames[i]);
-			this.sideIcons[i] = iconRegister.registerIcon(this.sideIconNames[i]);
-		}
-		
-		this.topIconNames = this.sideIconNames = null;
+		this.iconSupplier.registerIcons(iconRegister);
 	}
 	
 	@Override
