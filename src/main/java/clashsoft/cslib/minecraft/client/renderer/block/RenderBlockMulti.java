@@ -17,7 +17,7 @@ public class RenderBlockMulti extends RenderBlockSimple
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
 	{
-		this.renderItem = true;
+		this.rendering = true;
 		
 		int passes = 1;
 		if (block instanceof IBlockRenderPass)
@@ -31,12 +31,14 @@ public class RenderBlockMulti extends RenderBlockSimple
 			renderer.renderBlockAsItem(block, metadata, 1F);
 		}
 		
-		this.renderItem = false;
+		this.rendering = false;
 	}
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
+		this.rendering = true;
+		
 		int passes = 1;
 		if (block instanceof IBlockRenderPass)
 		{
@@ -47,9 +49,16 @@ public class RenderBlockMulti extends RenderBlockSimple
 		for (int i = 0; i < passes; i++)
 		{
 			renderPass = i;
-			renderer.renderStandardBlock(block, x, y, z);
+			this.renderPass(i, world, x, y, z, block, renderer);
 		}
+		
+		this.rendering = false;
 		return false;
+	}
+	
+	protected void renderPass(int pass, IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer)
+	{
+		renderer.renderBlockByRenderType(block, x, y, z);
 	}
 
 	@Override

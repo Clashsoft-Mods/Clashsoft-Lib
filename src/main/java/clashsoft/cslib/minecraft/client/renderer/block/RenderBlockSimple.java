@@ -7,14 +7,14 @@ import net.minecraft.client.renderer.RenderBlocks;
 
 public abstract class RenderBlockSimple implements ISimpleBlockRenderingHandler
 {
-	protected boolean renderItem;
+	protected boolean rendering;
 	
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
 	{
-		this.renderItem = true;
+		this.rendering = true;
 		renderer.renderBlockAsItem(block, metadata, 1F);
-		this.renderItem = false;
+		this.rendering = false;
 	}
 	
 	@Override
@@ -26,7 +26,7 @@ public abstract class RenderBlockSimple implements ISimpleBlockRenderingHandler
 	@Override
 	public int getRenderId()
 	{
-		return this.renderItem ? 0 : this.getRenderID();
+		return this.rendering ? 0 : this.getRenderID();
 	}
 	
 	protected abstract int getRenderID();
