@@ -23,10 +23,10 @@ public class CustomTeleporter extends Teleporter
 	public Block				portalBlock					= Blocks.portal;
 	public int					portalMetadata;
 	
-	private final WorldServer	world;
-	private final Random		random;
-	private final LongHashMap	destinationCoordinateCache	= new LongHashMap();
-	private final List			destinationCoordinateKeys	= new ArrayList();
+	protected final WorldServer	world;
+	protected final Random		random;
+	protected final LongHashMap	destinationCoordinateCache	= new LongHashMap();
+	protected final List		destinationCoordinateKeys	= new ArrayList();
 	
 	public CustomTeleporter(WorldServer world)
 	{
