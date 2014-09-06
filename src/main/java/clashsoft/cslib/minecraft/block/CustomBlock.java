@@ -68,7 +68,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	
 	public CustomBlock(Material material, String name, String iconName, CreativeTabs tab)
 	{
-		this(material, new String[] { name }, iconName, null);
+		this(material, new String[] { name }, new IconSupplier(iconName), null);
 		this.setCreativeTab(tab);
 	}
 	
