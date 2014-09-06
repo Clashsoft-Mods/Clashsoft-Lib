@@ -6,8 +6,8 @@ import java.util.Random;
 import clashsoft.cslib.minecraft.client.icon.IIconSupplier;
 import clashsoft.cslib.minecraft.client.icon.slab.SlabIconSupplier;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockStoneSlab;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,17 +16,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class BlockCustomSlab extends BlockStoneSlab implements ICustomBlock
+public class BlockCustomSlab extends BlockSlab implements ICustomBlock
 {
-	public Block			otherSlab;
+	public BlockCustomSlab	otherSlab;
 	
 	public String[]			names;
 	
 	public IIconSupplier	iconSupplier;
 	
-	public BlockCustomSlab(String[] names, Object icons, boolean doubleSlab)
+	public BlockCustomSlab(Material material, String[] names, Object icons, boolean doubleSlab)
 	{
-		super(doubleSlab);
+		super(doubleSlab, material);
 		
 		this.names = names;
 		this.iconSupplier = SlabIconSupplier.create(icons);
