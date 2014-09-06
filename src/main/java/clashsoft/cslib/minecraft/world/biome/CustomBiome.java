@@ -15,6 +15,11 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	public Block	stoneBlock	= Blocks.stone;
 	public byte		stoneMetadata;
 	
+	public Block	waterBlock	= Blocks.water;
+	public byte		waterMetadata;
+	
+	public boolean	isOcean;
+	
 	public CustomBiome(int id)
 	{
 		super(id);
@@ -23,6 +28,12 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	public CustomBiome(int id, boolean register)
 	{
 		super(id, register);
+	}
+	
+	@Override
+	public TempCategory getTempCategory()
+	{
+		return this.isOcean ? TempCategory.OCEAN : super.getTempCategory();
 	}
 	
 	@Override
@@ -44,6 +55,12 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	}
 	
 	@Override
+	public Block getWaterBlock()
+	{
+		return this.waterBlock;
+	}
+	
+	@Override
 	public byte getTopMetadata()
 	{
 		return this.topMetadata;
@@ -62,9 +79,21 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	}
 	
 	@Override
+	public byte getWaterMetadata()
+	{
+		return this.waterMetadata;
+	}
+	
+	@Override
 	public int getBedrockHeight()
 	{
 		return 5;
+	}
+	
+	@Override
+	public int getWaterLevel()
+	{
+		return this.isOcean ? 64 : 0;
 	}
 	
 	@Override
@@ -74,18 +103,22 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 		int x1 = x & 0xF;
 		int z1 = z & 0xF;
 		int index1 = ((z1 << 4) + x1) * count;
-		int grassHeight = -1;
 		int randomNoise = (int) (noise / 3.0D + 3.0D + random.nextDouble() * 0.25D);
+		int grassHeight = -1;
+		boolean foundTop = false;
 		
 		int bedrock = this.getBedrockHeight();
 		boolean genBedrock = bedrock > 0;
+		int waterLevel = this.getWaterLevel();
 		
-		Block stone = this.getStoneBlock();
-		byte stonem = this.getStoneMetadata();
 		Block top = this.getTopBlock();
 		byte topm = this.getTopMetadata();
 		Block filler = this.getFillerBlock();
 		byte fillerm = this.getFillerMetadata();
+		Block stone = this.getStoneBlock();
+		byte stonem = this.getStoneMetadata();
+		Block water = this.getWaterBlock();
+		byte waterm = this.getWaterMetadata();
 		
 		for (int y = 255; y >= 0; --y)
 		{
@@ -104,6 +137,7 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 				if (grassHeight == -1)
 				{
 					grassHeight = y;
+					foundTop = true;
 					
 					blocks[index] = top;
 					metadatas[index] = topm;
@@ -122,6 +156,11 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 			else
 			{
 				grassHeight = -1;
+				if (!foundTop && y < waterLevel)
+				{
+					blocks[index] = water;
+					metadatas[index] = waterm;
+				}
 			}
 		}
 	}

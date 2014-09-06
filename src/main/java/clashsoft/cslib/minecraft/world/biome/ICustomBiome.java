@@ -10,11 +10,17 @@ public interface ICustomBiome
 	
 	public Block getStoneBlock();
 	
+	public Block getWaterBlock();
+	
 	public byte getTopMetadata();
 	
 	public byte getFillerMetadata();
 	
 	public byte getStoneMetadata();
 	
+	public byte getWaterMetadata();
+	
 	public int getBedrockHeight();
+	
+	public int getWaterLevel();
 }
