@@ -15,11 +15,15 @@ public class BlockCustomGlass extends CustomBlock
 	public BlockCustomGlass(Material material, String[] names, Object icons)
 	{
 		super(material, names, icons, null);
+		this.setStepSound(soundTypeGlass);
+		this.setLightOpacity(0);
 	}
 	
 	public BlockCustomGlass(Material material, String name, String iconName)
 	{
 		super(material, name, iconName, null);
+		this.setStepSound(soundTypeGlass);
+		this.setLightOpacity(0);
 	}
 	
 	public BlockCustomGlass setRenderSide(boolean renderSide)
