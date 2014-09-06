@@ -18,7 +18,7 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	public Block	waterBlock	= Blocks.water;
 	public byte		waterMetadata;
 	
-	public boolean	isOcean;
+	public int	waterLevel;
 	
 	public CustomBiome(int id)
 	{
@@ -33,7 +33,7 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	@Override
 	public TempCategory getTempCategory()
 	{
-		return this.isOcean ? TempCategory.OCEAN : super.getTempCategory();
+		return this.waterLevel > 0 ? TempCategory.OCEAN : super.getTempCategory();
 	}
 	
 	@Override
@@ -93,7 +93,7 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	@Override
 	public int getWaterLevel()
 	{
-		return this.isOcean ? 64 : 0;
+		return this.waterLevel;
 	}
 	
 	@Override
