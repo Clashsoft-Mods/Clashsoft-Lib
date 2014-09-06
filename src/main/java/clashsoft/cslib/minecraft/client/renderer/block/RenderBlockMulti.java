@@ -7,12 +7,11 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 
-
 public class RenderBlockMulti extends RenderBlockSimple
 {
-	public static RenderBlockMulti instance = new RenderBlockMulti();
+	public static RenderBlockMulti	instance	= new RenderBlockMulti();
 	
-	public static int renderPass = 0;
+	public static int				renderPass	= 0;
 	
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
@@ -33,7 +32,7 @@ public class RenderBlockMulti extends RenderBlockSimple
 		
 		this.rendering = false;
 	}
-
+	
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
@@ -60,7 +59,7 @@ public class RenderBlockMulti extends RenderBlockSimple
 	{
 		renderer.renderBlockByRenderType(block, x, y, z);
 	}
-
+	
 	@Override
 	protected int getRenderID()
 	{

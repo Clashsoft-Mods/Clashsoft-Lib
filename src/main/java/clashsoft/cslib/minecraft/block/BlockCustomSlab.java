@@ -18,11 +18,11 @@ import net.minecraft.world.World;
 
 public class BlockCustomSlab extends BlockStoneSlab implements ICustomBlock
 {
-	public Block	otherSlab;
+	public Block			otherSlab;
 	
-	public String[]	names;
+	public String[]			names;
 	
-	public IIconSupplier iconSupplier;
+	public IIconSupplier	iconSupplier;
 	
 	public BlockCustomSlab(String[] names, Object icons, boolean doubleSlab)
 	{
