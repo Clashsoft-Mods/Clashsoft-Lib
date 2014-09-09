@@ -30,7 +30,7 @@ import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-public abstract class CustomChunkProvider implements IChunkProvider
+public class CustomChunkProvider implements IChunkProvider
 {
 	public Random					random;
 	

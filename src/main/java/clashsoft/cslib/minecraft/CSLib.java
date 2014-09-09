@@ -19,6 +19,7 @@ import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.update.reader.SimpleUpdateReader;
 import clashsoft.cslib.minecraft.update.updater.ModUpdater;
 import clashsoft.cslib.minecraft.util.Log4JLogger;
+import clashsoft.cslib.minecraft.world.gen.CustomCaveGen;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -36,6 +37,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.terraingen.InitMapGenEvent;
+import net.minecraftforge.event.terraingen.InitMapGenEvent.EventType;
 
 @Mod(modid = CSLib.MODID, name = CSLib.NAME, version = CSLib.VERSION)
 public class CSLib extends ClashsoftMod
@@ -168,6 +171,15 @@ public class CSLib extends ClashsoftMod
 		if (proxy.isClient())
 		{
 			CSUpdate.notifyAll(event.player);
+		}
+	}
+	
+	@SubscribeEvent
+	public void getModdedMapGen(InitMapGenEvent event)
+	{
+		if (event.type == EventType.CAVE)
+		{
+			event.newGen = new CustomCaveGen();
 		}
 	}
 }
