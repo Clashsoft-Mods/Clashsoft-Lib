@@ -504,7 +504,7 @@ public class CSReflection
 	public static <T, V> void setValue(Class<? super T> clazz, T instance, V value, String... fieldNames)
 	{
 		Field f = getField(clazz, fieldNames);
-		setValue(f, instance, value);
+		setField(f, instance, value);
 	}
 	
 	// Field ID
@@ -522,7 +522,7 @@ public class CSReflection
 	public static <T, V> void setValue(Class<? super T> clazz, T instance, V value, int fieldID)
 	{
 		Field f = getField(clazz, fieldID);
-		setValue(f, instance, value);
+		setField(f, instance, value);
 	}
 	
 	/**
@@ -537,7 +537,7 @@ public class CSReflection
 	 * @param value
 	 *            the new value
 	 */
-	public static <T, V> void setValue(Field field, T instance, V value)
+	public static <T, V> void setField(Field field, T instance, V value)
 	{
 		try
 		{
