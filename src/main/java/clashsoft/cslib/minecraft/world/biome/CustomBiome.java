@@ -23,11 +23,20 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	public CustomBiome(int id)
 	{
 		super(id);
+		this.addSpawnEntries();
 	}
 	
 	public CustomBiome(int id, boolean register)
 	{
 		super(id, register);
+		this.addSpawnEntries();
+	}
+	
+	public void addSpawnEntries()
+	{
+		this.spawnableMonsterList.clear();
+		this.spawnableCreatureList.clear();
+		this.spawnableWaterCreatureList.clear();
 	}
 	
 	@Override
