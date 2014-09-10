@@ -72,9 +72,9 @@ public class BlockCustomPlant extends CustomBlock implements IPlantable
 	// WORLD SECTION
 	
 	@Override
-	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+	public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack)
 	{
-		return super.canPlaceBlockOnSide(world, x, y, z, side) && this.canBlockStay(world, x, y, z, 0);
+		return this.canPlaceBlockOnSide(world, x, y, z, side) && this.canBlockStay(world, x, y, z, stack.getItemDamage());
 	}
 	
 	@Override
