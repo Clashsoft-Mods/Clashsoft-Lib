@@ -68,7 +68,7 @@ public class CSLib extends ClashsoftMod
 	public static Block			redstoneOre2		= new BlockRedstoneOre2(OreBase.TYPE_OVERWORLD, false).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreRedstone").setBlockTextureName("cslib:redstone_overlay");
 	public static Block			litRedstoneOre2		= new BlockRedstoneOre2(OreBase.TYPE_OVERWORLD, true).setLightLevel(0.625F).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreRedstone").setBlockTextureName("cslib:redstone_overlay");
 	public static Block			lapisOre2			= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreLapis").setBlockTextureName("cslib:lapis_overlay");
-	public static Block			quartzOre2			= new BlockOre2(OreBase.TYPE_NETHER).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("netherquartz").setBlockTextureName("quartz_ore");
+	public static Block			quartzOre2			= new BlockOre2(OreBase.TYPE_NETHER).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("netherquartz").setBlockTextureName("cslib:quartz_overlay");
 	
 	public static boolean		printUpdateNotes	= false;
 	public static boolean		updateCheck			= true;
