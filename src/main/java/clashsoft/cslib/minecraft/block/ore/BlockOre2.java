@@ -147,9 +147,8 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 		{
 			return;
 		}
-		for (int i = 0; i < this.bases.length; i++)
+		for (OreBase base : this.bases)
 		{
-			OreBase base = this.bases[i];
 			if (base != null)
 			{
 				base.registerIcons(iconRegister);

@@ -74,6 +74,7 @@ public class CSEntities
 	/**
 	 * @deprecated Use {@link #replace(Class, Class)} instead.
 	 */
+	@Deprecated
 	public static void replace(String name, int id, Class<? extends Entity> clazz)
 	{
 		register(name, id, clazz);
@@ -82,6 +83,7 @@ public class CSEntities
 	/**
 	 * @deprecated Use {@link #replace(Class, Class)} instead.
 	 */
+	@Deprecated
 	public static void replace(String name, int id, Class<? extends Entity> clazz, int eggColor1, int eggColor2)
 	{
 		register(name, id, clazz, eggColor1, eggColor2);

@@ -18,7 +18,7 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	public Block	waterBlock	= Blocks.water;
 	public byte		waterMetadata;
 	
-	public int	waterLevel;
+	public int		waterLevel;
 	
 	public CustomBiome(int id)
 	{

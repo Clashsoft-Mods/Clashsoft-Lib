@@ -22,7 +22,7 @@ public class ItemCustomSlab extends ItemBlock
 		
 		if (block instanceof BlockCustomSlab)
 		{
-			BlockCustomSlab slab = ((BlockCustomSlab) block);
+			BlockCustomSlab slab = (BlockCustomSlab) block;
 			BlockCustomSlab otherSlab = slab.otherSlab;
 			
 			this.isDoubleSlab = block.isOpaqueCube();

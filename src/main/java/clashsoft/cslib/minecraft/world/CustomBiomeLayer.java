@@ -30,7 +30,7 @@ public abstract class CustomBiomeLayer extends GenLayer
 		biomes.initWorldGenSeed(seed);
 		voronoiZoom.initWorldGenSeed(seed);
 		
-		return new GenLayer[] { biomes, voronoiZoom };	
+		return new GenLayer[] { biomes, voronoiZoom };
 	}
 	
 	@Override

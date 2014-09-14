@@ -6,13 +6,13 @@ import net.minecraft.util.IIcon;
 
 public class OreBaseStone extends OreBase
 {
-	public IIcon coalIcon;
-	public IIcon ironIcon;
-	public IIcon goldIcon;
-	public IIcon diamondIcon;
-	public IIcon emeraldIcon;
-	public IIcon redstoneIcon;
-	public IIcon lapisIcon;
+	public IIcon	coalIcon;
+	public IIcon	ironIcon;
+	public IIcon	goldIcon;
+	public IIcon	diamondIcon;
+	public IIcon	emeraldIcon;
+	public IIcon	redstoneIcon;
+	public IIcon	lapisIcon;
 	
 	OreBaseStone(String name, float multiplier)
 	{

@@ -46,21 +46,21 @@ public class BlockCustomGlass extends CustomBlock
 	
 	@Override
 	public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
+	{
+		return false;
+	}
+	
 	@Override
 	public int getRenderBlockPass()
 	{
 		return this.isTransparent ? 1 : 0;
 	}
 	
-    @Override
+	@Override
 	protected boolean canSilkHarvest()
-    {
-        return true;
-    }
+	{
+		return true;
+	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
