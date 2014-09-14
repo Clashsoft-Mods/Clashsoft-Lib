@@ -1,7 +1,25 @@
-version=1.7.10-2.6.0
-url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.6.0/ClashsoftLib-1.7.10-2.6.0.jar
+version=1.7.10-2.7.0
+url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.7.0/ClashsoftLib-1.7.10-2.7.0.jar
 
-+ Added ItemCraftingHelper for mortar-like items.
-+ Added BlockCustomBush from MFM.
-+ Added BlockCustomCrops from MFM.
-* Fixed some recipes crashing the game.
++ Introduced Ore Base API.
++ Introduced Entity Property API.
++ Added ReplaceField option for replaceItem.
++ Added ReplaceField and NewItemBlock option for replaceBlock.
++ Added Render Type for multi-pass rendering.
++ Added BlockCustomFarmland.
++ Added BlockCustomGlass.
++ Added BlockCustomLamp.
++ Added BlockCustomPortalBase.
++ Added ItemCustomBucket.
++ Added ItemCustomDoor.
++ Added ItemCustomSlab.
++ Added Custom Ocean Biomes.
++ Added Custom Cave Generator.
++ Rewritten CSEntities.
+* Improved Packet exception handling.
+* Merged CustomGenLayer and CustomBiomeLayer.
+* Fixed BlockCustomPlant placement check.
+* Fixed incorrect BlockCustomPortal block bounds.
+* Fixed ItemCustomArmor reflection bug.
+* Fixed ItemCustomArmor crash on right-click.
+* Fixed CustomBlocks and CustomItems not appearing on the search tab.
