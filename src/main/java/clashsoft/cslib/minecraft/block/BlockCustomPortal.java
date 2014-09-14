@@ -81,11 +81,11 @@ public abstract class BlockCustomPortal extends BlockCustomPortalBase
 		
 		if (i == 1)
 		{
-			this.setBlockBounds(0F, 0.0F, 0.475F, 1F, 1.0F, 0.625F);
+			this.setBlockBounds(0F, 0.0F, 0.375F, 1F, 1.0F, 0.625F);
 		}
 		else if (i == 2)
 		{
-			this.setBlockBounds(0.475F, 0.0F, 0F, 0.625F, 1.0F, 1F);
+			this.setBlockBounds(0.375F, 0.0F, 0F, 0.625F, 1.0F, 1F);
 		}
 	}
 	

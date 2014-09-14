@@ -5,8 +5,10 @@ import clashsoft.cslib.reflect.CSReflection;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class ItemCustomArmor extends ItemArmor
 {
@@ -32,5 +34,15 @@ public class ItemCustomArmor extends ItemArmor
 	public boolean isValidArmor(ItemStack stack, int armorType, Entity entity)
 	{
 		return armorType == this.armorType;
+	}
+	
+	@Override
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+	{
+		if (this.armorType < 4)
+		{
+			return super.onItemRightClick(stack, world, player);
+		}
+		return stack;
 	}
 }

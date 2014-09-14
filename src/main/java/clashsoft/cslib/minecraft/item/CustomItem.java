@@ -219,7 +219,7 @@ public class CustomItem extends Item
 		{
 			for (int i = 0; i < this.names.length; i++)
 			{
-				if (this.enabled[i] && tab == this.getCreativeTab(i))
+				if (this.enabled[i] && (tab == null || tab == this.getCreativeTab(i)))
 				{
 					subItems.add(new ItemStack(this, 1, i));
 				}

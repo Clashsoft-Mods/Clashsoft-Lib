@@ -331,7 +331,7 @@ public class CustomBlock extends Block implements ICustomBlock
 	{
 		for (int i = 0; i < this.names.length; i++)
 		{
-			if (this.enabled[i] && tab == this.getCreativeTab(i))
+			if (this.enabled[i] && (tab == null || tab == this.getCreativeTab(i)))
 			{
 				list.add(new ItemStack(item, 1, i));
 			}
