@@ -5,20 +5,22 @@ import net.minecraft.util.IIcon;
 
 public class OreBase
 {
-	public static OreBase[]	oreBases			= new OreBase[16];
-	private static int		nextID				= 0;
+	public static OreBase[]	oreBases	= new OreBase[16];
+	private static int		nextID		= 0;
 	
-	public static OreBase	stone				= new OreBaseStone(0, "stone", 1F).register();
+	public static OreBase	stone		= new OreBaseStone(0, "stone", 1F).register();
 	
 	public final int		id;
 	public final String		name;
 	
 	public int				harvestLevel;
-	public String			harvestTool			= "pickaxe";
-	public float			hardness			= 1.5F;
-	public float			resistance			= 2.5F;
+	public String			harvestTool	= "pickaxe";
+	public float			hardness	= 1.5F;
+	public float			resistance	= 2.5F;
 	public float			amountMultiplier;
 	public float			xpMultiplier;
+	
+	public boolean			hasCustomName;
 	
 	public String			iconName;
 	protected IIcon			icon;
@@ -111,9 +113,19 @@ public class OreBase
 		return this;
 	}
 	
+	public OreBase setHasCustomName(boolean hasCustomName)
+	{
+		this.hasCustomName = hasCustomName;
+		return this;
+	}
+	
 	public String getUnlocalizedName(BlockOre2 ore)
 	{
-		return ore.getUnlocalizedName() + "." + this.name;
+		if (this.hasCustomName)
+		{
+			return ore.getUnlocalizedName() + "." + this.name;
+		}
+		return ore.getUnlocalizedName();
 	}
 	
 	/**
