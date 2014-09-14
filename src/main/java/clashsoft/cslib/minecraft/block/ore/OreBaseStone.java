@@ -14,9 +14,9 @@ public class OreBaseStone extends OreBase
 	public IIcon redstoneIcon;
 	public IIcon lapisIcon;
 	
-	OreBaseStone(int id, String name, float multiplier)
+	OreBaseStone(String name, float multiplier)
 	{
-		super(id, name, multiplier);
+		super(name, multiplier);
 	}
 	
 	@Override

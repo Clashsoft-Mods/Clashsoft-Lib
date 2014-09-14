@@ -18,11 +18,11 @@ public class BlockRedstoneOre2 extends BlockOre2
 {
 	private static final Random	rand	= new Random();
 	
-	protected boolean				isActive;
+	protected boolean			isActive;
 	
-	public BlockRedstoneOre2(boolean lit)
+	public BlockRedstoneOre2(String type, boolean lit)
 	{
-		super();
+		super(type);
 		
 		if (lit)
 		{
@@ -105,7 +105,7 @@ public class BlockRedstoneOre2 extends BlockOre2
 		}
 		return 0;
 	}
-
+	
 	@Override
 	protected ItemStack createStackedBlock(int metadata)
 	{

@@ -1,53 +1,47 @@
 package clashsoft.cslib.minecraft.block.ore;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 public class OreBase
 {
-	public static OreBase[]	oreBases	= new OreBase[16];
-	private static int		nextID		= 0;
+	protected static Map<String, OreBase[]>	oreBases		= new HashMap();
 	
-	public static OreBase	stone		= new OreBaseStone(0, "stone", 1F).register();
+	public static final String				TYPE_OVERWORLD	= "overworld";
+	public static final String				TYPE_NETHER		= "nether";
+	public static final String				TYPE_END		= "end";
 	
-	public final int		id;
-	public final String		name;
+	public static OreBase					stone			= new OreBaseStone("stone", 1F).register(TYPE_OVERWORLD, 0);
+	public static OreBase					netherrack		= new OreBase("netherrack", 1F).register(TYPE_NETHER, 0);
+	public static OreBase					endstone		= new OreBase("endstone", 1F).register(TYPE_END, 0);
 	
-	public int				harvestLevel;
-	public String			harvestTool	= "pickaxe";
-	public float			hardness	= 1.5F;
-	public float			resistance	= 2.5F;
-	public float			amountMultiplier;
-	public float			xpMultiplier;
+	protected String						type;
+	protected int							id;
+	public final String						name;
 	
-	public boolean			hasCustomName;
+	public int								harvestLevel;
+	public String							harvestTool		= "pickaxe";
+	public float							hardness		= 1.5F;
+	public float							resistance		= 2.5F;
+	public float							amountMultiplier;
+	public float							xpMultiplier;
 	
-	public String			iconName;
-	protected IIcon			icon;
+	public boolean							hasCustomName;
+	
+	public String							iconName;
+	protected IIcon							icon;
 	
 	public OreBase(String name)
 	{
-		this(nextID(), name, 1F);
+		this(name, 1F);
 	}
 	
 	public OreBase(String name, float multiplier)
 	{
-		this(nextID(), name, multiplier);
-	}
-	
-	public OreBase(int id, String name)
-	{
-		this(id, name, 1F);
-	}
-	
-	public OreBase(int id, String name, float multiplier)
-	{
-		if (id < 0 || id >= oreBases.length)
-		{
-			throw new IllegalArgumentException("Invalid Ore Base ID");
-		}
-		
-		this.id = id;
 		this.name = name;
 		this.iconName = name;
 		
@@ -55,14 +49,52 @@ public class OreBase
 		this.xpMultiplier = multiplier;
 	}
 	
-	public static int nextID()
+	public static OreBase getOreBase(String type, int id)
 	{
-		return nextID++;
+		OreBase[] array = oreBases.get(type);
+		if (array == null)
+		{
+			return null;
+		}
+		return array[id];
 	}
 	
-	public OreBase register()
+	public static OreBase[] getOreBases(String type)
 	{
-		oreBases[this.id] = this;
+		return oreBases.get(type);
+	}
+	
+	protected static OreBase[] getArray(String type)
+	{
+		OreBase[] array = oreBases.get(type);
+		if (array == null)
+		{
+			array = new OreBase[16];
+			oreBases.put(type, array);
+		}
+		return array;
+	}
+	
+	public OreBase register(String type)
+	{
+		OreBase[] array = getArray(type);
+		int index = Arrays.binarySearch(array, null);
+		if (index != -1)
+		{
+			array[index] = this;
+			this.type = type;
+			this.id = index;
+			return this;
+		}
+		return null;
+	}
+	
+	public OreBase register(String type, int id)
+	{
+		OreBase[] array = getArray(type);
+		array[id] = this;
+		this.type = type;
+		this.id = id;
 		return this;
 	}
 	

@@ -22,9 +22,20 @@ import net.minecraft.world.World;
 
 public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBlock
 {
+	private OreBase[]	bases;
+	
+	public BlockOre2(String type)
+	{
+		this.bases = OreBase.getOreBases(type);
+	}
+	
 	public OreBase getBase(int metadata)
 	{
-		return OreBase.oreBases[metadata & 15];
+		if (this.bases == null || metadata < 0 || metadata >= this.bases.length)
+		{
+			return null;
+		}
+		return this.bases[metadata];
 	}
 	
 	@Override
@@ -131,9 +142,14 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		super.registerBlockIcons(iconRegister);
-		for (int i = 0; i < OreBase.oreBases.length; i++)
+		
+		if (this.bases == null)
 		{
-			OreBase base = this.getBase(i);
+			return;
+		}
+		for (int i = 0; i < this.bases.length; i++)
+		{
+			OreBase base = this.bases[i];
 			if (base != null)
 			{
 				base.registerIcons(iconRegister);
@@ -187,9 +203,14 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
-		for (int i = 0; i < OreBase.oreBases.length; i++)
+		if (this.bases == null)
 		{
-			OreBase base = this.getBase(i);
+			return;
+		}
+		
+		for (int i = 0; i < this.bases.length; i++)
+		{
+			OreBase base = this.bases[i];
 			if (base != null)
 			{
 				list.add(new ItemStack(item, 1, i));
