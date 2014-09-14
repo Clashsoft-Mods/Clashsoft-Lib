@@ -11,9 +11,9 @@ public class ArraySet<E> extends AbstractSet<E>
 	private Object[]			entries;
 	
 	private int					initialCapacity;
-	private int					size			= 0;
+	private int					size;
 	
-	private int					currentIndex	= 0;
+	private int					currentIndex;
 	
 	private transient Object[]	toArray;
 	

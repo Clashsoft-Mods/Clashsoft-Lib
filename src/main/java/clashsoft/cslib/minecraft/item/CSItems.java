@@ -338,17 +338,17 @@ public class CSItems
 			StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
 			if (stat != null)
 			{
-				CSReflection.setField(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
+				CSReflection.setField(Constants.FIELD_StatCrafting_item, stat, newItem);
 			}
 			stat = (StatCrafting) StatList.objectCraftStats[id];
 			if (stat != null)
 			{
-				CSReflection.setField(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
+				CSReflection.setField(Constants.FIELD_StatCrafting_item, stat, newItem);
 			}
 			stat = (StatCrafting) StatList.objectUseStats[id];
 			if (stat != null)
 			{
-				CSReflection.setField(Constants.FIELD_STATCRAFTING_ITEM, stat, newItem);
+				CSReflection.setField(Constants.FIELD_StatCrafting_item, stat, newItem);
 			}
 			
 			// Replace Crafting Recipes
@@ -396,7 +396,7 @@ public class CSItems
 	
 	public static void setItem(ItemStack stack, Item item)
 	{
-		CSReflection.setField(Constants.FIELD_ITEMSTACK_ITEM, stack, item);
+		CSReflection.setField(Constants.FIELD_ItemStack_item, stack, item);
 	}
 	
 	private static boolean applyReplacement(ItemStack stack)

@@ -153,7 +153,7 @@ public class CSBlocks
 			// Use old ItemBlock and update reference
 			else if (itemBlock != null)
 			{
-				CSReflection.setField(Constants.FIELD_ITEMBLOCK_BLOCK, itemBlock, newBlock);
+				CSReflection.setField(Constants.FIELD_ItemBlock_block, itemBlock, newBlock);
 			}
 			
 			// Replace Field
