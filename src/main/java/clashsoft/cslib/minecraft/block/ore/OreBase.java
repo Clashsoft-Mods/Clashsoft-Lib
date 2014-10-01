@@ -16,7 +16,7 @@ public class OreBase
 	public static final String				TYPE_END		= "end";
 	
 	public static OreBase					stone			= new OreBaseStone("stone", 1F).register(TYPE_OVERWORLD, 0);
-	public static OreBase					netherrack		= new OreBase("netherrack", 1F).register(TYPE_NETHER, 0);
+	public static OreBase					netherrack		= new OreBaseNetherrack("netherrack", 1F).register(TYPE_NETHER, 0);
 	public static OreBase					endstone		= new OreBase("endstone", 1F).register(TYPE_END, 0);
 	
 	protected String						type;

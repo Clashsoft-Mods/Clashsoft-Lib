@@ -28,6 +28,7 @@ public class OreBaseStone extends OreBase
 	@Override
 	public void registerIcons(IIconRegister iconRegister)
 	{
+		this.icon = iconRegister.registerIcon("stone");
 		this.coalIcon = iconRegister.registerIcon("coal_ore");
 		this.ironIcon = iconRegister.registerIcon("iron_ore");
 		this.goldIcon = iconRegister.registerIcon("gold_ore");
