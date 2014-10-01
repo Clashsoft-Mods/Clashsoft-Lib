@@ -18,6 +18,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatCrafting;
+import net.minecraft.stats.StatList;
 
 /**
  * The Class CSBlocks.
@@ -149,6 +151,13 @@ public class CSBlocks
 			if (newItemBlock != null)
 			{
 				CSItems.replaceItem(itemBlock, newItemBlock, false);
+				
+				// BUGFIX: Replace mineBlockStat to avoid statistics crash.
+				StatCrafting stat = (StatCrafting) StatList.mineBlockStatArray[id];
+				if (stat != null)
+				{
+					CSReflection.setField(Constants.FIELD_StatCrafting_item, stat, newItemBlock);
+				}
 			}
 			// Use old ItemBlock and update reference
 			else if (itemBlock != null)
