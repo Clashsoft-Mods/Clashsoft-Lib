@@ -145,7 +145,7 @@ public class CSBlocks
 			ItemBlock itemBlock = (ItemBlock) Item.getItemFromBlock(block);
 			
 			// Replace registry entry
-			CSReflection.invoke(Constants.METHOD_REGISTRY_ADDOBJECTRAW, registry, new Object[] { id, registryName, newBlock });
+			CSReflection.invoke(Constants.METHOD_FMLControlledNamespacedRegistry_addObjectRaw, registry, new Object[] { id, registryName, newBlock });
 			
 			// Replace ItemBlock
 			if (newItemBlock != null)

@@ -332,7 +332,7 @@ public class CSItems
 			int id = Item.getIdFromItem(item);
 			
 			// Replace registry entry
-			CSReflection.invoke(Constants.METHOD_REGISTRY_ADDOBJECTRAW, registry, new Object[] { id, registryName, newItem });
+			CSReflection.invoke(Constants.METHOD_FMLControlledNamespacedRegistry_addObjectRaw, registry, new Object[] { id, registryName, newItem });
 			
 			// Replace stat list entries
 			StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
