@@ -28,6 +28,21 @@ public class OreGen extends WorldGenerator
 	{
 	}
 	
+	public OreGen(int amount, int veigns, int above, int below)
+	{
+		this.amount = amount;
+		this.veigns = veigns;
+		this.minY = above;
+		this.maxY = below;
+	}
+	
+	public OreGen(int amount, int veigns, int below)
+	{
+		this.amount = amount;
+		this.veigns = veigns;
+		this.maxY = below;
+	}
+	
 	public OreGen(Block block, int amount)
 	{
 		this(block, amount, Blocks.stone);
