@@ -111,8 +111,10 @@ public class OreGen extends WorldGenerator
 		
 		for (int i = 0; i < this.veigns; i++)
 		{
-			y = CSRandom.nextInt(random, this.minY, this.maxY);
-			this.generateVeign(world, random, x, y, z);
+			int x1 = x + random.nextInt(16);
+			int y1 = CSRandom.nextInt(random, this.minY, this.maxY);
+			int z1 = z + random.nextInt(16);
+			this.generateVeign(world, random, x1, y1, z1);
 		}
 		return true;
 	}
