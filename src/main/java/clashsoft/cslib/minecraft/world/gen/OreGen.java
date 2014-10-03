@@ -2,6 +2,8 @@ package clashsoft.cslib.minecraft.world.gen;
 
 import java.util.Random;
 
+import clashsoft.cslib.random.CSRandom;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
@@ -11,31 +13,36 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class OreGen extends WorldGenerator
 {
-	private Block	block;
-	private int		metadata;
-	private Block	target;
-	private int		targetMetadata	= OreDictionary.WILDCARD_VALUE;
+	public Block	block;
+	public int		metadata;
+	public Block	target;
+	public int		targetMetadata	= OreDictionary.WILDCARD_VALUE;
 	
-	private int		count;
+	public int		amount;
 	
-	private int		minY;
-	private int		maxY;
+	public int		veigns;
+	public int		minY;
+	public int		maxY;
 	
-	public OreGen(Block block, int count)
+	public OreGen()
 	{
-		this(block, count, Blocks.stone);
 	}
 	
-	public OreGen(Block block, int count, Block target)
+	public OreGen(Block block, int amount)
+	{
+		this(block, amount, Blocks.stone);
+	}
+	
+	public OreGen(Block block, int amount, Block target)
 	{
 		this.block = block;
-		this.count = count;
+		this.amount = amount;
 		this.target = target;
 	}
 	
-	public OreGen(Block block, int meta, int count, Block target)
+	public OreGen(Block block, int meta, int amount, Block target)
 	{
-		this(block, count, target);
+		this(block, amount, target);
 		this.metadata = meta;
 	}
 	
@@ -65,9 +72,15 @@ public class OreGen extends WorldGenerator
 		return this;
 	}
 	
-	public OreGen amount(int count)
+	public OreGen amount(int amount)
 	{
-		this.count = count;
+		this.amount = amount;
+		return this;
+	}
+	
+	public OreGen veigns(int veigns)
+	{
+		this.veigns = veigns;
 		return this;
 	}
 	
@@ -93,22 +106,37 @@ public class OreGen extends WorldGenerator
 	@Override
 	public boolean generate(World world, Random random, int x, int y, int z)
 	{
+		x &= 15;
+		z &= 15;
+		
+		for (int i = 0; i < this.veigns; i++)
+		{
+			y = CSRandom.nextInt(random, this.minY, this.maxY);
+			this.generateVeign(world, random, x, y, z);
+		}
+		return true;
+	}
+	
+	public void generateVeign(World world, Random random, int x, int y, int z)
+	{
+		
 		float f = random.nextFloat() * 3.141593F;
-		double d0 = x + 8 + MathHelper.sin(f) * this.count / 8.0F;
-		double d1 = x + 8 - MathHelper.sin(f) * this.count / 8.0F;
-		double d2 = z + 8 + MathHelper.cos(f) * this.count / 8.0F;
-		double d3 = z + 8 - MathHelper.cos(f) * this.count / 8.0F;
+		int c = this.amount;
+		double d0 = x + 8 + MathHelper.sin(f) * c / 8.0F;
+		double d1 = x + 8 - MathHelper.sin(f) * c / 8.0F;
+		double d2 = z + 8 + MathHelper.cos(f) * c / 8.0F;
+		double d3 = z + 8 - MathHelper.cos(f) * c / 8.0F;
 		double d4 = y + random.nextInt(3) - 2;
 		double d5 = y + random.nextInt(3) - 2;
 		
-		for (int l = 0; l <= this.count; ++l)
+		for (int l = 0; l <= c; ++l)
 		{
-			double d6 = d0 + (d1 - d0) * l / this.count;
-			double d7 = d4 + (d5 - d4) * l / this.count;
-			double d8 = d2 + (d3 - d2) * l / this.count;
-			double d9 = random.nextDouble() * this.count / 16.0D;
-			double d10 = (MathHelper.sin(l * 3.141593F / this.count) + 1.0F) * d9 + 1.0D;
-			double d11 = (MathHelper.sin(l * 3.141593F / this.count) + 1.0F) * d9 + 1.0D;
+			double d6 = d0 + (d1 - d0) * l / c;
+			double d7 = d4 + (d5 - d4) * l / c;
+			double d8 = d2 + (d3 - d2) * l / c;
+			double d9 = random.nextDouble() * c / 16.0D;
+			double d10 = (MathHelper.sin(l * 3.141593F / c) + 1.0F) * d9 + 1.0D;
+			double d11 = (MathHelper.sin(l * 3.141593F / c) + 1.0F) * d9 + 1.0D;
 			int x0 = MathHelper.floor_double(d6 - d10 / 2.0D);
 			int y0 = MathHelper.floor_double(d7 - d11 / 2.0D);
 			int z0 = MathHelper.floor_double(d8 - d10 / 2.0D);
@@ -146,8 +174,6 @@ public class OreGen extends WorldGenerator
 				}
 			}
 		}
-		
-		return true;
 	}
 	
 	public boolean isReplacable(World world, int x, int y, int z)

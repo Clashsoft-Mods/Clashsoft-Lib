@@ -2,6 +2,7 @@ package clashsoft.cslib.config;
 
 import java.io.File;
 
+import clashsoft.cslib.minecraft.world.gen.OreGen;
 import clashsoft.cslib.util.CSString;
 import clashsoft.cslib.util.IParsable;
 
@@ -218,5 +219,20 @@ public class CSConfig
 			key += " Biome ID";
 		}
 		return getInt("biome", key, _default);
+	}
+	
+	public static OreGen getOreGen(String key, OreGen _default)
+	{
+		if (_default == null)
+		{
+			_default = new OreGen();
+		}
+		
+		_default.amount = getInt(key, "Number Of Blocks", null, _default.amount);
+		_default.veigns = getInt(key, "Veigns Per Chunk", null, _default.veigns);
+		_default.minY = getInt(key, "Min Y", null, _default.minY);
+		_default.maxY = getInt(key, "Max Y", null, _default.minY);
+		
+		return _default;
 	}
 }
