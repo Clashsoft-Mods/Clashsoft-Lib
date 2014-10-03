@@ -37,12 +37,30 @@ public interface IRecipeManager
 	public void addRecipe(ItemStack input, ItemStack output);
 	
 	/**
-	 * Returns the crafting result for the given {@link ItemStack}
-	 * {@code ingredient}
+	 * Returns true if the given {@link ItemStack} {@code input} has a crafting
+	 * result
 	 * 
-	 * @param ingredient
-	 *            the ingredient
+	 * @param input
+	 * @return true, if the input has a crafting result
+	 */
+	public boolean hasResult(ItemStack input);
+	
+	/**
+	 * Returns the crafting result for the given {@link ItemStack} {@code input}
+	 * 
+	 * @param input
+	 *            the input
 	 * @return the output
 	 */
-	public ItemStack getResult(ItemStack ingredient);
+	public ItemStack getResult(ItemStack input);
+	
+	/**
+	 * Returns a copy of the crafting result for the given {@link ItemStack}
+	 * {@code input}
+	 * 
+	 * @param input
+	 *            the input
+	 * @return the output
+	 */
+	public ItemStack copyResult(ItemStack input);
 }

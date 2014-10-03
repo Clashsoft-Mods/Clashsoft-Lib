@@ -43,9 +43,21 @@ public class SimpleRecipeManager implements IRecipeManager
 	}
 	
 	@Override
+	public boolean hasResult(ItemStack input)
+	{
+		return this.recipeMap.containsKey(input);
+	}
+	
+	@Override
 	public ItemStack getResult(ItemStack input)
 	{
 		return this.recipeMap.get(input);
+	}
+	
+	@Override
+	public ItemStack copyResult(ItemStack input)
+	{
+		return this.getResult(input).copy();
 	}
 	
 	public Map<ItemStack, ItemStack> getRecipes()
