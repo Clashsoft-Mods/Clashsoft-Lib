@@ -1,28 +1,34 @@
 package clashsoft.cslib.minecraft.world.gen;
 
 import java.util.Random;
+import java.util.Set;
 
+import clashsoft.cslib.collections.ArraySet;
 import clashsoft.cslib.random.CSRandom;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class OreGen extends WorldGenerator
 {
-	public Block	block;
-	public int		metadata;
-	public Block	target;
-	public int		targetMetadata	= OreDictionary.WILDCARD_VALUE;
+	public Block				block;
+	public int					metadata;
+	public Block				target;
+	public int					targetMetadata	= OreDictionary.WILDCARD_VALUE;
 	
-	public int		amount;
+	public int					amount;
 	
-	public int		veigns;
-	public int		minY;
-	public int		maxY;
+	public int					veigns;
+	public int					minY;
+	public int					maxY;
+	
+	public Set<BiomeGenBase>	includedBiomes;
+	public Set<BiomeGenBase>	excludedBiomes;
 	
 	public OreGen()
 	{
@@ -118,6 +124,26 @@ public class OreGen extends WorldGenerator
 		return this;
 	}
 	
+	public OreGen inBiome(BiomeGenBase biome)
+	{
+		if (this.includedBiomes == null)
+		{
+			this.includedBiomes = new ArraySet();
+		}
+		this.includedBiomes.add(biome);
+		return this;
+	}
+	
+	public OreGen notInBiome(BiomeGenBase biome)
+	{
+		if (this.excludedBiomes == null)
+		{
+			this.excludedBiomes = new ArraySet();
+		}
+		this.excludedBiomes.add(biome);
+		return this;
+	}
+	
 	@Override
 	public boolean generate(World world, Random random, int x, int y, int z)
 	{
@@ -136,6 +162,10 @@ public class OreGen extends WorldGenerator
 	
 	public void generateVeign(World world, Random random, int x, int y, int z)
 	{
+		if (!this.isValidBiome(world, x, y, z))
+		{
+			return;
+		}
 		
 		float f = random.nextFloat() * 3.141593F;
 		int c = this.amount;
@@ -202,5 +232,25 @@ public class OreGen extends WorldGenerator
 			return this.targetMetadata == OreDictionary.WILDCARD_VALUE || this.targetMetadata == metadata;
 		}
 		return false;
+	}
+	
+	public boolean isValidBiome(World world, int x, int y, int z)
+	{
+		if (this.includedBiomes == null && this.excludedBiomes == null)
+		{
+			// Fast
+			return true;
+		}
+		
+		BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
+		if (this.includedBiomes != null && !this.includedBiomes.contains(biome))
+		{
+			return false;
+		}
+		if (this.excludedBiomes != null && this.excludedBiomes.contains(biome))
+		{
+			return false;
+		}
+		return true;
 	}
 }
