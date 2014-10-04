@@ -152,9 +152,6 @@ public class OreGen extends WorldGenerator
 			return false;
 		}
 		
-		x &= 15;
-		z &= 15;
-		
 		for (int i = 0; i < this.veigns; i++)
 		{
 			int x1 = x + random.nextInt(16);
