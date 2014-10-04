@@ -231,7 +231,7 @@ public class CSConfig
 		_default.amount = getInt(key, "Number Of Blocks", null, _default.amount);
 		_default.veigns = getInt(key, "Veigns Per Chunk", null, _default.veigns);
 		_default.minY = getInt(key, "Min Y", null, _default.minY);
-		_default.maxY = getInt(key, "Max Y", null, _default.minY);
+		_default.maxY = getInt(key, "Max Y", null, _default.maxY);
 		
 		return _default;
 	}

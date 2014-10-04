@@ -147,6 +147,11 @@ public class OreGen extends WorldGenerator
 	@Override
 	public boolean generate(World world, Random random, int x, int y, int z)
 	{
+		if (this.veigns == 0 || this.amount == 0 || this.maxY == 0)
+		{
+			return false;
+		}
+		
 		x &= 15;
 		z &= 15;
 		
