@@ -15,6 +15,7 @@ import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
 import clashsoft.cslib.minecraft.util.Constants;
 import clashsoft.cslib.reflect.CSReflection;
+import clashsoft.cslib.util.CSUtil;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
@@ -24,6 +25,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
@@ -302,6 +304,16 @@ public class CSItems
 			dataToolSet.registerToolMaterial(toolMaterial, name);
 		}
 		return toolMaterial;
+	}
+	
+	public static ToolMaterial getToolMaterial(ArmorMaterial armorMaterial)
+	{
+		return CSUtil.getEnumConstant(ToolMaterial.class, armorMaterial.name());
+	}
+	
+	public static ArmorMaterial getArmorMaterial(ToolMaterial toolMaterial)
+	{
+		return CSUtil.getEnumConstant(ArmorMaterial.class, toolMaterial.name());
 	}
 	
 	public static boolean replaceItem(Item item, Item newItem)

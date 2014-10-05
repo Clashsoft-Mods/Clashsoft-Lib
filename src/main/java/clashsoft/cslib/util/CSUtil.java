@@ -18,6 +18,19 @@ public class CSUtil
 		}
 	}
 	
+	public static <E extends Enum> E getEnumConstant(Class<E> enumClass, String name)
+	{
+		E[] values = enumClass.getEnumConstants();
+		for (E e : values)
+		{
+			if (e.name().equalsIgnoreCase(name))
+			{
+				return e;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * Returns set color average of an array of colors.
 	 * 
