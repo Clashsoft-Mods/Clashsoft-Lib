@@ -15,11 +15,14 @@ import net.minecraftforge.common.config.Configuration;
  */
 public class CSConfig
 {
-	public static File				configFile;
-	public static String			configName;
-	public static boolean			enableComments	= true;
+	public static final boolean					THREADSAVE		= true;
 	
-	private static Configuration	config;
+	public static File							configFile;
+	public static String						configName;
+	public static boolean						enableComments	= true;
+	
+	protected static Configuration				config;
+	protected static ThreadLocal<Configuration>	localConfig;
 	
 	/**
 	 * Loads a config from the given {@link File} {@code file} and names it with
@@ -32,9 +35,16 @@ public class CSConfig
 	 */
 	public static void loadConfig(File configFile, String configName)
 	{
+		Configuration config = new Configuration();
+		
 		CSConfig.configFile = configFile;
 		CSConfig.configName = configName;
-		config = new Configuration(configFile);
+		CSConfig.config = new Configuration(configFile);
+		
+		if (THREADSAVE)
+		{
+			localConfig.set(config);
+		}
 	}
 	
 	/**
@@ -53,7 +63,16 @@ public class CSConfig
 	 */
 	public static void saveConfig()
 	{
-		config.save();
+		config().save();
+	}
+	
+	protected static Configuration config()
+	{
+		if (THREADSAVE)
+		{
+			return localConfig.get();
+		}
+		return config;
 	}
 	
 	/**
@@ -76,18 +95,6 @@ public class CSConfig
 			return key + ". Default: " + _default;
 		}
 		return null;
-	}
-	
-	/**
-	 * Checks if a config is currently loaded. If not, an
-	 * {@link IllegalStateException} is thrown.
-	 */
-	private static void checkConfig()
-	{
-		if (config == null)
-		{
-			throw new IllegalStateException("No config loaded!");
-		}
 	}
 	
 	// Default getters
@@ -131,32 +138,27 @@ public class CSConfig
 	
 	public static int getInt(String category, String key, String desc, int _default)
 	{
-		checkConfig();
-		return config.get(category, CSString.identifier(key), _default, desc).getInt(_default);
+		return config().get(category, CSString.identifier(key), _default, desc).getInt(_default);
 	}
 	
 	public static float getFloat(String category, String key, String desc, float _default)
 	{
-		checkConfig();
-		return (float) config.get(category, CSString.identifier(key), _default, desc).getDouble(_default);
+		return (float) config().get(category, CSString.identifier(key), _default, desc).getDouble(_default);
 	}
 	
 	public static double getDouble(String category, String key, String desc, double _default)
 	{
-		checkConfig();
-		return config.get(category, CSString.identifier(key), _default, desc).getDouble(_default);
+		return config().get(category, CSString.identifier(key), _default, desc).getDouble(_default);
 	}
 	
 	public static boolean getBool(String category, String key, String desc, boolean _default)
 	{
-		checkConfig();
-		return config.get(category, CSString.identifier(key), _default, desc).getBoolean(_default);
+		return config().get(category, CSString.identifier(key), _default, desc).getBoolean(_default);
 	}
 	
 	public static String getString(String category, String key, String desc, String _default)
 	{
-		checkConfig();
-		return config.get(category, CSString.identifier(key), _default, desc).getString();
+		return config().get(category, CSString.identifier(key), _default, desc).getString();
 	}
 	
 	public static <T extends IParsable> T getObject(String category, String key, String desc, T _default)
