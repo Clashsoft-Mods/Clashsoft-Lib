@@ -1,25 +1,11 @@
-version=1.7.10-2.7.0
-url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.7.0/ClashsoftLib-1.7.10-2.7.0.jar
+version=1.7.10-2.7.1
+url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.7.1/ClashsoftLib-1.7.10-2.7.1.jar
 
-+ Introduced Ore Base API.
-+ Introduced Entity Property API.
-+ Added ReplaceField option for replaceItem.
-+ Added ReplaceField and NewItemBlock option for replaceBlock.
-+ Added Render Type for multi-pass rendering.
-+ Added BlockCustomFarmland.
-+ Added BlockCustomGlass.
-+ Added BlockCustomLamp.
-+ Added BlockCustomPortalBase.
-+ Added ItemCustomBucket.
-+ Added ItemCustomDoor.
-+ Added ItemCustomSlab.
-+ Added Custom Ocean Biomes.
-+ Added Custom Cave Generator.
-+ Rewritten CSEntities.
-* Improved Packet exception handling.
-* Merged CustomGenLayer and CustomBiomeLayer.
-* Fixed BlockCustomPlant placement check.
-* Fixed incorrect BlockCustomPortal block bounds.
-* Fixed ItemCustomArmor reflection bug.
-* Fixed ItemCustomArmor crash on right-click.
-* Fixed CustomBlocks and CustomItems not appearing on the search tab.
+> Update to Forge 10.13.1.1217.
++ Added a simple configurable OreGen API.
+* Updated the Replacement system.
+* Improved IRecipeManager.
+* Fixed OreBase texture issues.
+* Fixed Ores always dropping their Stone variant.
+* Fixed CSConfig not being Thread-save.
+* Fixed Statistics crash.
