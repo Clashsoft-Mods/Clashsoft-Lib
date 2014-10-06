@@ -6,9 +6,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
@@ -27,9 +25,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.stats.StatCrafting;
 import net.minecraft.stats.StatList;
 import net.minecraftforge.common.util.EnumHelper;
@@ -346,6 +341,9 @@ public class CSItems
 			// Replace registry entry
 			CSReflection.invoke(Constants.METHOD_FMLControlledNamespacedRegistry_addObjectRaw, registry, new Object[] { id, registryName, newItem });
 			
+			// Replace delegate referant
+			CSReflection.setField(Constants.FIELD_Delegate_referant, item.delegate, newItem);
+			
 			// Replace stat list entries
 			StatCrafting stat = (StatCrafting) StatList.objectBreakStats[id];
 			if (stat != null)
@@ -404,87 +402,5 @@ public class CSItems
 			CSLog.error(e);
 		}
 		return false;
-	}
-	
-	public static void setItem(ItemStack stack, Item item)
-	{
-		CSReflection.setField(Constants.FIELD_ItemStack_item, stack, item);
-	}
-	
-	private static boolean applyReplacement(ItemStack stack)
-	{
-		if (stack != null)
-		{
-			Item item = stack.getItem();
-			Item newItem = replacements.get(item);
-			if (newItem != null && item != newItem)
-			{
-				setItem(stack, newItem);
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public static void replaceRecipes()
-	{
-		if (replacements.isEmpty())
-		{
-			return;
-		}
-		
-		long now = System.currentTimeMillis();
-		int count = 0;
-		int size = CSCrafting.RECIPES.size();
-		
-		// Crafting Recipes
-		for (IRecipe recipe : CSCrafting.RECIPES)
-		{
-			ItemStack output = recipe.getRecipeOutput();
-			if (applyReplacement(output))
-			{
-				count++;
-			}
-			
-			if (recipe instanceof ShapedRecipes)
-			{
-				ItemStack[] recipeItems = ((ShapedRecipes) recipe).recipeItems;
-				for (ItemStack stack : recipeItems)
-				{
-					if (applyReplacement(stack))
-					{
-						count++;
-					}
-				}
-			}
-			else if (recipe instanceof ShapelessRecipes)
-			{
-				List<ItemStack> recipeItems = ((ShapelessRecipes) recipe).recipeItems;
-				for (ItemStack stack : recipeItems)
-				{
-					if (applyReplacement(stack))
-					{
-						count++;
-					}
-				}
-			}
-		}
-		
-		// Furnace Recipes
-		for (Entry<ItemStack, ItemStack> entry : CSCrafting.SMELTINGMAP.entrySet())
-		{
-			size++;
-			if (applyReplacement(entry.getKey()))
-			{
-				count++;
-			}
-			if (applyReplacement(entry.getValue()))
-			{
-				count++;
-			}
-		}
-		
-		now = System.currentTimeMillis() - now;
-		CSLog.info("Replaced " + count + " item references from " + size + " recipes, took " + now + "ms");
 	}
 }

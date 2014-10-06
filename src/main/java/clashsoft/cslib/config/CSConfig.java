@@ -22,7 +22,7 @@ public class CSConfig
 	public static boolean						enableComments	= true;
 	
 	protected static Configuration				config;
-	protected static ThreadLocal<Configuration>	localConfig;
+	protected static ThreadLocal<Configuration>	localConfig		= new ThreadLocal();
 	
 	/**
 	 * Loads a config from the given {@link File} {@code file} and names it with
@@ -35,11 +35,11 @@ public class CSConfig
 	 */
 	public static void loadConfig(File configFile, String configName)
 	{
-		Configuration config = new Configuration();
+		Configuration config = new Configuration(configFile);
 		
 		CSConfig.configFile = configFile;
 		CSConfig.configName = configName;
-		CSConfig.config = new Configuration(configFile);
+		CSConfig.config = config;
 		
 		if (THREADSAVE)
 		{

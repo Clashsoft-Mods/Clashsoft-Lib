@@ -147,6 +147,9 @@ public class CSBlocks
 			// Replace registry entry
 			CSReflection.invoke(Constants.METHOD_FMLControlledNamespacedRegistry_addObjectRaw, registry, new Object[] { id, registryName, newBlock });
 			
+			// Replace delegate referant
+			CSReflection.setField(Constants.FIELD_Delegate_referant, block.delegate, newBlock);
+			
 			// Replace ItemBlock
 			if (newItemBlock != null)
 			{

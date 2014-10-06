@@ -14,6 +14,7 @@ import clashsoft.cslib.util.CSString;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -167,6 +168,20 @@ public abstract class BaseMod<N extends CSNetHandler>
 		metadata.url = this.url;
 		metadata.authorList = this.authors;
 		metadata.credits = this.credits;
+	}
+	
+	/**
+	 * Constructs the mod. This method should be used to apply any block or item
+	 * replacements.
+	 * <p>
+	 * To make this method load, override this method in your mod class and mark
+	 * it with the {@link Mod.EventHandler} annotation.
+	 * 
+	 * @param event
+	 *            the event
+	 */
+	public void construct(FMLConstructionEvent event)
+	{	
 	}
 	
 	/**

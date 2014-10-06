@@ -13,7 +13,6 @@ import clashsoft.cslib.minecraft.common.CSLibProxy;
 import clashsoft.cslib.minecraft.crafting.loader.FurnaceRecipeLoader;
 import clashsoft.cslib.minecraft.entity.CSEntities;
 import clashsoft.cslib.minecraft.init.ClashsoftMod;
-import clashsoft.cslib.minecraft.item.CSItems;
 import clashsoft.cslib.minecraft.item.block.ItemCustomBlock;
 import clashsoft.cslib.minecraft.network.CSLibNetHandler;
 import clashsoft.cslib.minecraft.update.CSUpdate;
@@ -24,10 +23,7 @@ import clashsoft.cslib.minecraft.world.gen.CustomCaveGen;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 
@@ -108,9 +104,9 @@ public class CSLib extends ClashsoftMod
 	
 	@Override
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
+	public void construct(FMLConstructionEvent event)
 	{
-		super.preInit(event);
+		super.construct(event);
 		
 		CSBlocks.replaceBlock(Blocks.coal_ore, coalOre2, new ItemCustomBlock(coalOre2));
 		CSBlocks.replaceBlock(Blocks.iron_ore, ironOre2, new ItemCustomBlock(ironOre2));
@@ -121,6 +117,13 @@ public class CSLib extends ClashsoftMod
 		CSBlocks.replaceBlock(Blocks.lit_redstone_ore, litRedstoneOre2);
 		CSBlocks.replaceBlock(Blocks.lapis_ore, lapisOre2, new ItemCustomBlock(lapisOre2));
 		CSBlocks.replaceBlock(Blocks.quartz_ore, quartzOre2, new ItemCustomBlock(quartzOre2));
+	}
+	
+	@Override
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		super.preInit(event);
 	}
 	
 	@Override
@@ -137,8 +140,6 @@ public class CSLib extends ClashsoftMod
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		super.postInit(event);
-		
-		CSItems.replaceRecipes();
 	}
 	
 	@EventHandler
