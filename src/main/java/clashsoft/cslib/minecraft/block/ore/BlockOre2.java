@@ -110,6 +110,18 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 	}
 	
 	@Override
+	public int damageDropped(int metadata)
+	{
+		return metadata;
+	}
+
+	@Override
+	public int getDamageValue(World world, int x, int y, int z)
+	{
+		return world.getBlockMetadata(x, y, z);
+	}
+	
+	@Override
 	public int getExpDrop(IBlockAccess world, int metadata, int fortune)
 	{
 		int i = super.getExpDrop(world, metadata, fortune);
@@ -174,12 +186,6 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 	public IIcon getOreIcon(int metadata)
 	{
 		return this.blockIcon;
-	}
-	
-	@Override
-	public int getDamageValue(World world, int x, int y, int z)
-	{
-		return world.getBlockMetadata(x, y, z);
 	}
 	
 	@Override
