@@ -175,7 +175,7 @@ public class CSEntities
 		public IExtendedEntityProperties loadProperties(Entity entity)
 		{
 			IExtendedEntityProperties properties = entity.getExtendedProperties(this.name);
-			if (properties == null)
+			if (properties == null && this.canApply(entity))
 			{
 				properties = this.createProperties(entity);
 				if (properties != null)
