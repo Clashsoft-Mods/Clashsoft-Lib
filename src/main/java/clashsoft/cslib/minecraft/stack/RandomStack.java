@@ -2,18 +2,23 @@ package clashsoft.cslib.minecraft.stack;
 
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.RegistryDelegate;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public abstract class RandomStack
 {
-	public Item	item;
-	public int	metadata;
+	protected Item	item;
+	protected int	metadata;
+	
+	public RegistryDelegate<Item> delegate;
 	
 	public RandomStack(Item item, int metadata)
 	{
 		this.item = item;
+		this.delegate = item.delegate;
 		this.metadata = metadata;
 	}
 	
@@ -22,10 +27,20 @@ public abstract class RandomStack
 		this(Item.getItemFromBlock(block), metadata);
 	}
 	
+	public Item getItem()
+	{
+		return this.delegate != null ? this.delegate.get() : this.item;
+	}
+	
+	public int getMetadata()
+	{
+		return this.metadata;
+	}
+	
 	public abstract int getStackSize(Random random);
 	
 	public ItemStack toItemStack(Random random)
 	{
-		return new ItemStack(this.item, this.getStackSize(random), this.metadata);
+		return new ItemStack(this.getItem(), this.getStackSize(random), this.metadata);
 	}
 }
