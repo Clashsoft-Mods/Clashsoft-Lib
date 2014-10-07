@@ -118,9 +118,9 @@ public class CSEntities
 		properties.add(props);
 	}
 	
-	public static IExtendedEntityProperties getProperties(String name, Entity entity)
+	public static <T extends IExtendedEntityProperties> T getProperties(String name, Entity entity)
 	{
-		IExtendedEntityProperties properties = entity.getExtendedProperties(name);
+		T properties = (T) entity.getExtendedProperties(name);
 		if (properties != null)
 		{
 			return properties;
@@ -128,13 +128,13 @@ public class CSEntities
 		return initProperties(name, entity);
 	}
 	
-	public static IExtendedEntityProperties initProperties(String name, Entity entity)
+	public static <T extends IExtendedEntityProperties> T initProperties(String name, Entity entity)
 	{
 		for (EntityProperties eps : properties)
 		{
 			if (name.equals(eps.name))
 			{
-				return eps.loadProperties(entity);
+				return (T) eps.loadProperties(entity);
 			}
 		}
 		return null;
@@ -147,7 +147,10 @@ public class CSEntities
 	{
 		for (EntityProperties ep : properties)
 		{
-			ep.loadProperties(entity);
+			if (ep.canApply(entity))
+			{
+				ep.loadProperties(entity);
+			}
 		}
 	}
 	
@@ -175,7 +178,7 @@ public class CSEntities
 		public IExtendedEntityProperties loadProperties(Entity entity)
 		{
 			IExtendedEntityProperties properties = entity.getExtendedProperties(this.name);
-			if (properties == null && this.canApply(entity))
+			if (properties == null)
 			{
 				properties = this.createProperties(entity);
 				if (properties != null)
