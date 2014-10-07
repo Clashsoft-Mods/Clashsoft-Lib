@@ -11,6 +11,7 @@ import clashsoft.cslib.reflect.CSReflection;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
 public class CSEntities
@@ -201,6 +202,20 @@ public class CSEntities
 				CSLog.error("Failed to load Entity Properties (" + this.propertyClass + "): " + ex.getMessage());
 				return null;
 			}
+		}
+	}
+	
+	public static class PlayerProperties extends EntityProperties
+	{
+		public PlayerProperties(String name, Class propertyClass)
+		{
+			super(name, propertyClass);
+		}
+		
+		@Override
+		public boolean canApply(Entity entity)
+		{
+			return entity instanceof EntityPlayer;
 		}
 	}
 }
