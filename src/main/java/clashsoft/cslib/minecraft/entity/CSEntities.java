@@ -119,6 +119,11 @@ public class CSEntities
 		properties.add(props);
 	}
 	
+	public static boolean hasProperties(String name, Entity entity)
+	{
+		return entity.getExtendedProperties(name) != null;
+	}
+	
 	public static <T extends IExtendedEntityProperties> T getProperties(String name, Entity entity)
 	{
 		T properties = (T) entity.getExtendedProperties(name);
