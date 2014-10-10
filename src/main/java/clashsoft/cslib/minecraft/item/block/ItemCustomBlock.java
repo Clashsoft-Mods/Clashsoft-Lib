@@ -9,11 +9,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 /**
  * The Class ItemCustomBlock.
@@ -43,6 +47,28 @@ public class ItemCustomBlock extends ItemBlock
 		{
 			this.customBlock = (ICustomBlock) block;
 		}
+	}
+	
+	@Override
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+	{
+		Block block = world.getBlock(x, y, z);
+		if (block == Blocks.flower_pot)
+		{
+			TileEntityFlowerPot flowerPot = (TileEntityFlowerPot) world.getTileEntity(x, y, z);
+			if (flowerPot.getFlowerPotItem() == null)
+			{
+				flowerPot.func_145964_a(stack.getItem(), stack.getItemDamage());
+				return true;
+			}
+		}
+		
+		return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+	}
+	
+	public boolean canPlaceInFlowerPot()
+	{
+		return this.field_150939_a.getMaterial() == Material.plants && this.field_150939_a.getRenderType() == 1;
 	}
 	
 	@Override
