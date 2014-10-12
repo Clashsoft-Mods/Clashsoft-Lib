@@ -24,15 +24,20 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 		this.itemStacks = new ItemStack[size];
 	}
 	
-	public void mergeStack(ItemStack stack, int start, int end)
+	public boolean mergeStack(ItemStack stack, int start, int end)
 	{
-		CSStacks.mergeItemStack(this.itemStacks, start, end, stack);
+		if (CSStacks.mergeItemStack(this.itemStacks, start, end, stack) != -1)
+		{
+			this.markDirty();
+			return true;
+		}
+		return false;
 	}
 	
 	@Override
 	public abstract int getSizeInventory();
 	
-	public boolean rangeCheck(int slotID)
+	public final boolean rangeCheck(int slotID)
 	{
 		return slotID >= 0 && slotID < this.itemStacks.length;
 	}
@@ -58,6 +63,7 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 			{
 				itemstack = this.itemStacks[slotID];
 				this.itemStacks[slotID] = null;
+				this.markDirty();
 				return itemstack;
 			}
 			else
@@ -68,6 +74,8 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 				{
 					this.itemStacks[slotID] = null;
 				}
+				
+				this.markDirty();
 				
 				return itemstack;
 			}
@@ -93,6 +101,7 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 		if (this.rangeCheck(slotID))
 		{
 			this.itemStacks[slotID] = stack;
+			this.markDirty();
 			
 			if (stack != null && stack.stackSize > this.getInventoryStackLimit())
 			{
@@ -120,7 +129,7 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 		return this.name != null && !this.name.isEmpty();
 	}
 	
-	public void setInvName(String name)
+	public void setInventoryName(String name)
 	{
 		this.name = name;
 	}
