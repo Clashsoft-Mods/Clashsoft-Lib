@@ -26,19 +26,25 @@ public abstract class RenderBlockSimple implements ISimpleBlockRenderingHandler
 	public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
 	{
 		this.rendering = true;
-		{
-			FakeWorld world = fakeWorld.block(block, metadata);
-			IBlockAccess blockAccess = renderer.blockAccess;
-			renderer.blockAccess = world;
-			
-			GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-			this.renderBlock(FakeWorld.instance, 0, 0, 0, block, metadata, renderer);
-			Tessellator.instance.draw();
-			
-			fakeWorld.reset();
-			renderer.blockAccess = blockAccess;
-		}
+		
+		// Setup Fake World
+		FakeWorld world = fakeWorld.block(block, metadata);
+		IBlockAccess blockAccess = renderer.blockAccess;
+		renderer.blockAccess = world;
+		
+		// Transform view
+		GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		
+		// Draw
+		Tessellator.instance.startDrawingQuads();
+		this.renderBlock(FakeWorld.instance, 0, 0, 0, block, metadata, renderer);
+		Tessellator.instance.draw();
+		
+		// Reset Fake World
+		fakeWorld.reset();
+		renderer.blockAccess = blockAccess;
+		
 		this.rendering = false;
 	}
 	
