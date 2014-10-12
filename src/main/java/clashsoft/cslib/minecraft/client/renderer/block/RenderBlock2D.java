@@ -1,7 +1,6 @@
 package clashsoft.cslib.minecraft.client.renderer.block;
 
 import clashsoft.cslib.minecraft.common.CSLibProxy;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -9,16 +8,16 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-public class RenderBlock2D implements ISimpleBlockRenderingHandler
+public class RenderBlock2D extends RenderBlockSimple
 {
+	public static RenderBlock2D instance = new RenderBlock2D(CSLibProxy.BLOCK2D_RENDER_ID);
 	public static RenderItem	itemRender	= RenderItem.getInstance();
 	
-	@Override
-	public int getRenderId()
+	public RenderBlock2D(int renderID)
 	{
-		return CSLibProxy.BLOCK2D_RENDER_ID;
+		super(renderID);
 	}
-	
+		
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
@@ -27,15 +26,14 @@ public class RenderBlock2D implements ISimpleBlockRenderingHandler
 	}
 	
 	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelID, RenderBlocks renderer)
+	public boolean renderBlock(IBlockAccess world, int x, int y, int z, Block block, int metadata, RenderBlocks renderer)
 	{
 		return renderer.renderBlockByRenderType(block, x, y, z);
 	}
 	
 	@Override
-	public boolean shouldRender3DInInventory(int paramInt)
+	public boolean shouldRender3DInInventory(int modelID)
 	{
 		return false;
 	}
-	
 }

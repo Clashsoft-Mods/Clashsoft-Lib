@@ -151,6 +151,12 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 	}
 	
 	@Override
+	public int getRenderID(int metadata, int pass)
+	{
+		return 0;
+	}
+	
+	@Override
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		super.registerBlockIcons(iconRegister);

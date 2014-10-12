@@ -27,8 +27,8 @@ public class CSLibClientProxy extends CSLibProxy
 		CUSTOMBUSH_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
 		
 		RenderingRegistry.registerBlockHandler(MULTI_RENDER_ID, RenderBlockMulti.instance);
-		RenderingRegistry.registerBlockHandler(BLOCK2D_RENDER_ID, new RenderBlock2D());
-		RenderingRegistry.registerBlockHandler(CUSTOMBUSH_RENDER_ID, new RenderBlockBush());
+		RenderingRegistry.registerBlockHandler(BLOCK2D_RENDER_ID, RenderBlock2D.instance);
+		RenderingRegistry.registerBlockHandler(CUSTOMBUSH_RENDER_ID, RenderBlockBush.instance);
 		
 		Capes.setLocalCape("AdrianKunz", new ResourceLocation("cslib", "textures/capes/cape_clashsoft.png"));
 		Capes.noCape = Capes.addCape(new EmptyCape("no_cape"));

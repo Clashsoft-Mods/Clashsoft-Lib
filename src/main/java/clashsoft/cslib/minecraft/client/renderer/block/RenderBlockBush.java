@@ -2,35 +2,28 @@ package clashsoft.cslib.minecraft.client.renderer.block;
 
 import clashsoft.cslib.minecraft.block.BlockCustomBush;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 
-public class RenderBlockBush implements ISimpleBlockRenderingHandler
+public class RenderBlockBush extends RenderBlockSimple
 {
-	@Override
-	public int getRenderId()
+	public static RenderBlockBush	instance	= new RenderBlockBush(CSLibProxy.CUSTOMBUSH_RENDER_ID);
+	
+	public RenderBlockBush(int renderID)
 	{
-		return CSLibProxy.CUSTOMBUSH_RENDER_ID;
+		super(renderID);
 	}
 	
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
-	{
-	}
-	
-	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+	public boolean renderBlock(IBlockAccess world, int x, int y, int z, Block block, int metadata, RenderBlocks renderer)
 	{
 		BlockCustomBush bush = (BlockCustomBush) block;
 		
 		renderer.renderCrossedSquares(block, x, y, z);
 		
-		int i1 = world.getBlockMetadata(x, y, z);
-		
-		if (i1 == bush.fullGrownMetadata)
+		if (metadata >= bush.fullGrownMetadata)
 		{
 			renderer.overrideBlockTexture = bush.bushIcon;
 			renderer.renderStandardBlock(block, x, y, z);
@@ -39,11 +32,5 @@ public class RenderBlockBush implements ISimpleBlockRenderingHandler
 		renderer.overrideBlockTexture = null;
 		
 		return true;
-	}
-	
-	@Override
-	public boolean shouldRender3DInInventory(int metadata)
-	{
-		return false;
 	}
 }
