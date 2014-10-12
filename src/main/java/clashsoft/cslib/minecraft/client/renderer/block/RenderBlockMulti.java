@@ -20,7 +20,7 @@ public class RenderBlockMulti extends RenderBlockSimple
 	}
 	
 	@Override
-	public boolean renderBlock(IBlockAccess world, int x, int y, int z, Block block, int metadata, RenderBlocks renderer)
+	public boolean renderBlock(IBlockAccess world, int x, int y, int z, Block block, int metadata, RenderBlocks renderer, boolean inventory)
 	{
 		int passes = 1;
 		IBlockRenderPass blockPass = null;
@@ -34,7 +34,15 @@ public class RenderBlockMulti extends RenderBlockSimple
 		{
 			renderPass = i;
 			overrideRenderID = blockPass != null ? blockPass.getRenderID(metadata, i) : 0;
-			renderer.renderBlockByRenderType(block, x, y, z);
+			
+			if (inventory)
+			{
+				renderer.renderBlockAsItem(block, metadata, 1F);
+			}
+			else
+			{
+				renderer.renderBlockByRenderType(block, x, y, z);
+			}
 		}
 		
 		return passes > 0;

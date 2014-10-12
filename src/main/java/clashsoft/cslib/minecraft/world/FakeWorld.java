@@ -18,7 +18,7 @@ public class FakeWorld implements IBlockAccess
 	public int				metadata;
 	public TileEntity		tileEntity;
 	public BiomeGenBase		biome		= BiomeGenBase.plains;
-	public int				brightness	= 15;
+	public int				brightness	= 15 << 20 | 15 << 4;
 	
 	public FakeWorld position(int x, int y, int z)
 	{
@@ -64,7 +64,7 @@ public class FakeWorld implements IBlockAccess
 		this.metadata = 0;
 		this.tileEntity = null;
 		this.biome = BiomeGenBase.plains;
-		this.brightness = 15;
+		this.brightness = 15 << 20 | 15 << 4;
 		return this;
 	}
 	
@@ -83,7 +83,7 @@ public class FakeWorld implements IBlockAccess
 	@Override
 	public int getLightBrightnessForSkyBlocks(int x, int y, int z, int max)
 	{
-		return this.x == x && this.y == y && this.z == z ? this.brightness : 15;
+		return this.brightness;
 	}
 	
 	@Override

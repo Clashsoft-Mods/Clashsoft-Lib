@@ -37,9 +37,7 @@ public abstract class RenderBlockSimple implements ISimpleBlockRenderingHandler
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		
 		// Draw
-		Tessellator.instance.startDrawingQuads();
-		this.renderBlock(FakeWorld.instance, 0, 0, 0, block, metadata, renderer);
-		Tessellator.instance.draw();
+		this.renderBlock(FakeWorld.instance, 0, 0, 0, block, metadata, renderer, true);
 		
 		// Reset Fake World
 		fakeWorld.reset();
@@ -58,12 +56,12 @@ public abstract class RenderBlockSimple implements ISimpleBlockRenderingHandler
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
 		this.rendering = true;
-		this.renderBlock(world, x, y, z, block, world.getBlockMetadata(x, y, z), renderer);
+		this.renderBlock(world, x, y, z, block, world.getBlockMetadata(x, y, z), renderer, false);
 		this.rendering = false;
 		return true;
 	}
 	
-	public abstract boolean renderBlock(IBlockAccess world, int x, int y, int z, Block block, int metadata, RenderBlocks renderer);
+	public abstract boolean renderBlock(IBlockAccess world, int x, int y, int z, Block block, int metadata, RenderBlocks renderer, boolean inventory);
 	
 	@Override
 	public final int getRenderId()
@@ -74,5 +72,31 @@ public abstract class RenderBlockSimple implements ISimpleBlockRenderingHandler
 	public int getOverrideRenderID()
 	{
 		return 0;
+	}
+	
+	public static void drawStandartBlock(Block block, int metadata, RenderBlocks renderer)
+	{
+		Tessellator tessellator = Tessellator.instance;
+		
+		block.setBlockBoundsForItemRender();
+		renderer.setRenderBoundsFromBlock(block);
+		
+		tessellator.setNormal(0.0F, -1.0F, 0.0F);
+        renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(0, metadata));
+		
+        tessellator.setNormal(0.0F, 1.0F, 0.0F);
+        renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(1, metadata));
+        
+        tessellator.setNormal(0.0F, 0.0F, -1.0F);
+        renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, metadata));
+        
+        tessellator.setNormal(0.0F, 0.0F, 1.0F);
+        renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, metadata));
+        
+        tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, metadata));
+        
+        tessellator.setNormal(1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, metadata));
 	}
 }

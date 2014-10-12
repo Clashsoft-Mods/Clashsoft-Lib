@@ -23,15 +23,15 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable, IShe
 	
 	public ItemStack	drop;
 	
-	public String		bushIconName;
-	public IIcon		bushIcon;
+	public String		stemIconName;
+	public IIcon		stemIcon;
 	
 	public BlockCustomBush(String bushIconName, String stemIconName)
 	{
 		super(DEFAULT_NAMES, null);
 		this.setTickRandomly(true);
-		this.setBlockTextureName(stemIconName);
-		this.bushIconName = bushIconName;
+		this.setBlockTextureName(bushIconName);
+		this.stemIconName = stemIconName;
 		this.fullGrownMetadata = 3;
 	}
 	
@@ -102,7 +102,7 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable, IShe
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		this.blockIcon = iconRegister.registerIcon(this.textureName);
-		this.bushIcon = iconRegister.registerIcon(this.bushIconName);
+		this.stemIcon = iconRegister.registerIcon(this.stemIconName);
 	}
 	
 	@Override
