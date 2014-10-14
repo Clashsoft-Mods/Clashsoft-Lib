@@ -26,9 +26,10 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 	
 	public boolean mergeStack(ItemStack stack, int start, int end)
 	{
-		if (CSStacks.mergeItemStack(this.itemStacks, start, end, stack) != -1)
+		int slotID = CSStacks.mergeItemStack(this.itemStacks, start, end, stack);
+		if (slotID != -1)
 		{
-			this.markDirty();
+			this.onSlotChanged(slotID);
 			return true;
 		}
 		return false;
@@ -63,7 +64,7 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 			{
 				itemstack = this.itemStacks[slotID];
 				this.itemStacks[slotID] = null;
-				this.markDirty();
+				this.onSlotChanged(slotID);
 				return itemstack;
 			}
 			else
@@ -75,7 +76,7 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 					this.itemStacks[slotID] = null;
 				}
 				
-				this.markDirty();
+				this.onSlotChanged(slotID);
 				
 				return itemstack;
 			}
@@ -101,13 +102,18 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 		if (this.rangeCheck(slotID))
 		{
 			this.itemStacks[slotID] = stack;
-			this.markDirty();
+			this.onSlotChanged(slotID);
 			
 			if (stack != null && stack.stackSize > this.getInventoryStackLimit())
 			{
 				stack.stackSize = this.getInventoryStackLimit();
 			}
 		}
+	}
+	
+	public void onSlotChanged(int slotID)
+	{
+		this.markDirty();
 	}
 	
 	@Override
