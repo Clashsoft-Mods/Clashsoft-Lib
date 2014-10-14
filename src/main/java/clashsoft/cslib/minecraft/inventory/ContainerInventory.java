@@ -18,12 +18,18 @@ public class ContainerInventory extends Container
 		this.player = player;
 	}
 	
-	public void addInventorySlots()
+	public final void addInventorySlots()
 	{
-		this.addInventorySlots(0, 0);
+		this.addInventorySlots(8, 84, 142);
 	}
 	
-	public void addInventorySlots(int xOffset, int yOffset)
+	@Deprecated
+	public final void addInventorySlot(int xOffset, int yOffset)
+	{
+		this.addInventorySlots(8 + xOffset, 84 + yOffset, 142 + yOffset);
+	}
+	
+	public final void addInventorySlots(int xOffset, int yOffset, int yHotbar)
 	{
 		int k = 8 + xOffset;
 		int l = 84 + yOffset;
