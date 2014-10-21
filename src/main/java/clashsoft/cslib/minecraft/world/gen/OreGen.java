@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Set;
 
 import clashsoft.cslib.collections.ArraySet;
-import clashsoft.cslib.random.CSRandom;
+import clashsoft.cslib.logging.CSLog;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -18,7 +18,7 @@ public class OreGen extends WorldGenerator
 {
 	public Block				block;
 	public int					metadata;
-	public Block				target;
+	public Block				target			= Blocks.stone;
 	public int					targetMetadata	= OreDictionary.WILDCARD_VALUE;
 	
 	public int					amount;
@@ -70,6 +70,7 @@ public class OreGen extends WorldGenerator
 	public OreGen generate(Block block)
 	{
 		this.block = block;
+		this.metadata = 0;
 		return this;
 	}
 	
@@ -83,6 +84,7 @@ public class OreGen extends WorldGenerator
 	public OreGen replace(Block target)
 	{
 		this.target = target;
+		this.targetMetadata = 0;
 		return this;
 	}
 	
@@ -107,6 +109,7 @@ public class OreGen extends WorldGenerator
 	
 	public OreGen below(int maxY)
 	{
+		this.minY = 0;
 		this.maxY = maxY;
 		return this;
 	}
@@ -114,6 +117,7 @@ public class OreGen extends WorldGenerator
 	public OreGen above(int minY)
 	{
 		this.minY = minY;
+		this.maxY = 256;
 		return this;
 	}
 	
@@ -147,7 +151,19 @@ public class OreGen extends WorldGenerator
 	@Override
 	public boolean generate(World world, Random random, int x, int y, int z)
 	{
-		if (this.veigns == 0 || this.amount == 0 || this.maxY == 0)
+		if (this.block == null)
+		{
+			CSLog.error("Cannot generate Ores when the block is set to null!");
+			return false;
+		}
+		if (this.target == null)
+		{
+			CSLog.error("Cannot generate Ores when the target is set to null!");
+			return false;
+		}
+		
+		int diff = this.maxY - this.minY + 1;
+		if (diff <= 1 || this.veigns == 0 || this.amount == 0)
 		{
 			return false;
 		}
@@ -155,7 +171,7 @@ public class OreGen extends WorldGenerator
 		for (int i = 0; i < this.veigns; i++)
 		{
 			int x1 = x + random.nextInt(16);
-			int y1 = CSRandom.nextInt(random, this.minY, this.maxY);
+			int y1 = this.minY + random.nextInt(diff);
 			int z1 = z + random.nextInt(16);
 			this.generateVeign(world, random, x1, y1, z1);
 		}
