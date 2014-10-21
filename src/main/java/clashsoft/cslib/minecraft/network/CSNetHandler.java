@@ -30,6 +30,8 @@ import net.minecraft.network.PacketBuffer;
 @ChannelHandler.Sharable
 public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket>
 {
+	public static boolean						debug;
+	
 	public final String							name;
 	
 	protected EnumMap<Side, FMLEmbeddedChannel>	channels;
@@ -110,14 +112,28 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	{
 		try
 		{
-			PacketBuffer buffer = new PacketBuffer(Unpooled.buffer());
+			// Get message class and discriminator
 			Class<? extends CSPacket> clazz = msg.getClass();
 			byte discriminator = this.getDiscriminator(clazz);
+			PacketBuffer buffer = new PacketBuffer(Unpooled.buffer());
 			
+			if (debug)
+			{
+				CSLog.info("Encoding " + clazz.getSimpleName() + " (" + discriminator + ")");
+			}
+			
+			// Write Discriminator and packet
 			buffer.writeByte(discriminator);
 			msg.write(buffer);
+			
+			// Add buffer to the out list
 			FMLProxyPacket proxyPacket = new FMLProxyPacket(buffer.copy(), ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get());
 			out.add(proxyPacket);
+			
+			if (debug)
+			{
+				CSLog.info("Successfully encoded " + clazz.getSimpleName());
+			}
 		}
 		catch (IOException ex)
 		{
@@ -134,14 +150,27 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 	{
 		try
 		{
+			// Get discriminator and message class
 			ByteBuf payload = msg.payload();
 			byte discriminator = payload.readByte();
 			Class<? extends CSPacket> clazz = this.getClass(discriminator);
-			
 			PacketBuffer buffer = new PacketBuffer(payload.slice());
-			CSPacket pkt = clazz.newInstance();
 			
+			if (debug)
+			{
+				CSLog.info("Decoding " + discriminator + " (" + clazz.getSimpleName() + ")");
+			}
+			
+			// Create and read packet
+			CSPacket pkt = clazz.newInstance();
 			pkt.read(buffer);
+			
+			if (debug)
+			{
+				CSLog.info("Successfully decoded " + clazz.getSimpleName());
+			}
+			
+			// Handle packet
 			if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
 			{
 				INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();

@@ -31,26 +31,50 @@ public abstract class CSPacket
 	public abstract void read(PacketBuffer buf) throws IOException;
 	
 	/**
-	 * Handles this packet client-side.
+	 * Handles this packet client-side. The default implementation delegates to
+	 * {@link #handle(EntityPlayer)}.
 	 * 
 	 * @param player
 	 *            the player
 	 */
-	public abstract void handleClient(EntityPlayer player);
+	public void handleClient(EntityPlayer player)
+	{
+		this.handle(player);
+	}
 	
 	/**
-	 * Handler this packet server-side.
+	 * Handles this packet server-side. The default implementation delegates to
+	 * {@link #handle(EntityPlayer)}.
 	 * 
 	 * @param player
 	 *            the player
 	 */
-	public abstract void handleServer(EntityPlayerMP player);
+	public void handleServer(EntityPlayerMP player)
+	{
+		this.handle(player);
+	}
+	
+	/**
+	 * Handles this packet on both sides. {@link #handleClient(EntityPlayer)}
+	 * and {@link #handleServer(EntityPlayerMP)} delegate here. Note that one
+	 * either has to override both of these methods or this method, otherwise
+	 * and {@link UnsupportedOperationException} will be thrown.
+	 * 
+	 * @param player
+	 *            the player
+	 */
+	public void handle(EntityPlayer player)
+	{
+		// Not implemented
+		throw new UnsupportedOperationException();
+	}
 	
 	// Helper methods
 	
 	/**
-	 * Writes the given {@link World} to the {@link PacketBuffer} {@code buf}.
-	 * This method only writes the dimension ID of the world to the buffer.
+	 * Writes the given {@link World} to the given {@link PacketBuffer}
+	 * {@code buf}. This method only writes the dimension ID of the world to the
+	 * buffer.
 	 * 
 	 * @param buf
 	 *            the buffer
@@ -79,11 +103,13 @@ public abstract class CSPacket
 	}
 	
 	/**
-	 * Writes the {@link ItemStack} {@code stack} to the {@link PacketBuffer}
-	 * {@code buf}.
+	 * Writes the given {@link ItemStack} {@code stack} to the given
+	 * {@link PacketBuffer} {@code buf}.
 	 * 
 	 * @param buf
+	 *            the buffer
 	 * @param stack
+	 *            the stack
 	 */
 	public static void writeItemStack(PacketBuffer buf, ItemStack stack) throws IOException
 	{
@@ -96,14 +122,22 @@ public abstract class CSPacket
 	 * 
 	 * @param buf
 	 *            the buffer
-	 * @param stack
-	 *            the stack
+	 * @return the stack
 	 */
 	public static final ItemStack readItemStack(PacketBuffer buf) throws IOException
 	{
 		return buf.readItemStackFromBuffer();
 	}
 	
+	/**
+	 * Writes the given {@link PotionEffect} {@code effect} to the given
+	 * {@link PacketBuffer} {@code buf}.
+	 * 
+	 * @param buf
+	 *            the buffer
+	 * @param effect
+	 *            the effect
+	 */
 	public static void writePotionEffect(PacketBuffer buf, PotionEffect effect) throws IOException
 	{
 		NBTTagCompound nbt1 = null;
@@ -115,12 +149,29 @@ public abstract class CSPacket
 		buf.writeNBTTagCompoundToBuffer(nbt1);
 	}
 	
+	/**
+	 * Reads a {@link PotionEffect} from the given {@link PacketBuffer}
+	 * {@code buf}.
+	 * 
+	 * @param buf
+	 *            the buffer
+	 * @return the effect
+	 */
 	public static PotionEffect readPotionEffect(PacketBuffer buf) throws IOException
 	{
 		NBTTagCompound nbt1 = buf.readNBTTagCompoundFromBuffer();
 		return nbt1 == null ? null : PotionEffect.readCustomPotionEffectFromNBT(nbt1);
 	}
 	
+	/**
+	 * Writes the given {@link TileEntity} {@code tileEntity} to the given
+	 * {@link PacketBuffer} {@code buf}.
+	 * 
+	 * @param buf
+	 *            the buffer
+	 * @param tileEntity
+	 *            the tile entity
+	 */
 	public static void writeTileEntity(PacketBuffer buf, TileEntity tileEntity) throws IOException
 	{
 		NBTTagCompound nbt1 = null;
@@ -132,6 +183,14 @@ public abstract class CSPacket
 		buf.writeNBTTagCompoundToBuffer(nbt1);
 	}
 	
+	/**
+	 * Reads a {@link TileEntity} from the given {@link PacketBuffer}
+	 * {@code buf}.
+	 * 
+	 * @param buf
+	 *            the buffer
+	 * @return the tile entity
+	 */
 	public static TileEntity readTileEntity(PacketBuffer buf) throws IOException
 	{
 		NBTTagCompound nbt1 = buf.readNBTTagCompoundFromBuffer();
