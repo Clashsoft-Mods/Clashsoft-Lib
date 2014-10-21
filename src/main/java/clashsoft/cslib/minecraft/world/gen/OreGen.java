@@ -255,4 +255,125 @@ public class OreGen extends WorldGenerator
 		}
 		return true;
 	}
+	
+	@Override
+	public String toString()
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.append("OreGen [block=").append(this.block);
+		if (this.metadata != 0)
+		{
+			builder.append(", metadata=").append(this.metadata);
+		}
+		if (this.target != Blocks.stone || this.targetMetadata != 0)
+		{
+			builder.append(", target=").append(this.target);
+			builder.append(", targetMetadata=").append(this.targetMetadata);
+		}
+		builder.append(", amount=").append(this.amount);
+		builder.append(", veigns=").append(this.veigns);
+		builder.append(", minY=").append(this.minY);
+		builder.append(", maxY=").append(this.maxY);
+		if (this.includedBiomes != null)
+		{
+			builder.append(", includedBiomes=").append(this.includedBiomes);
+		}
+		if (this.excludedBiomes != null)
+		{
+			builder.append(", excludedBiomes=").append(this.excludedBiomes);
+		}
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + this.amount;
+		result = prime * result + (this.block == null ? 0 : this.block.hashCode());
+		result = prime * result + (this.excludedBiomes == null ? 0 : this.excludedBiomes.hashCode());
+		result = prime * result + (this.includedBiomes == null ? 0 : this.includedBiomes.hashCode());
+		result = prime * result + this.maxY;
+		result = prime * result + this.metadata;
+		result = prime * result + this.minY;
+		result = prime * result + (this.target == null ? 0 : this.target.hashCode());
+		result = prime * result + this.targetMetadata;
+		result = prime * result + this.veigns;
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (this.getClass() != obj.getClass())
+		{
+			return false;
+		}
+		OreGen other = (OreGen) obj;
+		if (this.amount != other.amount)
+		{
+			return false;
+		}
+		if (this.block != other.block)
+		{
+			return false;
+		}
+		if (this.excludedBiomes == null)
+		{
+			if (other.excludedBiomes != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.excludedBiomes.equals(other.excludedBiomes))
+		{
+			return false;
+		}
+		if (this.includedBiomes == null)
+		{
+			if (other.includedBiomes != null)
+			{
+				return false;
+			}
+		}
+		else if (!this.includedBiomes.equals(other.includedBiomes))
+		{
+			return false;
+		}
+		if (this.maxY != other.maxY)
+		{
+			return false;
+		}
+		if (this.metadata != other.metadata)
+		{
+			return false;
+		}
+		if (this.minY != other.minY)
+		{
+			return false;
+		}
+		if (this.target != other.target)
+		{
+			return false;
+		}
+		if (this.targetMetadata != other.targetMetadata)
+		{
+			return false;
+		}
+		if (this.veigns != other.veigns)
+		{
+			return false;
+		}
+		return true;
+	}
 }
