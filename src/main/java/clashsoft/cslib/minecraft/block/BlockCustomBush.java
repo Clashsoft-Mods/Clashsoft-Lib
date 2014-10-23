@@ -21,6 +21,13 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable, IShe
 	protected int		tickRate;
 	protected float		growChance;
 	
+	protected float		bushMinX	= 0.125F;
+	protected float		bushMinY	= 0F;
+	protected float		bushMinZ	= 0.125F;
+	protected float		bushMaxX	= 0.875F;
+	protected float		bushMaxY	= 0.875F;
+	protected float		bushMaxZ	= 0.875F;
+	
 	public ItemStack	drop;
 	
 	public String		stemIconName;
@@ -54,18 +61,28 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable, IShe
 		return this;
 	}
 	
+	public BlockCustomBush setBushBounds(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+	{
+		this.bushMinX = minX;
+		this.bushMinY = minY;
+		this.bushMinZ = minZ;
+		this.bushMaxX = maxX;
+		this.bushMaxY = maxY;
+		this.bushMaxZ = maxZ;
+		return this;
+	}
+	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 	{
 		if (world.getBlockMetadata(x, y, z) >= this.fullGrownMetadata)
 		{
-			this.setBlockBounds(0.1F, 0F, 0.1F, 0.9F, 0.9F, 0.9F);
+			this.setBlockBounds(this.bushMinX, this.bushMinY, this.bushMinZ, this.bushMaxX, this.bushMaxY, this.bushMaxZ);
 		}
 		else
 		{
 			this.setBlockBounds(0.3F, 0F, 0.3F, 0.7F, 0.9F, 0.7F);
 		}
-		this.setBlockBoundsForItemRender();
 	}
 	
 	@Override
