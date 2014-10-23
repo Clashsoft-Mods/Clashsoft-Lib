@@ -72,6 +72,7 @@ public class CSStacks
 	
 	public static ItemStack	egg						= StackFactory.create(Items.egg);
 	public static ItemStack	emerald					= StackFactory.create(Items.emerald);
+	public static ItemStack	ender_eye				= StackFactory.create(Items.ender_eye);
 	public static ItemStack	ender_pearl				= StackFactory.create(Items.ender_pearl);
 	
 	public static ItemStack	fermented_spider_eye	= StackFactory.create(Items.fermented_spider_eye);
