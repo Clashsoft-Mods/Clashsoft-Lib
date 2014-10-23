@@ -178,7 +178,20 @@ public class CSMath
 		return d;
 	}
 	
-	public static double denormalizeClamp(double min, double max, double d)
+	public static int interpolate(int min, int max, float f)
+	{
+		if (f < 0.0D)
+		{
+			return min;
+		}
+		if (f > 1.0D)
+		{
+			return max;
+		}
+		return min + (int) ((max - min) * f);
+	}
+	
+	public static double interpolate(double min, double max, double d)
 	{
 		if (d < 0.0D)
 		{
