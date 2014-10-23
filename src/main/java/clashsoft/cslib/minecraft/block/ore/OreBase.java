@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import clashsoft.cslib.minecraft.lang.I18n;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
@@ -158,6 +160,12 @@ public class OreBase
 			return ore.getUnlocalizedName() + "." + this.name;
 		}
 		return ore.getUnlocalizedName();
+	}
+	
+	public String getBaseDisplayName()
+	{
+		String s = this.hasCustomName ? "orebase." + this.name : "tile." + this.name + ".name";
+		return I18n.getString(s);
 	}
 	
 	/**

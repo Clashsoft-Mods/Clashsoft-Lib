@@ -4,6 +4,11 @@ recipe.crafting.shapeless=Shapeless Crafting
 recipe.smelting=Smelting
 recipe.cooking=Cooking
 
+orebase.base_material=Base Material
+orebase.stone=Stone
+orebase.netherrack=Netherrack
+orebase.endstone=Endstone
+
 search.match=Match
 search.match.category=Category Match
 
