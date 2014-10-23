@@ -34,7 +34,6 @@ public abstract class RenderBlockSimple implements ISimpleBlockRenderingHandler
 		
 		// Transform view
 		GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		
 		// Draw
 		this.renderBlock(FakeWorld.instance, 0, 0, 0, block, metadata, renderer, true);
