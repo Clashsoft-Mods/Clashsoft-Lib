@@ -8,3 +8,5 @@ gradlew
 gradlew.bat
 bin/
 build/
+
+.settings/org.eclipse.jdt.core.prefs
