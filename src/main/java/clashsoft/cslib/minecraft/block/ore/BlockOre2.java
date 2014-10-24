@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -112,7 +113,15 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 	@Override
 	public int damageDropped(int metadata)
 	{
-		return metadata;
+		if (this == Blocks.lapis_ore)
+		{
+			return 4;
+		}
+		else if (this == Blocks.iron_ore || this == Blocks.gold_ore)
+		{
+			return metadata;
+		}
+		return 0;
 	}
 	
 	@Override
