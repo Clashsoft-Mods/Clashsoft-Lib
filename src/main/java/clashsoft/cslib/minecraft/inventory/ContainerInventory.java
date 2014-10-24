@@ -24,7 +24,7 @@ public class ContainerInventory extends Container
 	}
 	
 	@Deprecated
-	public final void addInventorySlot(int xOffset, int yOffset)
+	public final void addInventorySlots(int xOffset, int yOffset)
 	{
 		this.addInventorySlots(8 + xOffset, 84 + yOffset, 142 + yOffset);
 	}

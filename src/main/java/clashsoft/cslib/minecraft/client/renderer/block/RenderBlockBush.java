@@ -32,7 +32,7 @@ public class RenderBlockBush extends RenderBlockSimple
 			
 			drawStandartBlock(block, metadata, renderer);
 			
-            tessellator.draw();
+			tessellator.draw();
 		}
 		else
 		{

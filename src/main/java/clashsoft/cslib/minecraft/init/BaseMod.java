@@ -181,7 +181,7 @@ public abstract class BaseMod<N extends CSNetHandler>
 	 *            the event
 	 */
 	public void construct(FMLConstructionEvent event)
-	{	
+	{
 	}
 	
 	/**

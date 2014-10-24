@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
 
 public abstract class RandomStack
 {
-	protected Item	item;
-	protected int	metadata;
+	protected Item					item;
+	protected int					metadata;
 	
-	public RegistryDelegate<Item> delegate;
+	public RegistryDelegate<Item>	delegate;
 	
 	public RandomStack(Item item, int metadata)
 	{

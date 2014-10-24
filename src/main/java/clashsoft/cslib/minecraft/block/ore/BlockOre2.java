@@ -114,7 +114,7 @@ public class BlockOre2 extends BlockOre implements IBlockRenderPass, ICustomBloc
 	{
 		return metadata;
 	}
-
+	
 	@Override
 	public int getDamageValue(World world, int x, int y, int z)
 	{
