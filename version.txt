@@ -1,11 +1,17 @@
-version=1.7.10-2.7.1
-url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.7.1/ClashsoftLib-1.7.10-2.7.1.jar
+version=1.7.10-2.7.2
+url=https://github.com/Clashsoft/Clashsoft-Lib/releases/download/1.7.10-2.7.2/ClashsoftLib-1.7.10-2.7.2.jar
 
-> Update to Forge 10.13.1.1217.
-+ Added a simple configurable OreGen API.
-* Updated the Replacement system.
-* Improved IRecipeManager.
-* Fixed OreBase texture issues.
-* Fixed Ores always dropping their Stone variant.
-* Fixed CSConfig not being Thread-save.
-* Fixed Statistics crash.
+> Update to Forge 10.13.2.1232.
++ Added FakeWorld.
++ Added CSEntities.hasProperties().
++ Added PlayerProperties class.
++ Added ItemCustomBlock Flower Pot interaction.
++ Added TileEntityInventory.onSlotChanged().
++ Added CSHUD interfaces.
+* Fixed EntityProperties ignoring canApply().
+* Fixed various rendering issues.
+* Fixed OreGen issues.
+* Updated RandomStack for the new RegistryDelegate system.
+* Documentation.
+- Removed unused Config code.
+- Removed ImmutableObjectFactory.
