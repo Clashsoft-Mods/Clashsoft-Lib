@@ -1,5 +1,7 @@
 package clashsoft.cslib.minecraft.client.renderer.block;
 
+import org.lwjgl.opengl.GL11;
+
 import clashsoft.cslib.minecraft.block.BlockCustomBush;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
 
@@ -25,13 +27,12 @@ public class RenderBlockBush extends RenderBlockSimple
 		
 		if (inventory)
 		{
+			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+			
 			tessellator.startDrawingQuads();
-			
-			tessellator.setNormal(0.0F, -1.0F, 0.0F);
-			renderer.drawCrossedSquares(bush.stemIcon, -0.5D, -0.5D, -0.5D, 1.0F);
-			
+			renderer.drawCrossedSquares(bush.stemIcon, 0D, 0D, 0D, 1.0F);
+			renderer.setRenderBounds(bush.bushMinX, bush.bushMinY, bush.bushMinZ, bush.bushMaxX, bush.bushMaxY, bush.bushMaxZ);
 			drawStandartBlock(block, metadata, renderer);
-			
 			tessellator.draw();
 		}
 		else
@@ -40,7 +41,10 @@ public class RenderBlockBush extends RenderBlockSimple
 			renderer.renderCrossedSquares(block, x, y, z);
 			renderer.overrideBlockTexture = null;
 			
-			renderer.renderStandardBlock(block, x, y, z);
+			if (metadata >= bush.fullGrownMetadata)
+			{
+				renderer.renderStandardBlock(block, x, y, z);
+			}
 		}
 		
 		return true;

@@ -77,9 +77,6 @@ public abstract class RenderBlockSimple implements ISimpleBlockRenderingHandler
 	{
 		Tessellator tessellator = Tessellator.instance;
 		
-		block.setBlockBoundsForItemRender();
-		renderer.setRenderBoundsFromBlock(block);
-		
 		tessellator.setNormal(0.0F, -1.0F, 0.0F);
 		renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(0, metadata));
 		

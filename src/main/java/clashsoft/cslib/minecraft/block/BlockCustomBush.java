@@ -21,12 +21,12 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable, IShe
 	protected int		tickRate;
 	protected float		growChance;
 	
-	protected float		bushMinX	= 0.125F;
-	protected float		bushMinY	= 0F;
-	protected float		bushMinZ	= 0.125F;
-	protected float		bushMaxX	= 0.875F;
-	protected float		bushMaxY	= 0.875F;
-	protected float		bushMaxZ	= 0.875F;
+	public float		bushMinX	= 0.125F;
+	public float		bushMinY	= 0F;
+	public float		bushMinZ	= 0.125F;
+	public float		bushMaxX	= 0.875F;
+	public float		bushMaxY	= 0.875F;
+	public float		bushMaxZ	= 0.875F;
 	
 	public ItemStack	drop;
 	
@@ -40,6 +40,7 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable, IShe
 		this.setBlockTextureName(bushIconName);
 		this.stemIconName = stemIconName;
 		this.fullGrownMetadata = 3;
+		this.setTicksToGrow(180 * 20);
 	}
 	
 	public BlockCustomBush setItem(ItemStack item)
@@ -162,21 +163,34 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable, IShe
 	}
 	
 	@Override
+	public Item getItemDropped(int metadata, Random random, int fortune)
+	{
+		return this.drop == null ? null : this.drop.getItem();
+	}
+	
+	@Override
+	public int quantityDropped(int metadata, int fortune, Random random)
+	{
+		return this.drop == null ? 0 : this.drop.stackSize;
+	}
+	
+	@Override
+	public int damageDropped(int metadata)
+	{
+		return this.drop == null ? 0 : this.drop.getItemDamage();
+	}
+	
+	@Override
 	public boolean isShearable(ItemStack stack, IBlockAccess world, int x, int y, int z)
 	{
-		return world.getBlockMetadata(x, y, z) >= this.fullGrownMetadata;
+		return true;
 	}
 	
 	@Override
 	public ArrayList<ItemStack> onSheared(ItemStack stack, IBlockAccess world, int x, int y, int z, int fortune)
 	{
 		ArrayList<ItemStack> list = new ArrayList();
-		Item item = this.drop.getItem();
-		int metadata = this.drop.getItemDamage();
-		for (int i = 0; i < this.drop.stackSize; i++)
-		{
-			list.add(new ItemStack(item, 1, metadata));
-		}
+		list.add(new ItemStack(this, 1, 0));
 		return list;
 	}
 }
