@@ -1,5 +1,7 @@
 package clashsoft.cslib.minecraft;
 
+import java.io.File;
+
 import clashsoft.cslib.config.CSConfig;
 import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.block.CSBlocks;
@@ -33,44 +35,54 @@ import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.terraingen.InitMapGenEvent;
 import net.minecraftforge.event.terraingen.InitMapGenEvent.EventType;
 
 @Mod(modid = CSLib.MODID, name = CSLib.NAME, version = CSLib.VERSION)
 public class CSLib extends ClashsoftMod
 {
-	public static final String	MODID				= "cslib";
-	public static final String	NAME				= "Clashsoft Lib";
-	public static final String	ACRONYM				= "cslib";
-	public static final String	VERSION				= "1.7.10-2.7.2";
-	public static final String	DEPENDENCY			= "required-after:" + MODID;
+	public static final String	MODID			= "cslib";
+	public static final String	NAME			= "Clashsoft Lib";
+	public static final String	ACRONYM			= "cslib";
+	public static final String	VERSION			= "1.7.10-2.7.2";
+	public static final String	DEPENDENCY		= "required-after:" + MODID;
+	
+	public static boolean		workspaceMode;
 	
 	static
 	{
 		CSLog.logger = new Log4JLogger();
+		
+		File file = new File(".");
+		String path = file.getAbsolutePath();
+		if (path.endsWith("run/.") || path.endsWith("assets/."))
+		{
+			workspaceMode = true;
+			CSLog.info("Clashsoft Lib is now running in Dev Workspace mode.");
+		}
 	}
 	
 	@Instance(MODID)
 	public static CSLib			instance;
 	
-	public static CSLibProxy	proxy				= createProxy("clashsoft.cslib.minecraft.client.CSLibClientProxy", "clashsoft.cslib.minecraft.common.CSLibProxy");
+	public static CSLibProxy	proxy			= createProxy("clashsoft.cslib.minecraft.client.CSLibClientProxy", "clashsoft.cslib.minecraft.common.CSLibProxy");
 	
-	public static Block			coalOre2			= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreCoal").setBlockTextureName("cslib:coal_overlay");
-	public static Block			ironOre2			= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreIron").setBlockTextureName("cslib:iron_overlay");
-	public static Block			goldOre2			= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreGold").setBlockTextureName("cslib:gold_overlay");
-	public static Block			diamondOre2			= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreDiamond").setBlockTextureName("cslib:diamond_overlay");
-	public static Block			emeraldOre2			= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreEmerald").setBlockTextureName("cslib:emerald_overlay");
-	public static Block			redstoneOre2		= new BlockRedstoneOre2(OreBase.TYPE_OVERWORLD, false).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreRedstone").setBlockTextureName("cslib:redstone_overlay");
-	public static Block			litRedstoneOre2		= new BlockRedstoneOre2(OreBase.TYPE_OVERWORLD, true).setLightLevel(0.625F).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreRedstone").setBlockTextureName("cslib:redstone_overlay");
-	public static Block			lapisOre2			= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreLapis").setBlockTextureName("cslib:lapis_overlay");
-	public static Block			quartzOre2			= new BlockOre2(OreBase.TYPE_NETHER).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("netherquartz").setBlockTextureName("cslib:quartz_overlay");
+	public static Block			coalOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreCoal").setBlockTextureName("cslib:coal_overlay");
+	public static Block			ironOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreIron").setBlockTextureName("cslib:iron_overlay");
+	public static Block			goldOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreGold").setBlockTextureName("cslib:gold_overlay");
+	public static Block			diamondOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreDiamond").setBlockTextureName("cslib:diamond_overlay");
+	public static Block			emeraldOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreEmerald").setBlockTextureName("cslib:emerald_overlay");
+	public static Block			redstoneOre2	= new BlockRedstoneOre2(OreBase.TYPE_OVERWORLD, false).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreRedstone").setBlockTextureName("cslib:redstone_overlay");
+	public static Block			litRedstoneOre2	= new BlockRedstoneOre2(OreBase.TYPE_OVERWORLD, true).setLightLevel(0.625F).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreRedstone").setBlockTextureName("cslib:redstone_overlay");
+	public static Block			lapisOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreLapis").setBlockTextureName("cslib:lapis_overlay");
+	public static Block			quartzOre2		= new BlockOre2(OreBase.TYPE_NETHER).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("netherquartz").setBlockTextureName("cslib:quartz_overlay");
 	
-	public static boolean		printUpdateNotes	= false;
-	public static boolean		updateCheck			= true;
-	public static boolean		autoUpdate			= true;
-	public static boolean		enableMOTD			= true;
+	public static boolean		printUpdateNotes;
+	public static boolean		updateCheck;
+	public static boolean		autoUpdate;
+	public static boolean		enableMOTD;
 	
 	public CSLib()
 	{
@@ -90,10 +102,13 @@ public class CSLib extends ClashsoftMod
 	@Override
 	public void readConfig()
 	{
-		printUpdateNotes = CSConfig.getBool("updates", "Print Update Notes", printUpdateNotes);
-		updateCheck = CSConfig.getBool("updates", "Update Check", "Disables update checks for ALL mods", updateCheck);
-		autoUpdate = CSConfig.getBool("updates", "Auto Updates", "Disables automatic updates", autoUpdate);
-		enableMOTD = CSConfig.getBool("updates", "Enable MOTD", enableMOTD);
+		printUpdateNotes = CSConfig.getBool("updates", "Print Update Notes", false);
+		updateCheck = CSConfig.getBool("updates", "Update Check", "Disables update checks for ALL mods", true);
+		if (!workspaceMode)
+		{
+			autoUpdate = CSConfig.getBool("updates", "Automatically Update", "Disables automatic updates", false);
+		}
+		enableMOTD = CSConfig.getBool("updates", "Enable MOTD", true);
 	}
 	
 	@Override
