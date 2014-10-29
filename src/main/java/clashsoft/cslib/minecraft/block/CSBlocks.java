@@ -30,6 +30,21 @@ import net.minecraft.stats.StatList;
  */
 public class CSBlocks
 {
+	public static boolean	coloredLights;
+	
+	static
+	{
+		try
+		{
+			Class.forName("coloredlightscore.src.api.CLApi");
+			coloredLights = true;
+			CSLog.info("Clashsoft Lib Colored Lights compatibility activated.");
+		}
+		catch (Exception ex)
+		{
+		}
+	}
+	
 	/**
 	 * Registers all {@link Block}s from the given {@link Class} {@code mod}.
 	 * 
@@ -206,5 +221,35 @@ public class CSBlocks
 			CSLog.error(e);
 		}
 		return false;
+	}
+	
+	public static int getLightValue(float r, float g, float b, float brightness)
+	{
+		int ibrightness = (int) (brightness * 15.0F);
+		if (!coloredLights)
+		{
+			return ibrightness;
+		}
+		return ibrightness | ((int) (15.0F * b) << 15) | ((int) (15.0F * g) << 10) | ((int) (15.0F * r) << 5);
+	}
+	
+	public static int getLightValue(int r, int g, int b, int brightness)
+	{
+		brightness &= 15;
+		if (!coloredLights)
+		{
+			return brightness;
+		}
+		return brightness | (b << 15) + (g << 10) + (r << 5);
+	}
+	
+	public static int getLightValue(float r, float g, float b)
+	{
+		return getLightValue(r, g, b, (r + g + b) / 3F);
+	}
+	
+	public static int getLightValue(int r, int g, int b)
+	{
+		return getLightValue(r, g, b, (r + g + b) / 3);
 	}
 }
