@@ -31,23 +31,19 @@ public class ContainerInventory extends Container
 	
 	public final void addInventorySlots(int xOffset, int yOffset, int yHotbar)
 	{
-		int k = 8 + xOffset;
-		int l = 84 + yOffset;
-		int m = 142 + yOffset;
-		
 		InventoryPlayer inventory = this.player.inventory;
 		
 		for (int i = 0; i < 3; ++i)
 		{
 			for (int j = 0; j < 9; ++j)
 			{
-				this.addSlotToContainer(new Slot(inventory, 9 + j + i * 9, k + j * 18, l + i * 18));
+				this.addSlotToContainer(new Slot(inventory, 9 + j + i * 9, xOffset + j * 18, yOffset + i * 18));
 			}
 		}
 		
 		for (int i = 0; i < 9; ++i)
 		{
-			this.addSlotToContainer(new Slot(inventory, i, k + i * 18, m));
+			this.addSlotToContainer(new Slot(inventory, i, xOffset + i * 18, yHotbar));
 		}
 	}
 	
