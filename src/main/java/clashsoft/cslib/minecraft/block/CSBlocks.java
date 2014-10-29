@@ -243,6 +243,14 @@ public class CSBlocks
 		return brightness | (b << 15) + (g << 10) + (r << 5);
 	}
 	
+	public static int getLightValue(int rgb, float brightness)
+	{
+		float r = ((rgb >> 16) & 0xFF) / 255F;
+		float g = ((rgb >> 8) & 0xFF) / 255F;
+		float b = ((rgb >> 0) & 0xFF) / 255F;
+		return getLightValue(r, g, b, brightness);
+	}
+	
 	public static int getLightValue(float r, float g, float b)
 	{
 		return getLightValue(r, g, b, (r + g + b) / 3F);
@@ -251,5 +259,13 @@ public class CSBlocks
 	public static int getLightValue(int r, int g, int b)
 	{
 		return getLightValue(r, g, b, (r + g + b) / 3);
+	}
+	
+	public static int getLightValue(int rgb)
+	{
+		float r = ((rgb >> 16) & 0xFF) / 255F;
+		float g = ((rgb >> 8) & 0xFF) / 255F;
+		float b = ((rgb >> 0) & 0xFF) / 255F;
+		return getLightValue(r, g, b, (r + g + b) / 3F);
 	}
 }
