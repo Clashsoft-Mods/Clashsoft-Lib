@@ -178,7 +178,7 @@ public class CustomChunkProvider implements IChunkProvider
 	
 	public void replaceBlocksForBiome(int x, int z, Block[] blocks, byte[] metadata, BiomeGenBase[] biomes)
 	{
-		ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(this, x, z, blocks, biomes);
+		ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(this, x, z, blocks, metadata, biomes, null);
 		MinecraftForge.EVENT_BUS.post(event);
 		if (event.getResult() == Event.Result.DENY)
 		{

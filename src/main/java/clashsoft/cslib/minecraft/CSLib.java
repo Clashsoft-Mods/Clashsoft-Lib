@@ -2,6 +2,16 @@ package clashsoft.cslib.minecraft;
 
 import java.io.File;
 
+import net.minecraft.block.Block;
+import net.minecraft.command.ICommand;
+import net.minecraft.command.ServerCommandManager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.terraingen.InitMapGenEvent;
+import net.minecraftforge.event.terraingen.InitMapGenEvent.EventType;
 import clashsoft.cslib.config.CSConfig;
 import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.block.CSBlocks;
@@ -12,6 +22,7 @@ import clashsoft.cslib.minecraft.cape.Capes;
 import clashsoft.cslib.minecraft.command.CSCommand;
 import clashsoft.cslib.minecraft.command.CommandModUpdate;
 import clashsoft.cslib.minecraft.common.CSLibProxy;
+import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.crafting.loader.FurnaceRecipeLoader;
 import clashsoft.cslib.minecraft.entity.CSEntities;
 import clashsoft.cslib.minecraft.init.ClashsoftMod;
@@ -25,20 +36,13 @@ import clashsoft.cslib.minecraft.world.gen.CustomCaveGen;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLConstructionEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
-
-import net.minecraft.block.Block;
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ServerCommandManager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.terraingen.InitMapGenEvent;
-import net.minecraftforge.event.terraingen.InitMapGenEvent.EventType;
 
 @Mod(modid = CSLib.MODID, name = CSLib.NAME, version = CSLib.VERSION)
 public class CSLib extends ClashsoftMod
@@ -123,6 +127,8 @@ public class CSLib extends ClashsoftMod
 	public void construct(FMLConstructionEvent event)
 	{
 		super.construct(event);
+		
+		CSCrafting.updateItemStacks();
 		
 		CSBlocks.replaceBlock(Blocks.coal_ore, coalOre2, new ItemCustomBlock(coalOre2));
 		CSBlocks.replaceBlock(Blocks.iron_ore, ironOre2, new ItemCustomBlock(ironOre2));

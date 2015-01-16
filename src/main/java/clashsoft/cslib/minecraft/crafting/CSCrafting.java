@@ -8,11 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import clashsoft.cslib.logging.CSLog;
-import clashsoft.cslib.minecraft.item.meta.ISubItemRecipe;
-import clashsoft.cslib.minecraft.stack.CSStacks;
-import cpw.mods.fml.common.registry.GameRegistry;
+import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -21,7 +17,12 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.OreDictionary;
+import clashsoft.cslib.logging.CSLog;
+import clashsoft.cslib.minecraft.item.meta.ISubItemRecipe;
+import clashsoft.cslib.minecraft.stack.CSStacks;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * The Class CSCrafting.
@@ -36,6 +37,61 @@ public class CSCrafting
 	public static final List<IRecipe>				RECIPES			= CraftingManager.getInstance().getRecipeList();
 	public static final Map<ItemStack, ItemStack>	SMELTINGMAP		= FurnaceRecipes.smelting().getSmeltingList();
 	public static final int							WILDCARD_VALUE	= OreDictionary.WILDCARD_VALUE;
+	
+	public static void updateItemStacks()
+	{
+		long now = System.currentTimeMillis();
+		int count = 0;
+		
+		ItemStack stack;
+		for (IRecipe r : RECIPES)
+		{
+			if (r instanceof ShapedRecipes)
+			{
+				ShapedRecipes sr = (ShapedRecipes) r;
+				
+				stack = sr.getRecipeOutput();
+				stack.func_150996_a(stack.getItem());
+				count++;
+				
+				for (ItemStack is : sr.recipeItems)
+				{
+					if (is != null)
+					{
+						is.func_150996_a(is.getItem());
+						count++;
+					}
+				}
+			}
+			else if (r instanceof ShapelessRecipes)
+			{
+				ShapelessRecipes sr = (ShapelessRecipes) r;
+				List<ItemStack> list = sr.recipeItems;
+				
+				stack = sr.getRecipeOutput();
+				stack.func_150996_a(stack.getItem());
+				count++;
+				
+				for (ItemStack is : list)
+				{
+					is.func_150996_a(is.getItem());
+					count++;
+				}
+			}
+		}
+		
+		for (Entry<ItemStack, ItemStack> entry : SMELTINGMAP.entrySet())
+		{
+			stack = entry.getKey();
+			stack.func_150996_a(stack.getItem());
+			stack = entry.getValue();
+			stack.func_150996_a(stack.getItem());
+			count += 2;
+		}
+		
+		now = System.currentTimeMillis() - now;
+		CSLog.info("Replaced " + count + " ItemStack references (" + now + "ms)");
+	}
 	
 	/**
 	 * Registers the given {@link IRecipe} {@code recipe}.

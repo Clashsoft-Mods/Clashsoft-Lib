@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import clashsoft.cslib.minecraft.stack.CSStacks;
+
 import com.google.common.collect.Multimap;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -183,7 +184,7 @@ public class ItemDataTool extends ItemTool
 		{
 			tm = this.toolMaterial;
 		}
-		return tm.customCraftingMaterial == repairItem.getItem() ? true : super.getIsRepairable(stack, repairItem);
+		return CSStacks.itemEquals(repairItem, tm.getRepairItemStack());
 	}
 	
 	@Override

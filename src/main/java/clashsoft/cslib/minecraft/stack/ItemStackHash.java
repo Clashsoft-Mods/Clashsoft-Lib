@@ -16,13 +16,15 @@ import net.minecraft.item.ItemStack;
  */
 public class ItemStackHash implements HashingStrategy<ItemStack>
 {
+	private static final long	serialVersionUID	= -2377987946481368016L;
+	
 	/**
 	 * True if the equals method should also compare the stack size.
 	 */
 	private boolean				compareStackSize;
 	
-	public static ItemStackHash	itemInstance	= new ItemStackHash(false);
-	public static ItemStackHash	stackInstance	= new ItemStackHash(true);
+	public static ItemStackHash	itemInstance		= new ItemStackHash(false);
+	public static ItemStackHash	stackInstance		= new ItemStackHash(true);
 	
 	public ItemStackHash(boolean stackSize)
 	{
