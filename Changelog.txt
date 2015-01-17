@@ -1,3 +1,11 @@
+1.7.10-2.7.3
+
+> Update to Forge 10.13.2.1284.
++ Added Dev Mode.
++ Added Colored Lights Compatibility.
+* Fixed some CustomBush bugs.
+* Fixed ContainerInventory slots being offset.
+
 1.7.10-2.7.2
 
 > Update to Forge 10.13.2.1232.

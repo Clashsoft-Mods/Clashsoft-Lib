@@ -21,7 +21,7 @@ buildscript
 }
 
 apply plugin: 'forge'
-version = "1.7.10-2.7.2"
+version = "1.7.10-2.7.3"
 group= "clashsoft.cslib"
 archivesBaseName = "ClashsoftLib"
 
