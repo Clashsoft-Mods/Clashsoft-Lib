@@ -1,7 +1,5 @@
 package clashsoft.cslib.minecraft.cape;
 
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -27,8 +25,7 @@ public abstract class Cape
 	
 	public void loadTexture(AbstractClientPlayer player)
 	{
-		ResourceLocation location = this.getLocation();
-		player.func_152121_a(MinecraftProfileTexture.Type.CAPE, location);
+		// FIXME
 	}
 	
 	public boolean isTextureLoaded(AbstractClientPlayer player)

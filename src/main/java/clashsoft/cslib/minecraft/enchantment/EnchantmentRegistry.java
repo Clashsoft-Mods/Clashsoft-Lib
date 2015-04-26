@@ -51,7 +51,7 @@ public class EnchantmentRegistry extends CSRegistry
 	
 	public static void add(Enchantment ench, int id, String name)
 	{
-		instance.addObject(id, name, ench);
+		instance.register(id, name, ench);
 	}
 	
 	public static void expandEnchantmentList(int size)

@@ -18,11 +18,11 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.item.meta.ISubItemRecipe;
 import clashsoft.cslib.minecraft.stack.CSStacks;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * The Class CSCrafting.
@@ -35,7 +35,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class CSCrafting
 {
 	public static final List<IRecipe>				RECIPES			= CraftingManager.getInstance().getRecipeList();
-	public static final Map<ItemStack, ItemStack>	SMELTINGMAP		= FurnaceRecipes.smelting().getSmeltingList();
+	public static final Map<ItemStack, ItemStack>	SMELTINGMAP		= FurnaceRecipes.instance().getSmeltingList();
 	public static final int							WILDCARD_VALUE	= OreDictionary.WILDCARD_VALUE;
 	
 	public static void updateItemStacks()
@@ -51,14 +51,14 @@ public class CSCrafting
 				ShapedRecipes sr = (ShapedRecipes) r;
 				
 				stack = sr.getRecipeOutput();
-				stack.func_150996_a(stack.getItem());
+				stack.setItem(stack.getItem());
 				count++;
 				
 				for (ItemStack is : sr.recipeItems)
 				{
 					if (is != null)
 					{
-						is.func_150996_a(is.getItem());
+						is.setItem(is.getItem());
 						count++;
 					}
 				}
@@ -69,12 +69,12 @@ public class CSCrafting
 				List<ItemStack> list = sr.recipeItems;
 				
 				stack = sr.getRecipeOutput();
-				stack.func_150996_a(stack.getItem());
+				stack.setItem(stack.getItem());
 				count++;
 				
 				for (ItemStack is : list)
 				{
-					is.func_150996_a(is.getItem());
+					is.setItem(is.getItem());
 					count++;
 				}
 			}
@@ -83,9 +83,9 @@ public class CSCrafting
 		for (Entry<ItemStack, ItemStack> entry : SMELTINGMAP.entrySet())
 		{
 			stack = entry.getKey();
-			stack.func_150996_a(stack.getItem());
+			stack.setItem(stack.getItem());
 			stack = entry.getValue();
-			stack.func_150996_a(stack.getItem());
+			stack.setItem(stack.getItem());
 			count += 2;
 		}
 		
@@ -180,7 +180,7 @@ public class CSCrafting
 	 */
 	public static void addFurnaceRecipe(ItemStack input, ItemStack output, float experience)
 	{
-		FurnaceRecipes.smelting().func_151394_a(input, output, experience);
+		FurnaceRecipes.instance().addSmeltingRecipe(input, output, experience);
 	}
 	
 	/**

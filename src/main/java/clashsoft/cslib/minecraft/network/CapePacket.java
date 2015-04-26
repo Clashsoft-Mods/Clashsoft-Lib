@@ -1,12 +1,9 @@
 package clashsoft.cslib.minecraft.network;
 
-import java.io.IOException;
-
-import clashsoft.cslib.minecraft.CSLib;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
+import clashsoft.cslib.minecraft.CSLib;
 
 public class CapePacket extends CSPacket
 {
@@ -19,34 +16,22 @@ public class CapePacket extends CSPacket
 	
 	public CapePacket(EntityPlayer player, String cape)
 	{
-		this.username = player.getCommandSenderName();
+		this.username = player.getName();
 		this.cape = cape;
 	}
 	
 	@Override
 	public void write(PacketBuffer buf)
 	{
-		try
-		{
-			buf.writeStringToBuffer(this.username);
-			buf.writeStringToBuffer(this.cape);
-		}
-		catch (IOException ex)
-		{
-		}
+		buf.writeString(this.username);
+		buf.writeString(this.cape);
 	}
 	
 	@Override
 	public void read(PacketBuffer buf)
 	{
-		try
-		{
-			this.username = buf.readStringFromBuffer(0xFFFF);
-			this.cape = buf.readStringFromBuffer(0xFFFF);
-		}
-		catch (IOException ex)
-		{
-		}
+		this.username = buf.readStringFromBuffer(0xFFFF);
+		this.cape = buf.readStringFromBuffer(0xFFFF);
 	}
 	
 	@Override

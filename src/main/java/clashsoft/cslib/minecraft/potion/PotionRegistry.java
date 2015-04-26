@@ -52,7 +52,7 @@ public class PotionRegistry extends CSRegistry
 	
 	public static void add(Potion potion, int id, String name)
 	{
-		instance.addObject(id, name, potion);
+		instance.register(id, name, potion);
 	}
 	
 	public static void expandPotionList(int size)

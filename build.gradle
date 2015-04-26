@@ -30,7 +30,7 @@ targetCompatibility = 1.7
 
 minecraft
 {
-    version = "1.7.10-10.13.2.1284"
+    version = "1.8-11.14.0.1288-1.8"
 
     if (file('../run').exists())
     {

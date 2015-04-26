@@ -2,21 +2,17 @@ package clashsoft.cslib.minecraft.world.biome;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 {
-	public byte		topMetadata;
-	public byte		fillerMetadata;
-	public Block	stoneBlock	= Blocks.stone;
-	public byte		stoneMetadata;
-	
-	public Block	waterBlock	= Blocks.water;
-	public byte		waterMetadata;
+	public IBlockState stoneBlock;
+	public IBlockState waterBlock;
 	
 	public int		waterLevel;
 	
@@ -46,51 +42,27 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	}
 	
 	@Override
-	public Block getTopBlock()
+	public IBlockState getTopBlock()
 	{
 		return this.topBlock;
 	}
 	
 	@Override
-	public Block getFillerBlock()
+	public IBlockState getFillerBlock()
 	{
 		return this.fillerBlock;
 	}
 	
 	@Override
-	public Block getStoneBlock()
+	public IBlockState getStoneBlock()
 	{
 		return this.stoneBlock;
 	}
 	
 	@Override
-	public Block getWaterBlock()
+	public IBlockState getWaterBlock()
 	{
 		return this.waterBlock;
-	}
-	
-	@Override
-	public byte getTopMetadata()
-	{
-		return this.topMetadata;
-	}
-	
-	@Override
-	public byte getFillerMetadata()
-	{
-		return this.fillerMetadata;
-	}
-	
-	@Override
-	public byte getStoneMetadata()
-	{
-		return this.stoneMetadata;
-	}
-	
-	@Override
-	public byte getWaterMetadata()
-	{
-		return this.waterMetadata;
 	}
 	
 	@Override
@@ -106,60 +78,52 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 	}
 	
 	@Override
-	public void genTerrainBlocks(World world, Random random, Block[] blocks, byte[] metadatas, int x, int z, double noise)
+	public void genTerrainBlocks(World world, Random random, ChunkPrimer primer, int x, int z, double noise)
 	{
-		int count = blocks.length >> 8;
 		int x1 = x & 0xF;
 		int z1 = z & 0xF;
-		int index1 = ((z1 << 4) + x1) * count;
+		int index1 = ((z1 << 4) + x1) << 8;
 		int randomNoise = (int) (noise / 3.0D + 3.0D + random.nextDouble() * 0.25D);
 		int grassHeight = -1;
 		boolean foundTop = false;
 		
-		int bedrock = this.getBedrockHeight();
-		boolean genBedrock = bedrock > 0;
+		int bedrockHeight = this.getBedrockHeight();
+		boolean genBedrock = bedrockHeight > 0;
 		int waterLevel = this.getWaterLevel();
 		
-		Block top = this.getTopBlock();
-		byte topm = this.getTopMetadata();
-		Block filler = this.getFillerBlock();
-		byte fillerm = this.getFillerMetadata();
-		Block stone = this.getStoneBlock();
-		byte stonem = this.getStoneMetadata();
-		Block water = this.getWaterBlock();
-		byte waterm = this.getWaterMetadata();
+		IBlockState top = this.getTopBlock();
+		IBlockState filler = this.getFillerBlock();
+		IBlockState stone = this.getStoneBlock();
+		IBlockState water = this.getWaterBlock();
+		IBlockState bedrock = Blocks.bedrock.getDefaultState();
 		
 		for (int y = 255; y >= 0; --y)
 		{
-			int index = index1 + y;
-			
-			if (genBedrock && y <= random.nextInt(bedrock))
+			int index = index1 | y;
+			if (genBedrock && y <= random.nextInt(bedrockHeight))
 			{
-				blocks[index] = Blocks.bedrock;
+				primer.setBlockState(index, bedrock);
 				continue;
 			}
 			
-			Block block = blocks[index];
+			IBlockState block = primer.getBlockState(index);
 			
-			if (block != null && block.getMaterial() != Material.air)
+			if (block != null && block.getBlock().getMaterial() == Material.air)
 			{
 				if (grassHeight == -1)
 				{
 					grassHeight = y;
 					foundTop = true;
 					
-					blocks[index] = top;
-					metadatas[index] = topm;
+					primer.setBlockState(index, top);
 				}
 				else if (y >= grassHeight - randomNoise)
 				{
-					blocks[index] = filler;
-					metadatas[index] = fillerm;
+					primer.setBlockState(index, filler);
 				}
 				else
 				{
-					blocks[index] = stone;
-					metadatas[index] = stonem;
+					primer.setBlockState(index, stone);
 				}
 			}
 			else
@@ -167,8 +131,7 @@ public abstract class CustomBiome extends BiomeGenBase implements ICustomBiome
 				grassHeight = -1;
 				if (!foundTop && y < waterLevel)
 				{
-					blocks[index] = water;
-					metadatas[index] = waterm;
+					primer.setBlockState(index, water);
 				}
 			}
 		}

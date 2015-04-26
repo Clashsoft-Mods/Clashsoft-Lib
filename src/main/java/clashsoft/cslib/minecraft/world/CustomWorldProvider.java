@@ -1,12 +1,10 @@
 package clashsoft.cslib.minecraft.world;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class CustomWorldProvider extends WorldProvider
 {
@@ -60,12 +58,6 @@ public abstract class CustomWorldProvider extends WorldProvider
 	public boolean canCoordinateBeSpawn(int x, int z)
 	{
 		return false;
-	}
-	
-	@Override
-	public ChunkCoordinates getEntrancePortalLocation()
-	{
-		return new ChunkCoordinates(50, 5, 0);
 	}
 	
 	@Override
@@ -136,6 +128,6 @@ public abstract class CustomWorldProvider extends WorldProvider
 		f3 *= f2 * 0.94F + 0.06F;
 		f4 *= f2 * 0.94F + 0.06F;
 		f5 *= f2 * 0.91F + 0.09F;
-		return Vec3.createVectorHelper(f3, f4, f5);
+		return new Vec3(f3, f4, f5);
 	}
 }

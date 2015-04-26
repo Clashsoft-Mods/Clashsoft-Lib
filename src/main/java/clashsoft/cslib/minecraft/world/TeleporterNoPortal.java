@@ -12,19 +12,12 @@ public final class TeleporterNoPortal extends Teleporter
 	}
 	
 	@Override
-	public void placeInPortal(Entity entity, double x, double y, double z, float f)
+	public void func_180266_a(Entity p_180266_1_, float p_180266_2_)
 	{
-		
 	}
 	
 	@Override
-	public boolean makePortal(Entity entity)
-	{
-		return true;
-	}
-	
-	@Override
-	public boolean placeInExistingPortal(Entity entity, double x, double y, double z, float f)
+	public boolean func_180620_b(Entity p_180620_1_, float p_180620_2_)
 	{
 		return true;
 	}

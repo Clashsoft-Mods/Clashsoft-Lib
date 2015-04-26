@@ -21,10 +21,4 @@ public class ItemCraftingHelper extends Item
 		}
 		return copy;
 	}
-	
-	@Override
-	public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack)
-	{
-		return false;
-	}
 }

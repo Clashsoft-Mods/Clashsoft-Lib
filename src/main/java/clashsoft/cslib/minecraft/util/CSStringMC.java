@@ -29,9 +29,9 @@ public class CSStringMC
 	public static String trimStringToRenderWidth(String string, int maxRenderWidth)
 	{
 		Minecraft mc = Minecraft.getMinecraft();
-		int i = mc.fontRenderer.getStringWidth("...");
+		int i = mc.fontRendererObj.getStringWidth("...");
 		boolean flag = false;
-		while (string.length() > 0 && mc.fontRenderer.getStringWidth(string) + i > maxRenderWidth - 6)
+		while (string.length() > 0 && mc.fontRendererObj.getStringWidth(string) + i > maxRenderWidth - 6)
 		{
 			string = string.substring(0, string.length() - 1);
 			flag = true;

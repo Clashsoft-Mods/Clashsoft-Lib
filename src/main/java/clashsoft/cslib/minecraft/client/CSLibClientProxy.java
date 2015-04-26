@@ -1,35 +1,22 @@
 package clashsoft.cslib.minecraft.client;
 
-import clashsoft.cslib.minecraft.cape.CapeHelper;
-import clashsoft.cslib.minecraft.cape.Capes;
-import clashsoft.cslib.minecraft.cape.EmptyCape;
-import clashsoft.cslib.minecraft.client.gui.GuiModUpdates;
-import clashsoft.cslib.minecraft.client.renderer.block.RenderBlock2D;
-import clashsoft.cslib.minecraft.client.renderer.block.RenderBlockBush;
-import clashsoft.cslib.minecraft.client.renderer.block.RenderBlockMulti;
-import clashsoft.cslib.minecraft.common.CSLibProxy;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import clashsoft.cslib.minecraft.cape.CapeHelper;
+import clashsoft.cslib.minecraft.cape.Capes;
+import clashsoft.cslib.minecraft.cape.EmptyCape;
+import clashsoft.cslib.minecraft.client.gui.GuiModUpdates;
+import clashsoft.cslib.minecraft.common.CSLibProxy;
 
 public class CSLibClientProxy extends CSLibProxy
 {
 	@Override
 	public void init(FMLInitializationEvent event)
-	{
-		MULTI_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
-		BLOCK2D_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
-		CUSTOMBUSH_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
-		
-		RenderingRegistry.registerBlockHandler(MULTI_RENDER_ID, RenderBlockMulti.instance);
-		RenderingRegistry.registerBlockHandler(BLOCK2D_RENDER_ID, RenderBlock2D.instance);
-		RenderingRegistry.registerBlockHandler(CUSTOMBUSH_RENDER_ID, RenderBlockBush.instance);
-		
+	{	
 		Capes.setLocalCape("AdrianKunz", new ResourceLocation("cslib", "textures/capes/cape_clashsoft.png"));
 		Capes.noCape = Capes.addCape(new EmptyCape("no_cape"));
 	}

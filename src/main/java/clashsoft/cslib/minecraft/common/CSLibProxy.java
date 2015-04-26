@@ -3,18 +3,13 @@ package clashsoft.cslib.minecraft.common;
 import java.util.List;
 import java.util.UUID;
 
-import clashsoft.cslib.minecraft.CSLib;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import clashsoft.cslib.minecraft.CSLib;
 
 public class CSLibProxy extends BaseProxy
-{
-	public static int	MULTI_RENDER_ID;
-	public static int	BLOCK2D_RENDER_ID;
-	public static int	CUSTOMBUSH_RENDER_ID;
-	
+{	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
@@ -74,7 +69,7 @@ public class CSLibProxy extends BaseProxy
 		for (int i = 0; i < players.size(); i++)
 		{
 			player = players.get(i);
-			if (player.getCommandSenderName().equals(username))
+			if (player.getName().equals(username))
 			{
 				return player;
 			}

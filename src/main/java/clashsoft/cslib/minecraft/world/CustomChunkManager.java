@@ -6,8 +6,8 @@ import java.util.Random;
 
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ReportedException;
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeCache;
@@ -48,12 +48,6 @@ public abstract class CustomChunkManager extends WorldChunkManager
 	public final List getBiomesToSpawnIn()
 	{
 		return this.biomesToSpawnIn;
-	}
-	
-	@Override
-	public BiomeGenBase getBiomeGenAt(int x, int z)
-	{
-		return this.biomeCache.getBiomeGenAt(x, z);
 	}
 	
 	@Override
@@ -217,7 +211,7 @@ public abstract class CustomChunkManager extends WorldChunkManager
 	}
 	
 	@Override
-	public ChunkPosition findBiomePosition(int x, int z, int range, List list, Random random)
+	public BlockPos findBiomePosition(int x, int z, int range, List list, Random random)
 	{
 		IntCache.resetIntCache();
 		int x1 = x - range >> 2;
@@ -228,7 +222,7 @@ public abstract class CustomChunkManager extends WorldChunkManager
 		int z3 = z2 - z1 + 1;
 		int len = x3 * z3;
 		int[] aint = this.genLayerBiomes.getInts(x1, z1, x3, z3);
-		ChunkPosition chunkposition = null;
+		BlockPos pos = null;
 		
 		for (int i = 0; i < len; ++i)
 		{
@@ -236,13 +230,13 @@ public abstract class CustomChunkManager extends WorldChunkManager
 			int z4 = z1 + i / x3 << 2;
 			BiomeGenBase biome = BiomeGenBase.getBiome(aint[i]);
 			
-			if (list.contains(biome) && (chunkposition == null || random.nextInt(i + 1) == 0))
+			if (list.contains(biome) && (pos == null || random.nextInt(i + 1) == 0))
 			{
-				chunkposition = new ChunkPosition(x4, 0, z4);
+				pos = new BlockPos(x4, 0, z4);
 			}
 		}
 		
-		return chunkposition;
+		return pos;
 	}
 	
 	@Override

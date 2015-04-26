@@ -1,11 +1,11 @@
 package clashsoft.cslib.minecraft.network;
 
-import clashsoft.cslib.minecraft.CSLib;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import clashsoft.cslib.minecraft.CSLib;
 
 public class PacketRequestTileEntity extends CSPacket
 {
@@ -52,6 +52,6 @@ public class PacketRequestTileEntity extends CSPacket
 	@Override
 	public void handleServer(EntityPlayerMP player)
 	{
-		CSLib.getNetHandler().sendTEData(this.world, this.x, this.y, this.z, player);
+		CSLib.getNetHandler().sendTEData(this.world, new BlockPos(this.x, this.y, this.z), player);
 	}
 }

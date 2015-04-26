@@ -12,6 +12,16 @@ import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.terraingen.InitMapGenEvent;
 import net.minecraftforge.event.terraingen.InitMapGenEvent.EventType;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.event.FMLConstructionEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import clashsoft.cslib.config.CSConfig;
 import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.block.CSBlocks;
@@ -33,16 +43,6 @@ import clashsoft.cslib.minecraft.update.reader.SimpleUpdateReader;
 import clashsoft.cslib.minecraft.update.updater.ModUpdater;
 import clashsoft.cslib.minecraft.util.Log4JLogger;
 import clashsoft.cslib.minecraft.world.gen.CustomCaveGen;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.event.FMLConstructionEvent;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 
 @Mod(modid = CSLib.MODID, name = CSLib.NAME, version = CSLib.VERSION)
 public class CSLib extends ClashsoftMod
@@ -73,15 +73,15 @@ public class CSLib extends ClashsoftMod
 	
 	public static CSLibProxy	proxy			= createProxy("clashsoft.cslib.minecraft.client.CSLibClientProxy", "clashsoft.cslib.minecraft.common.CSLibProxy");
 	
-	public static Block			coalOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreCoal").setBlockTextureName("cslib:coal_overlay");
-	public static Block			ironOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreIron").setBlockTextureName("cslib:iron_overlay");
-	public static Block			goldOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreGold").setBlockTextureName("cslib:gold_overlay");
-	public static Block			diamondOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreDiamond").setBlockTextureName("cslib:diamond_overlay");
-	public static Block			emeraldOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreEmerald").setBlockTextureName("cslib:emerald_overlay");
-	public static Block			redstoneOre2	= new BlockRedstoneOre2(OreBase.TYPE_OVERWORLD, false).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreRedstone").setBlockTextureName("cslib:redstone_overlay");
-	public static Block			litRedstoneOre2	= new BlockRedstoneOre2(OreBase.TYPE_OVERWORLD, true).setLightLevel(0.625F).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreRedstone").setBlockTextureName("cslib:redstone_overlay");
-	public static Block			lapisOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("oreLapis").setBlockTextureName("cslib:lapis_overlay");
-	public static Block			quartzOre2		= new BlockOre2(OreBase.TYPE_NETHER).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston).setBlockName("netherquartz").setBlockTextureName("cslib:quartz_overlay");
+	public static Block			coalOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston);
+	public static Block			ironOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston);
+	public static Block			goldOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston);
+	public static Block			diamondOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston);
+	public static Block			emeraldOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston);
+	public static Block			redstoneOre2	= new BlockRedstoneOre2(OreBase.TYPE_OVERWORLD, false).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston);
+	public static Block			litRedstoneOre2	= new BlockRedstoneOre2(OreBase.TYPE_OVERWORLD, true).setLightLevel(0.625F).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston);
+	public static Block			lapisOre2		= new BlockOre2(OreBase.TYPE_OVERWORLD).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston);
+	public static Block			quartzOre2		= new BlockOre2(OreBase.TYPE_NETHER).setHardness(1.5F).setResistance(2.5F).setStepSound(Block.soundTypePiston);
 	
 	public static boolean		printUpdateNotes;
 	public static boolean		updateCheck;
@@ -196,7 +196,7 @@ public class CSLib extends ClashsoftMod
 	}
 	
 	@SubscribeEvent
-	public void playerLogin(PlayerEvent.PlayerLoggedInEvent event)
+	public void playerLogin(PlayerLoggedInEvent event)
 	{
 		if (proxy.isClient())
 		{

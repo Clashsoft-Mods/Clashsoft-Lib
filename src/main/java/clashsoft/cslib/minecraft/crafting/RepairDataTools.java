@@ -1,7 +1,5 @@
 package clashsoft.cslib.minecraft.crafting;
 
-import clashsoft.cslib.minecraft.item.datatools.ItemDataTool;
-
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -9,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import clashsoft.cslib.minecraft.item.datatools.ItemDataTool;
 
 public class RepairDataTools implements IRecipe
 {
@@ -98,4 +97,9 @@ public class RepairDataTools implements IRecipe
 		return null;
 	}
 	
+	@Override
+	public ItemStack[] func_179532_b(InventoryCrafting inventory)
+	{
+		return null;
+	}
 }

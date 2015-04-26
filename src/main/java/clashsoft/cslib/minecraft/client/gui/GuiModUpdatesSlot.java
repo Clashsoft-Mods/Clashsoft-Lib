@@ -1,11 +1,10 @@
 package clashsoft.cslib.minecraft.client.gui;
 
-import clashsoft.cslib.minecraft.lang.I18n;
-import clashsoft.cslib.minecraft.update.Update;
-import cpw.mods.fml.client.GuiScrollingList;
-
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraftforge.fml.client.GuiScrollingList;
+import clashsoft.cslib.minecraft.lang.I18n;
+import clashsoft.cslib.minecraft.update.Update;
 
 public class GuiModUpdatesSlot extends GuiScrollingList
 {
@@ -48,15 +47,15 @@ public class GuiModUpdatesSlot extends GuiScrollingList
 	{
 		x = this.left;
 		
-		FontRenderer font = this.parent.mc.fontRenderer;
+		FontRenderer font = this.parent.mc.fontRendererObj;
 		Update update = this.parent.updates.get(slotID);
 		
 		if (update != null)
 		{
 			int color = update.isValid() ? 0x00FF00 : update.isCurrent() ? 0xFFFFFF : 0xFF0000;
-			font.drawStringWithShadow("\u00a7n" + update.getModName(), x + 2, y + 2, 0xFFFFFF);
-			font.drawStringWithShadow(update.getVersionChanges(), x + 2, y + 12, color);
-			font.drawStringWithShadow(I18n.getString(update.getStatus()), x + 2, y + 22, 0xFFFFFF);
+			font.func_175063_a("\u00a7n" + update.getModName(), x + 2, y + 2, 0xFFFFFF);
+			font.func_175063_a(update.getVersionChanges(), x + 2, y + 12, color);
+			font.func_175063_a(I18n.getString(update.getStatus()), x + 2, y + 22, 0xFFFFFF);
 		}
 	}
 }

@@ -253,11 +253,11 @@ public class CSStacks
 	
 	public static NBTTagCompound getNBT(ItemStack stack)
 	{
-		NBTTagCompound nbt = stack.stackTagCompound;
+		NBTTagCompound nbt = stack.getTagCompound();
 		if (nbt == null)
 		{
 			nbt = new NBTTagCompound();
-			stack.stackTagCompound = nbt;
+			stack.setTagCompound(nbt);
 		}
 		return nbt;
 	}

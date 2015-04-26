@@ -1,13 +1,17 @@
 package clashsoft.cslib.minecraft.crafting.loader;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
-import org.apache.commons.io.FileUtils;
-
-import cpw.mods.fml.common.registry.GameData;
-
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.GameData;
+
+import org.apache.commons.io.FileUtils;
 
 public abstract class CustomRecipeLoader
 {

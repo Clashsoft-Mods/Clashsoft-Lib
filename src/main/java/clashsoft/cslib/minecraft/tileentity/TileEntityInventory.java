@@ -117,22 +117,22 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 	}
 	
 	@Override
-	public String getInventoryName()
+	public String getName()
 	{
-		if (this.name != null && !this.name.isEmpty())
+		if (this.name != null)
 		{
 			return this.name;
 		}
 		else
 		{
-			return new ItemStack(this.blockType, 1, this.blockMetadata).getDisplayName();
+			return new ItemStack(this.blockType, 1, this.getBlockMetadata()).getDisplayName();
 		}
 	}
 	
 	@Override
-	public boolean hasCustomInventoryName()
+	public boolean hasCustomName()
 	{
-		return this.name != null && !this.name.isEmpty();
+		return this.name != null;
 	}
 	
 	public void setInventoryName(String name)
@@ -149,7 +149,7 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.pos) == this && player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
 	}
 	
 	@Override
@@ -199,19 +199,9 @@ public abstract class TileEntityInventory extends TileEntity implements IInvento
 		
 		nbt.setTag("Items", list);
 		
-		if (this.hasCustomInventoryName())
+		if (this.hasCustomName())
 		{
 			nbt.setString("CustomName", this.name);
 		}
-	}
-	
-	@Override
-	public void closeInventory()
-	{
-	}
-	
-	@Override
-	public void openInventory()
-	{
 	}
 }

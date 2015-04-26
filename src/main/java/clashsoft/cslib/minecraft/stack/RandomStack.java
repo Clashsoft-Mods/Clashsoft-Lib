@@ -2,11 +2,10 @@ package clashsoft.cslib.minecraft.stack;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.RegistryDelegate;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.RegistryDelegate;
 
 public abstract class RandomStack
 {

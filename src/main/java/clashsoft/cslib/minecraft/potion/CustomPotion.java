@@ -21,7 +21,7 @@ public class CustomPotion extends Potion
 	
 	public CustomPotion(int id, String name, int color, boolean bad)
 	{
-		super(id, bad, color);
+		super(id, new ResourceLocation(name), bad, color);
 		PotionRegistry.add(this, id, name);
 		this.setPotionName(name);
 		this.bad = bad;

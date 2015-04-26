@@ -14,7 +14,7 @@ public class CapeHelper
 	
 	public static Cape getCape(EntityPlayer player)
 	{
-		String group = usernameToCapeName.get(player.getCommandSenderName());
+		String group = usernameToCapeName.get(player.getName());
 		Cape cape = capeNameToCape.get(group);
 		return cape == null ? (Cape) Capes.noCape : cape;
 	}

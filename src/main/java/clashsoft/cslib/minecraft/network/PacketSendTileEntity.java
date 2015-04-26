@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class PacketSendTileEntity extends CSPacket
@@ -66,7 +67,7 @@ public class PacketSendTileEntity extends CSPacket
 	@Override
 	public void handleClient(EntityPlayer player)
 	{
-		TileEntity tileEntity = player.worldObj.getTileEntity(this.x, this.y, this.z);
+		TileEntity tileEntity = player.worldObj.getTileEntity(new BlockPos(this.x, this.y, this.z));
 		if (tileEntity != null)
 		{
 			tileEntity.readFromNBT(this.data);

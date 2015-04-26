@@ -18,7 +18,7 @@ public class CSEntities
 {
 	private static Map<String, Class>		STRING_CLASS_MAPPING	= EntityList.stringToClassMapping;
 	private static Map<Class, String>		CLASS_STRING_MAPPING	= EntityList.classToStringMapping;
-	private static Map<Integer, Class>		ID_CLASS_MAPPING		= EntityList.IDtoClassMapping;
+	private static Map<Integer, Class>		ID_CLASS_MAPPING		= EntityList.idToClassMapping;
 	private static Map<Class, Integer>		CLASS_ID_MAPPING		= CSReflection.getValue(Constants.FIELD_EntityList_classToIDMapping, (Object) null);
 	private static Map<String, Integer>		STRING_ID_MAPPING		= CSReflection.getValue(Constants.FIELD_EntityList_stringToIDMapping, (Object) null);
 	

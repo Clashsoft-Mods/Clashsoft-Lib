@@ -32,9 +32,9 @@ public class CSRegistry extends RegistryNamespaced
 	}
 	
 	@Override
-	public void addObject(int id, String name, Object object)
+	public void register(int id, Object name, Object object)
 	{
-		super.addObject(id, name, object);
+		super.register(id, name, object);
 		this.availabilityMap.set(id);
 	}
 	
@@ -44,7 +44,7 @@ public class CSRegistry extends RegistryNamespaced
 		for (Object o : this)
 		{
 			int id = this.getIDForObject(o);
-			String name = this.getNameForObject(o);
+			Object name = this.getNameForObject(o);
 			lines.add(id + "=" + name);
 		}
 		
@@ -75,7 +75,7 @@ public class CSRegistry extends RegistryNamespaced
 				{
 					int id = CSMath.parseInt(s.substring(0, i), 0);
 					String name = s.substring(i + 1);
-					this.addObject(id, name, null);
+					this.register(id, name, null);
 				}
 			}
 		}

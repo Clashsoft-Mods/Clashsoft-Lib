@@ -3,16 +3,16 @@ package clashsoft.cslib.minecraft.block;
 import java.util.ArrayList;
 import java.util.Random;
 
-import clashsoft.cslib.minecraft.common.CSLibProxy;
+import javax.swing.Icon;
 
 import net.minecraft.block.IGrowable;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
+import clashsoft.cslib.minecraft.common.CSLibProxy;
 
 public class BlockCustomBush extends BlockCustomPlant implements IGrowable, IShearable
 {
@@ -30,15 +30,10 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable, IShe
 	
 	public ItemStack	drop;
 	
-	public String		stemIconName;
-	public IIcon		stemIcon;
-	
-	public BlockCustomBush(String bushIconName, String stemIconName)
+	public BlockCustomBush()
 	{
 		super(DEFAULT_NAMES, null);
 		this.setTickRandomly(true);
-		this.setBlockTextureName(bushIconName);
-		this.stemIconName = stemIconName;
 		this.fullGrownMetadata = 3;
 		this.setTicksToGrow(180 * 20);
 	}
@@ -74,9 +69,9 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable, IShe
 	}
 	
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
 	{
-		if (world.getBlockMetadata(x, y, z) >= this.fullGrownMetadata)
+		if (world.getBlockState(pos).get >= this.fullGrownMetadata)
 		{
 			this.setBlockBounds(this.bushMinX, this.bushMinY, this.bushMinZ, this.bushMaxX, this.bushMaxY, this.bushMaxZ);
 		}
@@ -111,7 +106,7 @@ public class BlockCustomBush extends BlockCustomPlant implements IGrowable, IShe
 	}
 	
 	@Override
-	public IIcon getIcon(int side, int metadata)
+	public Icon getIcon(int side, int metadata)
 	{
 		return this.blockIcon;
 	}

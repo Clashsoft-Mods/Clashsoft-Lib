@@ -1,7 +1,8 @@
 package clashsoft.cslib.minecraft.world;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -36,32 +37,10 @@ public class CSWorld
 	 *            the side
 	 * @return the block at side
 	 */
-	public static Block getBlockAtSide(IBlockAccess world, int x, int y, int z, int side)
+	public static IBlockState getBlockAtSide(IBlockAccess world, int x, int y, int z, int side)
 	{
 		int[] map = sideMap[side];
-		return world.getBlock(x + map[0], y + map[1], z + map[2]);
-	}
-	
-	/**
-	 * Gets the block metadata at the given side of the given coordinates.
-	 * 
-	 * @see World#getBlockMetadata(int, int, int)
-	 * @param world
-	 *            the world
-	 * @param x
-	 *            the x
-	 * @param y
-	 *            the y
-	 * @param z
-	 *            the z
-	 * @param side
-	 *            the side
-	 * @return the block metadata at side
-	 */
-	public static int getBlockMetadataAtSide(IBlockAccess world, int x, int y, int z, int side)
-	{
-		int[] map = sideMap[side];
-		return world.getBlockMetadata(x + map[0], y + map[1], z + map[2]);
+		return world.getBlockState(new BlockPos(x + map[0], y + map[1], z + map[2]));
 	}
 	
 	/**
@@ -85,7 +64,7 @@ public class CSWorld
 	public static <T extends TileEntity> T getTileEntityAtSide(IBlockAccess world, int x, int y, int z, int side)
 	{
 		int[] map = sideMap[side];
-		return (T) world.getTileEntity(x + map[0], y + map[1], z + map[2]);
+		return (T) world.getTileEntity(new BlockPos(x + map[0], y + map[1], z + map[2]));
 	}
 	
 	/**
@@ -107,10 +86,10 @@ public class CSWorld
 	 * @param metadata
 	 *            the meta
 	 */
-	public static void setBlockAtSide(World world, int x, int y, int z, int side, Block block, int metadata)
+	public static void setBlockAtSide(World world, int x, int y, int z, int side, IBlockState block)
 	{
 		int[] map = sideMap[side];
-		world.setBlock(x + map[0], y + map[1], z + map[2], block, metadata, 3);
+		world.setBlockState(new BlockPos(x + map[0], y + map[1], z + map[2]), block, 3);
 	}
 	
 	/**
@@ -132,7 +111,7 @@ public class CSWorld
 	public static void setBlockTileEntityAtSide(World world, int x, int y, int z, int side, TileEntity tileentity)
 	{
 		int[] map = sideMap[side];
-		world.setTileEntity(x + map[0], y + map[1], z + map[2], tileentity);
+		world.setTileEntity(new BlockPos(x + map[0], y + map[1], z + map[2]), tileentity);
 	}
 	
 	public static boolean isBoxSolid(World world, int x, int y, int z, int sizeX, int sizeY, int sizeZ)
@@ -143,7 +122,7 @@ public class CSWorld
 			{
 				for (int z1 = z; z1 < z + sizeZ; z1++)
 				{
-					if (world.isAirBlock(x1, y1, z1))
+					if (world.isAirBlock(new BlockPos(x1, y1, z1)))
 					{
 						return false;
 					}
@@ -162,7 +141,7 @@ public class CSWorld
 			{
 				for (int i2 = z; i2 < z + sizeZ; i2++)
 				{
-					if (!world.isAirBlock(k1, l1, i2))
+					if (!world.isAirBlock(new BlockPos(k1, l1, i2)))
 					{
 						return false;
 					}

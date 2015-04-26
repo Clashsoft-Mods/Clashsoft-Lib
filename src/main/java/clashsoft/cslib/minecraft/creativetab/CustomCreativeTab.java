@@ -60,7 +60,7 @@ public class CustomCreativeTab extends CreativeTabs
 	}
 	
 	@Override
-	public int func_151243_f()
+	public int getIconItemDamage()
 	{
 		return this.metadata;
 	}

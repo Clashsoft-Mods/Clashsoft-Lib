@@ -2,6 +2,7 @@ package clashsoft.cslib.minecraft.enchantment;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * The Class CustomEnchantment.
@@ -30,9 +31,9 @@ public class CustomEnchantment extends Enchantment
 	 * @param name
 	 *            the name
 	 */
-	public CustomEnchantment(int id, int weigth, int minLevel, int maxLevel, EnumEnchantmentType type, String name)
+	public CustomEnchantment(int id, String name, int weigth, int minLevel, int maxLevel, EnumEnchantmentType type)
 	{
-		super(id, weigth, type);
+		super(id, new ResourceLocation(name), weigth, type);
 		EnchantmentRegistry.add(this, id, name);
 		this.minLevel = minLevel;
 		this.maxLevel = maxLevel;
@@ -55,7 +56,7 @@ public class CustomEnchantment extends Enchantment
 	 */
 	public CustomEnchantment(int weigth, int minLevel, int maxLevel, EnumEnchantmentType type, String name)
 	{
-		this(EnchantmentRegistry.getID(name), weigth, minLevel, maxLevel, type, name);
+		this(EnchantmentRegistry.getID(name), name, weigth, minLevel, maxLevel, type);
 	}
 	
 	@Override

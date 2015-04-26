@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class CSLibNetHandler extends CSNetHandler
@@ -18,19 +19,19 @@ public class CSLibNetHandler extends CSNetHandler
 		this.registerPacket(CapePacket.class);
 	}
 	
-	public void requestTEData(World world, int x, int y, int z)
+	public void requestTEData(World world, BlockPos pos)
 	{
-		this.sendToServer(new PacketRequestTileEntity(world, x, y, z));
+		this.sendToServer(new PacketRequestTileEntity(world, pos.getX(), pos.getY(), pos.getZ()));
 	}
 	
-	public void sendTEData(World world, int x, int y, int z, EntityPlayerMP player)
+	public void sendTEData(World world, BlockPos pos, EntityPlayerMP player)
 	{
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(pos);
 		if (te != null)
 		{
 			NBTTagCompound data = new NBTTagCompound();
 			te.writeToNBT(data);
-			this.sendTo(new PacketSendTileEntity(world, x, y, z, data), player);
+			this.sendTo(new PacketSendTileEntity(world, pos.getX(), pos.getY(), pos.getZ(), data), player);
 		}
 	}
 	

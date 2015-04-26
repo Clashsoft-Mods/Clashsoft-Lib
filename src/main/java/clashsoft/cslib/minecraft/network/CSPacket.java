@@ -83,7 +83,7 @@ public abstract class CSPacket
 	 */
 	public static void writeWorld(PacketBuffer buf, World world)
 	{
-		buf.writeInt(world.provider.dimensionId);
+		buf.writeInt(world.provider.getDimensionId());
 	}
 	
 	/**

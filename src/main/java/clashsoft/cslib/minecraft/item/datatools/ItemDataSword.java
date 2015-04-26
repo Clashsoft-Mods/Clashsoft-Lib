@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemDataSword extends ItemDataTool
@@ -54,9 +55,9 @@ public class ItemDataSword extends ItemDataTool
 	}
 	
 	@Override
-	public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase living)
+	public boolean onBlockDestroyed(ItemStack stack, World world, Block block, BlockPos pos, EntityLivingBase living)
 	{
-		if (block.getBlockHardness(world, x, y, z) != 0.0D)
+		if (block.getBlockHardness(world, pos) != 0.0D)
 		{
 			stack.damageItem(2, living);
 		}
@@ -66,7 +67,7 @@ public class ItemDataSword extends ItemDataTool
 	@Override
 	public EnumAction getItemUseAction(ItemStack stack)
 	{
-		return EnumAction.block;
+		return EnumAction.BLOCK;
 	}
 	
 	@Override

@@ -8,18 +8,6 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import clashsoft.cslib.logging.CSLog;
-import clashsoft.cslib.minecraft.crafting.CSCrafting;
-import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
-import clashsoft.cslib.minecraft.util.Constants;
-import clashsoft.cslib.reflect.CSReflection;
-import clashsoft.cslib.util.CSUtil;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -28,6 +16,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatCrafting;
 import net.minecraft.stats.StatList;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
+import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import clashsoft.cslib.logging.CSLog;
+import clashsoft.cslib.minecraft.crafting.CSCrafting;
+import clashsoft.cslib.minecraft.item.datatools.DataToolSet;
+import clashsoft.cslib.minecraft.util.Constants;
+import clashsoft.cslib.reflect.CSReflection;
+import clashsoft.cslib.util.CSUtil;
 
 /**
  * The Class CSItems.
@@ -335,7 +334,7 @@ public class CSItems
 		try
 		{
 			FMLControlledNamespacedRegistry<Item> registry = GameData.getItemRegistry();
-			String registryName = registry.getNameForObject(item);
+			String registryName = (String) registry.getNameForObject(item);
 			int id = Item.getIdFromItem(item);
 			
 			// Replace registry entry

@@ -4,22 +4,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import clashsoft.cslib.minecraft.client.icon.IIconSupplier;
-import clashsoft.cslib.minecraft.client.icon.IconSupplier;
-import clashsoft.cslib.minecraft.client.icon.MultiIconSupplier;
-import clashsoft.cslib.minecraft.item.meta.ISubItem;
-import clashsoft.cslib.minecraft.lang.I18n;
-import clashsoft.cslib.util.CSArrays;
-import clashsoft.cslib.util.CSString;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import clashsoft.cslib.minecraft.item.meta.ISubItem;
+import clashsoft.cslib.minecraft.lang.I18n;
+import clashsoft.cslib.util.CSString;
 
 /**
  * The Class CustomItem.
@@ -29,7 +22,6 @@ public class CustomItem extends Item
 	public static final String	FORCEHIDE	= "%&";
 	
 	public String[]				names;
-	public IIconSupplier		iconSupplier;
 	
 	public CreativeTabs[]		tabs;
 	
@@ -60,7 +52,6 @@ public class CustomItem extends Item
 				iconNames[i] = item.getIconName();
 			}
 		}
-		this.iconSupplier = new MultiIconSupplier(iconNames);
 	}
 	
 	/**
@@ -73,10 +64,9 @@ public class CustomItem extends Item
 	 * @param descriptions
 	 *            the descriptions
 	 */
-	public CustomItem(String[] names, Object icons, CreativeTabs[] tabs)
+	public CustomItem(String[] names, CreativeTabs[] tabs)
 	{
 		this.names = names;
-		this.iconSupplier = IconSupplier.create(icons);
 		this.tabs = tabs;
 		this.enabled = new boolean[this.names.length];
 		Arrays.fill(this.enabled, true);
@@ -84,9 +74,9 @@ public class CustomItem extends Item
 		this.setHasSubtypes(names.length > 1);
 	}
 	
-	public CustomItem(String name, String iconName)
+	public CustomItem(String name)
 	{
-		this(CSArrays.create(name), iconName, null);
+		this(new String[] { name }, null);
 	}
 	
 	@Override
@@ -168,18 +158,6 @@ public class CustomItem extends Item
 	public static String getUnlocalizedName(Item item, String[] names, ItemStack stack)
 	{
 		return item.getUnlocalizedName() + "." + names[stack.getItemDamage()];
-	}
-	
-	@Override
-	public IIcon getIconFromDamage(int damage)
-	{
-		return this.iconSupplier.getIcon(damage);
-	}
-	
-	@Override
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		this.iconSupplier.registerIcons(iconRegister);
 	}
 	
 	@Override

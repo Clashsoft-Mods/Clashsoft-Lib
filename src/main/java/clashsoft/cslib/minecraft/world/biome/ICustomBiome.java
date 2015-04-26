@@ -1,24 +1,16 @@
 package clashsoft.cslib.minecraft.world.biome;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 
 public interface ICustomBiome
 {
-	public Block getTopBlock();
+	public IBlockState getTopBlock();
 	
-	public Block getFillerBlock();
+	public IBlockState getFillerBlock();
 	
-	public Block getStoneBlock();
+	public IBlockState getStoneBlock();
 	
-	public Block getWaterBlock();
-	
-	public byte getTopMetadata();
-	
-	public byte getFillerMetadata();
-	
-	public byte getStoneMetadata();
-	
-	public byte getWaterMetadata();
+	public IBlockState getWaterBlock();
 	
 	public int getBedrockHeight();
 	

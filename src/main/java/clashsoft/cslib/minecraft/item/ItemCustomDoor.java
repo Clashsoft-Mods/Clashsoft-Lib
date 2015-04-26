@@ -5,7 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class ItemCustomDoor extends Item
@@ -20,26 +21,24 @@ public class ItemCustomDoor extends Item
 	}
 	
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-		if (side != 1)
+		if (side != EnumFacing.UP)
 		{
 			return false;
 		}
-		++y;
+		pos = pos.offsetUp();
 		
-		if (!player.canPlayerEdit(x, y, z, side, stack) || !player.canPlayerEdit(x, y + 1, z, side, stack))
+		if (!player.func_175151_a(pos, side, stack) || !player.func_175151_a(pos.offsetUp(), side, stack))
 		{
 			return false;
 		}
-		if (!this.doorBlock.canPlaceBlockAt(world, x, y, z))
+		if (!this.doorBlock.canPlaceBlockAt(world, pos))
 		{
 			return false;
 		}
 		
-		int i = MathHelper.floor_double((player.rotationYaw + 180.0F) * 4.0F / 360.0F - 0.5D) & 0x3;
-		
-		ItemDoor.placeDoorBlock(world, x, y, z, i, this.doorBlock);
+		ItemDoor.func_179235_a(world, pos, EnumFacing.fromAngle(player.rotationYaw + 180D), this.doorBlock);
 		
 		stack.stackSize -= 1;
 		return true;

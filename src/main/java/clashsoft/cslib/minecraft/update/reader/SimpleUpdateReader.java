@@ -134,7 +134,7 @@ public class SimpleUpdateReader implements IUpdateReader
 	{
 		try
 		{
-			IChatComponent component1 = IChatComponent.Serializer.func_150699_a(json);
+			IChatComponent component1 = IChatComponent.Serializer.jsonToComponent(json);
 			if (component == null)
 			{
 				return component1;

@@ -1,18 +1,18 @@
 package clashsoft.cslib.minecraft.client.gui;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-
-import clashsoft.cslib.minecraft.lang.I18n;
-import clashsoft.cslib.minecraft.update.CSUpdate;
-import clashsoft.cslib.minecraft.update.Update;
-import clashsoft.cslib.util.CSString;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNoCallback;
 import net.minecraft.util.EnumChatFormatting;
+import clashsoft.cslib.minecraft.lang.I18n;
+import clashsoft.cslib.minecraft.update.CSUpdate;
+import clashsoft.cslib.minecraft.update.Update;
+import clashsoft.cslib.util.CSString;
 
 public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 {
@@ -123,7 +123,7 @@ public class GuiModUpdates extends GuiScreen implements GuiYesNoCallback
 	}
 	
 	@Override
-	protected void mouseClicked(int x, int y, int which)
+	protected void mouseClicked(int x, int y, int which) throws IOException
 	{
 		super.mouseClicked(x, y, which);
 		

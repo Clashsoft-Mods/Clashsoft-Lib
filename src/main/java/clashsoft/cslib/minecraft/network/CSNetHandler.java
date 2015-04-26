@@ -7,18 +7,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
 
 import java.io.IOException;
-import java.util.*;
-
-import clashsoft.cslib.logging.CSLog;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.FMLEmbeddedChannel;
-import cpw.mods.fml.common.network.FMLOutboundHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +19,16 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.FMLEmbeddedChannel;
+import net.minecraftforge.fml.common.network.FMLOutboundHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import clashsoft.cslib.logging.CSLog;
 
 @ChannelHandler.Sharable
 public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket>
@@ -127,7 +130,7 @@ public class CSNetHandler extends MessageToMessageCodec<FMLProxyPacket, CSPacket
 			msg.write(buffer);
 			
 			// Add buffer to the out list
-			FMLProxyPacket proxyPacket = new FMLProxyPacket(buffer.copy(), ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get());
+			FMLProxyPacket proxyPacket = new FMLProxyPacket(buffer, ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get());
 			out.add(proxyPacket);
 			
 			if (debug)

@@ -4,11 +4,11 @@ import java.util.List;
 
 import clashsoft.cslib.minecraft.CSLib;
 import clashsoft.cslib.minecraft.update.CSUpdate;
-
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.BlockPos;
 
 public class CommandModUpdate extends CommandBase
 {
@@ -58,7 +58,7 @@ public class CommandModUpdate extends CommandBase
 	}
 	
 	@Override
-	public List addTabCompletionOptions(ICommandSender sender, String[] args)
+	public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
 	{
 		return getListOfStringsMatchingLastWord(args, "update", "updateall", "view");
 	}

@@ -1,9 +1,9 @@
 package clashsoft.cslib.minecraft.update;
 
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.LoaderState;
 import clashsoft.cslib.logging.CSLog;
 import clashsoft.cslib.minecraft.update.updater.IUpdater;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.LoaderState;
 
 public class CheckUpdateThread extends Thread
 {
