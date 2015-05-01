@@ -2,11 +2,9 @@ package clashsoft.cslib.config;
 
 import java.io.File;
 
-import clashsoft.cslib.minecraft.world.gen.OreGen;
-import clashsoft.cslib.util.CSString;
-import clashsoft.cslib.util.IParsable;
-
 import net.minecraftforge.common.config.Configuration;
+import clashsoft.cslib.world.gen.OreGen;
+import dyvil.string.StringUtils;
 
 /**
  * The global class for loading configuration files.
@@ -69,9 +67,7 @@ public class CSConfig
 	protected static Configuration config()
 	{
 		if (THREADSAVE)
-		{
 			return localConfig.get();
-		}
 		return config;
 	}
 	
@@ -91,9 +87,7 @@ public class CSConfig
 	public static String getDefaultDesc(String key, Object _default)
 	{
 		if (enableComments)
-		{
 			return key + ". Default: " + _default;
-		}
 		return null;
 	}
 	
@@ -129,41 +123,31 @@ public class CSConfig
 		return getString(category, key, String.valueOf(_default));
 	}
 	
-	public static <T extends IParsable> T getObject(String category, String key, T _default)
-	{
-		return getObject(category, key, getDefaultDesc(key, _default), _default);
-	}
-	
 	// Description getters
 	
 	public static int getInt(String category, String key, String desc, int _default)
 	{
-		return config().get(category, CSString.identifier(key), _default, desc).getInt(_default);
+		return config().get(category, StringUtils.toIdentifier(key), _default, desc).getInt(_default);
 	}
 	
 	public static float getFloat(String category, String key, String desc, float _default)
 	{
-		return (float) config().get(category, CSString.identifier(key), _default, desc).getDouble(_default);
+		return (float) config().get(category, StringUtils.toIdentifier(key), _default, desc).getDouble(_default);
 	}
 	
 	public static double getDouble(String category, String key, String desc, double _default)
 	{
-		return config().get(category, CSString.identifier(key), _default, desc).getDouble(_default);
+		return config().get(category, StringUtils.toIdentifier(key), _default, desc).getDouble(_default);
 	}
 	
 	public static boolean getBool(String category, String key, String desc, boolean _default)
 	{
-		return config().get(category, CSString.identifier(key), _default, desc).getBoolean(_default);
+		return config().get(category, StringUtils.toIdentifier(key), _default, desc).getBoolean(_default);
 	}
 	
 	public static String getString(String category, String key, String desc, String _default)
 	{
-		return config().get(category, CSString.identifier(key), _default, desc).getString();
-	}
-	
-	public static <T extends IParsable> T getObject(String category, String key, String desc, T _default)
-	{
-		return (T) _default.parse(getString(category, key, desc, _default.toString()));
+		return config().get(category, StringUtils.toIdentifier(key), _default, desc).getString();
 	}
 	
 	@Deprecated
